@@ -91,12 +91,27 @@
         <row>
             <value description="id">-1</value>
             <value description="name">ROLE_ADMIN</value>
-            <value description="description"><![CDATA[Administrator role (can edit Users)]]></value>
+            <value description="description"><![CDATA[System administrator]]></value>
         </row>
         <row>
             <value description="id">-2</value>
             <value description="name">ROLE_USER</value>
-            <value description="description"><![CDATA[Default role for all Users]]></value>
+            <value description="description"><![CDATA[运营专员]]></value>
+        </row>
+        <row>
+            <value description="id">-3</value>
+            <value description="name">ROLE_RISK_MANAGER</value>
+            <value description="description"><![CDATA[风险经理]]></value>
+        </row>
+        <row>
+            <value description="id">-4</value>
+            <value description="name">ROLE_RISK_OPERATOR</value>
+            <value description="description"><![CDATA[托管经理]]></value>
+        </row>
+        <row>
+            <value description="id">-5</value>
+            <value description="name">ROLE_RISK_DIRECTOR</value>
+            <value description="description"><![CDATA[风险主管]]></value>
         </row>
     </table>
     <table name="user_role">
