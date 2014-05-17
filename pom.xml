@@ -209,6 +209,7 @@
                         <goals>
                             <goal>native2ascii</goal>
                         </goals>
+                        <phase>process-resources</phase>
                         <configuration>
                             <encoding>UTF8</encoding>
                             <includes>
