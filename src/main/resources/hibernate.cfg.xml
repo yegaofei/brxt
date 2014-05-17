@@ -8,5 +8,6 @@
     <session-factory>
         <mapping class="org.appfuse.model.User"/>
         <mapping class="org.appfuse.model.Role"/>
+        <mapping class="com.brxt.model.ProjectInfo"/>
     </session-factory>
 </hibernate-configuration>

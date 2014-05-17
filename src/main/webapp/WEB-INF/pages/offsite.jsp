@@ -1,7 +1,7 @@
 <%@ include file="/common/taglibs.jsp"%>
 
 <head>
-    <title><fmt:message key="userProfile.title"/></title>
+    <title><fmt:message key="offSite.title"/></title>
     <meta name="menu" content="UserMenu"/>
 </head>
 
@@ -11,13 +11,13 @@
 </script>
 
 <div class="col-sm-2">
-    <h2><fmt:message key="userProfile.heading"/></h2>
+    <h2><fmt:message key="offSite.heading"/></h2>
     <c:choose>
         <c:when test="${param.from == 'list'}">
-            <p><fmt:message key="userProfile.admin.message"/></p>
+            <p><fmt:message key="offSite.admin.message"/></p>
         </c:when>
         <c:otherwise>
-            <p><fmt:message key="userProfile.message"/></p>
+            <p><fmt:message key="offSite.message"/></p>
         </c:otherwise>
     </c:choose>
 </div>
