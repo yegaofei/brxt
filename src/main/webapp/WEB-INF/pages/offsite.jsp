@@ -2,7 +2,7 @@
 
 <head>
     <title><fmt:message key="offSite.title"/></title>
-    <meta name="menu" content="UserMenu"/>
+    <meta name="menu" content="OffSiteSupervisionMenu"/>
 </head>
 
 <c:set var="delObject" scope="request"><fmt:message key="userList.user"/></c:set>

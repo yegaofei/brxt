@@ -12,6 +12,9 @@
     <context:component-scan base-package="com.brxt"/>
 
     <!-- Add new DAOs here -->
+    <!--  bean id="projectInfoDao" class="org.appfuse.dao.hibernate.GenericDaoHibernate">
+        <constructor-arg value="com.brxt.model.ProjectInfo"/>
+    </bean  -->
 
     <!-- Add new Managers here -->
     

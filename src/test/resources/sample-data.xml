@@ -134,4 +134,38 @@
             <value description="role_id">-2</value>
         </row>
     </table>
+    <table name='project_info'>
+  		<column>id</column>
+  		<column>project_name</column>
+  		<column>ExpectedReturn</column>
+  		<column>fundUsage</column>
+  		<column>manager</column>
+  		<column>guaranteeMode</column>
+  		<column>officeManagement</column>
+  		<column>capitalInvestment</column>
+  		<row>
+    		<value>1</value>
+    		<value>TestProject1</value>
+    		<value>15</value>
+    		<value>TestFundUsage</value>
+    		<value>ManagerA</value>
+    		<value>TestGuaranteeMode</value>
+    		<value>Y</value>
+    		<value>TestCapitalInvestment</value>
+  		</row>
+	</table>
+	<table name='project_size'>
+  		<column>id</column>
+  		<column>start_time</column>
+  		<column>end_time</column>
+  		<column>size</column>
+  		<column>projectInfo_id</column>
+  		<row>
+    		<value>1</value>
+    		<value>2014-04-14</value>
+    		<value>2015-04-14</value>
+    		<value>100000</value>
+    		<value>1</value>
+  		</row>
+	</table>
 </dataset>
