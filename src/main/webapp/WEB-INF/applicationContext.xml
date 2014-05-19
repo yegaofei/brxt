@@ -17,6 +17,10 @@
     </bean  -->
 
     <!-- Add new Managers here -->
+    <bean id="projectInfoManager" class="com.brxt.service.impl.ProjectInfoManagerImpl">    
+    	<constructor-arg ref="projectInfoDao"/>
+	</bean>
+    
     
     <!-- Configure and Alternative PasswordTokenManager -->
 	<!-- <bean id="passwordTokenManager" class="org.appfuse.service.impl.PersistentPasswordTokenManagerImpl" autowire="default" /> -->

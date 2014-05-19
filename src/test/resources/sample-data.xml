@@ -153,6 +153,16 @@
     		<value>Y</value>
     		<value>TestCapitalInvestment</value>
   		</row>
+  		<row>
+    		<value>2</value>
+    		<value>TestProject2</value>
+    		<value>18</value>
+    		<value>TestFundUsage2</value>
+    		<value>ManagerB</value>
+    		<value>TestGuaranteeMode</value>
+    		<value>N</value>
+    		<value>TestCapitalInvestment</value>
+  		</row>
 	</table>
 	<table name='project_size'>
   		<column>id</column>

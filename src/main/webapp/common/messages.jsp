@@ -19,3 +19,15 @@
     </div>
     <c:remove var="successMessages" scope="session"/>
 </c:if>
+
+<%-- Error Messages --%>
+<c:if test="${not empty errors}">
+    <div class="alert alert-danger alert-dismissable">
+        <a href="#" data-dismiss="alert" class="close">&times;</a>
+        <c:forEach var="error" items="${errors}">
+            <c:out value="${error}"/><br />
+        </c:forEach>
+    </div>
+    <c:remove var="errors"/>
+</c:if>
+

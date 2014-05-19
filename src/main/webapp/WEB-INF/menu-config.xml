@@ -1,18 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <MenuConfig>
-    <Displayers>
-        <Displayer name="Velocity" type="net.sf.navigator.displayer.VelocityMenuDisplayer"/>
-    </Displayers>
-    <Menus>
-        <Menu name="Home" title="home.title" page="/home" roles="ROLE_ADMIN,ROLE_USER"/>
-        <!-- Menu name="UserMenu" title="menu.user" description="User Menu" page="/userform" roles="ROLE_ADMIN,ROLE_USER"/ -->
-        <Menu name="OffSiteSupervisionMenu" title="menu.offsite" description="Off-Site Supervision Menu" page="/offsite" roles="ROLE_ADMIN,ROLE_USER,ROLE_RISK_MANAGER,ROLE_RISK_OPERATOR,ROLE_RISK_DIRECTOR"/>
-        <Menu name="AdminMenu" title="menu.admin" description="Admin Menu" roles="ROLE_ADMIN" page="/admin/users">
-            <Item name="ViewUsers" title="menu.admin.users" page="/admin/users"/>
-            <Item name="ActiveUsers" title="home.activeUsers" page="/admin/activeUsers"/>
-            <Item name="ReloadContext" title="menu.admin.reload" page="/admin/reload"/>
-            <Item name="FileUpload" title="menu.selectFile" page="/fileupload"/>
-        </Menu>
-        <Menu name="Logout" title="user.logout" page="/logout" roles="ROLE_ADMIN,ROLE_USER"/>
-    </Menus>
+	<Displayers>
+		<Displayer name="Velocity" type="net.sf.navigator.displayer.VelocityMenuDisplayer"/>
+	</Displayers>
+	<Menus>
+		<Menu name="Home" title="home.title" page="/home" roles="ROLE_ADMIN,ROLE_USER"/>
+		<!-- Menu name="UserMenu" title="menu.user" description="User Menu" page="/userform"
+			roles="ROLE_ADMIN,ROLE_USER"/ -->
+		<Menu name="ProjectInfoMenu" title="menu.projectInfo" description="Project Information
+			Menu" page="/projectInfo" roles="ROLE_ADMIN,ROLE_USER,ROLE_RISK_MANAGER,ROLE_RISK_OPERATOR,ROLE_RISK_DIRECTOR">
+			<Item name="ProjectInfo" title="menu.projectInfo.list" page="/projectInfo"/>
+			<Item name="ProjectInfoForm" title="menu.projectInfo.edit" page="/projectInfoForm"/>
+		</Menu>
+		
+		<Menu name="AdminMenu" title="menu.admin" description="Admin Menu" roles="ROLE_ADMIN"
+			page="/admin/users">
+			<Item name="ViewUsers" title="menu.admin.users" page="/admin/users"/>
+			<Item name="ActiveUsers" title="home.activeUsers" page="/admin/activeUsers"/>
+			<Item name="ReloadContext" title="menu.admin.reload" page="/admin/reload"/>
+			<Item name="FileUpload" title="menu.selectFile" page="/fileupload"/>
+		</Menu>
+		<Menu name="Logout" title="user.logout" page="/logout" roles="ROLE_ADMIN,ROLE_USER"/>
+	</Menus>
 </MenuConfig>
