@@ -2,6 +2,7 @@ package com.brxt.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -16,6 +17,7 @@ import javax.persistence.Table;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.appfuse.model.BaseObject;
+import org.appfuse.model.User;
 import org.hibernate.annotations.Type;
 
 @Entity
@@ -26,15 +28,22 @@ public class ProjectInfo extends BaseObject implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -217461395372350336L;
-	private Long id;
-	private String projectName;
-	private Double expectedReturn;
-	private String fundUsage;
-	private String manager;
-	private String guaranteeMode;
-	private Boolean officeManagement;
-	private String capitalInvestment;
-	private List<ProjectSize> projectSizes = new ArrayList<ProjectSize>();
+	private Long id; //项目id
+	private String projectName; //项目名称
+	private Double expectedReturn; //预期收益率
+	private String fundUsage; //资金运用方式
+	private String riskManager; //风险经理
+	private String delegateManager; //托管经理
+	private String trustManager; //信托经理
+	private String guaranteeMode; //保障措施
+	private Boolean officeManagement; //是否事务管理类信托项目
+	private String capitalInvestmentType; //资金投向类型
+	private List<ProjectSize> projectSizes = new ArrayList<ProjectSize>(); //信托规模
+	private User create; //创建人
+	private Date createTime; //创建时间
+	private User update; //最后更新人
+	private Date updateTime; //最后更新时间
+	private List<Counterparty> counterpartyList = new ArrayList<Counterparty>(); //交易对手,担保人关系
 
 	@Column(name = "project_name", length = 50)
 	public String getProjectName() {
@@ -71,14 +80,6 @@ public class ProjectInfo extends BaseObject implements Serializable {
 		this.id = id;
 	}
 
-	public String getManager() {
-		return manager;
-	}
-
-	public void setManager(String manager) {
-		this.manager = manager;
-	}
-
 	public String getGuaranteeMode() {
 		return guaranteeMode;
 	}
@@ -97,14 +98,6 @@ public class ProjectInfo extends BaseObject implements Serializable {
 		this.officeManagement = officeManagement;
 	}
 
-	public String getCapitalInvestment() {
-		return capitalInvestment;
-	}
-
-	public void setCapitalInvestment(String capitalInvestment) {
-		this.capitalInvestment = capitalInvestment;
-	}
-
 	@OneToMany(mappedBy = "projectInfo", cascade = { CascadeType.ALL })
 	public List<ProjectSize> getProjectSizes() {
 		return projectSizes;
@@ -112,6 +105,79 @@ public class ProjectInfo extends BaseObject implements Serializable {
 
 	public void setProjectSizes(List<ProjectSize> projectSizes) {
 		this.projectSizes = projectSizes;
+	}
+
+	public String getRiskManager() {
+		return riskManager;
+	}
+
+	public void setRiskManager(String riskManager) {
+		this.riskManager = riskManager;
+	}
+
+	public String getDelegateManager() {
+		return delegateManager;
+	}
+
+	public void setDelegateManager(String delegateManager) {
+		this.delegateManager = delegateManager;
+	}
+
+	public String getTrustManager() {
+		return trustManager;
+	}
+
+	public void setTrustManager(String trustManager) {
+		this.trustManager = trustManager;
+	}
+
+	public String getCapitalInvestmentType() {
+		return capitalInvestmentType;
+	}
+
+	public void setCapitalInvestmentType(String capitalInvestmentType) {
+		this.capitalInvestmentType = capitalInvestmentType;
+	}
+
+	public User getCreate() {
+		return create;
+	}
+
+	public void setCreate(User create) {
+		this.create = create;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public User getUpdate() {
+		return update;
+	}
+
+	public void setUpdate(User update) {
+		this.update = update;
+	}
+
+	public Date getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
+	}
+
+	@OneToMany(mappedBy = "projectInfo", cascade = { CascadeType.ALL })
+	public List<Counterparty> getCounterpartyList() {
+		return counterpartyList;
+	}
+
+	public void setCounterpartyList(List<Counterparty> counterpartyList) {
+		this.counterpartyList = counterpartyList;
 	}
 
 	@Override
