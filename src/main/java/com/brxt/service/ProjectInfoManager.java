@@ -9,4 +9,5 @@ import com.brxt.model.ProjectInfo;
 public interface ProjectInfoManager extends GenericManager<ProjectInfo, Long> {
 
 	List<ProjectInfo> findByProjectName(String projectName);
+	
 }

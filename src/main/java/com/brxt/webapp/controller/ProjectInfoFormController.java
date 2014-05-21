@@ -1,13 +1,21 @@
 package com.brxt.webapp.controller;
 
+import java.util.Date;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.appfuse.model.User;
+import org.appfuse.service.UserManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.ldap.userdetails.LdapUserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -68,20 +76,55 @@ public class ProjectInfoFormController extends BaseFormController {
         boolean isNew = (projectInfo.getId() == null);
         String success = getSuccessView();
         Locale locale = request.getLocale();
- 
+        final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = getCurrentUser(auth, getUserManager());
+        
         if (request.getParameter("delete") != null) {
         	projectInfoManager.remove(projectInfo.getId());
             saveMessage(request, getText("projectInfo.deleted", locale));
         } else {
+        	if(isNew)
+        	{
+        		projectInfo.setCreateUser(currentUser);
+        		projectInfo.setCreateTime(new Date());
+        	}
+        	else
+        	{
+        		ProjectInfo pi = projectInfoManager.get(projectInfo.getId());
+        		User createUser = pi.getCreateUser();
+        		Date createTime = pi.getCreateTime();
+        		
+        		projectInfo.setCreateUser(createUser);
+        		projectInfo.setCreateTime(createTime);
+        		projectInfo.setUpdateUser(currentUser);
+        		projectInfo.setUpdateTime(new Date());
+        	}
         	projectInfoManager.save(projectInfo);
             String key = (isNew) ? "projectInfo.added" : "projectInfo.updated";
             saveMessage(request, getText(key, locale));
  
-            if (!isNew) {
-                success = "redirect:projectInfoForm?id=" + projectInfo.getId();
-            }
+//            if (!isNew) {
+//                success = "redirect:projectInfoForm?id=" + projectInfo.getId();
+//            }
         }
  
         return success;
+    }
+    
+    
+    private User getCurrentUser(Authentication auth, UserManager userManager) {
+        User currentUser;
+        if (auth.getPrincipal() instanceof LdapUserDetails) {
+            LdapUserDetails ldapDetails = (LdapUserDetails) auth.getPrincipal();
+            String username = ldapDetails.getUsername();
+            currentUser = userManager.getUserByUsername(username);
+        } else if (auth.getPrincipal() instanceof UserDetails) {
+            currentUser = (User) auth.getPrincipal();
+        } else if (auth.getDetails() instanceof UserDetails) {
+            currentUser = (User) auth.getDetails();
+        } else {
+            throw new AccessDeniedException("User not properly authenticated.");
+        }
+        return currentUser;
     }
 }

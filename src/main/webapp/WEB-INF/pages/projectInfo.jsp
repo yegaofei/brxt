@@ -15,11 +15,13 @@
  
     <display:table name="projectInfoList" class="table table-condensed table-striped table-hover" requestURI=""
                    id="projectInfoList" export="true" pagesize="25">
-        <display:column property="id" sortable="true" href="/projectInfoForm" media="html"
-            paramId="id" paramProperty="id" titleKey="projectInfo.id" />
         <display:column property="id" media="csv excel xml pdf" titleKey="projectInfo.id"/>
-        <display:column property="projectName" sortable="true" titleKey="projectInfo.projectName"/>
+        <display:column property="projectName" sortable="true" href="/projectInfoForm" media="html"
+            paramId="id" paramProperty="id"  titleKey="projectInfo.projectName"/>
         <display:column property="expectedReturn" sortable="true" titleKey="projectInfo.expectedReturn"/>
+        <display:column property="riskManager" sortable="true" titleKey="projectInfo.riskManager"/>
+        <display:column property="delegateManager" sortable="true" titleKey="projectInfo.delegateManager"/>
+        <display:column property="trustManager" sortable="true" titleKey="projectInfo.trustManager"/>
         <display:setProperty name="paging.banner.item_name"><fmt:message key="projectInfoList.heading"/></display:setProperty>
         <display:setProperty name="paging.banner.items_name"><fmt:message key="projectInfoList.projects"/></display:setProperty>
         <display:setProperty name="export.excel.filename"><fmt:message key="projectInfoList.title"/>.xls</display:setProperty>

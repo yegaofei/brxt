@@ -24,5 +24,4 @@ public class ProjectInfoManagerImpl extends GenericManagerImpl<ProjectInfo, Long
 		return projectInfoDao.findByProjectName(projectName);
 	}
 
-
 }

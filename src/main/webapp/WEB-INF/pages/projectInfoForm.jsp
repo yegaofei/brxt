@@ -12,6 +12,7 @@
     <form:errors path="*" cssClass="alert alert-danger alert-dismissable" element="div"/>
     <form:form commandName="projectInfo" method="post" action="projectInfoForm" id="projectInfoForm" cssClass="well">
     <form:hidden path="id"/>
+
     <spring:bind path="projectInfo.projectName">
     <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
@@ -19,13 +20,47 @@
         <form:input path="projectName" id="projectName" maxlength="50" autofocus="true" cssClass="form-control"/>
         <form:errors path="projectName" cssClass="help-inline"/>
     </div>
+
     <spring:bind path="projectInfo.expectedReturn">
     <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="projectInfo.expectedReturn"/>
-        <form:input path="expectedReturn" id="expectedReturn" maxlength="50" cssClass="form-control"/>
+        <form:input path="expectedReturn" id="expectedReturn" maxlength="20" cssClass="form-control"/>
         <form:errors path="expectedReturn" cssClass="help-block"/>
     </div>
+
+    <spring:bind path="projectInfo.riskManager">
+    <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    </spring:bind>
+        <appfuse:label styleClass="control-label" key="projectInfo.riskManager"/>
+        <form:input path="riskManager" id="riskManager" maxlength="20" cssClass="form-control"/>
+        <form:errors path="riskManager" cssClass="help-block"/>
+    </div>
+
+    <spring:bind path="projectInfo.delegateManager">
+    <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    </spring:bind>
+        <appfuse:label styleClass="control-label" key="projectInfo.delegateManager"/>
+        <form:input path="delegateManager" id="delegateManager" maxlength="20" cssClass="form-control"/>
+        <form:errors path="delegateManager" cssClass="help-block"/>
+    </div>
+
+    <spring:bind path="projectInfo.trustManager">
+    <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    </spring:bind>
+        <appfuse:label styleClass="control-label" key="projectInfo.trustManager"/>
+        <form:input path="trustManager" id="trustManager" maxlength="20" cssClass="form-control"/>
+        <form:errors path="trustManager" cssClass="help-block"/>
+    </div>
+
+    <spring:bind path="projectInfo.capitalInvestmentType">
+    <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    </spring:bind>
+        <appfuse:label styleClass="control-label" key="projectInfo.capitalInvestmentType"/>
+        <form:input path="capitalInvestmentType" id="capitalInvestmentType" maxlength="20" cssClass="form-control"/>
+        <form:errors path="capitalInvestmentType" cssClass="help-block"/>
+    </div>
+
     <div class="form-group form-actions">
         <button type="submit" class="btn btn-primary" name="save" onclick="bCancel=false">
             <i class="icon-ok icon-white"></i> <fmt:message key="button.save"/>
