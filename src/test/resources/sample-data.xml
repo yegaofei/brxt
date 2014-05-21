@@ -137,31 +137,49 @@
     <table name='project_info'>
   		<column>id</column>
   		<column>project_name</column>
-  		<column>ExpectedReturn</column>
+  		<column>expectedReturn</column>		
   		<column>fundUsage</column>
-  		<column>manager</column>
+		<column>riskManager</column>
+  		<column>delegateManager</column>
+		<column>trustManager</column>
   		<column>guaranteeMode</column>
   		<column>officeManagement</column>
-  		<column>capitalInvestment</column>
+  		<column>capitalInvestmentType</column>
+		<column>createUser</column>
+		<column>createTime</column>
+		<column>updateUser</column>
+		<column>updateTime</column>
   		<row>
     		<value>1</value>
     		<value>TestProject1</value>
     		<value>15</value>
     		<value>TestFundUsage</value>
     		<value>ManagerA</value>
+			<value>ManagerB</value>
+			<value>ManagerC</value>
     		<value>TestGuaranteeMode</value>
     		<value>Y</value>
     		<value>TestCapitalInvestment</value>
+			<value>-2</value>
+			<value>2014-04-14 06:06:06</value>
+			<value>-2</value>
+			<value>2014-04-14 06:06:06</value>
   		</row>
   		<row>
     		<value>2</value>
     		<value>TestProject2</value>
     		<value>18</value>
-    		<value>TestFundUsage2</value>
-    		<value>ManagerB</value>
+    		<value>TestFundUsage</value>
+    		<value>ManagerA</value>
+			<value>ManagerB</value>
+			<value>ManagerC</value>
     		<value>TestGuaranteeMode</value>
     		<value>N</value>
     		<value>TestCapitalInvestment</value>
+			<value>-1</value>
+			<value>2014-05-14 06:06:06</value>
+			<value>-1</value>
+			<value>2014-05-14 06:06:06</value>
   		</row>
 	</table>
 	<table name='project_size'>
@@ -172,9 +190,23 @@
   		<column>projectInfo_id</column>
   		<row>
     		<value>1</value>
-    		<value>2014-04-14</value>
-    		<value>2015-04-14</value>
+    		<value>2014-04-14 06:06:06</value>
+    		<value>2015-04-14 06:06:06</value>
     		<value>100000</value>
+    		<value>1</value>
+  		</row>
+	</table>
+	<table name='counterparty'>
+  		<column>id</column>
+  		<column>name</column>
+  		<column>counterpartyType</column>
+  		<column>relationship</column>
+  		<column>projectInfo_id</column>
+  		<row>
+    		<value>1</value>
+    		<value>ICBC Bank</value>
+			<value>unknown relationship</value>
+    		<value>unknown relationship</value>    		
     		<value>1</value>
   		</row>
 	</table>

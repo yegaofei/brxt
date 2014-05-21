@@ -8,9 +8,12 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -39,9 +42,9 @@ public class ProjectInfo extends BaseObject implements Serializable {
 	private Boolean officeManagement; //是否事务管理类信托项目
 	private String capitalInvestmentType; //资金投向类型
 	private List<ProjectSize> projectSizes = new ArrayList<ProjectSize>(); //信托规模
-	private User create; //创建人
+	private User createUser; //创建人
 	private Date createTime; //创建时间
-	private User update; //最后更新人
+	private User updateUser; //最后更新人
 	private Date updateTime; //最后更新时间
 	private List<Counterparty> counterpartyList = new ArrayList<Counterparty>(); //交易对手,担保人关系
 
@@ -139,12 +142,14 @@ public class ProjectInfo extends BaseObject implements Serializable {
 		this.capitalInvestmentType = capitalInvestmentType;
 	}
 
-	public User getCreate() {
-		return create;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "createUser", nullable = true)
+	public User getCreateUser() {
+		return createUser;
 	}
 
-	public void setCreate(User create) {
-		this.create = create;
+	public void setCreateUser(User create) {
+		this.createUser = create;
 	}
 
 	public Date getCreateTime() {
@@ -155,12 +160,14 @@ public class ProjectInfo extends BaseObject implements Serializable {
 		this.createTime = createTime;
 	}
 
-	public User getUpdate() {
-		return update;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "updateUser", nullable = true)
+	public User getUpdateUser() {
+		return updateUser;
 	}
 
-	public void setUpdate(User update) {
-		this.update = update;
+	public void setUpdateUser(User update) {
+		this.updateUser = update;
 	}
 
 	public Date getUpdateTime() {

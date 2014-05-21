@@ -10,5 +10,6 @@
         <mapping class="org.appfuse.model.Role"/>
         <mapping class="com.brxt.model.ProjectInfo"/>
         <mapping class="com.brxt.model.ProjectSize"/>
+        <mapping class="com.brxt.model.Counterparty"/>
     </session-factory>
 </hibernate-configuration>
