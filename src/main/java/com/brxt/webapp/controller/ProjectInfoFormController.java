@@ -76,8 +76,12 @@ public class ProjectInfoFormController extends BaseFormController {
         boolean isNew = (projectInfo.getId() == null);
         String success = getSuccessView();
         Locale locale = request.getLocale();
+        User currentUser = null;
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = getCurrentUser(auth, getUserManager());
+        if(auth != null)
+        {
+        	currentUser = getCurrentUser(auth, getUserManager());        	
+        }
         
         if (request.getParameter("delete") != null) {
         	projectInfoManager.remove(projectInfo.getId());
