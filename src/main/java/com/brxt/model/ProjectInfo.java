@@ -21,6 +21,8 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.appfuse.model.BaseObject;
 import org.appfuse.model.User;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type;
 
 @Entity
@@ -101,7 +103,8 @@ public class ProjectInfo extends BaseObject implements Serializable {
 		this.officeManagement = officeManagement;
 	}
 
-	@OneToMany(mappedBy = "projectInfo", cascade = { CascadeType.ALL })
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "projectInfo", cascade = { CascadeType.ALL })
+	@Fetch(FetchMode.SELECT) 
 	public List<ProjectSize> getProjectSizes() {
 		return projectSizes;
 	}

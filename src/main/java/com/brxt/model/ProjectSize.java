@@ -18,7 +18,7 @@ public class ProjectSize {
 
 	private Date startTime;
 	private Date endTime;
-	private BigDecimal pojectSize;
+	private BigDecimal projectSize;
 	private Long id;
 	private ProjectInfo projectInfo;
 
@@ -41,12 +41,12 @@ public class ProjectSize {
 	}
 
 	@Column(name="size", length=30)
-	public BigDecimal getPojectSize() {
-		return pojectSize;
+	public BigDecimal getProjectSize() {
+		return projectSize;
 	}
 
-	public void setPojectSize(BigDecimal pojectSize) {
-		this.pojectSize = pojectSize;
+	public void setProjectSize(BigDecimal pojectSize) {
+		this.projectSize = pojectSize;
 	}
 
 	@Id

@@ -46,7 +46,7 @@ public class ProjectInfoDaoTest extends BaseDaoTestCase {
 		Date endTime = sf.parse("2015-02-01");
 		projectSize.setStartTime(startTime);
 		projectSize.setEndTime(endTime);
-		projectSize.setPojectSize(new BigDecimal("5000000"));
+		projectSize.setProjectSize(new BigDecimal("5000000"));
 		projectInfo.getProjectSizes().add(projectSize);
 		
 		Counterparty cp = new Counterparty();
