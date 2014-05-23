@@ -142,7 +142,7 @@ public class ProjectInfo extends BaseObject implements Serializable {
 		this.capitalInvestmentType = capitalInvestmentType;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "createUser", nullable = true)
 	public User getCreateUser() {
 		return createUser;
@@ -160,7 +160,7 @@ public class ProjectInfo extends BaseObject implements Serializable {
 		this.createTime = createTime;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "updateUser", nullable = true)
 	public User getUpdateUser() {
 		return updateUser;

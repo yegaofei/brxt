@@ -60,6 +60,15 @@
         <form:input path="capitalInvestmentType" id="capitalInvestmentType" maxlength="20" cssClass="form-control"/>
         <form:errors path="capitalInvestmentType" cssClass="help-block"/>
     </div>
+    
+    <spring:bind path="projectInfo.createUser">
+    <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    </spring:bind>
+        <appfuse:label styleClass="control-label" key="projectInfo.createUser.username"/>
+        <c:out value="${projectInfo.createUser.username}" />
+        <form:hidden path="createUser.username" id="createUser" maxlength="20" cssClass="form-control"/>
+    </div>
+    
 
     <div class="form-group form-actions">
         <button type="submit" class="btn btn-primary" name="save" onclick="bCancel=false">
