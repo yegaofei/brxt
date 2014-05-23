@@ -6,7 +6,9 @@ import org.appfuse.service.impl.GenericManagerImpl;
 import org.springframework.stereotype.Service;
 
 import com.brxt.dao.ProjectInfoDao;
+import com.brxt.dao.ProjectSizeDao;
 import com.brxt.model.ProjectInfo;
+import com.brxt.model.ProjectSize;
 import com.brxt.service.ProjectInfoManager;
 
 @Service("projectInfoManager")
@@ -14,14 +16,22 @@ public class ProjectInfoManagerImpl extends GenericManagerImpl<ProjectInfo, Long
 
 	ProjectInfoDao projectInfoDao;
 	
-	public ProjectInfoManagerImpl(ProjectInfoDao projectInfoDao) {
+	ProjectSizeDao projectSizeDao;
+	
+	public ProjectInfoManagerImpl(ProjectInfoDao projectInfoDao, ProjectSizeDao projectSizeDao) {
         super(projectInfoDao);
         this.projectInfoDao = projectInfoDao;
+        this.projectSizeDao = projectSizeDao;
     }
 	
 	@Override
 	public List<ProjectInfo> findByProjectName(String projectName) {
 		return projectInfoDao.findByProjectName(projectName);
+	}
+
+	@Override
+	public void batchSaveProjectSizeList(List<ProjectSize> psList) {
+		projectSizeDao.batchSave(psList);
 	}
 
 }
