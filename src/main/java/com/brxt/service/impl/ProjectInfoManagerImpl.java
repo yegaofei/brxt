@@ -28,6 +28,11 @@ public class ProjectInfoManagerImpl extends GenericManagerImpl<ProjectInfo, Long
 	public List<ProjectInfo> findByProjectName(String projectName) {
 		return projectInfoDao.findByProjectName(projectName);
 	}
+	
+	@Override
+	public List<ProjectSize> getAllProjectSize(Long projectInfoId){
+		return projectSizeDao.findByProjectInfoId(projectInfoId);
+	}
 
 	@Override
 	public void batchSaveProjectSizeList(List<ProjectSize> psList) {

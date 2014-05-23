@@ -10,8 +10,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.Table;
 
+@NamedNativeQueries({
+	@NamedNativeQuery(
+	name = "findProjectSizeByProjectInfoId",
+	query = "select * from project_size s where s.projectInfo_id = :projectInfo_id",
+        resultClass = ProjectSize.class
+	)
+})
 @Entity
 @Table(name = "project_size")
 public class ProjectSize {

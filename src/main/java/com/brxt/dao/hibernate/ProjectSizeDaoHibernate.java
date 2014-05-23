@@ -1,6 +1,8 @@
 package com.brxt.dao.hibernate;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Session;
@@ -41,6 +43,13 @@ public class ProjectSizeDaoHibernate extends
 				session.clear();
 			}			
 		}
+	}
+
+	@Override
+	public List<ProjectSize> findByProjectInfoId(Long projectInfoId) {
+		Map<String, Object> queryParams = new HashMap<String, Object>();
+		queryParams.put("projectInfo_id", projectInfoId);
+		return findByNamedQuery("findProjectSizeByProjectInfoId", queryParams);
 	}
 
 }

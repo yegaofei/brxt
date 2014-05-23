@@ -25,7 +25,6 @@ public class ProjectSizeDaoTest extends BaseDaoTestCase {
 
 	@Test
 	public void testBatchSave() throws Exception {
-
 		ProjectSize projectSize = projectSizeDao.get(1L);
 		assertNotNull(projectSize);
 
@@ -59,7 +58,13 @@ public class ProjectSizeDaoTest extends BaseDaoTestCase {
 		projectSizeList = newProjectInfoFromDB.getProjectSizes();
 		assertNotNull(projectSizeList);
 		assertTrue((existedProjectSizeListSize + 10) == projectSizeList.size());
-
+	}
+	
+	@Test
+	public void testFindByProjectInfoId() throws Exception{
+		List<ProjectSize> projectSize = projectSizeDao.findByProjectInfoId(Long.valueOf(1));
+		assertNotNull(projectSize);
+		assertTrue(projectSize.size() > 0);
 	}
 
 }

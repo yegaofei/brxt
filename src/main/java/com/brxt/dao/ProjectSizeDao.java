@@ -9,4 +9,6 @@ import com.brxt.model.ProjectSize;
 public interface ProjectSizeDao extends GenericDao<ProjectSize, Long> {
 
 	public void batchSave(List<ProjectSize> projectSizeList);
+	
+	public List<ProjectSize> findByProjectInfoId(Long projectInfoId);
 }

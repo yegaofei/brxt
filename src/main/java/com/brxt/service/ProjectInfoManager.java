@@ -13,4 +13,6 @@ public interface ProjectInfoManager extends GenericManager<ProjectInfo, Long> {
 	
 	void batchSaveProjectSizeList(List<ProjectSize> psList);
 	
+	List<ProjectSize> getAllProjectSize(Long projectInfoId);
+	
 }
