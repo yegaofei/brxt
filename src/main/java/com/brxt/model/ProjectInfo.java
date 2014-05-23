@@ -16,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
@@ -48,6 +49,7 @@ public class ProjectInfo extends BaseObject implements Serializable {
 	private Date createTime; //创建时间
 	private User updateUser; //最后更新人
 	private Date updateTime; //最后更新时间
+	private Integer version;
 	private List<Counterparty> counterpartyList = new ArrayList<Counterparty>(); //交易对手,担保人关系
 
 	@Column(name = "project_name", length = 50)
@@ -188,6 +190,15 @@ public class ProjectInfo extends BaseObject implements Serializable {
 
 	public void setCounterpartyList(List<Counterparty> counterpartyList) {
 		this.counterpartyList = counterpartyList;
+	}
+
+	@Version
+	public Integer getVersion() {
+		return version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
 	}
 
 	@Override

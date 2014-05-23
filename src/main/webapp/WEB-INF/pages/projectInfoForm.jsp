@@ -12,7 +12,8 @@
     <form:errors path="*" cssClass="alert alert-danger alert-dismissable" element="div"/>
     <form:form commandName="projectInfo" method="post" action="projectInfoForm" id="projectInfoForm" cssClass="well">
     <form:hidden path="id"/>
-
+	<form:hidden path="version"/>
+	
     <spring:bind path="projectInfo.projectName">
     <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
@@ -71,11 +72,11 @@
     </div>
     </c:if>
     <c:if test="${not empty projectInfo.projectSizes}">
-    <div class="readonly">
-		<display:table name="projectInfo.projectSizes" class="table table-condensed table-striped table-hover">
-			<display:column property="startTime" escapeXml="true" sortable="true" titleKey="projectSize.startTime" style="width: 30%"/>
+    <div class="form-group">
+		<display:table name="projectInfo.projectSizes" id="projectSize" class="table table-condensed table-striped table-hover">
+			<display:column property="startTime" format="{0,date,yyyy-MM-dd}" sortable="true" titleKey="projectSize.startTime" style="width: 30%" />		
 			<display:column property="projectSize" escapeXml="true" sortable="true" titleKey="projectSize.size" style="width: 34%"/>
-			<display:column property="endTime" sortable="true" titleKey="projectSize.endTime" style="width: 30%" />
+			<display:column property="endTime" format="{0,date,yyyy-MM-dd}" sortable="true" titleKey="projectSize.endTime" style="width: 30%" />
 		</display:table>
      </div>
     </c:if>
@@ -97,8 +98,5 @@
     </form:form>
 </div>
 
- 
-
- 
 <v:javascript formName="projectInfo" cdata="false" dynamicJavascript="true" staticJavascript="false"/>
 <script type="text/javascript" src="<c:url value='/scripts/validator.jsp'/>"></script>
