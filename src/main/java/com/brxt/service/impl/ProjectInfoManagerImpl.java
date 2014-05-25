@@ -39,4 +39,5 @@ public class ProjectInfoManagerImpl extends GenericManagerImpl<ProjectInfo, Long
 		projectSizeDao.batchSave(psList);
 	}
 
+	
 }

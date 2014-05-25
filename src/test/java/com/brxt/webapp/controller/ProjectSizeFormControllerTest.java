@@ -23,12 +23,32 @@ public class ProjectSizeFormControllerTest extends BaseControllerTestCase  {
     public void testEdit() throws Exception {
         log.debug("testing edit...");
         request = newGet("/projectSizeform");
-        request.addParameter("id", "1");
+        request.addParameter("projectInfoId", "1");
  
         ModelAndView mav = form.handleRequest(request);
         ModelMap m = mav.getModelMap();
         assertNotNull(m.get("projectSizeList"));
         assertTrue(((List<ProjectSize>) m.get("projectSizeList")).size() > 0);
+    }
+    
+    @Test
+    public void testAdd() throws Exception {
+    	
+    	request = newGet("/projectSizeform");
+        request.addParameter("projectInfoId", "1");
+        ModelAndView mav = form.handleRequest(request);
+        ModelMap m = mav.getModelMap();
+        List<ProjectSize> projectSizeList = (List<ProjectSize>) m.get("projectSizeList");
+        int size = projectSizeList.size();
+        
+        request = newGet("/projectSizeform");
+        request.addParameter("projectInfoId", "1");
+        request.addParameter("method", "Add");
+        mav = form.onSubmit(Long.valueOf(1), request);
+        m = mav.getModelMap();
+        int sizeAfterAdd = ((List<ProjectSize>) m.get("projectSizeList")).size();
+        assertTrue(sizeAfterAdd - size == 1);
+    	
     }
  
 }

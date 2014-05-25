@@ -77,6 +77,10 @@
     <logger name="org.appfuse.tool">
         <level value="INFO"/>
     </logger>
+    
+    <logger name="com.brxt">
+        <level value="DEBUG"/>
+    </logger>
 
     <root>
         <level value="WARN"/>
