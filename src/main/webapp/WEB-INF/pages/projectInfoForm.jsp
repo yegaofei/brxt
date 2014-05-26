@@ -78,7 +78,11 @@
 			<display:column property="projectSize" escapeXml="true" sortable="true" titleKey="projectSize.size" style="width: 34%"/>
 			<display:column property="endTime" format="{0,date,yyyy-MM-dd}" sortable="true" titleKey="projectSize.endTime" style="width: 30%" />
 		</display:table>
+		<a href="<c:url value='/projectSizeForm?projectInfoId=${projectInfo.id}'/>"><fmt:message key="projectSize.editPage"/></a>
      </div>
+    </c:if>
+    <c:if test="${empty projectInfo.projectSizes}">
+    	<a href="<c:url value='/projectSizeForm?projectInfoId=${projectInfo.id}'/>"><fmt:message key="projectSize.addPage"/></a>
     </c:if>
 
     <div class="form-group form-actions">

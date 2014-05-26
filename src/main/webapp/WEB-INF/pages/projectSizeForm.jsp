@@ -9,14 +9,18 @@
 <form name="projectSizeForm" action="/projectSizeForm" method="post">
 <input type="hidden" name="projectInfoId" value="<c:out value='${projectInfoId}'/>" />
 <div id="actions" class="btn-group">
-		<c:if test="${method == 'Edit'}">
+		<c:choose>
+		<c:when test="${method == 'Edit'}">
     		<button type="submit" class="btn btn-primary" name="method" value="Save">
                 <i class="icon-ok icon-white"></i> <fmt:message key="button.save"/>
             </button>
-		</c:if>
+		</c:when>
+		<c:otherwise>
         <button type="submit" class="btn btn-primary" name="method" value="Add">
                 <i class="icon-ok icon-white"></i> <fmt:message key="button.add"/>
         </button>    
+        </c:otherwise>
+        </c:choose>
         <button type="submit" class="btn btn-primary" name="method" value="Edit">
                 <i class="icon-ok icon-white"></i> <fmt:message key="button.edit"/>
         </button>
@@ -34,13 +38,13 @@
     <c:if test="${param.id == projectSize.id and method != 'Save'}">checked="checked"</c:if>
         style="margin: 0 0 0 4px" onclick="radio(this)" />
   </display:column>
-  <display:column titleKey="projectSize.startTime">
+  <display:column titleKey="projectSize.startTime" format="{0,date,yyyy-MM-dd}">
     <c:choose>
         <c:when test="${method == 'Edit' and param.id == projectSize.id}">
             <input type="text" name="startTime" style="padding: 0"
-                value="<c:out value="${projectSize.startTime}"/>" />
+                value="<fmt:formatDate value="${projectSize.startTime}" pattern="yyyy-MM-dd" />" />
         </c:when>
-        <c:otherwise><c:out value="${projectSize.startTime}"/></c:otherwise>
+        <c:otherwise><fmt:formatDate value="${projectSize.startTime}" pattern="yyyy-MM-dd" /></c:otherwise>
     </c:choose>
   </display:column>
   <display:column titleKey="projectSize.size">
@@ -52,13 +56,13 @@
         <c:otherwise><c:out value="${projectSize.projectSize}"/></c:otherwise>
     </c:choose>
   </display:column>
-  <display:column titleKey="projectSize.endTime">
+  <display:column titleKey="projectSize.endTime" format="{0,date,yyyy-MM-dd}">
       <c:choose>
         <c:when test="${method == 'Edit' and param.id == projectSize.id}">
             <input type="text" name="endTime" style="padding: 0"
-                value="<c:out value="${projectSize.endTime}"/>" />
+                value="<fmt:formatDate value="${projectSize.endTime}" pattern="yyyy-MM-dd" />" />
         </c:when>
-        <c:otherwise><c:out value="${projectSize.endTime}"/></c:otherwise>
+        <c:otherwise><fmt:formatDate value="${projectSize.endTime}" pattern="yyyy-MM-dd" /></c:otherwise>
     </c:choose>
   </display:column>
 </display:table>

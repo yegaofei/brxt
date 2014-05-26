@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedNativeQueries;
 import javax.persistence.NamedNativeQuery;
@@ -68,7 +69,8 @@ public class ProjectSize {
 		this.id = id;
 	}
 
-	@ManyToOne(cascade={CascadeType.ALL})
+	@ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH},optional=true)  
+	@JoinColumn(name="projectInfo_id") 
 	public ProjectInfo getProjectInfo() {
 		return projectInfo;
 	}

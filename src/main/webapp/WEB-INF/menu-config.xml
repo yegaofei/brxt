@@ -5,12 +5,10 @@
 	</Displayers>
 	<Menus>
 		<Menu name="Home" title="home.title" page="/home" roles="ROLE_ADMIN,ROLE_USER"/>
-		<!-- Menu name="UserMenu" title="menu.user" description="User Menu" page="/userform"
-			roles="ROLE_ADMIN,ROLE_USER"/ -->
 		<Menu name="ProjectInfoMenu" title="menu.projectInfo" description="Project Information
 			Menu" page="/projectInfo" roles="ROLE_ADMIN,ROLE_USER,ROLE_RISK_MANAGER,ROLE_RISK_OPERATOR,ROLE_RISK_DIRECTOR">
 			<Item name="ProjectInfo" title="menu.projectInfo.list" page="/projectInfo"/>
-			<Item name="ProjectInfoForm" title="menu.projectInfo.edit" page="/projectInfoForm"/>
+			<Item name="ProjectInfoForm" title="menu.projectInfo.add" page="/projectInfoForm"/>
 		</Menu>
 		
 		<Menu name="AdminMenu" title="menu.admin" description="Admin Menu" roles="ROLE_ADMIN"

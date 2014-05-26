@@ -32,8 +32,7 @@ public class ProjectSizeFormControllerTest extends BaseControllerTestCase  {
     }
     
     @Test
-    public void testAdd() throws Exception {
-    	
+    public void testAdd() throws Exception {    	
     	request = newGet("/projectSizeform");
         request.addParameter("projectInfoId", "1");
         ModelAndView mav = form.handleRequest(request);
@@ -48,7 +47,25 @@ public class ProjectSizeFormControllerTest extends BaseControllerTestCase  {
         m = mav.getModelMap();
         int sizeAfterAdd = ((List<ProjectSize>) m.get("projectSizeList")).size();
         assertTrue(sizeAfterAdd - size == 1);
-    	
+    }
+    
+    @Test
+    public void testDelete() throws Exception { 
+    	request = newGet("/projectSizeform");
+        request.addParameter("projectInfoId", "1");
+        ModelAndView mav = form.handleRequest(request);
+        ModelMap m = mav.getModelMap();
+        List<ProjectSize> projectSizeList = (List<ProjectSize>) m.get("projectSizeList");
+        int size = projectSizeList.size();
+        
+        request = newGet("/projectSizeform");
+        request.addParameter("projectInfoId", "1");
+        request.addParameter("id", "1");
+        request.addParameter("method", "Delete");
+        mav = form.onSubmit(Long.valueOf(1), request);
+        m = mav.getModelMap();
+        int sizeAfterDelete = ((List<ProjectSize>) m.get("projectSizeList")).size();
+        assertTrue(size - sizeAfterDelete == 1);
     }
  
 }

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -67,6 +68,7 @@ public class ProjectSizeFormController extends BaseFormController {
 			@RequestParam(value = "projectInfoId", required = true) final Long projectInfoId,
 			HttpServletRequest request) throws Exception {
 		String method = request.getParameter("method");
+		String id = request.getParameter("id");
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("projectInfoId", projectInfoId);
 		List<ProjectSize> projectSizeList = projectInfoManager
@@ -82,13 +84,15 @@ public class ProjectSizeFormController extends BaseFormController {
 			mav.addObject("method", "Edit");
 			break;
 		case "Delete":
+			projectSizeList = delete(id, projectInfoId);
+			mav.addObject("projectSizeList", projectSizeList);
+			mav.addObject("method", "Save");
 			break;
 		case "Save":
 			// how many records have been submitted
-			String id = request.getParameter("id");
 			log.debug("submit project size id: " + id);
 			String[] idArray = request.getParameterValues("id");
-			if(idArray != null && idArray.length > 0)
+			if(idArray != null && idArray.length > 0 && !"".equals(idArray[0]))
 			{
 				StringBuilder sb = new StringBuilder("submit project size ids: ");
 				for(String idStr : idArray){
@@ -99,8 +103,9 @@ public class ProjectSizeFormController extends BaseFormController {
 			String projectSize = request.getParameter("projectSize");
 			String startTime = request.getParameter("startTime");
 			String endTime = request.getParameter("endTime");
+			log.debug("projectSize=" + projectSize + ", startTime=" + startTime + ", endTime=" + endTime);
 			if (StringUtils.isBlank(id)) {
-				if (idArray != null && idArray.length > 0) {
+				if (idArray != null && idArray.length > 0 && !"".equals(idArray[0])) {
 					String[] projectSizeArray = request
 							.getParameterValues("projectSize");
 					String[] startTimeArray = request
@@ -109,18 +114,43 @@ public class ProjectSizeFormController extends BaseFormController {
 							.getParameterValues("endTime");
 					// batch update or add
 				} else {
-					save(id, startTime, projectSize, endTime, projectInfoId);
+					projectSizeList = save(id, startTime, projectSize, endTime, projectInfoId);
 				}
 			} else {
-				save(id, startTime, projectSize, endTime, projectInfoId);
+				projectSizeList = save(id, startTime, projectSize, endTime, projectInfoId);
 			}
+			mav.addObject("projectSizeList", projectSizeList);
+			mav.addObject("method", "Save");
 			break;
 		default:
 		}
 		return mav;
 	}
+	
+	private List<ProjectSize> delete(String id, Long projectInfoId){
+		ProjectInfo pi = projectInfoManager.get(projectInfoId);
+		List<ProjectSize> list = pi.getProjectSizes();
+		if(StringUtils.isBlank(id) || list == null || list.size() == 0)
+		{
+			return null;
+		}
+		
+		Iterator<ProjectSize> it = list.iterator();
+		while(it.hasNext())
+		{
+			ProjectSize ps = it.next();
+			if(ps.getId() == Long.valueOf(id))
+			{
+				it.remove();
+				ps.setProjectInfo(null);
+				projectInfoManager.deleteProjectSize(ps);
+				break;
+			}
+		}
+		return list;
+	}
 
-	private void save(String id, String startTime, String projectSize,
+	private List<ProjectSize> save(String id, String startTime, String projectSize,
 			String endTime, Long projectInfoId) throws ParseException {
 		ProjectInfo pi = projectInfoManager.get(projectInfoId);
 		List<ProjectSize> list = pi.getProjectSizes();
@@ -148,21 +178,29 @@ public class ProjectSizeFormController extends BaseFormController {
 			}
 		} else {
 			// Add
-			ProjectSize projectSizeObj = new ProjectSize();
-			projectSizeObj.setProjectInfo(pi);
-			if (startTime != null) {
-				projectSizeObj.setStartTime(sdf.parse(startTime));
-			}
+			if(!StringUtils.isBlank(startTime) || !StringUtils.isBlank(projectSize) || !StringUtils.isBlank(endTime))
+			{
+				ProjectSize projectSizeObj = new ProjectSize();
+				if (!StringUtils.isBlank(startTime)) {
+					projectSizeObj.setStartTime(sdf.parse(startTime));
+				}
 
-			if (projectSize != null) {
-				projectSizeObj.setProjectSize(new BigDecimal(projectSize));
-			}
+				if (!StringUtils.isBlank(projectSize)) {
+					projectSizeObj.setProjectSize(new BigDecimal(projectSize));
+				}
 
-			if (endTime != null) {
-				projectSizeObj.setEndTime(sdf.parse(endTime));
+				if (!StringUtils.isBlank(endTime)) {
+					projectSizeObj.setEndTime(sdf.parse(endTime));
+				}
+				projectSizeObj.setProjectInfo(pi);
+				list.add(projectSizeObj);				
 			}
-			list.add(projectSizeObj);
+			else 
+			{
+				return list;
+			}
 		}
 		projectInfoManager.save(pi);
+		return list;
 	}
 }

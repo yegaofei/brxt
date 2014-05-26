@@ -38,6 +38,20 @@ public class ProjectInfoManagerImpl extends GenericManagerImpl<ProjectInfo, Long
 	public void batchSaveProjectSizeList(List<ProjectSize> psList) {
 		projectSizeDao.batchSave(psList);
 	}
+	
+	public void deleteProjectSize(Long projectSizeId){
+		projectSizeDao.remove(projectSizeId);
+	}
+
+	@Override
+	public void deleteProjectSize(ProjectSize projectSize) {
+		projectSizeDao.remove(projectSize);
+	}
+
+	@Override
+	public ProjectSize findProjectSize(Long projectSizeId) {
+		return projectSizeDao.get(projectSizeId);
+	}
 
 	
 }

@@ -15,4 +15,10 @@ public interface ProjectInfoManager extends GenericManager<ProjectInfo, Long> {
 	
 	List<ProjectSize> getAllProjectSize(Long projectInfoId);
 	
+	void deleteProjectSize(Long projectSizeId);
+	
+	void deleteProjectSize(ProjectSize projectSize);
+	
+	ProjectSize findProjectSize(Long projectSizeId);
+	
 }

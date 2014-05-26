@@ -11,10 +11,10 @@
 
 <ul class="glassList">
     <li>
-        <a href="<c:url value='/userform'/>"><fmt:message key="menu.user"/></a>
+        <a href="<c:url value='/projectInfo'/>"><fmt:message key="menu.projectInfo.list"/></a>
     </li>
     <li>
-        <a href="<c:url value='/fileupload'/>"><fmt:message key="menu.selectFile"/></a>
+        <a href="<c:url value='/projectInfoForm'/>"><fmt:message key="menu.projectInfo.add"/></a>
     </li>
 </ul>
 </body>
