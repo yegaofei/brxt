@@ -13,3 +13,4 @@
         <mapping class="com.brxt.model.Counterparty"/>
     </session-factory>
 </hibernate-configuration>
+

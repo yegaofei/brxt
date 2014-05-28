@@ -72,13 +72,61 @@
     </div>
     </c:if>
     <c:if test="${not empty projectInfo.projectSizes}">
+    <div id="actions" class="btn-group">
+		<c:choose>
+		<c:when test="${method == 'EditProjectSize'}">
+    		<button type="submit" class="btn btn-primary" name="method" value="SaveProjectSize">
+                <i class="icon-ok icon-white"></i> <fmt:message key="button.save"/>
+            </button>
+		</c:when>
+		<c:otherwise>
+        <button type="submit" class="btn btn-primary" name="method" value="AddProjectSize">
+                <i class="icon-ok icon-white"></i> <fmt:message key="button.add"/>
+        </button>    
+        </c:otherwise>
+        </c:choose>
+        <button type="submit" class="btn btn-primary" name="method" value="EditProjectSize">
+                <i class="icon-ok icon-white"></i> <fmt:message key="button.edit"/>
+        </button>
+        <button type="submit" class="btn btn-primary" name="method" value="DeleteProjectSize">
+                <i class="icon-remove"></i> <fmt:message key="button.delete"/>
+        </button>    
+	</div>
     <div class="form-group">
 		<display:table name="projectInfo.projectSizes" id="projectSize" class="table table-condensed table-striped table-hover">
-			<display:column property="startTime" format="{0,date,yyyy-MM-dd}" sortable="true" titleKey="projectSize.startTime" style="width: 30%" />		
-			<display:column property="projectSize" escapeXml="true" sortable="true" titleKey="projectSize.size" style="width: 34%"/>
-			<display:column property="endTime" format="{0,date,yyyy-MM-dd}" sortable="true" titleKey="projectSize.endTime" style="width: 30%" />
+  			<display:column style="width: 5%" title='<input type="checkbox" name="allbox" id="allbox" onclick="javascript:checkAll(this.form)" />'>
+    			<input type="checkbox" name="projectSizeid" value="<c:out value='${projectSize.id}'/>" 
+    			<c:if test="${param.projectSizeid == projectSize.id and method != 'SaveProjectSize'}">checked="checked"</c:if>
+        			style="margin: 0 0 0 4px" onclick="radio(this)" />
+  			</display:column>
+  			<display:column titleKey="projectSize.startTime">
+    			<c:choose>
+        			<c:when test="${method == 'EditProjectSize' and param.projectSizeid == projectSize.id}">
+            			<input type="text" name="startTime" style="padding: 0"
+                			value="<fmt:formatDate value="${projectSize.startTime}" pattern="yyyy-MM-dd" />" />
+        			</c:when>
+        			<c:otherwise><fmt:formatDate value="${projectSize.startTime}" pattern="yyyy-MM-dd" /></c:otherwise>
+    			</c:choose>
+  			</display:column>
+  			<display:column titleKey="projectSize.size">
+      			<c:choose>
+        			<c:when test="${method == 'EditProjectSize' and param.projectSizeid == projectSize.id}">
+            			<input type="text" name="projectSize" style="padding: 0"
+                			value="<c:out value="${projectSize.projectSize}"/>" />
+        			</c:when>
+        			<c:otherwise><c:out value="${projectSize.projectSize}"/></c:otherwise>
+    			</c:choose>
+  			</display:column>
+  			<display:column titleKey="projectSize.endTime">
+      			<c:choose>
+        			<c:when test="${method == 'EditProjectSize' and param.projectSizeid == projectSize.id}">
+            			<input type="text" name="endTime" style="padding: 0"
+                			value="<fmt:formatDate value="${projectSize.endTime}" pattern="yyyy-MM-dd" />" />
+        			</c:when>
+        			<c:otherwise><fmt:formatDate value="${projectSize.endTime}" pattern="yyyy-MM-dd" /></c:otherwise>
+    			</c:choose>
+  			</display:column>
 		</display:table>
-		<a href="<c:url value='/projectSizeForm?projectInfoId=${projectInfo.id}'/>"><fmt:message key="projectSize.editPage"/></a>
      </div>
     </c:if>
     <c:if test="${empty projectInfo.projectSizes}">
