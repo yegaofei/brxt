@@ -1,9 +1,7 @@
 package com.brxt.webapp.controller;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -39,6 +37,7 @@ public class ProjectInfoFormController extends BaseFormController {
 
 	private ProjectInfoManager projectInfoManager = null;
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	private static final String SESSION_PROJECT_SIZE_LIST = "sessionProjectSizeList";
 
 	@Autowired
 	public void setProjectInfoManager(
@@ -57,7 +56,10 @@ public class ProjectInfoFormController extends BaseFormController {
 		String id = request.getParameter("id");
 
 		if (!StringUtils.isBlank(id)) {
-			return projectInfoManager.get(new Long(id));
+			ProjectInfo pi = projectInfoManager.get(new Long(id));
+			request.getSession().setAttribute(SESSION_PROJECT_SIZE_LIST,
+					pi.getProjectSizes());
+			return pi;
 		}
 
 		return new ProjectInfo();
@@ -67,196 +69,119 @@ public class ProjectInfoFormController extends BaseFormController {
 	public ModelAndView onSubmit(ProjectInfo projectInfo, BindingResult errors,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		if (request.getParameter("cancel") != null) {
-			return new ModelAndView(getCancelView());
+		String method = request.getParameter("method");
+		final Locale locale = request.getLocale();
+		if (method != null) {
+			ModelAndView mav = new ModelAndView();
+			switch (method) {
+			case "Cancel":
+				mav.setViewName(getCancelView());
+				break;
+			case "DeleteProjectInfo":
+				projectInfoManager.remove(projectInfo.getId());
+				saveMessage(request, getText("projectInfo.deleted", locale));
+				mav.setViewName(getSuccessView());
+				break;
+			case "SaveProjectInfo":
+				mav = saveProjectInfo(projectInfo, errors, request, mav);
+				break;
+			case "AddProjectSize":
+				projectInfo = showForm(request);
+				projectInfo.getProjectSizes().add(new ProjectSize());
+				mav.addObject("projectInfo", projectInfo);
+				mav.addObject("method", "EditProjectSize");
+				mav.setViewName("projectInfoForm");
+				break;
+			case "EditProjectSize":
+				mav.addObject("projectInfo", showForm(request));
+				mav.addObject("method", "EditProjectSize");
+				mav.setViewName("projectInfoForm");
+				break;
+			case "DeleteProjectSize":
+				String projectSizeid = request.getParameter("projectSizeid");
+				projectInfo = showForm(request);
+				deleteProjectSize(projectSizeid, projectInfo);
+				mav.addObject("method", "SaveProjectSize");
+				mav.addObject("projectInfo", projectInfo);
+				break;
+			case "SaveProjectSize":
+				projectInfo = showForm(request);
+				mav = saveProjectSize(projectInfo, errors, request, mav);
+				mav.addObject("method", "SaveProjectSize");
+				mav.addObject("projectInfo", projectInfo);
+				break;
+			default:
+				//Error
+			}
+			return mav;
+		} else {
+			// error
 		}
-
+		return new ModelAndView("projectInfoForm");
+	}
+	
+	private ModelAndView saveProjectInfo(ProjectInfo projectInfo,
+			BindingResult errors, HttpServletRequest request, ModelAndView mav)
+			throws Exception {
+		final Locale locale = request.getLocale();
 		if (validator != null) { // validator is null during testing
 			validator.validate(projectInfo, errors);
-
-			if (errors.hasErrors() && request.getParameter("delete") == null) { // don't
-																				// validate
-																				// when
-																				// deleting
+			if (errors.hasErrors()) {
 				log.debug("error happens 'onSubmit' method..."
 						+ errors.toString());
 				saveMessage(request, errors.toString());
-				return new ModelAndView("projectInfoForm");
+				mav.setViewName("projectInfoForm");
+				return mav;
 			}
 		}
 
-		log.debug("entering 'onSubmit' method...");
-
 		boolean isNew = (projectInfo.getId() == null);
-		String success = getSuccessView();
-		Locale locale = request.getLocale();
 		User currentUser = null;
 		final Authentication auth = SecurityContextHolder.getContext()
 				.getAuthentication();
 		if (auth != null) {
 			currentUser = getCurrentUser(auth, getUserManager());
 		}
-		ModelAndView mav = new ModelAndView(success);
-		if (request.getParameter("delete") != null) {
-			projectInfoManager.remove(projectInfo.getId());
-			saveMessage(request, getText("projectInfo.deleted", locale));
+		if (isNew) {
+			// Add
+			projectInfo.setCreateUser(currentUser);
+			projectInfo.setCreateTime(new Date());
 		} else {
-			if (isNew) {
-				projectInfo.setCreateUser(currentUser);
-				projectInfo.setCreateTime(new Date());
-			} else {
-				// Update
-				List<ProjectSize> projectSize = onProjectSizeSubmit(projectInfo, request, mav);
-
-				ProjectInfo pi = projectInfoManager.get(projectInfo.getId());
-				User createUser = pi.getCreateUser();
-				Date createTime = pi.getCreateTime();
-
-				projectInfo.setCreateUser(createUser);
-				projectInfo.setCreateTime(createTime);
-				projectInfo.setUpdateUser(currentUser);
-				projectInfo.setUpdateTime(new Date());
-				if (projectSize != null) {
-					for(ProjectSize ps : projectSize)
-					{
-						ps.setProjectInfo(projectInfo);
-						projectInfo.getProjectSizes().add(ps);
-					}
-				}
-			}
-			projectInfoManager.save(projectInfo);
-			mav.addObject("ProjectInfo", projectInfo);
-			String key = (isNew) ? "projectInfo.added" : "projectInfo.updated";
-			saveMessage(request, getText(key, locale));
+			User createUser = getUserManager().getUserByUsername(projectInfo.getCreateUser().getUsername());
+			projectInfo.setCreateUser(createUser);
+			projectInfo.setUpdateUser(currentUser);
+			projectInfo.setUpdateTime(new Date());
 		}
-
+		projectInfoManager.save(projectInfo);
+		mav.addObject("ProjectInfo", projectInfo);
+		String key = (isNew) ? "projectInfo.added" : "projectInfo.updated";
+		saveMessage(request, getText(key, locale));
+		mav.setViewName(getSuccessView());
 		return mav;
 	}
 
-	private User getCurrentUser(Authentication auth, UserManager userManager) {
-		User currentUser;
-		if (auth.getPrincipal() instanceof LdapUserDetails) {
-			LdapUserDetails ldapDetails = (LdapUserDetails) auth.getPrincipal();
-			String username = ldapDetails.getUsername();
-			currentUser = userManager.getUserByUsername(username);
-		} else if (auth.getPrincipal() instanceof UserDetails) {
-			currentUser = (User) auth.getPrincipal();
-		} else if (auth.getDetails() instanceof UserDetails) {
-			currentUser = (User) auth.getDetails();
-		} else {
-			throw new AccessDeniedException("User not properly authenticated.");
-		}
-		return currentUser;
-	}
-
-	private List<ProjectSize> onProjectSizeSubmit(final ProjectInfo projectInfo,
-			HttpServletRequest request, ModelAndView mav) throws Exception {
-		String method = request.getParameter("method");
+	private ModelAndView saveProjectSize(ProjectInfo projectInfo,
+			BindingResult errors, HttpServletRequest request,
+			final ModelAndView mav) throws Exception {
 		String id = request.getParameter("projectSizeid");
-		mav.addObject("projectInfoId", projectInfo.getId());
-//		List<ProjectSize> projectSizeList = projectInfoManager
-//				.getAllProjectSize(projectInfo.getId());
-		List<ProjectSize> projectSizeList = projectInfo.getProjectSizes();
-		if(projectSizeList == null)
-		{
-			log.error("The project size list is empty ====>");
-		}
-		
-		if(method != null)
-		{
-			switch (method) {
-			case "AddProjectSize":
-				projectSizeList.add(new ProjectSize());
-				// mav.addObject("projectSizeList", projectSizeList);
-				mav.addObject("method", "EditProjectSize");
-				mav.setViewName("projectInfoForm");
-				break;
-			case "EditProjectSize":
-				// mav.addObject("projectSizeList", projectSizeList);
-				mav.addObject("method", "EditProjectSize");
-				mav.setViewName("projectInfoForm");
-				break;
-			case "DeleteProjectSize":
-				projectSizeList = deleteProjectSize(id, projectInfo);
-				// mav.addObject("projectSizeList", projectSizeList);
-				mav.addObject("method", "SaveProjectSize");
-				break;
-			case "SaveProjectSize":
-				// how many records have been submitted
-				log.debug("submit project size id: " + id);
-				String[] idArray = request.getParameterValues("id");
-				if (idArray != null && idArray.length > 0 && !"".equals(idArray[0])) {
-					StringBuilder sb = new StringBuilder(
-							"submit project size ids: ");
-					for (String idStr : idArray) {
-						sb.append(idStr).append(",");
-					}
-					log.debug(sb);
-				}
-				String projectSize = request.getParameter("projectSize");
-				String startTime = request.getParameter("startTime");
-				String endTime = request.getParameter("endTime");
-				log.debug("projectSize=" + projectSize + ", startTime=" + startTime
-						+ ", endTime=" + endTime);
-				if (StringUtils.isBlank(id)) {
-					if (idArray != null && idArray.length > 0
-							&& !"".equals(idArray[0])) {
-						String[] projectSizeArray = request
-								.getParameterValues("projectSize");
-						String[] startTimeArray = request
-								.getParameterValues("sartTime");
-						String[] endTimeArray = request
-								.getParameterValues("endTime");
-						// batch update or add
-					} else {
-						projectSizeList = saveProjectSize(id, startTime,
-								projectSize, endTime, projectInfo);
-					}
-				} else {
-					projectSizeList = saveProjectSize(id, startTime, projectSize,
-							endTime, projectInfo);
-				}
-				// mav.addObject("projectSizeList", projectSizeList);
-				mav.addObject("method", "SaveProjectSize");
-				break;
-			default:
+		log.debug("submit project size id: " + id);
+		String[] idArray = request.getParameterValues("prjectSizeid");
+		if (idArray != null && idArray.length > 0 && !"".equals(idArray[0])) {
+			StringBuilder sb = new StringBuilder("submit project size ids: ");
+			for (String idStr : idArray) {
+				sb.append(idStr).append(",");
 			}
+			log.debug(sb);
 		}
-		return projectSizeList;
-	}
+		String projectSize = request.getParameter("projectSize");
+		String startTime = request.getParameter("startTime");
+		String endTime = request.getParameter("endTime");
+		log.debug("projectSize=" + projectSize + ", startTime=" + startTime
+				+ ", endTime=" + endTime);
 
-	private List<ProjectSize> deleteProjectSize(String id, ProjectInfo projectInfo) {
-		List<ProjectSize> list = projectInfo.getProjectSizes();
-		if (StringUtils.isBlank(id) || list == null || list.size() == 0) {
-			return null;
-		}
-
-		Iterator<ProjectSize> it = list.iterator();
-		while (it.hasNext()) {
-			ProjectSize ps = it.next();
-			if (ps.getId() == Long.valueOf(id)) {
-				it.remove();
-				ps.setProjectInfo(null);
-				projectInfoManager.deleteProjectSize(ps);
-				break;
-			}
-		}
-		return list;
-	}
-
-	private List<ProjectSize> saveProjectSize(String id, String startTime,
-			String projectSize, String endTime, ProjectInfo projectInfo)
-			throws ParseException {
-		//ProjectInfo pi = projectInfoManager.get(projectInfoId);
-		List<ProjectSize> list = projectInfo.getProjectSizes();
-		if (list == null) {
-			log.debug("==========================>> ProjectSize is null");
-			list = new ArrayList<ProjectSize>();
-			projectInfo.setProjectSizes(list);
-		}
 		if (!StringUtils.isBlank(id)) {
-			for (int i = 0; i < list.size(); i++) {
-				ProjectSize ps = list.get(i);
+			for (int i = 0; i < projectInfo.getProjectSizes().size(); i++) {
+				ProjectSize ps = projectInfo.getProjectSizes().get(i);
 				if (ps.getId() == Long.valueOf(id)) {
 					// Update
 					if (startTime != null) {
@@ -290,12 +215,48 @@ public class ProjectInfoFormController extends BaseFormController {
 					projectSizeObj.setEndTime(sdf.parse(endTime));
 				}
 				projectSizeObj.setProjectInfo(projectInfo);
-				list.add(projectSizeObj);
+				projectInfo.getProjectSizes().add(projectSizeObj);
 			} else {
-				return list;
+				// Error
 			}
 		}
-		//projectInfoManager.save(pi);
+		projectInfoManager.save(projectInfo);
+		return mav;
+	}
+
+	private User getCurrentUser(Authentication auth, UserManager userManager) {
+		User currentUser;
+		if (auth.getPrincipal() instanceof LdapUserDetails) {
+			LdapUserDetails ldapDetails = (LdapUserDetails) auth.getPrincipal();
+			String username = ldapDetails.getUsername();
+			currentUser = userManager.getUserByUsername(username);
+		} else if (auth.getPrincipal() instanceof UserDetails) {
+			currentUser = (User) auth.getPrincipal();
+		} else if (auth.getDetails() instanceof UserDetails) {
+			currentUser = (User) auth.getDetails();
+		} else {
+			throw new AccessDeniedException("User not properly authenticated.");
+		}
+		return currentUser;
+	}
+
+	private List<ProjectSize> deleteProjectSize(String id,
+			ProjectInfo projectInfo) {
+		List<ProjectSize> list = projectInfo.getProjectSizes();
+		if (StringUtils.isBlank(id) || list == null || list.size() == 0) {
+			return null;
+		}
+
+		Iterator<ProjectSize> it = list.iterator();
+		while (it.hasNext()) {
+			ProjectSize ps = it.next();
+			if (ps.getId() == Long.valueOf(id)) {
+				it.remove();
+				ps.setProjectInfo(null);
+				projectInfoManager.deleteProjectSize(ps);
+				break;
+			}
+		}
 		return list;
 	}
 }

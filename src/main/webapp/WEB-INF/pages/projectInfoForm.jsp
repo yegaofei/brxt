@@ -13,7 +13,7 @@
     <form:form commandName="projectInfo" method="post" action="projectInfoForm" id="projectInfoForm" cssClass="well">
     <form:hidden path="id"/>
 	<form:hidden path="version"/>
-	
+	 
     <spring:bind path="projectInfo.projectName">
     <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
@@ -68,8 +68,15 @@
     </spring:bind>
         <appfuse:label styleClass="control-label" key="projectInfo.createUser.username"/>
         <c:out value="${projectInfo.createUser.username}" />
-        <form:hidden path="createUser.username" id="createUser" maxlength="20" cssClass="form-control"/>
+        <form:hidden path="createUser.username" id="createUser" maxlength="20" cssClass="form-control"/>        
     </div>
+    
+    <spring:bind path="projectInfo.createTime">
+    <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    </spring:bind>
+        <form:hidden path="createTime" id="createTime" />
+    </div>
+    
     </c:if>
     <c:if test="${not empty projectInfo.projectSizes}">
     <div id="actions" class="btn-group">
@@ -134,15 +141,15 @@
     </c:if>
 
     <div class="form-group form-actions">
-        <button type="submit" class="btn btn-primary" name="save" onclick="bCancel=false">
+        <button type="submit" class="btn btn-primary" name="method" value="SaveProjectInfo" onclick="bCancel=false">
             <i class="icon-ok icon-white"></i> <fmt:message key="button.save"/>
         </button>
         <c:if test="${not empty projectInfo.id}">
-          <button type="submit" class="btn btn-default" name="delete" onclick="bCancel=true;return confirmMessage(msgDelConfirm)">
+          <button type="submit" class="btn btn-default" name="method"  value="DeleteProjectInfo" onclick="bCancel=true;return confirmMessage(msgDelConfirm)">
               <i class="icon-trash"></i> <fmt:message key="button.delete"/>
           </button>
         </c:if>
-        <button type="submit" class="btn btn-default" name="cancel" onclick="bCancel=true">
+        <button type="submit" class="btn btn-default" name="method" value="Cancel" onclick="bCancel=true">
             <i class="icon-remove"></i> <fmt:message key="button.cancel"/>
         </button>
     </div>
