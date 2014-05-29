@@ -5,10 +5,19 @@
 	</Displayers>
 	<Menus>
 		<Menu name="Home" title="home.title" page="/home" roles="ROLE_ADMIN,ROLE_USER"/>
-		<Menu name="ProjectInfoMenu" title="menu.projectInfo" description="Project Information
+		<Menu name="ProjectInfoMenu" title="menu.offsite" description="Project Information
 			Menu" page="/projectInfo" roles="ROLE_ADMIN,ROLE_USER,ROLE_RISK_MANAGER,ROLE_RISK_OPERATOR,ROLE_RISK_DIRECTOR">
 			<Item name="ProjectInfo" title="menu.projectInfo.list" page="/projectInfo"/>
 			<Item name="ProjectInfoForm" title="menu.projectInfo.add" page="/projectInfoForm"/>
+		</Menu>
+		<Menu name="Collateral" title="collateral.title" page="/collateral" roles="ROLE_ADMIN,ROLE_USER,ROLE_RISK_MANAGER,ROLE_RISK_OPERATOR,ROLE_RISK_DIRECTOR"></Menu>
+		<Menu name="ProjectInfoSubMenu" title="menu.offsite" description="Offsite Project Menu" roles="ROLE_ADMIN,ROLE_USER,ROLE_RISK_MANAGER,ROLE_RISK_OPERATOR,ROLE_RISK_DIRECTOR"
+			page="/projectInfo">
+			<Item name="SubjectCapacity" title="menu.offsite.subjectCapacity" page="/subjectCapacity"/>
+			<Item name="FinancialStatements" title="menu.offsite.financialStatements" page="/financialStatements"/>
+			<Item name="CreditInformation" title="menu.offsite.creditInformation" page="/creditInformation"/>
+			<Item name="Repayment" title="menu.offsite.repayment" page="/repayment"/>
+			<Item name="ProjectProgress" title="menu.offsite.projectProgress" page="/projectProgress"/>
 		</Menu>
 		
 		<Menu name="AdminMenu" title="menu.admin" description="Admin Menu" roles="ROLE_ADMIN"
