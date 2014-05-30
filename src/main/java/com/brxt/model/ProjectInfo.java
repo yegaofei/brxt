@@ -42,7 +42,7 @@ public class ProjectInfo extends BaseObject implements Serializable {
 	private String delegateManager; //托管经理
 	private String trustManager; //信托经理
 	private String guaranteeMode; //保障措施
-	private Boolean officeManagement; //是否事务管理类信托项目
+	private String projectType; //是否事务管理类信托项目
 	private String capitalInvestmentType; //资金投向类型
 	private List<ProjectSize> projectSizes = new ArrayList<ProjectSize>(); //信托规模
 	private User createUser; //创建人
@@ -95,15 +95,7 @@ public class ProjectInfo extends BaseObject implements Serializable {
 		this.guaranteeMode = guaranteeMode;
 	}
 
-	@Column(name = "officeManagement")
-	@Type(type="yes_no")
-	public Boolean getOfficeManagement() {
-		return officeManagement;
-	}
-
-	public void setOfficeManagement(Boolean officeManagement) {
-		this.officeManagement = officeManagement;
-	}
+	
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "projectInfo", cascade = { CascadeType.ALL })
 	@Fetch(FetchMode.SELECT) 
@@ -113,6 +105,14 @@ public class ProjectInfo extends BaseObject implements Serializable {
 
 	public void setProjectSizes(List<ProjectSize> projectSizes) {
 		this.projectSizes = projectSizes;
+	}
+
+	public String getProjectType() {
+		return projectType;
+	}
+
+	public void setProjectType(String projectType) {
+		this.projectType = projectType;
 	}
 
 	public String getRiskManager() {

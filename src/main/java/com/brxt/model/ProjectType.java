@@ -11,4 +11,9 @@ public enum ProjectType {
 	{
 		this.projectTypeName = s; 
 	}
+	
+	public String toString()
+	{
+		return this.projectTypeName;
+	}
 }

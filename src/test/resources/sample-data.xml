@@ -143,7 +143,7 @@
   		<column>delegateManager</column>
 		<column>trustManager</column>
   		<column>guaranteeMode</column>
-  		<column>officeManagement</column>
+  		<column>projectType</column>
   		<column>capitalInvestmentType</column>
 		<column>createUser</column>
 		<column>createTime</column>
@@ -159,7 +159,7 @@
 			<value>ManagerB</value>
 			<value>ManagerC</value>
     		<value>TestGuaranteeMode</value>
-    		<value>Y</value>
+    		<value>transaction_management</value>
     		<value>real_estate</value>
 			<value>-2</value>
 			<value>2014-04-14 06:06:06</value>
@@ -176,7 +176,7 @@
 			<value>ManagerB</value>
 			<value>ManagerC</value>
     		<value>TestGuaranteeMode</value>
-    		<value>N</value>
+    		<value>non_transaction_management</value>
     		<value>real_estate</value>
 			<value>-1</value>
 			<value>2014-05-14 06:06:06</value>
@@ -208,8 +208,15 @@
   		<row>
     		<value>1</value>
     		<value>ICBC Bank</value>
-			<value>unknown relationship</value>
-    		<value>unknown relationship</value>    		
+			<value>commerce_company</value>
+    		<value>guarantor</value>    		
+    		<value>1</value>
+  		</row>
+  		<row>
+    		<value>2</value>
+    		<value>VaNKO</value>
+			<value>real_estate_firm</value>
+    		<value>counterparty</value>    		
     		<value>1</value>
   		</row>
 	</table>

@@ -33,29 +33,31 @@
 	</div>
 
 	<c:if test="${not empty projectInfo.projectSizes}">
+	<appfuse:label styleClass="control-label" key="projectSize.title"/>
     <div id="actions" class="btn-group">
 		<c:choose>
 		<c:when test="${method == 'EditProjectSize'}">
-    		<button type="submit" class="btn btn-primary" name="method" value="SaveProjectSize">
-                <i class="icon-ok icon-white"></i> <fmt:message key="button.save"/>
+    		<button type="submit" name="method" value="SaveProjectSize">
+                <fmt:message key="button.save"/>
             </button>
 		</c:when>
 		<c:otherwise>
-        <button type="submit" class="btn btn-primary" name="method" value="AddProjectSize">
-                <i class="icon-ok icon-white"></i> <fmt:message key="button.add"/>
+        <button type="submit" name="method" value="AddProjectSize">
+                <fmt:message key="button.add"/>
         </button>    
         </c:otherwise>
         </c:choose>
-        <button type="submit" class="btn btn-primary" name="method" value="EditProjectSize">
-                <i class="icon-ok icon-white"></i> <fmt:message key="button.edit"/>
+        <button type="submit" name="method" value="EditProjectSize">
+                <fmt:message key="button.edit"/>
         </button>
-        <button type="submit" class="btn btn-primary" name="method" value="DeleteProjectSize">
-                <i class="icon-remove"></i> <fmt:message key="button.delete"/>
+        <button type="submit" name="method" value="DeleteProjectSize">
+                <fmt:message key="button.delete"/>
         </button>    
 	</div>
+	
     <div class="form-group">
 		<display:table name="projectInfo.projectSizes" id="projectSize" class="table table-condensed table-striped table-hover">
-  			<display:column style="width: 5%" title='<input type="checkbox" name="allbox" id="allbox" onclick="javascript:checkAll(this.form)" />'>
+  			<display:column style="width: 5%">
     			<input type="checkbox" name="projectSizeid" value="<c:out value='${projectSize.id}'/>" 
     			<c:if test="${param.projectSizeid == projectSize.id and method != 'SaveProjectSize'}">checked="checked"</c:if>
         			style="margin: 0 0 0 4px" onclick="radio(this)" />
@@ -133,6 +135,17 @@
     </div>
     </div>
 
+	<div class="row">
+    <spring:bind path="projectInfo.projectType">
+    <div class="col-sm-6 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    </spring:bind>
+        <appfuse:label styleClass="control-label" key="projectInfo.projectType"/>:
+        <form:select path="projectType">    		
+			<form:options items="${projectTypes}" />
+		</form:select>        
+        <form:errors path="projectType" cssClass="help-block"/>
+    </div>
+	</div>
     
     <c:if test="${not empty projectInfo.createUser}">
     <spring:bind path="projectInfo.createUser">

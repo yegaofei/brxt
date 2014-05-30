@@ -31,6 +31,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.brxt.model.CapitalInvestmentType;
 import com.brxt.model.ProjectInfo;
 import com.brxt.model.ProjectSize;
+import com.brxt.model.ProjectType;
 import com.brxt.service.ProjectInfoManager;
 
 @Controller
@@ -40,6 +41,28 @@ public class ProjectInfoFormController extends BaseFormController {
 	private ProjectInfoManager projectInfoManager = null;
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	private static final Map<String,String> CapitalInvestmentTypes = new HashMap<String,String>();
+	private static final Map<String,String> ProjectTypes = new HashMap<String,String>();
+	
+	private synchronized void loadDropDownList(final Locale locale)
+	{
+		if(CapitalInvestmentTypes.isEmpty())
+		{
+			CapitalInvestmentType[] cits = CapitalInvestmentType.values();
+			for(CapitalInvestmentType cit : cits)
+			{
+				CapitalInvestmentTypes.put(cit.toString(), getText(cit.toString(), locale));
+			}
+		}
+		
+		if(ProjectTypes.isEmpty())
+		{
+			ProjectType[] pts = ProjectType.values();
+			for(ProjectType pt : pts)
+			{
+				ProjectTypes.put(pt.toString(), getText(pt.toString(), locale));
+			}
+		}
+	}
 	
 	@Autowired
 	public void setProjectInfoManager(
@@ -64,14 +87,12 @@ public class ProjectInfoFormController extends BaseFormController {
 	@RequestMapping(method = RequestMethod.GET)
 	protected ModelAndView showForm(HttpServletRequest request) throws Exception {
 		ModelAndView mav = new ModelAndView();
-		if(CapitalInvestmentTypes.isEmpty())
+		if(CapitalInvestmentTypes.isEmpty() || ProjectTypes.isEmpty())
 		{
-			final Locale locale = request.getLocale();
-			CapitalInvestmentTypes.put(CapitalInvestmentType.INFRASTRUCTURE, getText(CapitalInvestmentType.INFRASTRUCTURE, locale));
-			CapitalInvestmentTypes.put(CapitalInvestmentType.REAL_ESTATE, getText(CapitalInvestmentType.REAL_ESTATE, locale));
-			CapitalInvestmentTypes.put(CapitalInvestmentType.SUPPLEMENTAL_LIQUIDITY, getText(CapitalInvestmentType.SUPPLEMENTAL_LIQUIDITY, locale));
+			loadDropDownList(request.getLocale());
 		}
 		mav.addObject("capitalInvestmentTypes", CapitalInvestmentTypes);
+		mav.addObject("projectTypes", ProjectTypes);
 		mav.addObject("projectInfo", getProjectInfo(request));			
 		return mav;
 	}
@@ -85,6 +106,7 @@ public class ProjectInfoFormController extends BaseFormController {
 		if (method != null) {
 			ModelAndView mav = new ModelAndView();
 			mav.addObject("capitalInvestmentTypes", CapitalInvestmentTypes);
+			mav.addObject("projectTypes", ProjectTypes);
 			switch (method) {
 			case "Cancel":
 				mav.setViewName(getCancelView());
