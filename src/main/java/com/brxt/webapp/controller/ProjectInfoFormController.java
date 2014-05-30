@@ -3,9 +3,11 @@ package com.brxt.webapp.controller;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,11 +24,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.ldap.userdetails.LdapUserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.brxt.model.CapitalInvestmentType;
 import com.brxt.model.ProjectInfo;
 import com.brxt.model.ProjectSize;
 import com.brxt.service.ProjectInfoManager;
@@ -37,8 +39,8 @@ public class ProjectInfoFormController extends BaseFormController {
 
 	private ProjectInfoManager projectInfoManager = null;
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-	private static final String SESSION_PROJECT_SIZE_LIST = "sessionProjectSizeList";
-
+	private static final Map<String,String> CapitalInvestmentTypes = new HashMap<String,String>();
+	
 	@Autowired
 	public void setProjectInfoManager(
 			@Qualifier("projectInfoManager") ProjectInfoManager projectInfoManager) {
@@ -50,19 +52,28 @@ public class ProjectInfoFormController extends BaseFormController {
 		setSuccessView("redirect:projectInfo");
 	}
 
-	@ModelAttribute
-	@RequestMapping(method = RequestMethod.GET)
-	protected ProjectInfo showForm(HttpServletRequest request) throws Exception {
+	private ProjectInfo getProjectInfo(HttpServletRequest request){
 		String id = request.getParameter("id");
-
 		if (!StringUtils.isBlank(id)) {
-			ProjectInfo pi = projectInfoManager.get(new Long(id));
-			request.getSession().setAttribute(SESSION_PROJECT_SIZE_LIST,
-					pi.getProjectSizes());
-			return pi;
+			ProjectInfo pi = projectInfoManager.get(new Long(id));			
+			return pi;		
 		}
-
 		return new ProjectInfo();
+	}
+
+	@RequestMapping(method = RequestMethod.GET)
+	protected ModelAndView showForm(HttpServletRequest request) throws Exception {
+		ModelAndView mav = new ModelAndView();
+		if(CapitalInvestmentTypes.isEmpty())
+		{
+			final Locale locale = request.getLocale();
+			CapitalInvestmentTypes.put(CapitalInvestmentType.INFRASTRUCTURE, getText(CapitalInvestmentType.INFRASTRUCTURE, locale));
+			CapitalInvestmentTypes.put(CapitalInvestmentType.REAL_ESTATE, getText(CapitalInvestmentType.REAL_ESTATE, locale));
+			CapitalInvestmentTypes.put(CapitalInvestmentType.SUPPLEMENTAL_LIQUIDITY, getText(CapitalInvestmentType.SUPPLEMENTAL_LIQUIDITY, locale));
+		}
+		mav.addObject("capitalInvestmentTypes", CapitalInvestmentTypes);
+		mav.addObject("projectInfo", getProjectInfo(request));			
+		return mav;
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
@@ -73,6 +84,7 @@ public class ProjectInfoFormController extends BaseFormController {
 		final Locale locale = request.getLocale();
 		if (method != null) {
 			ModelAndView mav = new ModelAndView();
+			mav.addObject("capitalInvestmentTypes", CapitalInvestmentTypes);
 			switch (method) {
 			case "Cancel":
 				mav.setViewName(getCancelView());
@@ -86,26 +98,26 @@ public class ProjectInfoFormController extends BaseFormController {
 				mav = saveProjectInfo(projectInfo, errors, request, mav);
 				break;
 			case "AddProjectSize":
-				projectInfo = showForm(request);
+				projectInfo = getProjectInfo(request);
 				projectInfo.getProjectSizes().add(new ProjectSize());
 				mav.addObject("projectInfo", projectInfo);
 				mav.addObject("method", "EditProjectSize");
 				mav.setViewName("projectInfoForm");
 				break;
 			case "EditProjectSize":
-				mav.addObject("projectInfo", showForm(request));
+				mav.addObject("projectInfo", getProjectInfo(request));
 				mav.addObject("method", "EditProjectSize");
 				mav.setViewName("projectInfoForm");
 				break;
 			case "DeleteProjectSize":
 				String projectSizeid = request.getParameter("projectSizeid");
-				projectInfo = showForm(request);
+				projectInfo = getProjectInfo(request);
 				deleteProjectSize(projectSizeid, projectInfo);
 				mav.addObject("method", "SaveProjectSize");
 				mav.addObject("projectInfo", projectInfo);
 				break;
 			case "SaveProjectSize":
-				projectInfo = showForm(request);
+				projectInfo = getProjectInfo(request);
 				mav = saveProjectSize(projectInfo, errors, request, mav);
 				mav.addObject("method", "SaveProjectSize");
 				mav.addObject("projectInfo", projectInfo);

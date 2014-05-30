@@ -14,8 +14,9 @@
     <form:hidden path="id"/>
 	<form:hidden path="version"/>
 	 
+	<div class="row">
     <spring:bind path="projectInfo.projectName">
-    <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    <div class="col-sm-6 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="projectInfo.projectName"/>
         <form:input path="projectName" id="projectName" maxlength="50" autofocus="true" cssClass="form-control"/>
@@ -23,62 +24,15 @@
     </div>
 
     <spring:bind path="projectInfo.expectedReturn">
-    <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    <div class="col-sm-4 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="projectInfo.expectedReturn"/>
         <form:input path="expectedReturn" id="expectedReturn" maxlength="20" cssClass="form-control"/>
         <form:errors path="expectedReturn" cssClass="help-block"/>
     </div>
+	</div>
 
-    <spring:bind path="projectInfo.riskManager">
-    <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
-    </spring:bind>
-        <appfuse:label styleClass="control-label" key="projectInfo.riskManager"/>
-        <form:input path="riskManager" id="riskManager" maxlength="20" cssClass="form-control"/>
-        <form:errors path="riskManager" cssClass="help-block"/>
-    </div>
-
-    <spring:bind path="projectInfo.delegateManager">
-    <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
-    </spring:bind>
-        <appfuse:label styleClass="control-label" key="projectInfo.delegateManager"/>
-        <form:input path="delegateManager" id="delegateManager" maxlength="20" cssClass="form-control"/>
-        <form:errors path="delegateManager" cssClass="help-block"/>
-    </div>
-
-    <spring:bind path="projectInfo.trustManager">
-    <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
-    </spring:bind>
-        <appfuse:label styleClass="control-label" key="projectInfo.trustManager"/>
-        <form:input path="trustManager" id="trustManager" maxlength="20" cssClass="form-control"/>
-        <form:errors path="trustManager" cssClass="help-block"/>
-    </div>
-
-    <spring:bind path="projectInfo.capitalInvestmentType">
-    <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
-    </spring:bind>
-        <appfuse:label styleClass="control-label" key="projectInfo.capitalInvestmentType"/>
-        <form:input path="capitalInvestmentType" id="capitalInvestmentType" maxlength="20" cssClass="form-control"/>
-        <form:errors path="capitalInvestmentType" cssClass="help-block"/>
-    </div>
-    
-    <c:if test="${not empty projectInfo.createUser}">
-    <spring:bind path="projectInfo.createUser">
-    <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
-    </spring:bind>
-        <appfuse:label styleClass="control-label" key="projectInfo.createUser.username"/>
-        <c:out value="${projectInfo.createUser.username}" />
-        <form:hidden path="createUser.username" id="createUser" maxlength="20" cssClass="form-control"/>        
-    </div>
-    
-    <spring:bind path="projectInfo.createTime">
-    <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
-    </spring:bind>
-        <form:hidden path="createTime" id="createTime" />
-    </div>
-    
-    </c:if>
-    <c:if test="${not empty projectInfo.projectSizes}">
+	<c:if test="${not empty projectInfo.projectSizes}">
     <div id="actions" class="btn-group">
 		<c:choose>
 		<c:when test="${method == 'EditProjectSize'}">
@@ -139,6 +93,64 @@
     <c:if test="${empty projectInfo.projectSizes}">
     	<a href="<c:url value='/projectSizeForm?projectInfoId=${projectInfo.id}'/>"><fmt:message key="projectSize.addPage"/></a>
     </c:if>
+    
+    <div class="row">
+    <spring:bind path="projectInfo.capitalInvestmentType">
+    <div class="col-sm-4 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    </spring:bind>
+        <appfuse:label styleClass="control-label" key="projectInfo.capitalInvestmentType"/>
+        <form:select path="capitalInvestmentType">    		
+			<form:options items="${capitalInvestmentTypes}" />
+		</form:select>
+        
+        <form:errors path="capitalInvestmentType" cssClass="help-block"/>
+    </div>
+	</div>
+	
+	<div class="row">
+    <spring:bind path="projectInfo.riskManager">
+    <div class="col-sm-4 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    </spring:bind>
+        <appfuse:label styleClass="control-label" key="projectInfo.riskManager"/>
+        <form:input path="riskManager" id="riskManager" maxlength="20" cssClass="form-control"/>
+        <form:errors path="riskManager" cssClass="help-block"/>
+    </div>
+
+    <spring:bind path="projectInfo.delegateManager">
+    <div class="col-sm-4 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    </spring:bind>
+        <appfuse:label styleClass="control-label" key="projectInfo.delegateManager"/>
+        <form:input path="delegateManager" id="delegateManager" maxlength="20" cssClass="form-control"/>
+        <form:errors path="delegateManager" cssClass="help-block"/>
+    </div>
+
+    <spring:bind path="projectInfo.trustManager">
+    <div class="col-sm-4 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    </spring:bind>
+        <appfuse:label styleClass="control-label" key="projectInfo.trustManager"/>
+        <form:input path="trustManager" id="trustManager" maxlength="20" cssClass="form-control"/>
+        <form:errors path="trustManager" cssClass="help-block"/>
+    </div>
+    </div>
+
+    
+    <c:if test="${not empty projectInfo.createUser}">
+    <spring:bind path="projectInfo.createUser">
+    <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    </spring:bind>
+        <appfuse:label styleClass="control-label" key="projectInfo.createUser.username"/>
+        <c:out value="${projectInfo.createUser.username}" />
+        <form:hidden path="createUser.username" id="createUser" maxlength="20" cssClass="form-control"/>        
+    </div>
+    
+    <spring:bind path="projectInfo.createTime">
+    <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    </spring:bind>
+        <form:hidden path="createTime" id="createTime" />
+    </div>
+    
+    </c:if>
+    
 
     <div class="form-group form-actions">
         <button type="submit" class="btn btn-primary" name="method" value="SaveProjectInfo" onclick="bCancel=false">

@@ -160,7 +160,7 @@
 			<value>ManagerC</value>
     		<value>TestGuaranteeMode</value>
     		<value>Y</value>
-    		<value>TestCapitalInvestment</value>
+    		<value>real_estate</value>
 			<value>-2</value>
 			<value>2014-04-14 06:06:06</value>
 			<value>-2</value>
@@ -177,7 +177,7 @@
 			<value>ManagerC</value>
     		<value>TestGuaranteeMode</value>
     		<value>N</value>
-    		<value>TestCapitalInvestment</value>
+    		<value>real_estate</value>
 			<value>-1</value>
 			<value>2014-05-14 06:06:06</value>
 			<value>-1</value>
