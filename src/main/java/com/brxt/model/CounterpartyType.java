@@ -19,5 +19,10 @@ public enum CounterpartyType {
 		return this.title;
 	}
 	
+	public String getTitle()
+	{
+		return title;
+	}
+	
 
 }

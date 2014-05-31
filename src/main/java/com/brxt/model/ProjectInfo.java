@@ -41,6 +41,7 @@ public class ProjectInfo extends BaseObject implements Serializable {
 	private String projectName; //项目名称
 	private Double expectedReturn; //预期收益率
 	private String fundUsage; //资金运用方式
+	private String investmentName; //投资项目名称
 	private String riskManager; //风险经理
 	private String delegateManager; //托管经理
 	private String trustManager; //信托经理
@@ -107,6 +108,14 @@ public class ProjectInfo extends BaseObject implements Serializable {
 
 	public void setProjectSizes(List<ProjectSize> projectSizes) {
 		this.projectSizes = projectSizes;
+	}
+
+	public String getInvestmentName() {
+		return investmentName;
+	}
+
+	public void setInvestmentName(String investmentName) {
+		this.investmentName = investmentName;
 	}
 
 	public String getProjectType() {

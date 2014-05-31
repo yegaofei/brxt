@@ -145,6 +145,7 @@
   		<column>guaranteeMode</column>
   		<column>projectType</column>
   		<column>capitalInvestmentType</column>
+  		<column>investmentName</column>
 		<column>createUser</column>
 		<column>createTime</column>
 		<column>updateUser</column>
@@ -161,6 +162,7 @@
     		<value>TestGuaranteeMode</value>
     		<value>transaction_management</value>
     		<value>real_estate</value>
+    		<value>equity</value>
 			<value>-2</value>
 			<value>2014-04-14 06:06:06</value>
 			<value>-2</value>
@@ -178,6 +180,7 @@
     		<value>TestGuaranteeMode</value>
     		<value>non_transaction_management</value>
     		<value>real_estate</value>
+    		<value>equity</value>
 			<value>-1</value>
 			<value>2014-05-14 06:06:06</value>
 			<value>-1</value>

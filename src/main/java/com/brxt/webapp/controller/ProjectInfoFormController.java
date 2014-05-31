@@ -2,6 +2,7 @@ package com.brxt.webapp.controller;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -29,6 +30,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.brxt.model.CapitalInvestmentType;
+import com.brxt.model.Counterparty;
+import com.brxt.model.CounterpartyType;
 import com.brxt.model.ProjectInfo;
 import com.brxt.model.ProjectSize;
 import com.brxt.model.ProjectType;
@@ -42,6 +45,7 @@ public class ProjectInfoFormController extends BaseFormController {
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	private static final Map<String,String> CapitalInvestmentTypes = new HashMap<String,String>();
 	private static final Map<String,String> ProjectTypes = new HashMap<String,String>();
+	private static final List<CounterpartyType> CounterpartyTypes = new ArrayList<CounterpartyType>();
 	
 	private synchronized void loadDropDownList(final Locale locale)
 	{
@@ -60,6 +64,15 @@ public class ProjectInfoFormController extends BaseFormController {
 			for(ProjectType pt : pts)
 			{
 				ProjectTypes.put(pt.toString(), getText(pt.toString(), locale));
+			}
+		}
+		
+		if(CounterpartyTypes.isEmpty())
+		{
+			CounterpartyType[] cts = CounterpartyType.values();
+			for(CounterpartyType ct : cts)
+			{
+				CounterpartyTypes.add(ct);
 			}
 		}
 	}
@@ -93,6 +106,7 @@ public class ProjectInfoFormController extends BaseFormController {
 		}
 		mav.addObject("capitalInvestmentTypes", CapitalInvestmentTypes);
 		mav.addObject("projectTypes", ProjectTypes);
+		mav.addObject("counterpartyTypes", CounterpartyTypes);
 		mav.addObject("projectInfo", getProjectInfo(request));			
 		return mav;
 	}
@@ -107,6 +121,7 @@ public class ProjectInfoFormController extends BaseFormController {
 			ModelAndView mav = new ModelAndView();
 			mav.addObject("capitalInvestmentTypes", CapitalInvestmentTypes);
 			mav.addObject("projectTypes", ProjectTypes);
+			mav.addObject("counterpartyTypes", CounterpartyTypes);
 			switch (method) {
 			case "Cancel":
 				mav.setViewName(getCancelView());

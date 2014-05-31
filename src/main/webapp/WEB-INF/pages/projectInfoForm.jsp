@@ -4,11 +4,11 @@
     <meta name="menu" content="ProjectInfoSubMenu"/>
 </head>
  
-<div class="col-sm-3">
-    <h2><fmt:message key='projectInfoDetail.heading'/></h2>
+<div class="col-sm-2">
+    <h3><fmt:message key='projectInfoDetail.heading'/></h3>
 </div>
  
-<div class="col-sm-7">
+<div class="col-sm-8">
     <form:errors path="*" cssClass="alert alert-danger alert-dismissable" element="div"/>
     <form:form commandName="projectInfo" method="post" action="projectInfoForm" id="projectInfoForm" cssClass="well">
     <form:hidden path="id"/>
@@ -95,17 +95,33 @@
     <c:if test="${empty projectInfo.projectSizes}">
     	<a href="<c:url value='/projectSizeForm?projectInfoId=${projectInfo.id}'/>"><fmt:message key="projectSize.addPage"/></a>
     </c:if>
+        
+    <div class="row">
+    <spring:bind path="projectInfo.fundUsage">
+    <div class="col-sm-7 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    </spring:bind>
+        <appfuse:label styleClass="control-label" key="projectInfo.fundUsage"/>:
+        <form:input path="fundUsage" id="fundUsage" maxlength="300"/>
+        <form:errors path="fundUsage" cssClass="help-inline"/>
+    </div>
+    </div>
     
     <div class="row">
     <spring:bind path="projectInfo.capitalInvestmentType">
     <div class="col-sm-4 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
-        <appfuse:label styleClass="control-label" key="projectInfo.capitalInvestmentType"/>
+        <appfuse:label styleClass="control-label" key="projectInfo.capitalInvestmentType"/>:
         <form:select path="capitalInvestmentType">    		
 			<form:options items="${capitalInvestmentTypes}" />
 		</form:select>
-        
         <form:errors path="capitalInvestmentType" cssClass="help-block"/>
+    </div>
+    <spring:bind path="projectInfo.investmentName">
+    <div class="col-sm-7 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    </spring:bind>
+        <appfuse:label styleClass="control-label" key="projectInfo.investmentName"/>:
+        <form:input path="investmentName" id="investmentName" maxlength="200"/>
+        <form:errors path="investmentName" cssClass="help-inline"/>
     </div>
 	</div>
 	
@@ -146,6 +162,70 @@
         <form:errors path="projectType" cssClass="help-block"/>
     </div>
 	</div>
+	
+	<div class="row">    
+    <div class="col-sm-6 form-group">
+		<display:table name="projectInfo.counterparties" id="counterparty" class="table table-condensed table-striped table-hover">
+  			<display:column style="width: 5%">
+    			<input type="checkbox" name="counterpartyId" value="<c:out value='${counterparty.id}'/>" 
+    			<c:if test="${param.counterpartyId == counterparty.id and method != 'SaveCounterparty'}">checked="checked"</c:if>
+        			style="margin: 0 0 0 4px" onclick="radio(this)" />
+  			</display:column>
+  			<display:column titleKey="projectInfo.counterparty.name">
+    			<c:choose>
+        			<c:when test="${method == 'EditCounterparty' and param.counterpartyId == counterparty.id}">
+            			<input type="text" name="counterpartyName" style="padding: 0"
+                			value="<c:out value="${counterparty.name}" />" />
+        			</c:when>
+        			<c:otherwise><c:out value="${counterparty.name}" /></c:otherwise>
+    			</c:choose>
+  			</display:column>
+  			<display:column titleKey="projectInfo.counterparty.type">
+      			<c:choose>
+        			<c:when test="${method == 'EditCounterparty' and param.counterpartyId == counterparty.id}">
+                			<form:select path="counterparty.counterpartyType">    		
+								<form:options items="${counterpartyTypes}" />
+							</form:select> 
+        			</c:when>
+        			<c:otherwise>
+        			<fmt:message key="${counterparty.counterpartyType}"/>
+					</c:otherwise>
+    			</c:choose>
+  			</display:column>
+		</display:table>
+     </div>
+     
+     <div class="col-sm-6 form-group">
+		<display:table name="projectInfo.guarantors" id="guarantor" class="table table-condensed table-striped table-hover">
+  			<display:column style="width: 5%">
+    			<input type="checkbox" name="guarantorId" value="<c:out value='${guarantor.id}'/>" 
+    			<c:if test="${param.guarantorId == guarantor.id and method != 'SaveGuarantor'}">checked="checked"</c:if>
+        			style="margin: 0 0 0 4px" onclick="radio(this)" />
+  			</display:column>
+  			<display:column titleKey="projectInfo.guarantor.name">
+    			<c:choose>
+        			<c:when test="${method == 'EditGuarantor' and param.guarantorId == guarantor.id}">
+            			<input type="text" name="guarantorName" style="padding: 0"
+                			value="<c:out value="${guarantor.name}" />" />
+        			</c:when>
+        			<c:otherwise><c:out value="${guarantor.name}" /></c:otherwise>
+    			</c:choose>
+  			</display:column>
+  			<display:column titleKey="projectInfo.guarantor.type">
+      			<c:choose>
+        			<c:when test="${method == 'EditGuarantor' and param.guarantorId == guarantor.id}">
+                			<c:forEach var="guarantorType" items="${counterpartyTypes}" varStatus="status">
+                    			<c:if test="${status.first}"><select id="guarantorType" name="guarantorType"></c:if>
+                    			<option value="${guarantorType.title}"><fmt:message key="${guarantorType.title}"/></option>
+          						<c:if test="${status.last}"></select></c:if>
+                			</c:forEach>
+        			</c:when>
+        			<c:otherwise><fmt:message key="${guarantor.counterpartyType}"/></c:otherwise>
+    			</c:choose>
+  			</display:column>
+		</display:table>
+     </div>
+	</div>	
     
     <c:if test="${not empty projectInfo.createUser}">
     <spring:bind path="projectInfo.createUser">
