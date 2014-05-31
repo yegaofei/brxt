@@ -3,7 +3,9 @@ package com.brxt.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,6 +15,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -24,7 +28,6 @@ import org.appfuse.model.BaseObject;
 import org.appfuse.model.User;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "project_info")
@@ -50,7 +53,8 @@ public class ProjectInfo extends BaseObject implements Serializable {
 	private User updateUser; //最后更新人
 	private Date updateTime; //最后更新时间
 	private Integer version;
-	private List<Counterparty> counterpartyList = new ArrayList<Counterparty>(); //交易对手,担保人关系
+	private Set<Counterparty> counterparties = new HashSet<Counterparty>(); //交易对手
+	private Set<Counterparty> guarantors = new HashSet<Counterparty>(); //担保人关系
 
 	@Column(name = "project_name", length = 50)
 	public String getProjectName() {
@@ -94,8 +98,6 @@ public class ProjectInfo extends BaseObject implements Serializable {
 	public void setGuaranteeMode(String guaranteeMode) {
 		this.guaranteeMode = guaranteeMode;
 	}
-
-	
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "projectInfo", cascade = { CascadeType.ALL })
 	@Fetch(FetchMode.SELECT) 
@@ -183,15 +185,6 @@ public class ProjectInfo extends BaseObject implements Serializable {
 		this.updateTime = updateTime;
 	}
 
-	@OneToMany(mappedBy = "projectInfo", cascade = { CascadeType.ALL })
-	public List<Counterparty> getCounterpartyList() {
-		return counterpartyList;
-	}
-
-	public void setCounterpartyList(List<Counterparty> counterpartyList) {
-		this.counterpartyList = counterpartyList;
-	}
-
 	@Version
 	public Integer getVersion() {
 		return version;
@@ -199,6 +192,36 @@ public class ProjectInfo extends BaseObject implements Serializable {
 
 	public void setVersion(Integer version) {
 		this.version = version;
+	}
+
+	@ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)    
+    @JoinTable(
+            name = "project_info_counterparties",
+            joinColumns = { @JoinColumn(name = "project_info_id") },
+            inverseJoinColumns = @JoinColumn(name = "counterparty_id")
+    )
+	public Set<Counterparty> getCounterparties() {
+		return counterparties;
+	}
+
+	public void setCounterparties(Set<Counterparty> counterparties) {
+		this.counterparties = counterparties;
+	}
+
+	@ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)    
+    @JoinTable(
+            name = "project_info_guarantors",
+            joinColumns = { @JoinColumn(name = "project_info_id") },
+            inverseJoinColumns = @JoinColumn(name = "guarantor_id")
+    )
+	public Set<Counterparty> getGuarantors() {
+		return guarantors;
+	}
+
+	public void setGuarantors(Set<Counterparty> guarantors) {
+		this.guarantors = guarantors;
 	}
 
 	@Override

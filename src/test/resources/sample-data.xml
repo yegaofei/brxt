@@ -203,21 +203,31 @@
   		<column>id</column>
   		<column>name</column>
   		<column>counterpartyType</column>
-  		<column>relationship</column>
-  		<column>projectInfo_id</column>
   		<row>
     		<value>1</value>
     		<value>ICBC Bank</value>
 			<value>commerce_company</value>
-    		<value>guarantor</value>    		
-    		<value>1</value>
   		</row>
   		<row>
     		<value>2</value>
     		<value>VaNKO</value>
 			<value>real_estate_firm</value>
-    		<value>counterparty</value>    		
-    		<value>1</value>
   		</row>
 	</table>
+	<table name="project_info_counterparties">
+        <column>project_info_id</column>
+        <column>counterparty_id</column>
+        <row>
+            <value description="project_info_id">1</value>
+            <value description="counterparty_id">1</value>
+        </row>
+    </table>
+    <table name="project_info_guarantors">
+        <column>project_info_id</column>
+        <column>guarantor_id</column>
+        <row>
+            <value description="project_info_id">1</value>
+            <value description="guarantor_id">2</value>
+        </row>
+    </table>
 </dataset>

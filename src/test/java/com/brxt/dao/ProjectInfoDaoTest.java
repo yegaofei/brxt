@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 
 import com.brxt.model.Counterparty;
+import com.brxt.model.CounterpartyType;
 import com.brxt.model.ProjectInfo;
 import com.brxt.model.ProjectSize;
 
@@ -28,6 +29,9 @@ public class ProjectInfoDaoTest extends BaseDaoTestCase {
 	
 	@Autowired
 	private UserDao userDao;
+	
+	@Autowired
+	private CounterpartyDao counterpartyDao;
 		
 	@Test
 	public void testFindProjectInfoByProjectName() throws Exception {
@@ -52,9 +56,11 @@ public class ProjectInfoDaoTest extends BaseDaoTestCase {
 		Counterparty cp = new Counterparty();
 		String cpName = "CP1";
 		cp.setName(cpName);
-		cp.setRelationship("Unknown relationship");
-		projectInfo.getCounterpartyList().add(cp);
+		cp.setCounterpartyType(CounterpartyType.REAL_ESTATE_FIRM.toString());
+		counterpartyDao.save(cp);
 		
+		cp = counterpartyDao.findByCounterpartyName(cpName);
+		projectInfo.getCounterparties().add(cp);
 		User user = new User();
 		user.setUsername("Philip");
 		user.setLastName("gaofei");
@@ -77,9 +83,8 @@ public class ProjectInfoDaoTest extends BaseDaoTestCase {
 	    assertEquals("TestProject2", projectInfo.getProjectName());
 	    assertNotNull(projectInfo.getId());
 	    assertEquals(startTime, projectInfo.getProjectSizes().get(0).getStartTime());
-	    assertNotNull(projectInfo.getCounterpartyList());
-	    assertTrue(projectInfo.getCounterpartyList().size() > 0);
-	    assertEquals(cpName, projectInfo.getCounterpartyList().get(0).getName());
+	    assertNotNull(projectInfo.getCounterparties());
+	    assertTrue(projectInfo.getCounterparties().size() > 0);
 	    assertNotNull(projectInfo.getUpdateUser());
 	    
 	    log.debug("removing projectInfoDao...");	 

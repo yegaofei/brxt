@@ -19,7 +19,7 @@
     <div class="col-sm-6 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="projectInfo.projectName"/>
-        <form:input path="projectName" id="projectName" maxlength="50" autofocus="true" cssClass="form-control"/>
+        <form:input path="projectName" id="projectName" maxlength="50" cssClass="form-control"/>
         <form:errors path="projectName" cssClass="help-inline"/>
     </div>
 
