@@ -228,22 +228,20 @@
 	</div>	
     
     <c:if test="${not empty projectInfo.createUser}">
-    <spring:bind path="projectInfo.createUser">
-    <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
-    </spring:bind>
-        <appfuse:label styleClass="control-label" key="projectInfo.createUser.username"/>
-        <c:out value="${projectInfo.createUser.username}" />
-        <form:hidden path="createUser.username" id="createUser" maxlength="20" cssClass="form-control"/>        
-    </div>
-    
-    <spring:bind path="projectInfo.createTime">
-    <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
-    </spring:bind>
-        <form:hidden path="createTime" id="createTime" />
-    </div>
-    
+        <form:hidden path="createUser.username" id="createUser"/>        
     </c:if>
     
+    <c:if test="${not empty projectInfo.updateUser}">
+    <div class="form-group">
+        <appfuse:label styleClass="control-label" key="projectInfo.updateUser.username"/>:
+        <c:out value="${projectInfo.updateUser.username}" />     
+    </div>
+    
+    <div class="form-group">
+    	<appfuse:label styleClass="control-label" key="projectInfo.updateTime"/>:
+        <fmt:formatDate value="${projectInfo.updateTime}" pattern="yyyy-MM-dd HH:mm:ss" />
+    </div>
+    </c:if>
 
     <div class="form-group form-actions">
         <button type="submit" class="btn btn-primary" name="method" value="SaveProjectInfo" onclick="bCancel=false">
