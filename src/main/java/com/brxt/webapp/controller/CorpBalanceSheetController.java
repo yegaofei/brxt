@@ -34,6 +34,11 @@ public class CorpBalanceSheetController extends BaseFormController{
 	private static final Map<String,String> availReportYears = new TreeMap<String,String>();
 	private static final int yearRange = 10;
 	
+	public CorpBalanceSheetController() {
+		setCancelView("redirect:corpBalanceSheet");
+		setSuccessView("redirect:corpBalanceSheet");
+	}
+	
 	private synchronized void loadDropDownList(final Locale locale)
 	{
 		Date now = new Date();
