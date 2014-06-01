@@ -15,8 +15,17 @@
 	<form:hidden path="version"/>
 	 
 	<div class="row">
+		<div class="col-sm-3 form-group">
+		<appfuse:label styleClass="control-label" key="projectInfo.counterparty.name"/> : 
+		<form:select path="counterparty.id" onchange="submit()" cssClass="form-control">
+    		<form:options items="${counterparties}" itemValue="id" itemLabel="name" />
+		</form:select>
+		</div>
+	</div>
+	
+	<div class="row">
     <spring:bind path="subjectCapacity.licenseVerificationDate">
-    <div class="col-sm-4 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    <div class="col-sm-3 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="subjectCapacity.licenseVerificationDate"/>
         <form:input path="licenseVerificationDate" id="licenseVerificationDate" maxlength="20" cssClass="form-control"/>
@@ -29,6 +38,14 @@
         <appfuse:label styleClass="control-label" key="subjectCapacity.orgCodeVerificationDate"/>
         <form:input path="orgCodeVerificationDate" id="orgCodeVerificationDate" maxlength="20" cssClass="form-control"/>
         <form:errors path="orgCodeVerificationDate" cssClass="help-block"/>
+    </div>
+    
+    <spring:bind path="subjectCapacity.checkTime">
+    <div class="col-sm-3 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    </spring:bind>
+        <appfuse:label styleClass="control-label" key="subjectCapacity.checkTime"/>
+        <form:input path="checkTime" id="orgCodeVerificationDate" maxlength="20" cssClass="form-control"/>
+        <form:errors path="checkTime" cssClass="help-block"/>
     </div>
 	</div>
         
