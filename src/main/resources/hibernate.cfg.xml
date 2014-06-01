@@ -11,6 +11,7 @@
         <mapping class="com.brxt.model.ProjectInfo"/>
         <mapping class="com.brxt.model.ProjectSize"/>
         <mapping class="com.brxt.model.Counterparty"/>
+        <mapping class="com.brxt.model.SubjectCapacity"/>
     </session-factory>
 </hibernate-configuration>
 

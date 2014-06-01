@@ -29,8 +29,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.brxt.constant.SessionAttributes;
 import com.brxt.model.CapitalInvestmentType;
-import com.brxt.model.Counterparty;
 import com.brxt.model.CounterpartyType;
 import com.brxt.model.ProjectInfo;
 import com.brxt.model.ProjectSize;
@@ -107,7 +107,8 @@ public class ProjectInfoFormController extends BaseFormController {
 		mav.addObject("capitalInvestmentTypes", CapitalInvestmentTypes);
 		mav.addObject("projectTypes", ProjectTypes);
 		mav.addObject("counterpartyTypes", CounterpartyTypes);
-		mav.addObject("projectInfo", getProjectInfo(request));			
+		mav.addObject("projectInfo", getProjectInfo(request));	
+		request.getSession().setAttribute(SessionAttributes.PROJECT_INFO_ID, request.getParameter("id"));
 		return mav;
 	}
 

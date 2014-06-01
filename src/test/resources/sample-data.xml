@@ -233,4 +233,52 @@
             <value description="guarantor_id">2</value>
         </row>
     </table>
+    <table name="subject_capacity">
+    	<column>id</column>
+        <column>projectInfo_id</column>
+        <column>counterparty_id</column>   
+        <column>reportSeason</column>
+        <column>checkTime</column>
+        <column>licenseVerificationDate</column>
+        <column>orgCodeVerificationDate</column>
+        <column>loanCardValid</column>
+        <column>nameChanged</column>
+        <column>ownerChanged</column>
+        <column>ownershipChanged</column>
+        <column>capitalChanged</column>
+        <column>devCapacityChanged</column>
+        <column>bizScopeChanged</column>
+        <column>otherBigChanges</column>
+        <column>verifyResults</column>
+        <column>comments</column>
+        <column>createUser</column>
+        <column>createTime</column>
+        <column>updateUser</column>
+        <column>updateTime</column>
+        <column>version</column>
+        <row>
+        	<value>1</value>
+            <value description="project_info_id">1</value>
+            <value description="counterparty_id">1</value>
+            <value>2</value>
+            <value>2014-04-14</value>
+            <value>2014-04-15</value>
+            <value>2014-04-16</value>
+            <value>Y</value>
+            <value>Y</value>
+            <value>N</value>
+            <value>N</value>
+            <value>Y</value>
+            <value>N</value>
+            <value>Y</value>
+            <value>N</value>
+            <value>Passed the verification</value>
+            <value>Passed</value>
+            <value>-1</value>
+            <value>2014-05-14 06:06:06</value>
+            <value>-1</value>
+            <value>2014-05-14 06:06:06</value>
+            <value>1</value>
+        </row>
+    </table>
 </dataset>
