@@ -1,5 +1,6 @@
 package com.brxt.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -17,25 +18,25 @@ import org.appfuse.model.User;
 public class CorporateBalanceSheet extends Statement {
 	
 	private static final long serialVersionUID = 1743254494015304403L;
-	private BeginEnd beginEnd;
-	private Double inventory;
-	private Double cash;
-	private Double receivableNote;
-	private Double receivables;
-	private Double receivableOther;
-	private Double liquidAsset;
-	private Double totalAsset;
-	private Double prepayment;
-	private Double shortLoan;
-	private Double payableNote;
-	private Double payable;
-	private Double prereceive;
-	private Double liquidDebt;
-	private Double longLoan;
-	private Double totalDebt;
-	private Double actualCapital;
-	private Double unAssignedProfit;
-	private Double netAsset;
+	private String beginEnd;
+	private BigDecimal inventory;
+	private BigDecimal cash;
+	private BigDecimal receivableNote;
+	private BigDecimal receivables;
+	private BigDecimal receivableOther;
+	private BigDecimal liquidAsset;
+	private BigDecimal totalAsset;
+	private BigDecimal prepayment;
+	private BigDecimal shortLoan;
+	private BigDecimal payableNote;
+	private BigDecimal payable;
+	private BigDecimal prereceive;
+	private BigDecimal liquidDebt;
+	private BigDecimal longLoan;
+	private BigDecimal totalDebt;
+	private BigDecimal actualCapital;
+	private BigDecimal unAssignedProfit;
+	private BigDecimal netAsset;
 	
 	@Override
 	@Id
@@ -100,196 +101,120 @@ public class CorporateBalanceSheet extends Statement {
 		this.counterpartyId = counterpartyId;
 	}
 
-	public BeginEnd getBeginEnd() {
+	public String getBeginEnd() {
 		return beginEnd;
 	}
-
-
-	public void setBeginEnd(BeginEnd beginEnd) {
+	public void setBeginEnd(String beginEnd) {
 		this.beginEnd = beginEnd;
 	}
-
-
-	public Double getInventory() {
+	public BigDecimal getInventory() {
 		return inventory;
 	}
-
-
-	public void setInventory(Double inventory) {
+	public void setInventory(BigDecimal inventory) {
 		this.inventory = inventory;
 	}
-
-
-	public Double getCash() {
+	public BigDecimal getCash() {
 		return cash;
 	}
-
-
-	public void setCash(Double cash) {
+	public void setCash(BigDecimal cash) {
 		this.cash = cash;
 	}
-
-
-	public Double getReceivableNote() {
+	public BigDecimal getReceivableNote() {
 		return receivableNote;
 	}
-
-
-	public void setReceivableNote(Double receivableNote) {
+	public void setReceivableNote(BigDecimal receivableNote) {
 		this.receivableNote = receivableNote;
 	}
-
-
-	public Double getReceivables() {
+	public BigDecimal getReceivables() {
 		return receivables;
 	}
-
-
-	public void setReceivables(Double receivables) {
+	public void setReceivables(BigDecimal receivables) {
 		this.receivables = receivables;
 	}
-
-
-	public Double getReceivableOther() {
+	public BigDecimal getReceivableOther() {
 		return receivableOther;
 	}
-
-
-	public void setReceivableOther(Double receivableOther) {
+	public void setReceivableOther(BigDecimal receivableOther) {
 		this.receivableOther = receivableOther;
 	}
-
-
-	public Double getLiquidAsset() {
+	public BigDecimal getLiquidAsset() {
 		return liquidAsset;
 	}
-
-
-	public void setLiquidAsset(Double liquidAsset) {
+	public void setLiquidAsset(BigDecimal liquidAsset) {
 		this.liquidAsset = liquidAsset;
 	}
-
-
-	public Double getTotalAsset() {
+	public BigDecimal getTotalAsset() {
 		return totalAsset;
 	}
-
-
-	public void setTotalAsset(Double totalAsset) {
+	public void setTotalAsset(BigDecimal totalAsset) {
 		this.totalAsset = totalAsset;
 	}
-
-
-	public Double getPrepayment() {
+	public BigDecimal getPrepayment() {
 		return prepayment;
 	}
-
-
-	public void setPrepayment(Double prepayment) {
+	public void setPrepayment(BigDecimal prepayment) {
 		this.prepayment = prepayment;
 	}
-
-
-	public Double getShortLoan() {
+	public BigDecimal getShortLoan() {
 		return shortLoan;
 	}
-
-
-	public void setShortLoan(Double shortLoan) {
+	public void setShortLoan(BigDecimal shortLoan) {
 		this.shortLoan = shortLoan;
 	}
-
-
-	public Double getPayableNote() {
+	public BigDecimal getPayableNote() {
 		return payableNote;
 	}
-
-
-	public void setPayableNote(Double payableNote) {
+	public void setPayableNote(BigDecimal payableNote) {
 		this.payableNote = payableNote;
 	}
-
-
-	public Double getPayable() {
+	public BigDecimal getPayable() {
 		return payable;
 	}
-
-
-	public void setPayable(Double payable) {
+	public void setPayable(BigDecimal payable) {
 		this.payable = payable;
 	}
-
-
-	public Double getPrereceive() {
+	public BigDecimal getPrereceive() {
 		return prereceive;
 	}
-
-
-	public void setPrereceive(Double prereceive) {
+	public void setPrereceive(BigDecimal prereceive) {
 		this.prereceive = prereceive;
 	}
-
-
-	public Double getLiquidDebt() {
+	public BigDecimal getLiquidDebt() {
 		return liquidDebt;
 	}
-
-
-	public void setLiquidDebt(Double liquidDebt) {
+	public void setLiquidDebt(BigDecimal liquidDebt) {
 		this.liquidDebt = liquidDebt;
 	}
-
-
-	public Double getLongLoan() {
+	public BigDecimal getLongLoan() {
 		return longLoan;
 	}
-
-
-	public void setLongLoan(Double longLoan) {
+	public void setLongLoan(BigDecimal longLoan) {
 		this.longLoan = longLoan;
 	}
-
-
-	public Double getTotalDebt() {
+	public BigDecimal getTotalDebt() {
 		return totalDebt;
 	}
-
-
-	public void setTotalDebt(Double totalDebt) {
+	public void setTotalDebt(BigDecimal totalDebt) {
 		this.totalDebt = totalDebt;
 	}
-
-
-	public Double getActualCapital() {
+	public BigDecimal getActualCapital() {
 		return actualCapital;
 	}
-
-
-	public void setActualCapital(Double actualCapital) {
+	public void setActualCapital(BigDecimal actualCapital) {
 		this.actualCapital = actualCapital;
 	}
-
-
-	public Double getUnAssignedProfit() {
+	public BigDecimal getUnAssignedProfit() {
 		return unAssignedProfit;
 	}
-
-
-	public void setUnAssignedProfit(Double unAssignedProfit) {
+	public void setUnAssignedProfit(BigDecimal unAssignedProfit) {
 		this.unAssignedProfit = unAssignedProfit;
 	}
-
-
-	public Double getNetAsset() {
+	public BigDecimal getNetAsset() {
 		return netAsset;
 	}
-
-
-	public void setNetAsset(Double netAsset) {
+	public void setNetAsset(BigDecimal netAsset) {
 		this.netAsset = netAsset;
 	}
-
-
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE).append(
