@@ -87,28 +87,28 @@ public class MockBudgetRepsitory {
 			return budgetRatio;
 		
 		if (!BigDecimal.ZERO.equals(fullYearBudget.getIncomeTotal())){	
-			budgetRatio.setIncomeTotal(thisYear.getIncomeTotal().divide(fullYearBudget.getIncomeTotal()));
+			budgetRatio.setIncomeTotal(thisYear.getIncomeTotal().divide(fullYearBudget.getIncomeTotal(), 2));
 		}
 		if (!BigDecimal.ZERO.equals(fullYearBudget.getBudgetIncomeTotal())){
-		budgetRatio.setBudgetIncomeTotal(thisYear.getBudgetIncomeTotal().divide(fullYearBudget.getBudgetIncomeTotal()));
+		budgetRatio.setBudgetIncomeTotal(thisYear.getBudgetIncomeTotal().divide(fullYearBudget.getBudgetIncomeTotal(), 2));
 		}
 		if (!BigDecimal.ZERO.equals(fullYearBudget.getTaxIncome())){
-		budgetRatio.setTaxIncome(thisYear.getTaxIncome().divide(fullYearBudget.getTaxIncome()));
+		budgetRatio.setTaxIncome(thisYear.getTaxIncome().divide(fullYearBudget.getTaxIncome(), 2));
 		}
 		if (!BigDecimal.ZERO.equals(fullYearBudget.getNonTaxIncome())){
-		budgetRatio.setNonTaxIncome(thisYear.getNonTaxIncome().divide(fullYearBudget.getNonTaxIncome()));
+		budgetRatio.setNonTaxIncome(thisYear.getNonTaxIncome().divide(fullYearBudget.getNonTaxIncome(), 2));
 		}
 		if (!BigDecimal.ZERO.equals(fullYearBudget.getGovFundIncome())){
-		budgetRatio.setGovFundIncome(thisYear.getGovFundIncome().divide(fullYearBudget.getGovFundIncome()));
+		budgetRatio.setGovFundIncome(thisYear.getGovFundIncome().divide(fullYearBudget.getGovFundIncome(), 2));
 		}
 		if (!BigDecimal.ZERO.equals(fullYearBudget.getPaymentTotal())){
-		budgetRatio.setPaymentTotal(thisYear.getPaymentTotal().divide(fullYearBudget.getPaymentTotal()));
+		budgetRatio.setPaymentTotal(thisYear.getPaymentTotal().divide(fullYearBudget.getPaymentTotal(), 2));
 		}
 		if (!BigDecimal.ZERO.equals(fullYearBudget.getBudgetPayTotal())){
-		budgetRatio.setBudgetPayTotal(thisYear.getBudgetPayTotal().divide(fullYearBudget.getBudgetPayTotal()));
+		budgetRatio.setBudgetPayTotal(thisYear.getBudgetPayTotal().divide(fullYearBudget.getBudgetPayTotal(), 2));
 		}
 		if (!BigDecimal.ZERO.equals(fullYearBudget.getGovFundPayment())){
-		budgetRatio.setGovFundPayment(thisYear.getGovFundPayment().divide(fullYearBudget.getGovFundPayment()));
+		budgetRatio.setGovFundPayment(thisYear.getGovFundPayment().divide(fullYearBudget.getGovFundPayment(), 2));
 		}		
 		
 		return budgetRatio;
@@ -145,14 +145,16 @@ public class MockBudgetRepsitory {
 		Map<String,BudgetStatement> oneYear = savedBudgetStatement.get(reportYear);
 		if (oneYear != null){
 			for (BudgetStatement month : oneYear.values()){
-				thisYear.setIncomeTotal(thisYear.getIncomeTotal().add(month.getIncomeTotal())); 
-				thisYear.setBudgetIncomeTotal(thisYear.getBudgetIncomeTotal().add(month.getBudgetIncomeTotal()));
-				thisYear.setTaxIncome(thisYear.getTaxIncome().add(month.getTaxIncome()));
-				thisYear.setNonTaxIncome(thisYear.getNonTaxIncome().add(month.getNonTaxIncome()));
-				thisYear.setGovFundIncome(thisYear.getGovFundIncome().add(month.getGovFundIncome()));
-				thisYear.setPaymentTotal(thisYear.getPaymentTotal().add(month.getPaymentTotal()));
-				thisYear.setBudgetPayTotal(thisYear.getBudgetPayTotal().add(month.getBudgetPayTotal()));
-				thisYear.setGovFundPayment(thisYear.getGovFundPayment().add(month.getGovFundPayment()));
+				if (!month.getReportMonth().endsWith("00")){
+					thisYear.setIncomeTotal(thisYear.getIncomeTotal().add(month.getIncomeTotal())); 
+					thisYear.setBudgetIncomeTotal(thisYear.getBudgetIncomeTotal().add(month.getBudgetIncomeTotal()));
+					thisYear.setTaxIncome(thisYear.getTaxIncome().add(month.getTaxIncome()));
+					thisYear.setNonTaxIncome(thisYear.getNonTaxIncome().add(month.getNonTaxIncome()));
+					thisYear.setGovFundIncome(thisYear.getGovFundIncome().add(month.getGovFundIncome()));
+					thisYear.setPaymentTotal(thisYear.getPaymentTotal().add(month.getPaymentTotal()));
+					thisYear.setBudgetPayTotal(thisYear.getBudgetPayTotal().add(month.getBudgetPayTotal()));
+					thisYear.setGovFundPayment(thisYear.getGovFundPayment().add(month.getGovFundPayment()));
+				}
 			}
 		}
 		
