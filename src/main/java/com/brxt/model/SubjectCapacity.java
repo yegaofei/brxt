@@ -22,7 +22,6 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.appfuse.model.BaseObject;
 import org.appfuse.model.User;
 import org.hibernate.annotations.Type;
-import org.springframework.format.annotation.DateTimeFormat;
 
 @NamedNativeQueries({
 	@NamedNativeQuery(
@@ -45,8 +44,8 @@ public class SubjectCapacity extends BaseObject implements Serializable {
 	private ProjectInfo projectInfo; // 项目id
 	private Integer reportSeason; // 报表季度
 	private Date checkTime; // 排查时间
-	private Date licenseVerificationDate; // 营业执照最新年检日期
-	private Date orgCodeVerificationDate; // 组织机构代码证最新年检日期
+	private String licenseVerificationDate; // 营业执照最新年检日期
+	private String orgCodeVerificationDate; // 组织机构代码证最新年检日期
 	private Boolean loanCardValid; // 贷款卡是否有效
 	private Boolean nameChanged; // 企业/单位名称是否变更
 	private Boolean ownerChanged; // 企业/单位法人代表是否变化
@@ -114,19 +113,19 @@ public class SubjectCapacity extends BaseObject implements Serializable {
 		this.checkTime = checkTime;
 	}
 
-	public Date getLicenseVerificationDate() {
+	public String getLicenseVerificationDate() {
 		return licenseVerificationDate;
 	}
 
-	public void setLicenseVerificationDate(Date licenseVerificationDate) {
+	public void setLicenseVerificationDate(String licenseVerificationDate) {
 		this.licenseVerificationDate = licenseVerificationDate;
 	}
 
-	public Date getOrgCodeVerificationDate() {
+	public String getOrgCodeVerificationDate() {
 		return orgCodeVerificationDate;
 	}
 
-	public void setOrgCodeVerificationDate(Date orgCodeVerificationDate) {
+	public void setOrgCodeVerificationDate(String orgCodeVerificationDate) {
 		this.orgCodeVerificationDate = orgCodeVerificationDate;
 	}
 

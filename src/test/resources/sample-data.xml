@@ -153,16 +153,16 @@
 		<column>version</column>
   		<row>
     		<value>1</value>
-    		<value>TestProject1</value>
+    		<value>宝盈238</value>
     		<value>15</value>
-    		<value>TestFundUsage</value>
-    		<value>ManagerA</value>
-			<value>ManagerB</value>
-			<value>ManagerC</value>
-    		<value>TestGuaranteeMode</value>
+    		<value>投资商业地产</value>
+    		<value>王小明</value>
+			<value>李亮</value>
+			<value>张倩</value>
+    		<value>由某某企业做担保</value>
     		<value>transaction_management</value>
     		<value>real_estate</value>
-    		<value>equity</value>
+    		<value>某某商业地产项目</value>
 			<value>-2</value>
 			<value>2014-04-14 06:06:06</value>
 			<value>-2</value>
@@ -171,16 +171,16 @@
   		</row>
   		<row>
     		<value>2</value>
-    		<value>TestProject2</value>
+    		<value>富诚39</value>
     		<value>18</value>
-    		<value>TestFundUsage</value>
-    		<value>ManagerA</value>
-			<value>ManagerB</value>
-			<value>ManagerC</value>
-    		<value>TestGuaranteeMode</value>
+    		<value>投资光伏发电</value>
+    		<value>李亮</value>
+			<value>王小明</value>
+			<value>张倩</value>
+    		<value>由某某区政府做担保</value>
     		<value>non_transaction_management</value>
-    		<value>real_estate</value>
-    		<value>equity</value>
+    		<value>infrastructure</value>
+    		<value>某某光伏发电厂2期产能扩大项目</value>
 			<value>-1</value>
 			<value>2014-05-14 06:06:06</value>
 			<value>-1</value>
@@ -201,6 +201,20 @@
     		<value>100000</value>
     		<value>1</value>
   		</row>
+  		<row>
+    		<value>2</value>
+    		<value>2013-02-14</value>
+    		<value>2015-05-14</value>
+    		<value>100000</value>
+    		<value>2</value>
+  		</row>
+  		<row>
+    		<value>3</value>
+    		<value>2013-01-14</value>
+    		<value>2015-09-01</value>
+    		<value>100000</value>
+    		<value>2</value>
+  		</row>
 	</table>
 	<table name='counterparty'>
   		<column>id</column>
@@ -208,12 +222,17 @@
   		<column>counterpartyType</column>
   		<row>
     		<value>1</value>
-    		<value>ICBC Bank</value>
+    		<value>嘉兴蓝光</value>
 			<value>commerce_company</value>
   		</row>
   		<row>
     		<value>2</value>
-    		<value>VaNKO</value>
+    		<value>郑州市二七区非税收管理局</value>
+			<value>institution</value>
+  		</row>
+  		<row>
+    		<value>3</value>
+    		<value>四川蓝光和骏置业有限公司</value>
 			<value>real_estate_firm</value>
   		</row>
 	</table>
@@ -224,12 +243,24 @@
             <value description="project_info_id">1</value>
             <value description="counterparty_id">1</value>
         </row>
+        <row>
+            <value description="project_info_id">1</value>
+            <value description="counterparty_id">3</value>
+        </row>
+        <row>
+            <value description="project_info_id">2</value>
+            <value description="counterparty_id">3</value>
+        </row>
     </table>
     <table name="project_info_guarantors">
         <column>project_info_id</column>
         <column>guarantor_id</column>
         <row>
             <value description="project_info_id">1</value>
+            <value description="guarantor_id">2</value>
+        </row>
+        <row>
+            <value description="project_info_id">2</value>
             <value description="guarantor_id">2</value>
         </row>
     </table>
@@ -261,9 +292,9 @@
             <value description="project_info_id">1</value>
             <value description="counterparty_id">1</value>
             <value>2</value>
-            <value>2014-04-14</value>
-            <value>2014-04-15</value>
-            <value>2014-04-16</value>
+            <value>2014-04-01</value>
+            <value>2014年已年检</value>
+            <value>2014年已年检</value>
             <value>Y</value>
             <value>Y</value>
             <value>N</value>
@@ -272,8 +303,8 @@
             <value>N</value>
             <value>Y</value>
             <value>N</value>
-            <value>Passed the verification</value>
-            <value>Passed</value>
+            <value>2013年4月10日发证</value>
+            <value>排查通过</value>
             <value>-1</value>
             <value>2014-05-14 06:06:06</value>
             <value>-1</value>

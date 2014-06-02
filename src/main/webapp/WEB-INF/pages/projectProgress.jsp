@@ -1,7 +1,7 @@
 <%@ include file="/common/taglibs.jsp"%>
 <head>
     <title><fmt:message key="projectProgress.title"/></title>
-    <meta name="menu" content="ProjectProgress"/>
+    <meta name="menu" content="ProjectInfoSubMenu"/>
 </head>
 <div class="col-sm-10">
     <h2><fmt:message key='projectProgress.heading'/></h2>

@@ -71,8 +71,8 @@ public class MockBudgetRepsitory {
 		budgetStatementModel.setReportName(thisYear.getReportName());
 		budgetStatementModel.setProjectId(thisYear.getProjectId());
 		budgetStatementModel.setCounterpartyId(thisYear.getCounterpartyId());
-		budgetStatementModel.setCounterpartyName("testCounterParty");
-		budgetStatementModel.setProjectName("testProjectName");
+		budgetStatementModel.setCounterpartyName("");
+		budgetStatementModel.setProjectName("");
 		budgetStatementModel.setReportYear(reportYear);		
 		
 		return budgetStatementModel;

@@ -3,6 +3,11 @@
     <title><fmt:message key="subjectCapacity.title"/></title>
     <meta name="menu" content="ProjectInfoSubMenu"/>
 </head>
+<c:set var="delObject" scope="request"><fmt:message key="subjectCapacity.title"/></c:set>
+<script type="text/javascript">var msgDelConfirm =
+   "<fmt:message key="delete.confirm"><fmt:param value="${delObject}"/></fmt:message>";
+</script>
+
 <div class="col-sm-10">
     <h2><fmt:message key='subjectCapacity.heading'/></h2>
     
@@ -10,7 +15,7 @@
  	<div id="actions" class="btn-group">
         <a class="btn btn-primary" href="<c:url value='/subjectCapacityForm'/>">
             <i class="icon-plus icon-white"></i> <fmt:message key="button.add"/></a>
-        <button type="submit" class="btn btn-primary" name="method" value="Delete">
+        <button type="submit" class="btn btn-primary" name="method" value="Delete" onclick="bCancel=true;return confirmMessage(msgDelConfirm)">
                 <i class="icon-remove"></i> <fmt:message key="button.delete"/>
         </button>  
         <button type="submit" class="btn btn-primary" name="method" value="Edit">

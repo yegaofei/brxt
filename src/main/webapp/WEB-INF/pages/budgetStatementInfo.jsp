@@ -11,9 +11,9 @@
  <div id="actions" class="btn-group">
         <a class="btn btn-primary" href="<c:url value='/budgetStatementForm'/>">
             <i class="icon-plus icon-white"></i> <fmt:message key="button.add"/></a>
-        <a class="btn btn-default" href="<c:url value='/budgetStatementList'/>">
-            <i class="icon-ok"></i> <fmt:message key="button.list"/></a>    
-        <a class="btn btn-default" href="<c:url value='/mainMenu'/>">
+    <!--    <a class="btn btn-default" href="<c:url value='/budgetStatementList'/>">
+            <i class="icon-ok"></i> <fmt:message key="button.list"/></a>  -->    
+        <a class="btn btn-default" href="<c:url value='/projectInfoForm?id=${sessionScope.project_info_id}'/>">
             <i class="icon-ok"></i> <fmt:message key="button.done"/></a>
  </div>
  
@@ -29,7 +29,7 @@
     <div class="col-sm-6 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="budgetStatementInfo.projectName"/>
-        <form:input path="projectName" id="projectName" maxlength="50" autofocus="true" cssClass="form-control"/>
+        <form:input path="projectName" id="projectName" maxlength="50" cssClass="form-control"/>
         <form:errors path="projectName" cssClass="help-inline"/>
     </div>
 

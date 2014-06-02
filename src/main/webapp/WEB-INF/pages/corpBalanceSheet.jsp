@@ -16,14 +16,6 @@
 	<form:hidden path="reportName"/>
  
 	<div class="row">
-    <spring:bind path="corpBalanceSheetModel.projectName">
-    <div class="col-sm-6 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
-    </spring:bind>
-        <appfuse:label styleClass="control-label" key="corpBalanceSheet.projectName"/>
-        <form:input path="projectName" id="projectName" maxlength="50" autofocus="true" cssClass="form-control"/>
-        <form:errors path="projectName" cssClass="help-inline"/>
-    </div>
-
     <spring:bind path="corpBalanceSheetModel.counterpartyName">
     <div class="col-sm-4 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
@@ -395,9 +387,8 @@
               <i class="icon-trash"></i> <fmt:message key="button.delete"/>
           </button>
         </c:if>
-        <button type="submit" class="btn btn-default" name="method" value="Cancel" onclick="bCancel=true">
-            <i class="icon-remove"></i> <fmt:message key="button.cancel"/>
-        </button>
+        <a class="btn btn-default" href="<c:url value='/projectInfoForm?id=${sessionScope.project_info_id}'/>">
+            <i class="icon-ok"></i> <fmt:message key="button.cancel"/></a>
     </div>
     
 	</form:form>

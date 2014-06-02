@@ -3,6 +3,10 @@
     <title><fmt:message key="projectInfoDetail.title"/></title>
     <meta name="menu" content="ProjectInfoSubMenu"/>
 </head>
+<c:set var="delObject" scope="request"><fmt:message key="projectInfoList.heading"/></c:set>
+<script type="text/javascript">var msgDelConfirm =
+   "<fmt:message key="delete.confirm"><fmt:param value="${delObject}"/></fmt:message>";
+</script>
  
 <div class="col-sm-2">
     <h3><fmt:message key='projectInfoDetail.heading'/></h3>
@@ -247,11 +251,13 @@
         <button type="submit" class="btn btn-primary" name="method" value="SaveProjectInfo" onclick="bCancel=false">
             <i class="icon-ok icon-white"></i> <fmt:message key="button.save"/>
         </button>
+        <!--
         <c:if test="${not empty projectInfo.id}">
           <button type="submit" class="btn btn-default" name="method"  value="DeleteProjectInfo" onclick="bCancel=true;return confirmMessage(msgDelConfirm)">
               <i class="icon-trash"></i> <fmt:message key="button.delete"/>
           </button>
         </c:if>
+        -->
         <button type="submit" class="btn btn-default" name="method" value="Cancel" onclick="bCancel=true">
             <i class="icon-remove"></i> <fmt:message key="button.cancel"/>
         </button>
