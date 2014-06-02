@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.brxt.model.BudgetStatement;
 import com.brxt.model.BudgetStatementModel;
+import com.brxt.model.MockBudgetRepsitory;
 
 @Controller
 @RequestMapping("/budgetStatementInfo*")
@@ -55,34 +55,7 @@ public class BudgetStatementInfoController extends BaseFormController{
 	
 	private BudgetStatementModel getBudgetStatementModel(HttpServletRequest request){
 		String reportYear="2014";
-		BudgetStatementModel budgetStatementModel= savedBudgetStatement.get(reportYear);		
-		
-		if (budgetStatementModel == null){
-		
-			String reportName="testReport";
-			BudgetStatement fullYearBudget = new BudgetStatement();
-			BudgetStatement thisYear = new BudgetStatement();
-			BudgetStatement lastYear = new BudgetStatement();
-			BudgetStatement budgetRatio = new BudgetStatement();
-			BudgetStatement growthRate = new BudgetStatement();
-			
-			budgetStatementModel= new BudgetStatementModel();
-			budgetStatementModel.setFullYearBudget(fullYearBudget);
-			budgetStatementModel.setThisYear(thisYear);
-			budgetStatementModel.setLastYear(lastYear);
-			budgetStatementModel.setBudgetRatio(budgetRatio);
-			budgetStatementModel.setGrowthRate(growthRate);			
-			
-			budgetStatementModel.setReportName(reportName);
-			budgetStatementModel.setProjectId(thisYear.getProjectId());
-			budgetStatementModel.setCounterpartyId(thisYear.getCounterpartyId());
-			budgetStatementModel.setCounterpartyName("testCounterParty");
-			budgetStatementModel.setProjectName("testProjectName");
-			budgetStatementModel.setReportYear(reportYear);
-		
-		}
-		
-		return budgetStatementModel;		
+		return MockBudgetRepsitory.getInstance().getBudgetInfo(reportYear);		
 	}	
 	
 }

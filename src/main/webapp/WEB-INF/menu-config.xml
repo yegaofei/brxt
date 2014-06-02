@@ -16,6 +16,7 @@
 			<Item name="SubjectCapacity" title="menu.offsite.subjectCapacity" page="/subjectCapacity"/>
 			<Item name="FinancialStatements" title="menu.offsite.financialStatements" page="/financialStatements"/>
 			<Item name="CorpBalanceSheet" title="menu.offsite.corpBalanceSheet" page="/corpBalanceSheet" />
+			<Item name="InstBalanceSheet" title="menu.offsite.instBalanceSheet" page="/instBalanceSheet" />
 			<Item name="CreditInformation" title="menu.offsite.creditInformation" page="/creditInformation"/>
 			<Item name="Repayment" title="menu.offsite.repayment" page="/repayment"/>
 			<Item name="ProjectProgress" title="menu.offsite.projectProgress" page="/projectProgress"/>
