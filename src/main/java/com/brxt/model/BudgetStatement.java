@@ -17,7 +17,8 @@ import org.appfuse.model.User;
 @Table(name = "budget_statement")
 public class BudgetStatement extends Statement {
 	
-	private static final long serialVersionUID = 1743254494015304403L;	
+	private static final long serialVersionUID = 1743254494015304403L;
+	private String budgetType;
 	private BigDecimal incomeTotal;
 	private BigDecimal budgetIncomeTotal;
 	private BigDecimal taxIncome;
@@ -26,6 +27,17 @@ public class BudgetStatement extends Statement {
 	private BigDecimal paymentTotal;
 	private BigDecimal budgetPayTotal;
 	private BigDecimal govFundPayment;
+	
+	public BudgetStatement(){
+		incomeTotal = new BigDecimal(0);
+		budgetIncomeTotal = new BigDecimal(0);
+		taxIncome = new BigDecimal(0);
+		nonTaxIncome = new BigDecimal(0);
+		govFundIncome = new BigDecimal(0);
+		paymentTotal = new BigDecimal(0);
+		budgetPayTotal = new BigDecimal(0);
+		govFundPayment = new BigDecimal(0);
+	}
 	
 	@Override
 	@Id
@@ -97,7 +109,21 @@ public class BudgetStatement extends Statement {
 	public void setReportMonth(String reportMonth) {
 		this.reportMonth = reportMonth;
 	}	
+	@Override
+	public String getReportName() {
+		return reportName;
+	}
+	@Override
+	public void setReportName(String reportName) {
+		this.reportName = reportName;
+	}
 	
+	public String getBudgetType() {
+		return budgetType;
+	}
+	public void setBudgetType(String budgetType) {
+		this.budgetType = budgetType;
+	}
 	public BigDecimal getIncomeTotal() {
 		return incomeTotal;
 	}
