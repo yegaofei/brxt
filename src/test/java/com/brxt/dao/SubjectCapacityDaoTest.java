@@ -1,6 +1,8 @@
 package com.brxt.dao;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
@@ -9,6 +11,7 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 
 import com.brxt.model.Counterparty;
 import com.brxt.model.ProjectInfo;
@@ -61,5 +64,15 @@ public class SubjectCapacityDaoTest extends BaseDaoTestCase {
 			assertEquals(subjectCapacity3.getOwnerChanged(),
 					subjectCapacity.getOwnerChanged());
 		}
+	}
+	
+	@Test(expected = DataAccessException.class)
+	public void testRemove() {
+		SubjectCapacity subjectCapacity = subjectCapacityDao.get(1L);
+		subjectCapacityDao.remove(subjectCapacity);
+		flush();
+		
+		// should throw DataAccessException
+		subjectCapacityDao.get(1L);
 	}
 }

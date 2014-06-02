@@ -1,11 +1,18 @@
 package com.brxt.webapp.util;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.appfuse.model.User;
+import org.appfuse.service.UserManager;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.ldap.userdetails.LdapUserDetails;
 
 /**
  * Convenience class for setting and retrieving cookies.
@@ -109,5 +116,25 @@ public final class RequestUtil {
         }
         url.append(request.getContextPath());
         return url.toString();
+    }
+    
+    public static User getCurrentUser(UserManager userManager) {
+    	User currentUser = null;
+		final Authentication auth = SecurityContextHolder.getContext()
+				.getAuthentication();
+		if (auth != null) {
+			if (auth.getPrincipal() instanceof LdapUserDetails) {
+				LdapUserDetails ldapDetails = (LdapUserDetails) auth.getPrincipal();
+				String username = ldapDetails.getUsername();
+				currentUser = userManager.getUserByUsername(username);
+			} else if (auth.getPrincipal() instanceof UserDetails) {
+				currentUser = (User) auth.getPrincipal();
+			} else if (auth.getDetails() instanceof UserDetails) {
+				currentUser = (User) auth.getDetails();
+			} else {
+				throw new AccessDeniedException("User not properly authenticated.");
+			}
+		}
+		return currentUser;
     }
 }

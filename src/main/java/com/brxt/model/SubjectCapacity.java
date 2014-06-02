@@ -22,6 +22,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.appfuse.model.BaseObject;
 import org.appfuse.model.User;
 import org.hibernate.annotations.Type;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @NamedNativeQueries({
 	@NamedNativeQuery(

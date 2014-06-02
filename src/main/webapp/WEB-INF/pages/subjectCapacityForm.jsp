@@ -13,13 +13,16 @@
     <form:form commandName="subjectCapacity" method="post" action="subjectCapacityForm" id="subjectCapacityForm" cssClass="well">
     <form:hidden path="id"/>
 	<form:hidden path="version"/>
+	<input type="hidden" name="projectInfoId" value="${projectInfoId}"/>
 	 
 	<div class="row">
 		<div class="col-sm-3 form-group">
 		<appfuse:label styleClass="control-label" key="projectInfo.counterparty.name"/> : 
-		<form:select path="counterparty.id" onchange="submit()" cssClass="form-control">
-    		<form:options items="${counterparties}" itemValue="id" itemLabel="name" />
-		</form:select>
+		<c:forEach var="counterparty" items="${counterparties}" varStatus="status">
+			<c:if test="${status.first}"><select id="counterpartyId" name="counterpartyId"></c:if>
+				<option value="${counterparty.id}"><c:out value="${counterparty.name}" /></option>
+			<c:if test="${status.last}"></select></c:if>
+		</c:forEach>
 		</div>
 	</div>
 	
@@ -44,7 +47,7 @@
     <div class="col-sm-3 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="subjectCapacity.checkTime"/>
-        <form:input path="checkTime" id="orgCodeVerificationDate" maxlength="20" cssClass="form-control"/>
+        <form:input path="checkTime" id="checkTime" maxlength="20" cssClass="form-control"/>
         <form:errors path="checkTime" cssClass="help-block"/>
     </div>
 	</div>
@@ -155,6 +158,25 @@
         <form:input path="comments" id="comments" maxlength="60" cssClass="form-control"/>
         <form:errors path="comments" cssClass="help-inline"/>
     </div>
+    </div>
+    
+    <c:if test="${not empty subjectCapacity.createUser}">
+        <form:hidden path="createUser.username" id="createUser"/>      
+        <form:hidden path="createTime"/>        
+    </c:if>
+    
+    <c:if test="${not empty subjectCapacity.updateUser}">
+        <form:hidden path="updateUser.username" />     
+        <form:hidden path="updateTime" />     
+    </c:if>
+    
+    <div class="form-group form-actions">
+        <button type="submit" class="btn btn-primary" name="method" value="SaveSubjectCapacity" onclick="bCancel=false">
+            <i class="icon-ok icon-white"></i> <fmt:message key="button.save"/>
+        </button>       
+        <button type="submit" class="btn btn-default" name="method" value="Cancel" onclick="bCancel=true">
+            <i class="icon-remove"></i> <fmt:message key="button.cancel"/>
+        </button>
     </div>
     
     </form:form>
