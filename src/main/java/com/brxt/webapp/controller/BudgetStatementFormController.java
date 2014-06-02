@@ -141,6 +141,14 @@ public class BudgetStatementFormController extends BaseFormController{
 			budgetStatement.setUpdateTime(new Date());
 		}
 		
+		String reportYear = budgetStatement.getReportMonth().substring(0, 4);
+		String reportMonth = budgetStatement.getReportMonth();
+		
+		if (BudgetType.BUDGET_MONTH.toString().equals(budgetStatement.getBudgetType())){
+			reportMonth = reportYear + "00";
+		}
+		budgetStatement.setReportMonth(reportMonth);
+		
 		MockBudgetRepsitory.getInstance().addOrUpdateBudget(budgetStatement);
 		
 		mav.addObject("budgetStatementFormModel", budgetStatement);
