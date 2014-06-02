@@ -21,7 +21,10 @@
     	<constructor-arg ref="projectInfoDao"/>
     	<constructor-arg ref="projectSizeDao"/>
 	</bean>
-    
+	
+	<bean id="subjectCapacityManager" class="com.brxt.service.impl.SubjectCapacityManagerImpl">    
+    	<constructor-arg ref="subjectCapacityDao"/>
+	</bean>
     
     <!-- Configure and Alternative PasswordTokenManager -->
 	<!-- <bean id="passwordTokenManager" class="org.appfuse.service.impl.PersistentPasswordTokenManagerImpl" autowire="default" /> -->
