@@ -16,4 +16,9 @@ public enum TradingRelationship {
 	{
 		return this.title;
 	}
+	
+	public String getTitle()
+	{
+		return this.title;
+	}
 }

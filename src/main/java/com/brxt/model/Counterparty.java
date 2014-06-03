@@ -11,7 +11,6 @@ import javax.persistence.Table;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.appfuse.model.BaseObject;
-import org.appfuse.model.Role;
 
 @Entity
 @Table(name = "counterparty")

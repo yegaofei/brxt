@@ -12,6 +12,11 @@ import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.ldap.userdetails.LdapUserDetails;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -20,6 +25,7 @@ import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -235,5 +241,25 @@ public class BaseFormController implements ServletContextAware {
 
     protected ServletContext getServletContext() {
         return servletContext;
+    }
+    
+    protected User getCurrentUser() {
+    	User currentUser = null;
+		final Authentication auth = SecurityContextHolder.getContext()
+				.getAuthentication();
+		if (auth != null) {
+			if (auth.getPrincipal() instanceof LdapUserDetails) {
+				LdapUserDetails ldapDetails = (LdapUserDetails) auth.getPrincipal();
+				String username = ldapDetails.getUsername();
+				currentUser = userManager.getUserByUsername(username);
+			} else if (auth.getPrincipal() instanceof UserDetails) {
+				currentUser = (User) auth.getPrincipal();
+			} else if (auth.getDetails() instanceof UserDetails) {
+				currentUser = (User) auth.getDetails();
+			} else {
+				throw new AccessDeniedException("User not properly authenticated.");
+			}
+		}
+		return currentUser;
     }
 }

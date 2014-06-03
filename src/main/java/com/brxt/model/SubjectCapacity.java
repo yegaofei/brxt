@@ -1,6 +1,5 @@
 package com.brxt.model;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -37,7 +36,7 @@ import org.hibernate.annotations.Type;
 })
 @Entity
 @Table(name = "subject_capacity")
-public class SubjectCapacity extends BaseObject implements Serializable {
+public class SubjectCapacity extends BaseObject {
 
 	private Long id;
 	private Counterparty counterparty; // 交易对手id

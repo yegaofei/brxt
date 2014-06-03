@@ -9,15 +9,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.tuckey.web.filters.urlrewrite.utils.StringUtils;
 
 import com.brxt.constant.SessionAttributes;
-import com.brxt.model.ProjectInfo;
 import com.brxt.model.SubjectCapacity;
 import com.brxt.service.SubjectCapacityManager;
 
@@ -43,11 +40,7 @@ public class SubjectCapacityController extends BaseFormController {
 	{
 		String projectInfoId = (String) request.getSession().getAttribute(SessionAttributes.PROJECT_INFO_ID);
 		List<SubjectCapacity> scList = null;
-		if(projectInfoId == null || projectInfoId.trim().equals(""))
-		{
-			return null;
-		}
-		else
+		if(!StringUtils.isBlank(projectInfoId))
 		{
 			scList = subjectCapacityManager.findByProjId(Long.valueOf(projectInfoId));
 		}

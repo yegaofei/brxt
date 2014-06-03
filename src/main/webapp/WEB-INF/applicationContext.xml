@@ -25,6 +25,10 @@
 	<bean id="subjectCapacityManager" class="com.brxt.service.impl.SubjectCapacityManagerImpl">    
     	<constructor-arg ref="subjectCapacityDao"/>
 	</bean>
+	
+	<bean id="creditInformationManager" class="com.brxt.service.impl.CreditInformationManagerImpl">    
+    	<constructor-arg ref="creditInformationDao"/>
+	</bean>
     
     <!-- Configure and Alternative PasswordTokenManager -->
 	<!-- <bean id="passwordTokenManager" class="org.appfuse.service.impl.PersistentPasswordTokenManagerImpl" autowire="default" /> -->

@@ -311,5 +311,117 @@
             <value>2014-05-14 06:06:06</value>
             <value>1</value>
         </row>
+        <row>
+        	<value>2</value>
+            <value description="project_info_id">1</value>
+            <value description="counterparty_id">3</value>
+            <value>2</value>
+            <value>2014-04-01</value>
+            <value>2014年已年检</value>
+            <value>2014年已年检</value>
+            <value>Y</value>
+            <value>Y</value>
+            <value>N</value>
+            <value>N</value>
+            <value>Y</value>
+            <value>N</value>
+            <value>Y</value>
+            <value>N</value>
+            <value>2013年4月10日发证</value>
+            <value>排查通过</value>
+            <value>-1</value>
+            <value>2014-05-14 06:06:06</value>
+            <value>-1</value>
+            <value>2014-05-14 06:06:06</value>
+            <value>1</value>
+        </row>
+        <row>
+        	<value>3</value>
+            <value description="project_info_id">2</value>
+            <value description="counterparty_id">3</value>
+            <value>2</value>
+            <value>2014-04-01</value>
+            <value>2014年已年检</value>
+            <value>2014年已年检</value>
+            <value>Y</value>
+            <value>Y</value>
+            <value>N</value>
+            <value>N</value>
+            <value>Y</value>
+            <value>N</value>
+            <value>Y</value>
+            <value>N</value>
+            <value>2013年4月10日发证</value>
+            <value>排查通过</value>
+            <value>-1</value>
+            <value>2014-05-14 06:06:06</value>
+            <value>-1</value>
+            <value>2014-05-14 06:06:06</value>
+            <value>1</value>
+        </row>
+    </table>
+    <table name="credit_information">
+    	<column>id</column>
+        <column>projectInfo_id</column>
+        <column>counterparty_id</column>   
+        <column>queryTime</column>
+        <column>debt</column>
+        <column>outstanding</column>
+        <column>balance</column>
+        <column>overdue</column>
+        <column>comment</column>
+        <column>createUser</column>
+        <column>createTime</column>
+        <column>updateUser</column>
+        <column>updateTime</column>
+        <column>version</column>
+        <row>
+        	<value>1</value>
+            <value description="project_info_id">1</value>
+            <value description="counterparty_id">1</value>
+            <value>2014-04-05</value>
+            <value>1000000000</value>
+            <value>5000000</value>
+            <value>6000000</value>
+            <value>Y</value>
+            <value>Pass</value>
+            <value>-1</value>
+            <value>2014-05-14 06:06:06</value>
+            <value>-1</value>
+            <value>2014-05-14 06:06:06</value>
+            <value>1</value>
+        </row>
+        <row>
+        	<value>2</value>
+            <value description="project_info_id">1</value>
+            <value description="counterparty_id">2</value>
+            <value>2014-04-05</value>
+            <value>1000000000</value>
+            <value>5000000</value>
+            <value>6000000</value>
+            <value>Y</value>
+            <value>Pass</value>
+            <value>-1</value>
+            <value>2014-05-14 06:06:06</value>
+            <value>-1</value>
+            <value>2014-05-14 06:06:06</value>
+            <value>1</value>
+        </row>
+        <row>
+        	<value>3</value>
+            <value description="project_info_id">2</value>
+            <value description="counterparty_id">3</value>
+            <value>2014-04-05</value>
+            <value>1000000000</value>
+            <value>5000000</value>
+            <value>6000000</value>
+            <value>Y</value>
+            <value>Pass</value>
+            <value>-1</value>
+            <value>2014-05-14 06:06:06</value>
+            <value>-1</value>
+            <value>2014-05-14 06:06:06</value>
+            <value>1</value>
+        </row>
     </table>
 </dataset>
