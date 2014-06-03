@@ -39,7 +39,7 @@ public class CreditInformationController extends BaseFormController{
 	
 	public CreditInformationController() {
 		setCancelView("redirect:/projectInfo");
-        setSuccessView("creditInformation");
+        setSuccessView("redirect:/creditInformation");
 	}
 	
 	@ModelAttribute("creditInformationList")
@@ -102,6 +102,7 @@ public class CreditInformationController extends BaseFormController{
 			case "Delete":				
 				creditInformationManager.remove(Long.valueOf(creditInformationId));
 				saveMessage(request, getText("creditInformation.delete.successful", locale));
+				mav.setViewName(getSuccessView());
 				break;
 				default:
 			}
