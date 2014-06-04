@@ -15,6 +15,7 @@
         <mapping class="com.brxt.model.Counterparty"/>
         <mapping class="com.brxt.model.SubjectCapacity"/>
         <mapping class="com.brxt.model.CreditInformation"/>
+        <mapping class="com.brxt.model.Repayment"/>
     </session-factory>
 </hibernate-configuration>
 
