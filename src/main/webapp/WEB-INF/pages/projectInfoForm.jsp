@@ -3,6 +3,7 @@
     <title><fmt:message key="projectInfoDetail.title"/></title>
     <meta name="menu" content="ProjectInfoSubMenu"/>
 </head>
+
 <c:set var="delObject" scope="request"><fmt:message key="projectInfoList.heading"/></c:set>
 <script type="text/javascript">var msgDelConfirm =
    "<fmt:message key="delete.confirm"><fmt:param value="${delObject}"/></fmt:message>";
@@ -69,10 +70,10 @@
   			<display:column titleKey="projectSize.startTime">
     			<c:choose>
         			<c:when test="${method == 'EditProjectSize' and param.projectSizeid == projectSize.id}">
-            			<input type="text" name="startTime" style="padding: 0"
-                			value="<fmt:formatDate value="${projectSize.startTime}" pattern="yyyy-MM-dd" />" />
+            			<input type="text" name="startTime" style="padding: 0" id="startTime" 
+                			value="<fmt:formatDate value="${projectSize.startTime}" pattern="${datePattern}" />" />
         			</c:when>
-        			<c:otherwise><fmt:formatDate value="${projectSize.startTime}" pattern="yyyy-MM-dd" /></c:otherwise>
+        			<c:otherwise><fmt:formatDate value="${projectSize.startTime}" pattern="${datePattern}" /></c:otherwise>
     			</c:choose>
   			</display:column>
   			<display:column titleKey="projectSize.size">
@@ -87,10 +88,10 @@
   			<display:column titleKey="projectSize.endTime">
       			<c:choose>
         			<c:when test="${method == 'EditProjectSize' and param.projectSizeid == projectSize.id}">
-            			<input type="text" name="endTime" style="padding: 0"
-                			value="<fmt:formatDate value="${projectSize.endTime}" pattern="yyyy-MM-dd" />" />
+            			<input type="text" name="endTime" style="padding: 0" id="endTime" 
+                			value="<fmt:formatDate value="${projectSize.endTime}" pattern="${datePattern}" />" />
         			</c:when>
-        			<c:otherwise><fmt:formatDate value="${projectSize.endTime}" pattern="yyyy-MM-dd" /></c:otherwise>
+        			<c:otherwise><fmt:formatDate value="${projectSize.endTime}" pattern="${datePattern}" /></c:otherwise>
     			</c:choose>
   			</display:column>
 		</display:table>
@@ -268,3 +269,15 @@
 
 <v:javascript formName="projectInfo" cdata="false" dynamicJavascript="true" staticJavascript="false"/>
 <script type="text/javascript" src="<c:url value='/scripts/validator.jsp'/>"></script>
+<script type="text/javascript" src="<c:url value='/scripts/bootstrap-datepicker.js'/>"></script>
+<script>
+  $(function() {
+    $('#endTime').datepicker({
+				format: 'yyyy-mm-dd'
+			});
+	$('#startTime').datepicker({
+				format: 'yyyy-mm-dd'
+			});		
+  });
+  </script>
+  
