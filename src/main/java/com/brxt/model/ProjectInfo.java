@@ -20,6 +20,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -41,13 +42,12 @@ public class ProjectInfo extends BaseObject implements Serializable {
 	private String projectName; //项目名称
 	private Double expectedReturn; //预期收益率
 	private String fundUsage; //资金运用方式
-	private String investmentName; //投资项目名称
+	private List<InvestmentStatus> investments = new ArrayList<InvestmentStatus>();
 	private String riskManager; //风险经理
 	private String delegateManager; //托管经理
 	private String trustManager; //信托经理
 	private String guaranteeMode; //保障措施
 	private String projectType; //是否事务管理类信托项目
-	private String capitalInvestmentType; //资金投向类型
 	private List<ProjectSize> projectSizes = new ArrayList<ProjectSize>(); //信托规模
 	private User createUser; //创建人
 	private Date createTime; //创建时间
@@ -109,15 +109,7 @@ public class ProjectInfo extends BaseObject implements Serializable {
 	public void setProjectSizes(List<ProjectSize> projectSizes) {
 		this.projectSizes = projectSizes;
 	}
-
-	public String getInvestmentName() {
-		return investmentName;
-	}
-
-	public void setInvestmentName(String investmentName) {
-		this.investmentName = investmentName;
-	}
-
+	
 	public String getProjectType() {
 		return projectType;
 	}
@@ -150,12 +142,13 @@ public class ProjectInfo extends BaseObject implements Serializable {
 		this.trustManager = trustManager;
 	}
 
-	public String getCapitalInvestmentType() {
-		return capitalInvestmentType;
+	@Transient
+	public List<InvestmentStatus> getInvestments() {
+		return investments;
 	}
 
-	public void setCapitalInvestmentType(String capitalInvestmentType) {
-		this.capitalInvestmentType = capitalInvestmentType;
+	public void setInvestments(List<InvestmentStatus> investments) {
+		this.investments = investments;
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER)

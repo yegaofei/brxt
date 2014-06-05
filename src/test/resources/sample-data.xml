@@ -144,8 +144,6 @@
 		<column>trustManager</column>
   		<column>guaranteeMode</column>
   		<column>projectType</column>
-  		<column>capitalInvestmentType</column>
-  		<column>investmentName</column>
 		<column>createUser</column>
 		<column>createTime</column>
 		<column>updateUser</column>
@@ -161,8 +159,6 @@
 			<value>张倩</value>
     		<value>由某某企业做担保</value>
     		<value>transaction_management</value>
-    		<value>real_estate</value>
-    		<value>某某商业地产项目</value>
 			<value>-2</value>
 			<value>2014-04-14 06:06:06</value>
 			<value>-2</value>
@@ -179,8 +175,6 @@
 			<value>张倩</value>
     		<value>由某某区政府做担保</value>
     		<value>non_transaction_management</value>
-    		<value>infrastructure</value>
-    		<value>某某光伏发电厂2期产能扩大项目</value>
 			<value>-1</value>
 			<value>2014-05-14 06:06:06</value>
 			<value>-1</value>
@@ -443,6 +437,42 @@
             <value>1000000000</value>
             <value>principle</value>
             <value></value>
+            <value>-1</value>
+            <value>2014-05-14 06:06:06</value>
+            <value>-1</value>
+            <value>2014-05-14 06:06:06</value>
+            <value>1</value>
+        </row>
+	</table>
+	<table name="investment_project">
+    	<column>id</column>
+        <column>projectInfo_id</column>
+        <column>name</column>   
+        <column>projectEndTime</column>
+        <column>investmentProjectType</column>
+        <column>startTime</column>
+        <column>endTime</column>
+        <column>investmentAmount</column>
+        <column>description</column>
+        <column>project_delayed</column>
+        <column>comments</column>
+        <column>createUser</column>
+        <column>createTime</column>
+        <column>updateUser</column>
+        <column>updateTime</column>
+        <column>version</column>
+        <row>
+        	<value>1</value>
+            <value description="project_info_id">1</value>
+            <value>名仕家园</value>
+            <value>2014-04-05</value>
+            <value>real_estate</value>
+            <value>2014-04-05</value>
+            <value>2014-04-05</value>
+            <value>888888888766655</value>
+            <value>1</value>
+            <value>N</value>
+            <value>1</value>
             <value>-1</value>
             <value>2014-05-14 06:06:06</value>
             <value>-1</value>

@@ -15,5 +15,10 @@ public enum CapitalInvestmentType {
 	public String toString() {
 		return title;
 	}
+	
+	public String getTitle()
+	{
+		return title;
+	}
 
 }

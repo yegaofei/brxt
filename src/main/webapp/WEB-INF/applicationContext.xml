@@ -17,11 +17,6 @@
     </bean  -->
 
     <!-- Add new Managers here -->
-    <bean id="projectInfoManager" class="com.brxt.service.impl.ProjectInfoManagerImpl">    
-    	<constructor-arg ref="projectInfoDao"/>
-    	<constructor-arg ref="projectSizeDao"/>
-	</bean>
-	
 	<bean id="subjectCapacityManager" class="com.brxt.service.impl.SubjectCapacityManagerImpl">    
     	<constructor-arg ref="subjectCapacityDao"/>
 	</bean>

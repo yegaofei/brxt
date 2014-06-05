@@ -47,6 +47,17 @@ public class ProjectInfoFormController extends BaseFormController {
 	private static final Map<String,String> ProjectTypes = new HashMap<String,String>();
 	private static final List<CounterpartyType> CounterpartyTypes = new ArrayList<CounterpartyType>();
 	
+	@Autowired
+	public void setProjectInfoManager(
+			@Qualifier("projectInfoManager") ProjectInfoManager projectInfoManager) {
+		this.projectInfoManager = projectInfoManager;
+	}
+
+	public ProjectInfoFormController() {
+		setCancelView("redirect:projectInfo");
+		setSuccessView("redirect:projectInfo");
+	}
+	
 	private synchronized void loadDropDownList(final Locale locale)
 	{
 		if(CapitalInvestmentTypes.isEmpty())
@@ -77,17 +88,6 @@ public class ProjectInfoFormController extends BaseFormController {
 		}
 	}
 	
-	@Autowired
-	public void setProjectInfoManager(
-			@Qualifier("projectInfoManager") ProjectInfoManager projectInfoManager) {
-		this.projectInfoManager = projectInfoManager;
-	}
-
-	public ProjectInfoFormController() {
-		setCancelView("redirect:projectInfo");
-		setSuccessView("redirect:projectInfo");
-	}
-
 	private ProjectInfo getProjectInfo(HttpServletRequest request){
 		String id = request.getParameter("id");
 		if (!StringUtils.isBlank(id)) {

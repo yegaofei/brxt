@@ -103,33 +103,23 @@
         
     <div class="row">
     <spring:bind path="projectInfo.fundUsage">
-    <div class="col-sm-7 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    <div class="col-sm-6 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="projectInfo.fundUsage"/>:
-        <form:input path="fundUsage" id="fundUsage" maxlength="300"/>
+        <form:input path="fundUsage" id="fundUsage" maxlength="300" cssClass="form-control"/>
         <form:errors path="fundUsage" cssClass="help-inline"/>
     </div>
+    
+    <div class="col-sm-5 form-group">
+		<display:table name="projectInfo.investments" id="investment" class="table table-condensed table-striped table-hover">
+  			<display:column property="projectName" sortable="false" titleKey="projectInfo.investmentName"/>
+  			<display:column sortable="false" titleKey="projectInfo.capitalInvestmentType">
+  				<fmt:message key="${investment.capitalInvestmentType.title}"/>
+  			</display:column>
+		</display:table>
+     </div>
     </div>
     
-    <div class="row">
-    <spring:bind path="projectInfo.capitalInvestmentType">
-    <div class="col-sm-4 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
-    </spring:bind>
-        <appfuse:label styleClass="control-label" key="projectInfo.capitalInvestmentType"/>:
-        <form:select path="capitalInvestmentType">    		
-			<form:options items="${capitalInvestmentTypes}" />
-		</form:select>
-        <form:errors path="capitalInvestmentType" cssClass="help-block"/>
-    </div>
-    <spring:bind path="projectInfo.investmentName">
-    <div class="col-sm-7 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
-    </spring:bind>
-        <appfuse:label styleClass="control-label" key="projectInfo.investmentName"/>:
-        <form:input path="investmentName" id="investmentName" maxlength="200"/>
-        <form:errors path="investmentName" cssClass="help-inline"/>
-    </div>
-	</div>
-	
 	<div class="row">
     <spring:bind path="projectInfo.riskManager">
     <div class="col-sm-4 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">

@@ -84,7 +84,7 @@ public class SubjectCapacityFormController extends BaseFormController {
 
 			switch (method) {
 			case "SaveSubjectCapacity":
-				User currentUser = RequestUtil.getCurrentUser(getUserManager());
+				User currentUser = getCurrentUser();
 				Long subjectCapacityId = subjectCapacity.getId();
 				ProjectInfo projectInfo = projectInfoManager.get(projectInfoId);
 				subjectCapacity.setProjectInfo(projectInfo);

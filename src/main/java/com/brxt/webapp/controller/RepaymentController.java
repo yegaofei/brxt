@@ -139,7 +139,7 @@ public class RepaymentController extends BaseFormController {
 
 			switch (method) {
 			case "SaveRepayment":
-				User currentUser = RequestUtil.getCurrentUser(getUserManager());
+				User currentUser = getCurrentUser();
 				ProjectInfo projectInfo = projectInfoManager.get(projectInfoId);
 				repayment.setProjectInfo(projectInfo);
 				Long repaymentId = repayment.getId();

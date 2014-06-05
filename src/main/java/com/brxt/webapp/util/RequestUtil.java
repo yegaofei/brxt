@@ -118,23 +118,5 @@ public final class RequestUtil {
         return url.toString();
     }
     
-    public static User getCurrentUser(UserManager userManager) {
-    	User currentUser = null;
-		final Authentication auth = SecurityContextHolder.getContext()
-				.getAuthentication();
-		if (auth != null) {
-			if (auth.getPrincipal() instanceof LdapUserDetails) {
-				LdapUserDetails ldapDetails = (LdapUserDetails) auth.getPrincipal();
-				String username = ldapDetails.getUsername();
-				currentUser = userManager.getUserByUsername(username);
-			} else if (auth.getPrincipal() instanceof UserDetails) {
-				currentUser = (User) auth.getPrincipal();
-			} else if (auth.getDetails() instanceof UserDetails) {
-				currentUser = (User) auth.getDetails();
-			} else {
-				throw new AccessDeniedException("User not properly authenticated.");
-			}
-		}
-		return currentUser;
-    }
+   
 }
