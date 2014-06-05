@@ -424,4 +424,30 @@
             <value>1</value>
         </row>
     </table>
+    <table name="repayment">
+    	<column>id</column>
+        <column>projectInfo_id</column>
+        <column>repaymentTime</column>   
+        <column>amount</column>
+        <column>type</column>
+        <column>comment</column>
+        <column>createUser</column>
+        <column>createTime</column>
+        <column>updateUser</column>
+        <column>updateTime</column>
+        <column>version</column>
+        <row>
+        	<value>1</value>
+            <value description="project_info_id">1</value>
+            <value>2014-04-05</value>
+            <value>1000000000</value>
+            <value>principle</value>
+            <value></value>
+            <value>-1</value>
+            <value>2014-05-14 06:06:06</value>
+            <value>-1</value>
+            <value>2014-05-14 06:06:06</value>
+            <value>1</value>
+        </row>
+	</table>
 </dataset>

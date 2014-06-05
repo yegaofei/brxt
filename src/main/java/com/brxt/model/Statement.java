@@ -5,6 +5,8 @@ import java.util.Date;
 import org.appfuse.model.BaseObject;
 import org.appfuse.model.User;
 
+import com.brxt.model.enums.StatementType;
+
 public abstract class Statement extends BaseObject{
 
 	/**

@@ -14,8 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.tuckey.web.filters.urlrewrite.utils.StringUtils;
 
 import com.brxt.constant.SessionAttributes;
-import com.brxt.model.CounterpartyType;
 import com.brxt.model.ProjectInfo;
+import com.brxt.model.enums.CounterpartyType;
 import com.brxt.service.ProjectInfoManager;
 
 @Controller

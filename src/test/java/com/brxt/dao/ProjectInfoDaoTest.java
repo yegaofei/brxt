@@ -7,7 +7,6 @@ import static org.junit.Assert.assertTrue;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
 import org.appfuse.dao.UserDao;
@@ -16,9 +15,9 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.brxt.model.Counterparty;
-import com.brxt.model.CounterpartyType;
 import com.brxt.model.ProjectInfo;
 import com.brxt.model.ProjectSize;
+import com.brxt.model.enums.CounterpartyType;
 
 
 public class ProjectInfoDaoTest extends BaseDaoTestCase {
@@ -32,12 +31,6 @@ public class ProjectInfoDaoTest extends BaseDaoTestCase {
 	@Autowired
 	private CounterpartyDao counterpartyDao;
 		
-	@Test
-	public void testFindProjectInfoByProjectName() throws Exception {
-	    List<ProjectInfo> projectInfo = projectInfoDao.findByProjectName("TestProject1");
-	    assertTrue(projectInfo.size() > 0);
-	    assertTrue(projectInfo.get(0).getProjectSizes().size() > 0);
-	}
 	
 	@Test //(expected = DataAccessException.class)
 	public void testAddAndRemoveProjectInfo() throws Exception {

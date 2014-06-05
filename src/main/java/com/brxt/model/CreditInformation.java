@@ -23,6 +23,8 @@ import org.appfuse.model.BaseObject;
 import org.appfuse.model.User;
 import org.hibernate.annotations.Type;
 
+import com.brxt.model.enums.TradingRelationship;
+
 @NamedNativeQueries({
 	@NamedNativeQuery(
 			name = "searchCIByProjectInfoId",

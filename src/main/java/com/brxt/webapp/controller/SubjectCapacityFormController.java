@@ -109,7 +109,7 @@ public class SubjectCapacityFormController extends BaseFormController {
 					subjectCapacity.setUpdateUser(currentUser);
 				} else {
 					// Update Existed
-					User createUser = getUserManager().getUserByUsername(projectInfo.getCreateUser().getUsername());
+					User createUser = getUserManager().getUserByUsername(subjectCapacity.getCreateUser().getUsername());
 					subjectCapacity.setCreateUser(createUser);
 					subjectCapacity.setUpdateTime(new Date());
 					subjectCapacity.setUpdateUser(currentUser);

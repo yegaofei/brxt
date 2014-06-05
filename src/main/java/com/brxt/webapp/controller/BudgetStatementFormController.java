@@ -25,8 +25,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.brxt.model.BudgetStatement;
-import com.brxt.model.BudgetType;
 import com.brxt.model.MockBudgetRepsitory;
+import com.brxt.model.enums.BudgetType;
 
 @Controller
 @RequestMapping("/budgetStatementForm*")

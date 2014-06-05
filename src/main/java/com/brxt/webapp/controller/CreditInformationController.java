@@ -20,7 +20,7 @@ import com.brxt.constant.SessionAttributes;
 import com.brxt.model.Counterparty;
 import com.brxt.model.CreditInformation;
 import com.brxt.model.ProjectInfo;
-import com.brxt.model.TradingRelationship;
+import com.brxt.model.enums.TradingRelationship;
 import com.brxt.service.CreditInformationManager;
 
 

@@ -30,11 +30,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.brxt.constant.SessionAttributes;
-import com.brxt.model.CapitalInvestmentType;
-import com.brxt.model.CounterpartyType;
 import com.brxt.model.ProjectInfo;
 import com.brxt.model.ProjectSize;
-import com.brxt.model.ProjectType;
+import com.brxt.model.enums.CapitalInvestmentType;
+import com.brxt.model.enums.CounterpartyType;
+import com.brxt.model.enums.ProjectType;
 import com.brxt.service.ProjectInfoManager;
 
 @Controller
@@ -186,12 +186,7 @@ public class ProjectInfoFormController extends BaseFormController {
 		}
 
 		boolean isNew = (projectInfo.getId() == null);
-		User currentUser = null;
-		final Authentication auth = SecurityContextHolder.getContext()
-				.getAuthentication();
-		if (auth != null) {
-			currentUser = getCurrentUser(auth, getUserManager());
-		}
+		User currentUser = getCurrentUser();
 		if (isNew) {
 			// Add
 			projectInfo.setCreateUser(currentUser);
@@ -272,22 +267,6 @@ public class ProjectInfoFormController extends BaseFormController {
 		}
 		projectInfoManager.save(projectInfo);
 		return mav;
-	}
-
-	private User getCurrentUser(Authentication auth, UserManager userManager) {
-		User currentUser;
-		if (auth.getPrincipal() instanceof LdapUserDetails) {
-			LdapUserDetails ldapDetails = (LdapUserDetails) auth.getPrincipal();
-			String username = ldapDetails.getUsername();
-			currentUser = userManager.getUserByUsername(username);
-		} else if (auth.getPrincipal() instanceof UserDetails) {
-			currentUser = (User) auth.getPrincipal();
-		} else if (auth.getDetails() instanceof UserDetails) {
-			currentUser = (User) auth.getDetails();
-		} else {
-			throw new AccessDeniedException("User not properly authenticated.");
-		}
-		return currentUser;
 	}
 
 	private List<ProjectSize> deleteProjectSize(String id,

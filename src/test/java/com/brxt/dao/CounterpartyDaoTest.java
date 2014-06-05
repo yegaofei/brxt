@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.brxt.model.Counterparty;
-import com.brxt.model.CounterpartyType;
+import com.brxt.model.enums.CounterpartyType;
 
 public class CounterpartyDaoTest extends BaseDaoTestCase {
 

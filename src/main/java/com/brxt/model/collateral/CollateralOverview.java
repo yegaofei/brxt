@@ -1,7 +1,7 @@
-package com.brxt.model;
+package com.brxt.model.collateral;
 
-import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -11,8 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedNativeQueries;
-import javax.persistence.NamedNativeQuery;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -21,28 +19,18 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.appfuse.model.BaseObject;
 import org.appfuse.model.User;
 
-@NamedNativeQueries({
-	@NamedNativeQuery(
-			name = "searchRepaymentByProjectInfoId",
-			query = "select * from repayment s where s.projectInfo_id = :projectInfo_id",
-		        resultClass = Repayment.class
-			)
-})
+import com.brxt.model.ProjectInfo;
+
 
 @Entity
-@Table(name = "repayment")
-public class Repayment extends BaseObject {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7530980936009246680L;
+@Table(name = "collateral_overview")
+public class CollateralOverview extends BaseObject {
+
 	private Long id;
-	private ProjectInfo projectInfo;
-	private Date repaymentTime;
-	private BigDecimal amount;
-	private String type;
-	private String comment;
+	private ProjectInfo projectInfo; // 项目id
+	private String description;
+	private List<Collateral> collaterals;
+	
 	private User createUser; // 创建人
 	private Date createTime; // 创建时间
 	private User updateUser; // 最后更新人
@@ -66,29 +54,18 @@ public class Repayment extends BaseObject {
 	public void setProjectInfo(ProjectInfo projectInfo) {
 		this.projectInfo = projectInfo;
 	}
-	public Date getRepaymentTime() {
-		return repaymentTime;
+	public String getDescription() {
+		return description;
 	}
-	public void setRepaymentTime(Date repaymentTime) {
-		this.repaymentTime = repaymentTime;
+	public void setDescription(String description) {
+		this.description = description;
 	}
-	public BigDecimal getAmount() {
-		return amount;
+	
+	public List<Collateral> getCollaterals() {
+		return collaterals;
 	}
-	public void setAmount(BigDecimal amount) {
-		this.amount = amount;
-	}
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
-	}
-	public String getComment() {
-		return comment;
-	}
-	public void setComment(String comment) {
-		this.comment = comment;
+	public void setCollaterals(List<Collateral> collaterals) {
+		this.collaterals = collaterals;
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -120,6 +97,7 @@ public class Repayment extends BaseObject {
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
+	
 	@Version
 	public Integer getVersion() {
 		return version;
@@ -127,39 +105,36 @@ public class Repayment extends BaseObject {
 	public void setVersion(Integer version) {
 		this.version = version;
 	}
-
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
-		.append(this.repaymentTime).toString();
+		.append(this.description).toString();
 	}
+	
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) {
 			return true;
 		}
-		if (!(o instanceof Repayment)) {
+		if (!(o instanceof CollateralOverview)) {
 			return false;
 		}
 
-		final Repayment repayment = (Repayment) o;
+		final CollateralOverview collateralOverview = (CollateralOverview) o;
 
-		return !(repaymentTime != null ? !repaymentTime
-				.equals(repayment.repaymentTime)
-				: repayment.repaymentTime != null)
+		return !(description != null ? !description
+				.equals(collateralOverview.description)
+				: collateralOverview.description != null)
 				&& !(projectInfo != null ? !projectInfo
-						.equals(repayment.projectInfo)
-						: repayment.projectInfo != null)
-				&& !(type != null ? !type
-						.equals(repayment.type)
-						: repayment.type != null);
+						.equals(collateralOverview.projectInfo)
+						: collateralOverview.projectInfo != null);
 	}
+	
 	@Override
 	public int hashCode() {
 		int result;
-        result = (repaymentTime != null ? repaymentTime.hashCode() : 0);
+        result = (description != null ? description.hashCode() : 0);
         result = 29 * result + (projectInfo != null ? projectInfo.hashCode() : 0);
-        result = 29 * result + (type != null ? type.hashCode() : 0);
         return result;
 	}
 }
