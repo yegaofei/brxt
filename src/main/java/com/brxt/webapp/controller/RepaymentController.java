@@ -23,7 +23,6 @@ import com.brxt.model.ProjectInfo;
 import com.brxt.model.Repayment;
 import com.brxt.service.ProjectInfoManager;
 import com.brxt.service.RepaymentManager;
-import com.brxt.webapp.util.RequestUtil;
 
 @Controller
 public class RepaymentController extends BaseFormController {
@@ -49,7 +48,7 @@ public class RepaymentController extends BaseFormController {
 	}
 	
 	@RequestMapping(value = "/repayment*", method = RequestMethod.POST)
-	public ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response)
+	public ModelAndView onSubmit(final HttpServletRequest request, final HttpServletResponse response)
 	{
 		ModelAndView mav = new ModelAndView();
 		String method = request.getParameter("method");

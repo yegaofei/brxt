@@ -6,14 +6,19 @@ import com.brxt.model.enums.CapitalInvestmentType;
 
 public class ProjectProgress {
 	
-	private Date deadline;
-	private CapitalInvestmentType capitalInvestmentType;
-	private Boolean investment;
-	private Boolean supplyLiquid;
-	private String projectName;
-
+	private Long id;
+	private Date deadline; //项目进展截止时间
+	private CapitalInvestmentType capitalInvestmentType; //资金投向类型  
+	private Boolean investment; //投资项目进展情况/还款来源项目销售进展情况
+	private Boolean supplyLiquid; 
+	private String projectName; //项目名称
 	
-	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
 	public Boolean getSupplyLiquid() {
 		return supplyLiquid;
 	}

@@ -10,5 +10,5 @@ import com.brxt.model.projectprogress.InvestmentProject;
 public interface ProjProgressManager extends GenericManager<InvestmentProject, Long> {
 
 	public List<ProjectProgress> getProjectProgressList(Long projectInfoId);
-	
+	public String getProgressForm(Long id);
 }
