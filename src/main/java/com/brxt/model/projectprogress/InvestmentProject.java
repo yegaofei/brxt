@@ -52,6 +52,7 @@ public class InvestmentProject extends BaseObject  {
 	private Date startTime;
 	private Date endTime; //预计何时竣工
 	private BigDecimal investmentAmount; //截至本期已投资额
+	private BigDecimal totalAmout; //预计总投资额
 	private String description; //项目进度描述
 	private Boolean delayed;
 	private String comments;
@@ -137,6 +138,14 @@ public class InvestmentProject extends BaseObject  {
 		this.investmentAmount = investmentAmount;
 	}
 
+	public BigDecimal getTotalAmout() {
+		return totalAmout;
+	}
+
+	public void setTotalAmout(BigDecimal totalAmout) {
+		this.totalAmout = totalAmout;
+	}
+
 	public String getDescription() {
 		return description;
 	}
@@ -163,7 +172,7 @@ public class InvestmentProject extends BaseObject  {
 		this.comments = comments;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "createUser", nullable = true)
 	public User getCreateUser() {
 		return createUser;
@@ -181,7 +190,7 @@ public class InvestmentProject extends BaseObject  {
 		this.createTime = createTime;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "updateUser", nullable = true)
 	public User getUpdateUser() {
 		return updateUser;

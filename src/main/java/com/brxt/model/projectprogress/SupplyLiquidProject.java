@@ -16,6 +16,9 @@ import javax.persistence.NamedNativeQuery;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+import org.appfuse.model.BaseObject;
 import org.appfuse.model.User;
 import org.hibernate.annotations.Type;
 
@@ -31,8 +34,12 @@ import com.brxt.model.ProjectInfo;
 
 @Entity
 @Table(name = "supply_liquid_project")
-public class SupplyLiquidProject {
+public class SupplyLiquidProject extends BaseObject {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6426397213432166534L;
 	private Long id;
 	private ProjectInfo projectInfo;
 	private String name;
@@ -171,4 +178,42 @@ public class SupplyLiquidProject {
 	public void setProjectEndTime(Date projectEndTime) {
 		this.projectEndTime = projectEndTime;
 	}
+	
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
+		.append(this.name).append(this.projectEndTime).toString();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof SupplyLiquidProject)) {
+			return false;
+		}
+
+		final SupplyLiquidProject supplyLiquidProject = (SupplyLiquidProject) o;
+
+		return !(name != null ? !name
+				.equals(supplyLiquidProject.name)
+				: supplyLiquidProject.name != null)
+				&& !(projectInfo != null ? !projectInfo
+						.equals(supplyLiquidProject.projectInfo)
+						: supplyLiquidProject.projectInfo != null)
+				&& !(projectEndTime != null ? !projectEndTime
+						.equals(supplyLiquidProject.projectEndTime)
+						: supplyLiquidProject.projectEndTime != null);
+	}
+
+	@Override
+	public int hashCode() {
+		int result;
+        result = (name != null ? name.hashCode() : 0);
+        result = 29 * result + (projectInfo != null ? projectInfo.hashCode() : 0);
+        result = 29 * result + (projectEndTime != null ? projectEndTime.hashCode() : 0);
+        return result;
+	}
+	
 }

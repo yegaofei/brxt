@@ -2,6 +2,9 @@
 <head>
     <title><fmt:message key="projectInfoDetail.title"/></title>
     <meta name="menu" content="ProjectInfoSubMenu"/>
+    <link rel="stylesheet" type="text/css" href="${base}/webjars/bootstrap-datepicker/1.2.0/css/datepicker.css"/>
+    <script type="text/javascript" src="${base}/webjars/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="${base}/webjars/bootstrap-datepicker/1.2.0/js/locales/bootstrap-datepicker.zh-CN.js" charset="UTF-8"></script>
 </head>
 
 <c:set var="delObject" scope="request"><fmt:message key="projectInfoList.heading"/></c:set>
@@ -259,13 +262,15 @@
 
 <v:javascript formName="projectInfo" cdata="false" dynamicJavascript="true" staticJavascript="false"/>
 <script type="text/javascript" src="<c:url value='/scripts/validator.jsp'/>"></script>
-<script type="text/javascript" src="<c:url value='/scripts/bootstrap-datepicker.js'/>"></script>
+
 <script>
   $(function() {
     $('#endTime').datepicker({
+				//language: 'zh-CN'
 				format: 'yyyy-mm-dd'
 			});
 	$('#startTime').datepicker({
+				//language: 'zh-CN'
 				format: 'yyyy-mm-dd'
 			});		
   });

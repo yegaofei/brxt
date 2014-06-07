@@ -12,7 +12,13 @@
     <h2><fmt:message key='projectProgress.heading'/></h2>
     <form name="projectProgress" action="/projectProgress" method="post">
  	<div id="actions" class="btn-group">
-        <a class="btn btn-primary" href="<c:url value='/projectProgress'/>">
+ 		<ul class="dropdown-menu">
+			<li><a href="/progress/investmentProjectForm"><fmt:message key="project.type.investment"/></a></li>
+			<li><a href="/progress/repaymentProjectForm"><fmt:message key="project.type.repayment"/></a></li>
+			<li><a href="/progress/investmentProjectForm?type=infrastructure"><fmt:message key="project.type.infrastructure"/></a></li>
+			<li><a href="/progress/supplyLiqProjectForm"><fmt:message key="project.type.supplyLiq"/></a></li>
+        </ul>
+        <a class="btn btn-primary" data-toggle="dropdown" href="#">
             <i class="icon-plus icon-white"></i> <fmt:message key="button.add"/></a>
         <button type="submit" class="btn btn-primary" name="method" value="Delete" onclick="bCancel=true;return confirmMessage(msgDelConfirm)">
                 <i class="icon-remove"></i> <fmt:message key="button.delete"/>
@@ -20,7 +26,7 @@
         <button type="submit" class="btn btn-primary" name="method" value="Edit">
                 <i class="icon-ok icon-white"></i> <fmt:message key="button.edit"/>
         </button>    
-        <a class="btn btn-default" href="<c:url value='/projectProgressForm?id=${sessionScope.project_info_id}'/>">
+        <a class="btn btn-default" href="<c:url value='/projectInfoForm?id=${sessionScope.project_info_id}'/>">
             <i class="icon-ok"></i> <fmt:message key="button.done"/></a>
     </div>
  

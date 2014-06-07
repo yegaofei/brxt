@@ -46,6 +46,14 @@ implements ProjProgressManager {
 		this.repaymentProjectDao = repaymentProjectDao;
 	}
 
+	public RepaymentProject getRepaymentProject(Long id){
+		return repaymentProjectDao.get(id);
+	}
+	
+	public SupplyLiquidProject getSupplyLiquidProject(Long id){
+		return supplyLiquidProjectDao.get(id);
+	}
+	
 	@Override
 	public List<ProjectProgress> getProjectProgressList(Long projectInfoId) {
 		List<InvestmentProject> investmentProjects = investmentProjectDao.findByProjId(projectInfoId);
@@ -118,6 +126,24 @@ implements ProjProgressManager {
 		}
 	}
 	
+	public Long getRealId(Long id)
+	{
+		Long realId = 0L;
+		if(id > BASE_REPAYMENT_PROJECT_ID)
+		{
+			realId = id - BASE_REPAYMENT_PROJECT_ID;
+		}
+		else if (id > BASE_SUPPLY_LIQUIDPROJECT_ID)
+		{
+			realId = id - BASE_SUPPLY_LIQUIDPROJECT_ID;
+		} 
+		else if (id > BASE_INVESTMENT_PROJECT_ID)
+		{
+			realId = id - BASE_INVESTMENT_PROJECT_ID;
+		}
+		return realId;
+	}
+	
 	public String getProgressForm(Long id)
 	{
 		if(id > BASE_REPAYMENT_PROJECT_ID)
@@ -136,5 +162,15 @@ implements ProjProgressManager {
 		{
 			return "";
 		}
+	}
+
+	@Override
+	public void saveRepaymentProject(RepaymentProject o) {
+		repaymentProjectDao.save(o);
+	}
+
+	@Override
+	public void saveSupplyLiqidProject(SupplyLiquidProject o) {
+		supplyLiquidProjectDao.save(o);
 	}
 }

@@ -1,62 +1,107 @@
 <%@ include file="/common/taglibs.jsp"%>
 <head>
-    <title><fmt:message key="projectProgress.title"/></title>
-    <meta name="menu" content="ProjectInfoSubMenu"/>
+    <title><fmt:message key="investmentProject.title"/></title>
 </head>
  
 <div class="col-sm-2">
-    <h3><fmt:message key='projectProgress.heading'/></h3>
+    <h3><fmt:message key='investmentProject.title'/></h3>
 </div>
  
 <div class="col-sm-8">
     <form:errors path="*" cssClass="alert alert-danger alert-dismissable" element="div"/>
-    <form:form commandName="projectProgress" method="post" action="projectProgressForm" id="projectProgressForm" cssClass="well">
+    <form:form commandName="investmentProject" method="post" action="/progress/investmentProjectForm" id="investmentProjectForm" cssClass="well">
     <form:hidden path="id"/>
 	<form:hidden path="version"/>
+	<form:hidden path="investmentProjectType"/>
 	<input type="hidden" name="projectInfoId" value="${projectInfoId}"/>
 	
-    <spring:bind path="projectProgress.projectProgressTime">
+	<div class="form-group">
+        <appfuse:label styleClass="control-label" key="investmentProject.type"/> : 
+        <fmt:message key="${investmentProject.investmentProjectType}" />
+    </div>
+	
+    <spring:bind path="investmentProject.name">
     <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
-        <appfuse:label styleClass="control-label" key="projectProgress.projectProgressTime"/>
-        <form:input path="projectProgressTime" id="queryTime" maxlength="20" cssClass="form-control"/>
-        <form:errors path="projectProgressTime" cssClass="help-block"/>
+        <appfuse:label styleClass="control-label" key="investmentProject.name"/>
+        <form:input path="name" id="name" maxlength="20" cssClass="form-control"/>
+        <form:errors path="name" cssClass="help-block"/>
     </div>
 
-    <spring:bind path="projectProgress.amount">
+    <spring:bind path="investmentProject.projectEndTime">
     <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
-        <appfuse:label styleClass="control-label" key="projectProgress.amount"/>
-        <form:input path="amount" id="amount" maxlength="60" cssClass="form-control"/>
-        <form:errors path="amount" cssClass="help-inline"/>
+        <appfuse:label styleClass="control-label" key="investmentProject.projectEndTime"/>
+        <form:input path="projectEndTime" id="projectEndTime" maxlength="60" cssClass="form-control"/>
+        <form:errors path="projectEndTime" cssClass="help-inline"/>
     </div>
     
-    <spring:bind path="projectProgress.type">
+    <spring:bind path="investmentProject.startTime">
     <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
-        <appfuse:label styleClass="control-label" key="projectProgress.type"/>
+        <appfuse:label styleClass="control-label" key="investmentProject.startTime"/>
+        <form:input path="startTime" id="startTime" maxlength="60" cssClass="form-control"/>
+        <form:errors path="startTime" cssClass="help-inline"/>
+    </div>
+    
+    <spring:bind path="investmentProject.endTime">
+    <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    </spring:bind>
+        <appfuse:label styleClass="control-label" key="investmentProject.endTime"/>
+        <form:input path="endTime" id="endTime" maxlength="60" cssClass="form-control"/>
+        <form:errors path="endTime" cssClass="help-inline"/>
+    </div>
+    
+    <spring:bind path="investmentProject.investmentAmount">
+    <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    </spring:bind>
+        <appfuse:label styleClass="control-label" key="investmentProject.investmentAmount"/>
+        <form:input path="investmentAmount" id="investmentAmount" maxlength="60" cssClass="form-control"/>
+        <form:errors path="investmentAmount" cssClass="help-inline"/>
+    </div>
+    
+    <spring:bind path="investmentProject.totalAmout">
+    <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    </spring:bind>
+        <appfuse:label styleClass="control-label" key="investmentProject.totalAmout"/>
+        <form:input path="totalAmout" id="totalAmout" maxlength="60" cssClass="form-control"/>
+        <form:errors path="totalAmout" cssClass="help-inline"/>
+    </div>
+    
+    <spring:bind path="investmentProject.description">
+    <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    </spring:bind>
+        <appfuse:label styleClass="control-label" key="investmentProject.description"/>
+        <form:input path="description" id="description" maxlength="60" cssClass="form-control"/>
+        <form:errors path="description" cssClass="help-inline"/>
+    </div>
+    
+    <spring:bind path="investmentProject.delayed">
+    <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    </spring:bind>
+        <appfuse:label styleClass="control-label" key="investmentProject.delayed"/>
         <label class="checkbox-inline">
-        	<form:radiobutton path="type" value="principle" /><fmt:message key='principle'/> 
+        	<form:radiobutton path="delayed" value="true" /><fmt:message key='label.yes'/> 
         </label>
         <label class="checkbox-inline">
-			<form:radiobutton path="type" value="interest" /><fmt:message key='interest'/>
+			<form:radiobutton path="delayed" value="false" /><fmt:message key='label.no'/>
 		</label>
     </div>
     
-    <spring:bind path="projectProgress.comment">
+    <spring:bind path="investmentProject.comments">
     <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
-        <appfuse:label styleClass="control-label" key="projectProgress.comment"/>
-        <form:input path="comment" id="comment" maxlength="60" cssClass="form-control"/>
-        <form:errors path="comment" cssClass="help-inline"/>
+        <appfuse:label styleClass="control-label" key="investmentProject.comments"/>
+        <form:input path="comments" id="comments" maxlength="60" cssClass="form-control"/>
+        <form:errors path="comments" cssClass="help-inline"/>
     </div>
     
-    <c:if test="${not empty projectProgress.createUser}">
+    <c:if test="${not empty investmentProject.createUser}">
         <form:hidden path="createUser.username" id="createUser"/>      
         <form:hidden path="createTime"/>        
     </c:if>
     
-    <c:if test="${not empty projectProgress.updateUser}">
+    <c:if test="${not empty investmentProject.updateUser}">
         <form:hidden path="updateUser.username" />     
         <form:hidden path="updateTime" />     
     </c:if>
@@ -73,5 +118,5 @@
     </form:form>
 </div>
 
-<v:javascript formName="projectProgress" cdata="false" dynamicJavascript="true" staticJavascript="false"/>
+<v:javascript formName="investmentProject" cdata="false" dynamicJavascript="true" staticJavascript="false"/>
 <script type="text/javascript" src="<c:url value='/scripts/validator.jsp'/>"></script>
