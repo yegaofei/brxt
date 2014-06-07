@@ -54,6 +54,11 @@ implements ProjProgressManager {
 		return supplyLiquidProjectDao.get(id);
 	}
 	
+	public List<InvestmentProject> getInvestmentProjects(Long projectInfoId) {
+		List<InvestmentProject> investmentProjects = investmentProjectDao.findByProjId(projectInfoId);
+		return investmentProjects;
+	}
+	
 	@Override
 	public List<ProjectProgress> getProjectProgressList(Long projectInfoId) {
 		List<InvestmentProject> investmentProjects = investmentProjectDao.findByProjId(projectInfoId);

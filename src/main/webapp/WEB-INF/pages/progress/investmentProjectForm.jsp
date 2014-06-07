@@ -96,6 +96,13 @@
         <form:errors path="comments" cssClass="help-inline"/>
     </div>
     
+    <c:if test="${empty investmentProject.id}">
+    <div class="form-group">
+    	<form:checkbox path="sameAsRepayment" id="sameAsRepayment"/>
+        <fmt:message key="investmentProject.same.repayment"/>
+    </div>
+    </c:if>
+    
     <c:if test="${not empty investmentProject.createUser}">
         <form:hidden path="createUser.username" id="createUser"/>      
         <form:hidden path="createTime"/>        

@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.brxt.model.finance.BudgetStatement;
+import com.brxt.model.finance.BudgetStatementModel;
+
 public class MockBudgetRepsitory {
 	private Map<String, Map<String,BudgetStatement>> savedBudgetStatement = new TreeMap<String, Map<String,BudgetStatement>>();
 	private static MockBudgetRepsitory mockBudgetRepsitory = new MockBudgetRepsitory();
@@ -19,27 +22,27 @@ public class MockBudgetRepsitory {
 	}
 	
 	public synchronized void addOrUpdateBudget(BudgetStatement budgetStatement){
-		if (budgetStatement.getReportMonth() == null || budgetStatement.getReportMonth().length() !=6)
-			return;
-		String reportYear = budgetStatement.getReportMonth().substring(0, 4);
+//		if (budgetStatement.getReportMonth() == null )
+//			return;
+		String reportYear = null;//budgetStatement.getReportMonth().substring(0, 4);
 		Map<String,BudgetStatement> oneYear = savedBudgetStatement.get(reportYear);
 		if (oneYear == null){
 			oneYear = new TreeMap<String,BudgetStatement>();
-			oneYear.put(budgetStatement.getReportMonth(), budgetStatement);
+			//oneYear.put(budgetStatement.getReportMonth(), budgetStatement);
 			savedBudgetStatement.put(reportYear, oneYear);
 		}
 		else {
-			oneYear.put(budgetStatement.getReportMonth(), budgetStatement);
+			//oneYear.put(budgetStatement.getReportMonth(), budgetStatement);
 		}
 	}
 	
 	public synchronized void deleteBudget(BudgetStatement budgetStatement){
-		if (budgetStatement.getReportMonth() == null || budgetStatement.getReportMonth().length() !=6)
-			return;
-		String reportYear = budgetStatement.getReportMonth().substring(0, 4);		
+//		if (budgetStatement.getReportMonth() == null )
+//			return;
+		String reportYear = null;//budgetStatement.getReportMonth().substring(0, 4);		
 		Map<String,BudgetStatement> oneYear = savedBudgetStatement.get(reportYear);
 		if (oneYear != null){
-			oneYear.remove(budgetStatement.getReportMonth());
+			//oneYear.remove(budgetStatement.getReportMonth());
 		}		
 	}
 	
@@ -68,9 +71,9 @@ public class MockBudgetRepsitory {
 		budgetStatementModel.setBudgetRatio(budgetRatio);
 		budgetStatementModel.setGrowthRate(growthRate);			
 		
-		budgetStatementModel.setReportName(thisYear.getReportName());
-		budgetStatementModel.setProjectId(thisYear.getProjectId());
-		budgetStatementModel.setCounterpartyId(thisYear.getCounterpartyId());
+		//budgetStatementModel.setReportName(thisYear.getReportName());
+		//budgetStatementModel.setProjectId(thisYear.getProjectId());
+		//budgetStatementModel.setCounterpartyId(thisYear.getCounterpartyId());
 		budgetStatementModel.setCounterpartyName("");
 		budgetStatementModel.setProjectName("");
 		budgetStatementModel.setReportYear(reportYear);		
@@ -107,9 +110,9 @@ public class MockBudgetRepsitory {
 		if (!BigDecimal.ZERO.equals(fullYearBudget.getBudgetPayTotal())){
 		budgetRatio.setBudgetPayTotal(thisYear.getBudgetPayTotal().divide(fullYearBudget.getBudgetPayTotal(), 2));
 		}
-		if (!BigDecimal.ZERO.equals(fullYearBudget.getGovFundPayment())){
-		budgetRatio.setGovFundPayment(thisYear.getGovFundPayment().divide(fullYearBudget.getGovFundPayment(), 2));
-		}		
+//		if (!BigDecimal.ZERO.equals(fullYearBudget.getGovFundPayment())){
+//		budgetRatio.setGovFundPayment(thisYear.getGovFundPayment().divide(fullYearBudget.getGovFundPayment(), 2));
+//		}		
 		
 		return budgetRatio;
 	}
@@ -124,7 +127,7 @@ public class MockBudgetRepsitory {
 		budgetRatio.setGovFundIncome(thisYear.getGovFundIncome().subtract(lastYear.getGovFundIncome()));
 		budgetRatio.setPaymentTotal(thisYear.getPaymentTotal().subtract(lastYear.getPaymentTotal()));
 		budgetRatio.setBudgetPayTotal(thisYear.getBudgetPayTotal().subtract(lastYear.getBudgetPayTotal()));
-		budgetRatio.setGovFundPayment(thisYear.getGovFundPayment().subtract(lastYear.getGovFundPayment()));		
+	//	budgetRatio.setGovFundPayment(thisYear.getGovFundPayment().subtract(lastYear.getGovFundPayment()));		
 		
 		return budgetRatio;
 	}
@@ -145,7 +148,7 @@ public class MockBudgetRepsitory {
 		Map<String,BudgetStatement> oneYear = savedBudgetStatement.get(reportYear);
 		if (oneYear != null){
 			for (BudgetStatement month : oneYear.values()){
-				if (!month.getReportMonth().endsWith("00")){
+				//if (!(month.getReportMonth()==0)){
 					thisYear.setIncomeTotal(thisYear.getIncomeTotal().add(month.getIncomeTotal())); 
 					thisYear.setBudgetIncomeTotal(thisYear.getBudgetIncomeTotal().add(month.getBudgetIncomeTotal()));
 					thisYear.setTaxIncome(thisYear.getTaxIncome().add(month.getTaxIncome()));
@@ -153,8 +156,8 @@ public class MockBudgetRepsitory {
 					thisYear.setGovFundIncome(thisYear.getGovFundIncome().add(month.getGovFundIncome()));
 					thisYear.setPaymentTotal(thisYear.getPaymentTotal().add(month.getPaymentTotal()));
 					thisYear.setBudgetPayTotal(thisYear.getBudgetPayTotal().add(month.getBudgetPayTotal()));
-					thisYear.setGovFundPayment(thisYear.getGovFundPayment().add(month.getGovFundPayment()));
-				}
+					//thisYear.setGovFundPayment(thisYear.getGovFundPayment().add(month.getGovFundPayment()));
+				//}
 			}
 		}
 		
@@ -174,7 +177,7 @@ public class MockBudgetRepsitory {
 				thisYear.setGovFundIncome(thisYear.getGovFundIncome().add(month.getGovFundIncome()));
 				thisYear.setPaymentTotal(thisYear.getPaymentTotal().add(month.getPaymentTotal()));
 				thisYear.setBudgetPayTotal(thisYear.getBudgetPayTotal().add(month.getBudgetPayTotal()));
-				thisYear.setGovFundPayment(thisYear.getGovFundPayment().add(month.getGovFundPayment()));
+			//	thisYear.setGovFundPayment(thisYear.getGovFundPayment().add(month.getGovFundPayment()));
 			}
 		}
 		

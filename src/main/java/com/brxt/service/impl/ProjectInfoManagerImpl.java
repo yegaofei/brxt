@@ -9,10 +9,8 @@ import org.springframework.stereotype.Service;
 import com.brxt.dao.InvestmentProjectDao;
 import com.brxt.dao.ProjectInfoDao;
 import com.brxt.dao.ProjectSizeDao;
-import com.brxt.model.InvestmentStatus;
 import com.brxt.model.ProjectInfo;
 import com.brxt.model.ProjectSize;
-import com.brxt.model.projectprogress.InvestmentProject;
 import com.brxt.service.ProjectInfoManager;
 
 @Service("projectInfoManager")
@@ -23,8 +21,6 @@ public class ProjectInfoManagerImpl extends
 
 	ProjectSizeDao projectSizeDao;
 
-	InvestmentProjectDao investmentProjectDao;
-
 	@Autowired
 	public void setProjectInfoDao(ProjectInfoDao projectInfoDao) {
 		this.dao = projectInfoDao;
@@ -34,25 +30,6 @@ public class ProjectInfoManagerImpl extends
 	@Autowired
 	public void setProjectSizeDao(ProjectSizeDao projectSizeDao) {
 		this.projectSizeDao = projectSizeDao;
-	}
-
-	@Autowired
-	public void setInvestmentProjectDao(
-			InvestmentProjectDao investmentProjectDao) {
-		this.investmentProjectDao = investmentProjectDao;
-	}
-
-	public ProjectInfo get(Long id) {
-		ProjectInfo projectInfo = super.get(id);
-		List<InvestmentProject> investmentProjs = investmentProjectDao
-				.findByProjId(id);
-		if (investmentProjs != null && !investmentProjs.isEmpty()) {
-			for(InvestmentProject ip : investmentProjs)
-			{
-				projectInfo.getInvestments().add(new InvestmentStatus(ip.getName(), ip.getType()));
-			}
-		}
-		return projectInfo;
 	}
 
 	@Override

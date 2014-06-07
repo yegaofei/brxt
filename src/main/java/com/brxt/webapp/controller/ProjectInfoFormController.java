@@ -15,14 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.appfuse.model.User;
-import org.appfuse.service.UserManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.ldap.userdetails.LdapUserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,11 +24,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.brxt.constant.SessionAttributes;
+import com.brxt.model.InvestmentStatus;
 import com.brxt.model.ProjectInfo;
 import com.brxt.model.ProjectSize;
 import com.brxt.model.enums.CapitalInvestmentType;
 import com.brxt.model.enums.CounterpartyType;
 import com.brxt.model.enums.ProjectType;
+import com.brxt.model.projectprogress.InvestmentProject;
+import com.brxt.service.ProjProgressManager;
 import com.brxt.service.ProjectInfoManager;
 
 @Controller
@@ -42,6 +39,7 @@ import com.brxt.service.ProjectInfoManager;
 public class ProjectInfoFormController extends BaseFormController {
 
 	private ProjectInfoManager projectInfoManager = null;
+	private ProjProgressManager progressManager = null;
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	private static final Map<String,String> CapitalInvestmentTypes = new HashMap<String,String>();
 	private static final Map<String,String> ProjectTypes = new HashMap<String,String>();
@@ -51,6 +49,11 @@ public class ProjectInfoFormController extends BaseFormController {
 	public void setProjectInfoManager(
 			@Qualifier("projectInfoManager") ProjectInfoManager projectInfoManager) {
 		this.projectInfoManager = projectInfoManager;
+	}
+	
+	@Autowired
+	public void setProjectProgressManager(@Qualifier("projectProgressManager") ProjProgressManager progressManager){
+		this.progressManager =  progressManager;
 	}
 
 	public ProjectInfoFormController() {
@@ -107,7 +110,18 @@ public class ProjectInfoFormController extends BaseFormController {
 		mav.addObject("capitalInvestmentTypes", CapitalInvestmentTypes);
 		mav.addObject("projectTypes", ProjectTypes);
 		mav.addObject("counterpartyTypes", CounterpartyTypes);
-		mav.addObject("projectInfo", getProjectInfo(request));	
+		ProjectInfo projectInfo = getProjectInfo(request);
+		if(projectInfo.getId() != null)
+		{
+			List<InvestmentProject> investmentProjs = progressManager.getInvestmentProjects(projectInfo.getId());
+			if (investmentProjs != null && !investmentProjs.isEmpty()) {
+				for(InvestmentProject ip : investmentProjs)
+				{
+					projectInfo.getInvestments().add(new InvestmentStatus(ip.getName(), ip.getType()));
+				}
+			}
+		}
+		mav.addObject("projectInfo", projectInfo);	
 		request.getSession().setAttribute(SessionAttributes.PROJECT_INFO_ID, request.getParameter("id"));
 		return mav;
 	}

@@ -23,7 +23,7 @@ public class Counterparty extends BaseObject implements Serializable {
 	private static final long serialVersionUID = 8483145366662490418L;
 	private Long id;
 	private String name; // 交易对手名称
-	private String counterpartyType; // 交易对手类型
+	private String counterpartyType; //交易对手类型:real_estate_firm,commerce_company,institution  
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

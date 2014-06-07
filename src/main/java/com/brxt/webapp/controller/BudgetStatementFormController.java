@@ -15,7 +15,6 @@ import org.appfuse.model.User;
 import org.appfuse.service.UserManager;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.ldap.userdetails.LdapUserDetails;
 import org.springframework.stereotype.Controller;
@@ -24,9 +23,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.brxt.model.BudgetStatement;
 import com.brxt.model.MockBudgetRepsitory;
-import com.brxt.model.enums.BudgetType;
+import com.brxt.model.finance.BudgetStatement;
 
 @Controller
 @RequestMapping("/budgetStatementForm*")
@@ -55,11 +53,11 @@ public class BudgetStatementFormController extends BaseFormController{
 		
 		if(budgetTypes.isEmpty())
 		{
-			BudgetType[] cits = BudgetType.values();
-			for(BudgetType cit : cits)
-			{
-				budgetTypes.put(cit.toString(), getText(cit.toString(), locale));
-			}
+//			BudgetType[] cits = BudgetType.values();
+//			for(BudgetType cit : cits)
+//			{
+//				budgetTypes.put(cit.toString(), getText(cit.toString(), locale));
+//			}
 		}
 	}
 
@@ -123,31 +121,24 @@ public class BudgetStatementFormController extends BaseFormController{
 			}
 		}		
 
-		boolean isNew = (budgetStatement.getId() == null);
-		User currentUser = null;
-		final Authentication auth = SecurityContextHolder.getContext()
-				.getAuthentication();
-		if (auth != null) {
-			currentUser = getCurrentUser(auth, getUserManager());
-		}
+		boolean isNew = false;//(budgetStatement.getId() == null);
+		User currentUser = getCurrentUser();
 		if (isNew) {
 			// Add
-			budgetStatement.setCreateUser(currentUser);
+			budgetStatement.setCreateUser(currentUser.getUsername());
 			budgetStatement.setCreateTime(new Date());
 		} else {
-			User createUser = getUserManager().getUserByUsername(budgetStatement.getCreateUser().getUsername());
-			budgetStatement.setCreateUser(createUser);
-			budgetStatement.setUpdateUser(currentUser);
+			budgetStatement.setUpdateUser(currentUser.getUsername());
 			budgetStatement.setUpdateTime(new Date());
 		}
 		
-		String reportYear = budgetStatement.getReportMonth().substring(0, 4);
-		String reportMonth = budgetStatement.getReportMonth();
+		String reportYear = budgetStatement.getReportYear().toString();
+		String reportMonth = budgetStatement.getReportMonth().toString();
 		
-		if (BudgetType.BUDGET_MONTH.toString().equals(budgetStatement.getBudgetType())){
-			reportMonth = reportYear + "00";
-		}
-		budgetStatement.setReportMonth(reportMonth);
+//		if (BudgetType.BUDGET_MONTH.toString().equals(budgetStatement.getBudgetType())){
+//			reportMonth = reportYear + "00";
+//		}
+		//budgetStatement.setReportMonth(reportMonth);
 		
 		MockBudgetRepsitory.getInstance().addOrUpdateBudget(budgetStatement);
 		

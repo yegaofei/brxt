@@ -23,8 +23,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.brxt.model.InstBalanceSheetModel;
-import com.brxt.model.InstituteBalanceSheet;
+import com.brxt.model.finance.InstBalanceSheetModel;
+import com.brxt.model.finance.InstituteBalanceSheet;
 
 @Controller
 @RequestMapping("/instBalanceSheet*")
@@ -77,8 +77,8 @@ public class InstBalanceSheetController extends BaseFormController{
 			instBalanceSheetModel.setEndBalSheet(endBalSheet);
 			
 			instBalanceSheetModel.setReportName(reportName);
-			instBalanceSheetModel.setProjectId(beginBalSheet.getProjectId());
-			instBalanceSheetModel.setCounterpartyId(beginBalSheet.getCounterpartyId());
+			//instBalanceSheetModel.setProjectId(beginBalSheet.getProjectId());
+			//instBalanceSheetModel.setCounterpartyId(beginBalSheet.getCounterpartyId());
 			instBalanceSheetModel.setCounterpartyName("testCounterParty");
 			instBalanceSheetModel.setProjectName("testProjectName");
 			instBalanceSheetModel.setReportYear(reportYear);
@@ -97,12 +97,12 @@ public class InstBalanceSheetController extends BaseFormController{
 		final Locale locale = request.getLocale();
 		if (method != null) {
 			ModelAndView mav = new ModelAndView();
-			instBalanceSheetModel.getBeginBalSheet().setReportYear(instBalanceSheetModel.getReportYear());
-			instBalanceSheetModel.getBeginBalSheet().setProjectId(instBalanceSheetModel.getProjectId());
-			instBalanceSheetModel.getBeginBalSheet().setCounterpartyId(instBalanceSheetModel.getCounterpartyId());			
-			instBalanceSheetModel.getEndBalSheet().setReportYear(instBalanceSheetModel.getReportYear());
-			instBalanceSheetModel.getEndBalSheet().setProjectId(instBalanceSheetModel.getProjectId());
-			instBalanceSheetModel.getEndBalSheet().setCounterpartyId(instBalanceSheetModel.getCounterpartyId());
+			//instBalanceSheetModel.getBeginBalSheet().setReportYear(instBalanceSheetModel.getReportYear());
+			//instBalanceSheetModel.getBeginBalSheet().setProjectId(instBalanceSheetModel.getProjectId());
+			//instBalanceSheetModel.getBeginBalSheet().setCounterpartyId(instBalanceSheetModel.getCounterpartyId());			
+			//instBalanceSheetModel.getEndBalSheet().setReportYear(instBalanceSheetModel.getReportYear());
+			//instBalanceSheetModel.getEndBalSheet().setProjectId(instBalanceSheetModel.getProjectId());
+			//instBalanceSheetModel.getEndBalSheet().setCounterpartyId(instBalanceSheetModel.getCounterpartyId());
 			switch (method) {
 			case "Cancel":
 				mav.setViewName(getCancelView());
@@ -152,12 +152,12 @@ public class InstBalanceSheetController extends BaseFormController{
 		}
 		if (isNew) {
 			// Add
-			beginBalSheet.setCreateUser(currentUser);
+			//beginBalSheet.setCreateUser(currentUser);
 			beginBalSheet.setCreateTime(new Date());
 		} else {
-			User createUser = getUserManager().getUserByUsername(beginBalSheet.getCreateUser().getUsername());
-			beginBalSheet.setCreateUser(createUser);
-			beginBalSheet.setUpdateUser(currentUser);
+			//User createUser = getUserManager().getUserByUsername(beginBalSheet.getCreateUser().getUsername());
+			//beginBalSheet.setCreateUser(createUser);
+			//beginBalSheet.setUpdateUser(currentUser);
 			beginBalSheet.setUpdateTime(new Date());
 		}
 		
@@ -165,12 +165,12 @@ public class InstBalanceSheetController extends BaseFormController{
 		
 		if (isNew) {
 			// Add
-			endBalSheet.setCreateUser(currentUser);
+			//endBalSheet.setCreateUser(currentUser);
 			endBalSheet.setCreateTime(new Date());
 		} else {
-			User createUser = getUserManager().getUserByUsername(endBalSheet.getCreateUser().getUsername());
-			endBalSheet.setCreateUser(createUser);
-			endBalSheet.setUpdateUser(currentUser);
+			//User createUser = getUserManager().getUserByUsername(endBalSheet.getCreateUser().getUsername());
+			//endBalSheet.setCreateUser(createUser);
+			//endBalSheet.setUpdateUser(currentUser);
 			endBalSheet.setUpdateTime(new Date());
 		}		
 		

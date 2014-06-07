@@ -19,6 +19,10 @@
         <mapping class="com.brxt.model.projectprogress.InvestmentProject"/>
         <mapping class="com.brxt.model.projectprogress.RepaymentProject"/>
         <mapping class="com.brxt.model.projectprogress.SupplyLiquidProject"/>
+        <mapping class="com.brxt.model.finance.CorporateBalanceSheet"/>
+        <mapping class="com.brxt.model.finance.BudgetStatement"/>
+        <mapping class="com.brxt.model.finance.InstituteBalanceSheet"/>
+        <mapping class="com.brxt.model.finance.ProfitStatement"/>
     </session-factory>
 </hibernate-configuration>
 

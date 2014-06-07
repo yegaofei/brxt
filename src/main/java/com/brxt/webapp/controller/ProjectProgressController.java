@@ -164,15 +164,29 @@ public class ProjectProgressController extends BaseFormController {
 			case "SaveprojectProgress":
 				ProjectInfo projectInfo = projectInfoManager.get(projectInfoId);
 				investmentProject.setProjectInfo(projectInfo);
+				RepaymentProject repaymentProject = null;
+				
 				User currentUser = getCurrentUser();
 				Long projectProgressId = investmentProject.getId();
 				if(projectProgressId == null)
 				{
 					// Save new  
-					investmentProject.setCreateTime(new Date());
-					investmentProject.setUpdateTime(new Date());
+					Date now = new Date();
+					investmentProject.setCreateTime(now);
+					investmentProject.setUpdateTime(now);
 					investmentProject.setCreateUser(currentUser);
 					investmentProject.setUpdateUser(currentUser);
+					
+					if(investmentProject.getSameAsRepayment())
+					{
+						repaymentProject = new RepaymentProject();
+						repaymentProject.setProjectInfo(projectInfo);
+						repaymentProject.setName(investmentProject.getName());
+						repaymentProject.setCreateTime(now);
+						repaymentProject.setUpdateTime(now);
+						repaymentProject.setCreateUser(currentUser);
+						repaymentProject.setUpdateUser(currentUser);
+					}
 				}
 				else
 				{
@@ -183,6 +197,10 @@ public class ProjectProgressController extends BaseFormController {
 					investmentProject.setUpdateUser(currentUser);
 				}
 				projectProgressManager.save(investmentProject);
+				if(repaymentProject != null)
+				{
+					projectProgressManager.saveRepaymentProject(repaymentProject);
+				}
 				saveMessage(request,
 						getText("investmentProject.save.successful", locale));
 				break;

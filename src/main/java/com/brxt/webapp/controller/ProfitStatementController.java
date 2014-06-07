@@ -23,8 +23,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.brxt.model.ProfitStatement;
-import com.brxt.model.ProfitStatementModel;
+import com.brxt.model.finance.ProfitStatement;
+import com.brxt.model.finance.ProfitStatementModel;
 
 @Controller
 @RequestMapping("/profitStatement*")
@@ -77,8 +77,8 @@ public class ProfitStatementController extends BaseFormController{
 			profitStatementModel.setEndBalSheet(endBalSheet);
 			
 			profitStatementModel.setReportName(reportName);
-			profitStatementModel.setProjectId(beginBalSheet.getProjectId());
-			profitStatementModel.setCounterpartyId(beginBalSheet.getCounterpartyId());
+			//profitStatementModel.setProjectId(beginBalSheet.getProjectId());
+			//profitStatementModel.setCounterpartyId(beginBalSheet.getCounterpartyId());
 			profitStatementModel.setCounterpartyName("testCounterParty");
 			profitStatementModel.setProjectName("testProjectName");
 			profitStatementModel.setReportYear(reportYear);
@@ -97,12 +97,12 @@ public class ProfitStatementController extends BaseFormController{
 		final Locale locale = request.getLocale();
 		if (method != null) {
 			ModelAndView mav = new ModelAndView();
-			profitStatementModel.getBeginBalSheet().setReportYear(profitStatementModel.getReportYear());
-			profitStatementModel.getBeginBalSheet().setProjectId(profitStatementModel.getProjectId());
-			profitStatementModel.getBeginBalSheet().setCounterpartyId(profitStatementModel.getCounterpartyId());			
-			profitStatementModel.getEndBalSheet().setReportYear(profitStatementModel.getReportYear());
-			profitStatementModel.getEndBalSheet().setProjectId(profitStatementModel.getProjectId());
-			profitStatementModel.getEndBalSheet().setCounterpartyId(profitStatementModel.getCounterpartyId());
+			//profitStatementModel.getBeginBalSheet().setReportYear(profitStatementModel.getReportYear());
+			//profitStatementModel.getBeginBalSheet().setProjectId(profitStatementModel.getProjectId());
+			//profitStatementModel.getBeginBalSheet().setCounterpartyId(profitStatementModel.getCounterpartyId());			
+			//profitStatementModel.getEndBalSheet().setReportYear(profitStatementModel.getReportYear());
+			//profitStatementModel.getEndBalSheet().setProjectId(profitStatementModel.getProjectId());
+			//profitStatementModel.getEndBalSheet().setCounterpartyId(profitStatementModel.getCounterpartyId());
 			switch (method) {
 			case "Cancel":
 				mav.setViewName(getCancelView());
@@ -152,12 +152,12 @@ public class ProfitStatementController extends BaseFormController{
 		}
 		if (isNew) {
 			// Add
-			beginBalSheet.setCreateUser(currentUser);
+			//beginBalSheet.setCreateUser(currentUser);
 			beginBalSheet.setCreateTime(new Date());
 		} else {
-			User createUser = getUserManager().getUserByUsername(beginBalSheet.getCreateUser().getUsername());
-			beginBalSheet.setCreateUser(createUser);
-			beginBalSheet.setUpdateUser(currentUser);
+			//User createUser = getUserManager().getUserByUsername(beginBalSheet.getCreateUser().getUsername());
+			//beginBalSheet.setCreateUser(createUser);
+			//beginBalSheet.setUpdateUser(currentUser);
 			beginBalSheet.setUpdateTime(new Date());
 		}
 		
@@ -165,12 +165,12 @@ public class ProfitStatementController extends BaseFormController{
 		
 		if (isNew) {
 			// Add
-			endBalSheet.setCreateUser(currentUser);
+			//endBalSheet.setCreateUser(currentUser);
 			endBalSheet.setCreateTime(new Date());
 		} else {
-			User createUser = getUserManager().getUserByUsername(endBalSheet.getCreateUser().getUsername());
-			endBalSheet.setCreateUser(createUser);
-			endBalSheet.setUpdateUser(currentUser);
+			//User createUser = getUserManager().getUserByUsername(endBalSheet.getCreateUser().getUsername());
+			//endBalSheet.setCreateUser(createUser);
+			//endBalSheet.setUpdateUser(currentUser);
 			endBalSheet.setUpdateTime(new Date());
 		}		
 		

@@ -23,8 +23,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.brxt.model.CorpBalanceSheetModel;
-import com.brxt.model.CorporateBalanceSheet;
+import com.brxt.model.finance.CorpBalanceSheetModel;
+import com.brxt.model.finance.CorporateBalanceSheet;
+
 
 @Controller
 @RequestMapping("/corpBalanceSheet*")
@@ -77,8 +78,8 @@ public class CorpBalanceSheetController extends BaseFormController{
 			corpBalanceSheetModel.setEndBalSheet(endBalSheet);
 			
 			corpBalanceSheetModel.setReportName(reportName);
-			corpBalanceSheetModel.setProjectId(beginBalSheet.getProjectId());
-			corpBalanceSheetModel.setCounterpartyId(beginBalSheet.getCounterpartyId());
+			corpBalanceSheetModel.setProjectId(beginBalSheet.getProjectInfo().getId());
+			corpBalanceSheetModel.setCounterpartyId(beginBalSheet.getCounterparty().getId());
 			corpBalanceSheetModel.setCounterpartyName("testCounterParty");
 			corpBalanceSheetModel.setProjectName("testProjectName");
 			corpBalanceSheetModel.setReportYear(reportYear);
@@ -90,25 +91,26 @@ public class CorpBalanceSheetController extends BaseFormController{
 	
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView onSubmit(CorpBalanceSheetModel corpBalanceSheetModel, BindingResult errors,
+	public ModelAndView onSubmit(CorpBalanceSheetModel corpBalanceSheetModel, 
+			BindingResult errors,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		String method = request.getParameter("method");
 		final Locale locale = request.getLocale();
 		if (method != null) {
 			ModelAndView mav = new ModelAndView();
-			corpBalanceSheetModel.getBeginBalSheet().setReportYear(corpBalanceSheetModel.getReportYear());
-			corpBalanceSheetModel.getBeginBalSheet().setProjectId(corpBalanceSheetModel.getProjectId());
-			corpBalanceSheetModel.getBeginBalSheet().setCounterpartyId(corpBalanceSheetModel.getCounterpartyId());			
-			corpBalanceSheetModel.getEndBalSheet().setReportYear(corpBalanceSheetModel.getReportYear());
-			corpBalanceSheetModel.getEndBalSheet().setProjectId(corpBalanceSheetModel.getProjectId());
-			corpBalanceSheetModel.getEndBalSheet().setCounterpartyId(corpBalanceSheetModel.getCounterpartyId());
+			//corpBalanceSheetModel.getBeginBalSheet().setReportYear(corpBalanceSheetModel.getReportYear());
+			//corpBalanceSheetModel.getBeginBalSheet().setProjectId(corpBalanceSheetModel.getCounterparty().getId());
+			//corpBalanceSheetModel.getBeginBalSheet().setCounterparty(corpBalanceSheetModel.getCounterparty());			
+			//corpBalanceSheetModel.getEndBalSheet().setReportYear(corpBalanceSheetModel.getReportYear());
+			//corpBalanceSheetModel.getEndBalSheet().setProjectId(corpBalanceSheetModel.getProjectId());
+			//corpBalanceSheetModel.getEndBalSheet().setCounterparty(corpBalanceSheetModel.getCounterparty());
 			switch (method) {
 			case "Cancel":
 				mav.setViewName(getCancelView());
 				break;
 			case "Delete":
-				savedBalanceSheet.remove(corpBalanceSheetModel.getReportYear());
+				//savedBalanceSheet.remove(corpBalanceSheetModel.getReportYear());
 				saveMessage(request, getText("corpBalanceSheet.deleted", locale));
 				mav.setViewName(getSuccessView());
 				break;
@@ -144,20 +146,15 @@ public class CorpBalanceSheetController extends BaseFormController{
 		CorporateBalanceSheet endBalSheet = corpBalanceSheetModel.getEndBalSheet();
 
 		boolean isNew = (beginBalSheet.getId() == null);
-		User currentUser = null;
-		final Authentication auth = SecurityContextHolder.getContext()
-				.getAuthentication();
-		if (auth != null) {
-			currentUser = getCurrentUser(auth, getUserManager());
-		}
+		User currentUser = getCurrentUser();
 		if (isNew) {
 			// Add
-			beginBalSheet.setCreateUser(currentUser);
+			beginBalSheet.setCreateUser(currentUser.getUsername());
 			beginBalSheet.setCreateTime(new Date());
 		} else {
-			User createUser = getUserManager().getUserByUsername(beginBalSheet.getCreateUser().getUsername());
-			beginBalSheet.setCreateUser(createUser);
-			beginBalSheet.setUpdateUser(currentUser);
+//			User createUser = getUserManager().getUserByUsername(beginBalSheet.getCreateUser().getUsername());
+//			beginBalSheet.setCreateUser(createUser);
+			beginBalSheet.setUpdateUser(currentUser.getUsername());
 			beginBalSheet.setUpdateTime(new Date());
 		}
 		
@@ -165,12 +162,11 @@ public class CorpBalanceSheetController extends BaseFormController{
 		
 		if (isNew) {
 			// Add
-			endBalSheet.setCreateUser(currentUser);
+			endBalSheet.setCreateUser(currentUser.getUsername());
 			endBalSheet.setCreateTime(new Date());
 		} else {
-			User createUser = getUserManager().getUserByUsername(endBalSheet.getCreateUser().getUsername());
-			endBalSheet.setCreateUser(createUser);
-			endBalSheet.setUpdateUser(currentUser);
+			
+			endBalSheet.setUpdateUser(currentUser.getUsername());
 			endBalSheet.setUpdateTime(new Date());
 		}		
 		

@@ -13,6 +13,8 @@ public interface ProjProgressManager extends
 		GenericManager<InvestmentProject, Long> {
 
 	public List<ProjectProgress> getProjectProgressList(Long projectInfoId);
+	
+	public List<InvestmentProject> getInvestmentProjects(Long projectInfoId);
 
 	public String getProgressForm(Long id);
 

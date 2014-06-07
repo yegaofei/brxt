@@ -6,6 +6,7 @@
  
 <div class="col-sm-3">
     <h2><fmt:message key='profitStatement.heading'/></h2>
+    <span><fmt:message key='profitStatement.counterpartyName'/>: &nbsp; <c:out value="${profitStatementModel.counterpartyName}"/></span>
 </div>
  
 <div class="col-sm-7">
@@ -15,7 +16,6 @@
 	<form:hidden path="counterpartyId"/>
 	<form:hidden path="reportName"/>
  
-	<div class="row">
     <spring:bind path="profitStatementModel.projectName">
     <div class="col-sm-6 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
@@ -24,14 +24,6 @@
         <form:errors path="projectName" cssClass="help-inline"/>
     </div>
 
-    <spring:bind path="profitStatementModel.counterpartyName">
-    <div class="col-sm-4 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
-    </spring:bind>
-        <appfuse:label styleClass="control-label" key="profitStatement.counterpartyName"/>
-        <form:input path="counterpartyName" id="counterpartyName" maxlength="20" cssClass="form-control"/>
-        <form:errors path="counterpartyName" cssClass="help-block"/>
-    </div>
-	</div>
 	
 
 	<div class="row">
@@ -52,121 +44,134 @@
     </div>	
 	</div>
 	
-	<div class="row">	 	
-       <div class="col-md-4"> <appfuse:label styleClass="control-label" key="profitStatement.itemName"/> </div>
-       <div class="col-md-4"> <appfuse:label styleClass="control-label" key="profitStatement.beginValue"/> </div>
-       <div class="col-md-4"> <appfuse:label styleClass="control-label" key="profitStatement.endValue"/>   </div>     
-    </div>
-    
-    <div class="row">	 	
-        <div class="col-md-4"> <appfuse:label key="profitStatement.operatingIncome"/> </div>
-       
-        <div class="col-md-4">
+	<table class="table table-condensed">
+		 <tr>
+            <th><appfuse:label key="profitStatement.itemName"/></th>
+            <th><appfuse:label key="profitStatement.beginValue"/></th>
+            <th><appfuse:label key="profitStatement.endValue"/></th>
+        </tr>   
+        
+        <tr>
+            <td><appfuse:label key="profitStatement.operatingIncome"/> </td>
+            <td>
         <spring:bind path="profitStatementModel.beginBalSheet">
-    	
+        <div class="">
     	</spring:bind>        
         <form:input path="beginBalSheet.operatingIncome" id="operatingIncome" maxlength="20" />
         <form:errors path="beginBalSheet.operatingIncome" />
-        </div>
-        
-        <div class="col-md-4">
-        <spring:bind path="profitStatementModel.endBalSheet">
+        </div>                 
+            </td>
+            <td>
+         <spring:bind path="profitStatementModel.endBalSheet">
+        <div class="">
     	</spring:bind>        
         <form:input path="endBalSheet.operatingIncome" id="operatingIncome" maxlength="20" />
         <form:errors path="endBalSheet.operatingIncome" />
-        </div>
-    </div>
-    
-     <div class="row">	 	
-       <div class="col-md-4"> <appfuse:label styleClass="control-label" key="profitStatement.operatingCost"/> </div>
-       
-        <div class="col-md-4">
-        <spring:bind path="profitStatementModel.beginBalSheet">    	
+        </div>               
+            </td>
+        </tr>
+	
+        <tr>
+            <td><appfuse:label styleClass="control-label" key="profitStatement.operatingCost"/>  </td>
+            <td>
+ 	        <spring:bind path="profitStatementModel.beginBalSheet">    	
+        <div class="">
     	</spring:bind>        
         <form:input path="beginBalSheet.operatingCost" id="operatingCost" maxlength="20"/>
         <form:errors path="beginBalSheet.operatingCost"/>
- 		</div>
- 		
- 		<div class="col-md-4">       
-        <spring:bind path="profitStatementModel.endBalSheet">    	
+ 		</div>                
+            </td>
+            <td>
+               <spring:bind path="profitStatementModel.endBalSheet">    	
+ 		<div class="">       
     	</spring:bind>        
         <form:input path="endBalSheet.operatingCost" id="operatingCost" maxlength="20" />
         <form:errors path="endBalSheet.operatingCost" />
-        </div>
-    </div>
-    
-     <div class="row">	 	
-       <div class="col-md-4"> <appfuse:label styleClass="control-label" key="profitStatement.operatingProfit"/> </div>
-       
-        <div class="col-md-4">
-        <spring:bind path="profitStatementModel.beginBalSheet">    	
+        </div>         
+            </td>
+        </tr>
+        
+        <tr>
+            <td><appfuse:label styleClass="control-label" key="profitStatement.operatingProfit"/> </td>
+            <td>
+         <spring:bind path="profitStatementModel.beginBalSheet">    	
+        <div class="">
     	</spring:bind>        
         <form:input path="beginBalSheet.operatingProfit" id="operatingProfit" maxlength="20" />
         <form:errors path="beginBalSheet.operatingProfit"/>
-		</div>
-		
-		<div class="col-md-4">        
-        <spring:bind path="profitStatementModel.endBalSheet">    	
+		</div>                
+            </td>
+            <td>
+                        <spring:bind path="profitStatementModel.endBalSheet">    	
+		<div class="">        
     	</spring:bind>        
         <form:input path="endBalSheet.operatingProfit" id="operatingProfit" maxlength="20" />
         <form:errors path="endBalSheet.operatingProfit" />
         </div>
-    </div>
-    
-     <div class="row">	 	
-       <div class="col-md-4"> <appfuse:label styleClass="control-label" key="profitStatement.interestCost"/> </div>
-       
-        <div class="col-md-4">
+            </td>
+        </tr>
+        
+        <tr>
+            <td><appfuse:label styleClass="control-label" key="profitStatement.interestCost"/> </td>
+            <td>
+               
         <spring:bind path="profitStatementModel.beginBalSheet">    	
+        <div class="">
     	</spring:bind>        
         <form:input path="beginBalSheet.interestCost" id="interestCost" maxlength="20" />
         <form:errors path="beginBalSheet.interestCost" />
-        </div>
-        
-        <div class="col-md-4">
+        </div>         
+            </td>
+            <td>
         <spring:bind path="profitStatementModel.endBalSheet">    	
+        <div class="">
     	</spring:bind>        
         <form:input path="endBalSheet.interestCost" id="interestCost" maxlength="20" />
         <form:errors path="endBalSheet.interestCost" />
-        </div>
-    </div>
-    
-     <div class="row">	 	
-      <div class="col-md-4"> <appfuse:label styleClass="control-label" key="profitStatement.operatingTax"/> </div>
-       
-        <div class="col-md-4">
-        <spring:bind path="profitStatementModel.beginBalSheet">    	
+        </div>       
+            </td>
+        </tr>                	
+        
+        <tr>
+            <td><appfuse:label styleClass="control-label" key="profitStatement.operatingTax"/> </td>
+            <td>
+                         <spring:bind path="profitStatementModel.beginBalSheet">    	
+        <div class="">
     	</spring:bind>        
         <form:input path="beginBalSheet.operatingTax" id="operatingTax" maxlength="20" />
         <form:errors path="beginBalSheet.operatingTax"/>
 		</div>
-		
-		<div class="col-md-4">        
-        <spring:bind path="profitStatementModel.endBalSheet">    	
+            </td>
+            <td>
+                        <spring:bind path="profitStatementModel.endBalSheet">    	
+		<div class="">        
     	</spring:bind>        
         <form:input path="endBalSheet.operatingTax" id="operatingTax" maxlength="20" />
         <form:errors path="endBalSheet.operatingTax" />
         </div>
-    </div>
-    
-     <div class="row">	 	
-       <div class="col-md-4"> <appfuse:label styleClass="control-label" key="profitStatement.netProfit"/> </div>
-       
-        <div class="col-md-4">
-        <spring:bind path="profitStatementModel.beginBalSheet">    	
+            </td>
+        </tr>                	
+        
+        <tr>
+            <td><appfuse:label styleClass="control-label" key="profitStatement.netProfit"/>  </td>
+            <td>
+                  <spring:bind path="profitStatementModel.beginBalSheet">    	
+        <div class="">
     	</spring:bind>        
         <form:input path="beginBalSheet.netProfit" id="netProfit" maxlength="20" />
         <form:errors path="beginBalSheet.netProfit" />
         </div>
-        
-        <div class="col-md-4">
-        <spring:bind path="profitStatementModel.endBalSheet">    	
+            </td>
+            <td>
+                 <spring:bind path="profitStatementModel.endBalSheet">    	
+        <div class="">
     	</spring:bind>        
         <form:input path="endBalSheet.netProfit" id="netProfit" maxlength="20" />
         <form:errors path="endBalSheet.netProfit" />
         </div>
-    </div>
-     
+            </td>
+        </tr>                	                
+	</table>
 
    <div class="form-group form-actions">
         <button type="submit" class="btn btn-primary" name="method" value="Save" onclick="bCancel=false">

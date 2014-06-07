@@ -62,12 +62,7 @@ public class InvestmentProject extends BaseObject  {
 	private Date updateTime; // 最后更新时间
 	private Integer version;
 	
-//	public InvestmentProject(){}
-	
-//	public InvestmentProject(CapitalInvestmentType type)
-//	{
-//		this.type = type;
-//	}
+	private Boolean sameAsRepayment = true;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -215,6 +210,15 @@ public class InvestmentProject extends BaseObject  {
 
 	public void setVersion(Integer version) {
 		this.version = version;
+	}
+
+	@Transient  
+	public Boolean getSameAsRepayment() {
+		return sameAsRepayment;
+	}
+
+	public void setSameAsRepayment(Boolean sameAsRepayment) {
+		this.sameAsRepayment = sameAsRepayment;
 	}
 
 	public Date getProjectEndTime() {
