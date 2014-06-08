@@ -38,8 +38,6 @@ public class SubjectCapacityFormController extends BaseFormController {
 
 	private SubjectCapacityManager subjectCapacityManager;
 	private ProjectInfoManager projectInfoManager;
-	private SimpleDateFormat checkTimeDateFormat = new SimpleDateFormat(
-			"yyyy-MM");
 
 	@Autowired
 	public void setSubjectCapacityManager(
@@ -58,6 +56,8 @@ public class SubjectCapacityFormController extends BaseFormController {
 	protected void initBinder(final HttpServletRequest request,
 			final ServletRequestDataBinder binder) {
 		super.initBinder(request, binder);
+		SimpleDateFormat checkTimeDateFormat = new SimpleDateFormat(getText(
+				"date.format.short", request.getLocale()));
 		binder.registerCustomEditor(Date.class, "checkTime",
 				new CustomDateEditor(checkTimeDateFormat, true));
 	}
@@ -88,19 +88,17 @@ public class SubjectCapacityFormController extends BaseFormController {
 				Long subjectCapacityId = subjectCapacity.getId();
 				ProjectInfo projectInfo = projectInfoManager.get(projectInfoId);
 				subjectCapacity.setProjectInfo(projectInfo);
-				//Lookup the underlying counterparty
+				// Lookup the underlying counterparty
 				Set<Counterparty> cp = projectInfo.getCounterparties();
 				Iterator<Counterparty> cpIt = cp.iterator();
-				while(cpIt.hasNext())
-				{
+				while (cpIt.hasNext()) {
 					Counterparty counterparty = cpIt.next();
-					if(counterparty.getId() == counterpartyId)
-					{
+					if (counterparty.getId() == counterpartyId) {
 						subjectCapacity.setCounterparty(counterparty);
 						break;
 					}
 				}
-				
+
 				if (subjectCapacityId == null) {
 					// Save new subject capacity
 					subjectCapacity.setCreateTime(new Date());
@@ -109,7 +107,8 @@ public class SubjectCapacityFormController extends BaseFormController {
 					subjectCapacity.setUpdateUser(currentUser);
 				} else {
 					// Update Existed
-					User createUser = getUserManager().getUserByUsername(subjectCapacity.getCreateUser().getUsername());
+					User createUser = getUserManager().getUserByUsername(
+							subjectCapacity.getCreateUser().getUsername());
 					subjectCapacity.setCreateUser(createUser);
 					subjectCapacity.setUpdateTime(new Date());
 					subjectCapacity.setUpdateUser(currentUser);
@@ -136,10 +135,8 @@ public class SubjectCapacityFormController extends BaseFormController {
 		final Locale locale = request.getLocale();
 		if (StringUtils.isBlank(projectInfoId)) {
 			saveError(request, getText("errors.projectInfoId.required", locale));
-		} 
-		else
-		{
-			return Long.valueOf(projectInfoId);			
+		} else {
+			return Long.valueOf(projectInfoId);
 		}
 		return null;
 	}

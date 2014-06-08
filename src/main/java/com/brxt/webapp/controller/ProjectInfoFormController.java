@@ -40,7 +40,6 @@ public class ProjectInfoFormController extends BaseFormController {
 
 	private ProjectInfoManager projectInfoManager = null;
 	private ProjProgressManager progressManager = null;
-	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	private static final Map<String,String> CapitalInvestmentTypes = new HashMap<String,String>();
 	private static final Map<String,String> ProjectTypes = new HashMap<String,String>();
 	private static final List<CounterpartyType> CounterpartyTypes = new ArrayList<CounterpartyType>();
@@ -223,6 +222,7 @@ public class ProjectInfoFormController extends BaseFormController {
 			BindingResult errors, HttpServletRequest request,
 			final ModelAndView mav) throws Exception {
 		String id = request.getParameter("projectSizeid");
+		SimpleDateFormat sdf = new SimpleDateFormat(getText("date.format", request.getLocale()));
 		log.debug("submit project size id: " + id);
 		String[] idArray = request.getParameterValues("prjectSizeid");
 		if (idArray != null && idArray.length > 0 && !"".equals(idArray[0])) {

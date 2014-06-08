@@ -1,5 +1,8 @@
 package com.brxt.model.finance;
 
+import com.brxt.model.enums.StatementType;
+import com.brxt.model.enums.TradingRelationship;
+
 public class CorpBalanceSheetModel {
 	private Long projectId;
 	private String projectName;
@@ -7,8 +10,10 @@ public class CorpBalanceSheetModel {
 	private String counterpartyName;
 	private String reportYear;
 	private String reportName;	
+	private TradingRelationship tradingRelationship;
 	private CorporateBalanceSheet beginBalSheet;
 	private CorporateBalanceSheet endBalSheet;
+	private StatementType statementType = StatementType.BALANCE_SHEET;
 	
 	public Long getProjectId() {
 		return projectId;
@@ -52,11 +57,23 @@ public class CorpBalanceSheetModel {
 	public void setBeginBalSheet(CorporateBalanceSheet beginBalSheet) {
 		this.beginBalSheet = beginBalSheet;
 	}
+	public TradingRelationship getTradingRelationship() {
+		return tradingRelationship;
+	}
+	public void setTradingRelationship(TradingRelationship tradingRelationship) {
+		this.tradingRelationship = tradingRelationship;
+	}
 	public CorporateBalanceSheet getEndBalSheet() {
 		return endBalSheet;
 	}
 	public void setEndBalSheet(CorporateBalanceSheet endBalSheet) {
 		this.endBalSheet = endBalSheet;
+	}
+	public StatementType getStatementType() {
+		return statementType;
+	}
+	public void setStatementType(StatementType statementType) {
+		this.statementType = statementType;
 	}
 	
 	

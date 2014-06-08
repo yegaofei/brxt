@@ -16,83 +16,83 @@ import org.tuckey.web.filters.urlrewrite.utils.StringUtils;
 import com.brxt.constant.SessionAttributes;
 import com.brxt.model.ProjectInfo;
 import com.brxt.model.enums.CounterpartyType;
+import com.brxt.model.enums.TradingRelationship;
+import com.brxt.service.FinanceSheetManager;
 import com.brxt.service.ProjectInfoManager;
 
 @Controller
-@RequestMapping("/financialStatements*")
+@RequestMapping("/finance/financialStatements*")
 public class FinancialStatementsController extends BaseFormController {
-	
+
 	private ProjectInfoManager projectInfoManager;
-	
+	private FinanceSheetManager financeSheetManager;
+
 	@Autowired
 	public void setProjectInfoManager(
 			@Qualifier("projectInfoManager") ProjectInfoManager projectInfoManager) {
 		this.projectInfoManager = projectInfoManager;
 	}
-	
+
+	public void setFinanceSheetManager(
+			@Qualifier("financeSheetManager") FinanceSheetManager financeSheetManager) {
+		this.financeSheetManager = financeSheetManager;
+	}
+
 	protected Long getProjectInfoId(final HttpServletRequest request) {
 		String projectInfoId = (String) request.getSession().getAttribute(
 				SessionAttributes.PROJECT_INFO_ID);
 		final Locale locale = request.getLocale();
 		if (StringUtils.isBlank(projectInfoId)) {
 			saveError(request, getText("errors.projectInfoId.required", locale));
-		} 
-		else
-		{
-			return Long.valueOf(projectInfoId);			
+		} else {
+			return Long.valueOf(projectInfoId);
 		}
 		return null;
 	}
-	
+
 	@ModelAttribute
-	protected ProjectInfo getProjectInfo(final HttpServletRequest request)
-	{
+	protected ProjectInfo getProjectInfo(final HttpServletRequest request) {
 		Long projectInfoId = getProjectInfoId(request);
-		if(projectInfoId != null)
-		{
+		if (projectInfoId != null) {
 			return projectInfoManager.get(projectInfoId);
-		}
-		else
-		{
-			//Error
+		} else {
+			// Error
 		}
 		return null;
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView handleRequest(final HttpServletRequest request) throws Exception {
+	public ModelAndView handleRequest(final HttpServletRequest request)
+			throws Exception {
 		ModelAndView mav = new ModelAndView();
-		
+		String returnView = null;
 		String counterpartyId = request.getParameter("counterpartyId");
 		String guarantorId = request.getParameter("guarantorId");
 		String counterpartyType = request.getParameter("counterpartyType");
-		if(!StringUtils.isBlank(counterpartyType))
-		{
-			CounterpartyType type = CounterpartyType.valueOf(counterpartyType.toUpperCase());
+		if (!StringUtils.isBlank(counterpartyType)) {
+			CounterpartyType type = CounterpartyType.valueOf(counterpartyType
+					.toUpperCase());
 			switch (type) {
 			case REAL_ESTATE_FIRM:
 			case COMMERCE_COMPANY:
-				mav.setViewName("redirect:corpBalanceSheet");
+				returnView = "redirect:/finance/corpBalanceSheet";
 				break;
 			case INSTITUTION:
-				mav.setViewName("redirect:budgetStatementInfo");
+				returnView = "redirect:/finance/budgetStatementInfo";
 				break;
-				default:
+			default:
 			}
-			
-			if(!StringUtils.isBlank(counterpartyId))
-			{
-				mav.addObject("counterpartyId", counterpartyId);
+
+			if (!StringUtils.isBlank(counterpartyId)) {
+				returnView += ("?counterpartyId=" + counterpartyId + "&type=" + TradingRelationship.COUNTERPARTY.getTitle());
 			}
-			
-			if(!StringUtils.isBlank(guarantorId))
-			{
-				mav.addObject("counterpartyId", guarantorId);
+
+			if (!StringUtils.isBlank(guarantorId)) {
+				returnView += ("?counterpartyId=" + guarantorId + "&type=" + TradingRelationship.GUARANTOR.getTitle());
 			}
-			
 		}
-		
+		mav.setViewName(returnView);
 		return mav;
 	}
-	
+
 }

@@ -18,7 +18,7 @@ import com.brxt.model.MockBudgetRepsitory;
 import com.brxt.model.finance.BudgetStatementModel;
 
 @Controller
-@RequestMapping("/budgetStatementInfo*")
+@RequestMapping("/finance/budgetStatementInfo*")
 public class BudgetStatementInfoController extends BaseFormController{
 	
 	public static Map<String,BudgetStatementModel> savedBudgetStatement= new HashMap<String,BudgetStatementModel>();

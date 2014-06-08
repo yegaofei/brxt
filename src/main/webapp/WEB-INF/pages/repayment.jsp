@@ -30,7 +30,9 @@
     		<input type="checkbox" name="id" value="<c:out value='${repayment.id}'/>" 
     		<c:if test="${param.id == repayment.id and method != 'Save'}">checked="checked"</c:if> style="margin: 0 0 0 4px" onclick="radio(this)" />
   		</display:column>
-        <display:column property="repaymentTime" format="{0,date,yyyy-MM-dd}" sortable="true" titleKey="repayment.repaymentTime"/>
+        <display:column sortable="true" titleKey="repayment.repaymentTime">
+        	<fmt:formatDate value="${repayment.repaymentTime}" pattern="${datePattern}" />
+        </display:column>
         <display:column property="id" media="csv excel xml pdf" titleKey="repayment.id"/>
         <display:column sortable="false" titleKey="repayment.type">
         		<fmt:message key="${repayment.type}"/>

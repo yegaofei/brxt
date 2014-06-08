@@ -31,7 +31,9 @@
     		<input type="checkbox" name="id" value="<c:out value='${subjectCapacity.id}'/>" 
     		<c:if test="${param.id == subjectCapacity.id and method != 'Save'}">checked="checked"</c:if> style="margin: 0 0 0 4px" onclick="radio(this)" />
   		</display:column>
-        <display:column property="checkTime" format="{0,date,yyyy-MM}" sortable="true" titleKey="subjectCapacity.checkTime"/>
+        <display:column sortable="true" titleKey="subjectCapacity.checkTime">
+        	<fmt:formatDate value="${subjectCapacity.checkTime}" pattern="${shortDatePattern}" />
+        </display:column>
         <display:column property="id" media="csv excel xml pdf" titleKey="subjectCapacity.id"/>
         <display:column property="counterparty.name" sortable="true" titleKey="projectInfo.counterparty.name"/>
         <display:setProperty name="paging.banner.item_name"><fmt:message key="subjectCapacity.heading"/></display:setProperty>

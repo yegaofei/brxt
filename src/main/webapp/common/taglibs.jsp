@@ -16,3 +16,4 @@
 
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <c:set var="datePattern"><fmt:message key="date.format"/></c:set>
+<c:set var="shortDatePattern"><fmt:message key="date.format.short"/></c:set>

@@ -237,7 +237,7 @@
     
     <div class="form-group">
     	<appfuse:label styleClass="control-label" key="projectInfo.updateTime"/>:
-        <fmt:formatDate value="${projectInfo.updateTime}" pattern="yyyy-MM-dd HH:mm:ss" />
+        <fmt:formatDate value="${projectInfo.updateTime}" pattern="${datePattern} HH:mm:ss" />
     </div>
     </c:if>
 
@@ -266,12 +266,12 @@
 <script>
   $(function() {
     $('#endTime').datepicker({
-				//language: 'zh-CN'
-				format: 'yyyy-mm-dd'
+				language: 'zh-CN'
+				//format: 'yyyy-mm-dd'
 			});
 	$('#startTime').datepicker({
-				//language: 'zh-CN'
-				format: 'yyyy-mm-dd'
+				language: 'zh-CN'
+				//format: 'yyyy-mm-dd'
 			});		
   });
   </script>

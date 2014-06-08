@@ -5,6 +5,7 @@ import java.util.List;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.persister.entity.AbstractEntityPersister;
 import org.springframework.stereotype.Repository;
 
 import com.brxt.dao.FinancialSheetDao;
@@ -14,10 +15,10 @@ import com.brxt.model.finance.BudgetStatement;
 
 @Repository("budgetStatementDao")
 public class BudgetStatementDaoHibernate extends
-GenericDaoHibernate<BudgetStatement, Long> implements
-FinancialSheetDao<BudgetStatement, Long>{
+		GenericDaoHibernate<BudgetStatement, Long> implements
+		FinancialSheetDao<BudgetStatement, Long> {
 
-	public BudgetStatementDaoHibernate(){
+	public BudgetStatementDaoHibernate() {
 		super(BudgetStatement.class);
 	}
 
@@ -44,12 +45,27 @@ FinancialSheetDao<BudgetStatement, Long>{
 				.createCriteria(BudgetStatement.class)
 				.add(Restrictions.eq("projectInfo", projectInfo))
 				.add(Restrictions.eq("counterparty", counterparty))
-				 .addOrder(Order.desc("reportYear")) 
-				 .addOrder(Order.desc("reportMonth")).list();
+				.addOrder(Order.desc("reportYear"))
+				.addOrder(Order.desc("reportMonth")).list();
 
 		if (results != null && !results.isEmpty()) {
 			return results.get(0);
 		}
 		return null;
+	}
+
+	@Override
+	public List<BudgetStatement> getAll(ProjectInfo projectInfo) {
+		List<BudgetStatement> results = getSession()
+				.createCriteria(BudgetStatement.class)
+				.add(Restrictions.eq("projectInfo", projectInfo)).list();
+
+		return results;
+	}
+
+	public String getTableName() {
+		AbstractEntityPersister classMetadata = (AbstractEntityPersister) getSessionFactory()
+				.getClassMetadata(BudgetStatement.class);
+		return classMetadata.getTableName();
 	}
 }
