@@ -174,5 +174,23 @@ public class FinanceSheetManagerImpl implements FinanceSheetManager {
 		
 		return statements;
 	}
+
+	@Override
+	public ProfitStatement getLatestProfitStatement(ProjectInfo projectInfo,
+			Counterparty counterparty) {
+		return profitStatementDao.findLatest(projectInfo, counterparty);
+	}
+
+	@Override
+	public InstituteBalanceSheet getLatestInstituteBalanceSheet(
+			ProjectInfo projectInfo, Counterparty counterparty) {
+		return instBalanceDao.findLatest(projectInfo, counterparty);
+	}
+
+	@Override
+	public BudgetStatement getLatestBudgetStatement(ProjectInfo projectInfo,
+			Counterparty counterparty) {
+		return budgetStatementDao.findLatest(projectInfo, counterparty);
+	}
 	
 }

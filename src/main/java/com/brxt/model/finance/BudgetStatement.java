@@ -38,7 +38,7 @@ public class BudgetStatement extends BaseObject {
 	private BigDecimal govFundIncome;
 	private BigDecimal paymentTotal;
 	private BigDecimal budgetPayTotal;
-	private BigDecimal govFundPay;	
+	private BigDecimal govFundPayment;	
 	protected Integer reportYear;
 	protected Short reportMonth;
 	protected String createUser; //创建人
@@ -115,11 +115,11 @@ public class BudgetStatement extends BaseObject {
 	public void setGovFundIncome(BigDecimal govFundIncome) {
 		this.govFundIncome = govFundIncome;
 	}
-	public BigDecimal getGovFundPay() {
-		return govFundPay;
+	public BigDecimal getGovFundPayment() {
+		return govFundPayment;
 	}
-	public void setGovFundPay(BigDecimal govFundPay) {
-		this.govFundPay = govFundPay;
+	public void setGovFundPayment(BigDecimal govFundPayment) {
+		this.govFundPayment = govFundPayment;
 	}
 	public BigDecimal getPaymentTotal() {
 		return paymentTotal;

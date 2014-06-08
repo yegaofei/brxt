@@ -1,91 +1,154 @@
 package com.brxt.webapp.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.appfuse.model.User;
-import org.appfuse.service.UserManager;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.ldap.userdetails.LdapUserDetails;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.brxt.constant.SessionAttributes;
+import com.brxt.model.Counterparty;
+import com.brxt.model.ProjectInfo;
+import com.brxt.model.enums.StatementType;
+import com.brxt.model.enums.TradingRelationship;
 import com.brxt.model.finance.InstBalanceSheetModel;
 import com.brxt.model.finance.InstituteBalanceSheet;
+import com.brxt.service.FinanceSheetManager;
+import com.brxt.service.ProjectInfoManager;
 
 @Controller
-@RequestMapping("/instBalanceSheet*")
+@RequestMapping("/finance/instBalanceSheet*")
 public class InstBalanceSheetController extends BaseFormController{
 	
 	private Map<String,InstBalanceSheetModel> savedBalanceSheet= new HashMap<String,InstBalanceSheetModel>();
-	private static final Map<String,String> availReportYears = new TreeMap<String,String>();
-	private static final int yearRange = 10;
+	private static final Map<String, String> statementTypes = new TreeMap<String, String>();
 	
 	public InstBalanceSheetController() {
-		setCancelView("redirect:instBalanceSheet");
-		setSuccessView("redirect:instBalanceSheet");
+		setCancelView("redirect:/finance/instBalanceSheet");
+		setSuccessView("redirect:/finance/instBalanceSheet");
 	}
 	
-	private synchronized void loadDropDownList(final Locale locale)
-	{
-		Date now = new Date();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
-		int currentYear = Integer.parseInt(sdf.format(now));
-		for (int i=currentYear; i>currentYear - yearRange; i--){
-			availReportYears.put(String.valueOf(i), String.valueOf(i));
-		}		
+	private ProjectInfoManager projectInfoManager;
+	private FinanceSheetManager financeSheetManager;
+	
+	@Autowired
+	public void setProjectInfoManager(
+			@Qualifier("projectInfoManager") ProjectInfoManager projectInfoManager) {
+		this.projectInfoManager = projectInfoManager;
 	}
 
-	
-	@RequestMapping(method = RequestMethod.GET)
-	protected ModelAndView showForm(HttpServletRequest request) throws Exception {		
-		ModelAndView mav = new ModelAndView();	
-		if(availReportYears.isEmpty())
-		{
-			loadDropDownList(request.getLocale());
+	@Autowired
+	public void setFinanceSheetManager(
+			@Qualifier("financeSheetManager") FinanceSheetManager financeSheetManager) {
+		this.financeSheetManager = financeSheetManager;
+	}
+	private synchronized void loadDropDownList(final Locale locale) {
+		if (statementTypes.isEmpty()) {
+			StatementType[] types = StatementType.values();
+			for (StatementType st : types) {
+				statementTypes.put(st.toString(),
+						getText(st.toString(), locale));
+			}
 		}
-		mav.addObject("availReportYears", availReportYears);
-		mav.addObject("instBalanceSheetModel", getInstBalanceSheetModel(request));			
-		return mav;
 	}
 	
-	private InstBalanceSheetModel getInstBalanceSheetModel(HttpServletRequest request){
-		String reportYear="2014";
-		InstBalanceSheetModel instBalanceSheetModel= savedBalanceSheet.get(reportYear);		
+	@ModelAttribute("statementTypes")
+	public Map<String, String> getStatementTypes(final HttpServletRequest request)
+	{
+		if (statementTypes.isEmpty()) {
+			loadDropDownList(request.getLocale());
+		}
+		return statementTypes;
+	}
+	
+	@RequestMapping(method = RequestMethod.GET)
+	protected String showForm() {		
+		return "/finance/instBalanceSheet";
+	}
+	
+	@ModelAttribute("instBalanceSheetModel")
+	public InstBalanceSheetModel getInstBalanceSheetModel(final HttpServletRequest request, final HttpSession session){
+		String projectInfoIdStr = (String) session.getAttribute(SessionAttributes.PROJECT_INFO_ID);
+		String counterpartyIdStr = request.getParameter("counterpartyId");
+		String trStr = request.getParameter("type");
+		if(StringUtils.isBlank(projectInfoIdStr) || StringUtils.isBlank(counterpartyIdStr) || StringUtils.isBlank(trStr))
+		{
+			//Error out;
+			saveError(request, "request parameters are not enough"); 
+			return null;
+		}
+		TradingRelationship tradingRelationship = TradingRelationship.valueOf(trStr.toUpperCase());
+		Long projectInfoId = Long.valueOf(projectInfoIdStr);
+		Long counterpartyId = Long.valueOf(counterpartyIdStr);
 		
-		if (instBalanceSheetModel == null){
+		InstBalanceSheetModel ibs = new InstBalanceSheetModel();
+		ibs.setCounterpartyId(counterpartyId);
+		ibs.setProjectId(projectInfoId);
 		
-			String reportName="testReport";
-			InstituteBalanceSheet beginBalSheet = new InstituteBalanceSheet();
-			InstituteBalanceSheet endBalSheet = new InstituteBalanceSheet();
-			
-			instBalanceSheetModel= new InstBalanceSheetModel();
-			instBalanceSheetModel.setBeginBalSheet(beginBalSheet);
-			instBalanceSheetModel.setEndBalSheet(endBalSheet);
-			
-			instBalanceSheetModel.setReportName(reportName);
-			//instBalanceSheetModel.setProjectId(beginBalSheet.getProjectId());
-			//instBalanceSheetModel.setCounterpartyId(beginBalSheet.getCounterpartyId());
-			instBalanceSheetModel.setCounterpartyName("testCounterParty");
-			instBalanceSheetModel.setProjectName("testProjectName");
-			instBalanceSheetModel.setReportYear(reportYear);
-		
+		ProjectInfo projectInfo = projectInfoManager.get(projectInfoId);
+		Counterparty cpObj = null;
+		switch (tradingRelationship)
+		{
+		case COUNTERPARTY:
+			Set<Counterparty> cp = projectInfo.getCounterparties();
+			Iterator<Counterparty> it = cp.iterator();
+			while(it.hasNext())
+			{
+				Counterparty counterparty = it.next();
+				if(counterparty.getId() == counterpartyId)
+				{
+					cpObj = counterparty;
+					break;
+				}
+			}
+			break;
+		case GUARANTOR:
+			Set<Counterparty> ga = projectInfo.getGuarantors();
+			Iterator<Counterparty> iterator = ga.iterator();
+			while(iterator.hasNext())
+			{
+				Counterparty counterparty = iterator.next();
+				if(counterparty.getId() == counterpartyId)
+				{
+					cpObj = counterparty;
+					break;
+				}
+			}
+			break;
+			default:
 		}
 		
-		return instBalanceSheetModel;		
+		ibs.setCounterpartyName(cpObj.getName());
+		InstituteBalanceSheet latestPSheet = financeSheetManager.getLatestInstituteBalanceSheet(projectInfo, cpObj);
+		if(latestPSheet != null)
+		{
+			//TODO:
+			ibs.setBeginBalSheet(latestPSheet);
+			ibs.setReportYear(latestPSheet.getReportYear().toString());
+		}
+		else
+		{
+			ibs.setReportYear("");
+		}
+		
+		return ibs;
 	}
 	
 	
@@ -144,12 +207,8 @@ public class InstBalanceSheetController extends BaseFormController{
 		InstituteBalanceSheet endBalSheet = instBalanceSheetModel.getEndBalSheet();
 
 		boolean isNew = (beginBalSheet.getId() == null);
-		User currentUser = null;
-		final Authentication auth = SecurityContextHolder.getContext()
-				.getAuthentication();
-		if (auth != null) {
-			currentUser = getCurrentUser(auth, getUserManager());
-		}
+		User currentUser = getCurrentUser();
+		
 		if (isNew) {
 			// Add
 			//beginBalSheet.setCreateUser(currentUser);
@@ -181,24 +240,5 @@ public class InstBalanceSheetController extends BaseFormController{
 		mav.setViewName(getSuccessView());
 		return mav;
 	}
-	
-	
-	private User getCurrentUser(Authentication auth, UserManager userManager) {
-		User currentUser;
-		if (auth.getPrincipal() instanceof LdapUserDetails) {
-			LdapUserDetails ldapDetails = (LdapUserDetails) auth.getPrincipal();
-			String username = ldapDetails.getUsername();
-			currentUser = userManager.getUserByUsername(username);
-		} else if (auth.getPrincipal() instanceof UserDetails) {
-			currentUser = (User) auth.getPrincipal();
-		} else if (auth.getDetails() instanceof UserDetails) {
-			currentUser = (User) auth.getDetails();
-		} else {
-			throw new AccessDeniedException("User not properly authenticated.");
-		}
-		return currentUser;
-	}
-
-
 	
 }

@@ -78,17 +78,21 @@ public class FinancialStatementsController extends BaseFormController {
 				returnView = "redirect:/finance/corpBalanceSheet";
 				break;
 			case INSTITUTION:
-				returnView = "redirect:/finance/budgetStatementInfo";
+				returnView = "redirect:/finance/budgetStatementForm";
 				break;
 			default:
 			}
 
 			if (!StringUtils.isBlank(counterpartyId)) {
-				returnView += ("?counterpartyId=" + counterpartyId + "&type=" + TradingRelationship.COUNTERPARTY.getTitle());
+				returnView += ("?counterpartyId=" + counterpartyId + "&type="
+						+ TradingRelationship.COUNTERPARTY.getTitle()
+						+ "&ctype=" + type.getTitle());
 			}
 
 			if (!StringUtils.isBlank(guarantorId)) {
-				returnView += ("?counterpartyId=" + guarantorId + "&type=" + TradingRelationship.GUARANTOR.getTitle());
+				returnView += ("?counterpartyId=" + guarantorId + "&type="
+						+ TradingRelationship.GUARANTOR.getTitle() + "&ctype=" + type
+						.getTitle());
 			}
 		}
 		mav.setViewName(returnView);

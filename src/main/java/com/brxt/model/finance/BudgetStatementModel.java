@@ -1,5 +1,7 @@
 package com.brxt.model.finance;
 
+import com.brxt.model.enums.StatementType;
+
 public class BudgetStatementModel {
 	private Long projectId;
 	private String projectName;
@@ -7,11 +9,12 @@ public class BudgetStatementModel {
 	private String counterpartyName;
 	private String reportYear;
 	private String reportName;	
-	private BudgetStatement fullYearBudget;
-	private BudgetStatement thisYear;
-	private BudgetStatement lastYear;
-	private BudgetStatement budgetRatio;
-	private BudgetStatement growthRate;
+	private BudgetStatement fullYearBudget = new BudgetStatement();
+	private BudgetStatement thisYear = new BudgetStatement();
+	private BudgetStatement lastYear = new BudgetStatement();
+	private BudgetStatement budgetRatio = new BudgetStatement();
+	private BudgetStatement growthRate = new BudgetStatement();
+	private StatementType statementType = StatementType.BUDGET_SHEET;
 	
 	public Long getProjectId() {
 		return projectId;
@@ -78,6 +81,12 @@ public class BudgetStatementModel {
 	}
 	public void setGrowthRate(BudgetStatement growthRate) {
 		this.growthRate = growthRate;
+	}
+	public StatementType getStatementType() {
+		return statementType;
+	}
+	public void setStatementType(StatementType statementType) {
+		this.statementType = statementType;
 	}	
 	
 }

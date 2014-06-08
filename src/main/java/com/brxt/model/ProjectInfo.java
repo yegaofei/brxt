@@ -19,6 +19,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
@@ -56,7 +57,8 @@ public class ProjectInfo extends BaseObject implements Serializable {
 	private Integer version;
 	private Set<Counterparty> counterparties = new HashSet<Counterparty>(); //交易对手
 	private Set<Counterparty> guarantors = new HashSet<Counterparty>(); //担保人关系
-
+	private ProjectInfoStatus projectInfoStatus;
+		
 	@Column(name = "project_name", length = 50)
 	public String getProjectName() {
 		return projectName;
@@ -224,6 +226,15 @@ public class ProjectInfo extends BaseObject implements Serializable {
 
 	public void setGuarantors(Set<Counterparty> guarantors) {
 		this.guarantors = guarantors;
+	}
+
+	@OneToOne(cascade = CascadeType.ALL)
+	public ProjectInfoStatus getProjectInfoStatus() {
+		return projectInfoStatus;
+	}
+
+	public void setProjectInfoStatus(ProjectInfoStatus projectInfoStatus) {
+		this.projectInfoStatus = projectInfoStatus;
 	}
 
 	@Override

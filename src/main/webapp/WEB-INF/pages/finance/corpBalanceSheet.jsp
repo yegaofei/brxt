@@ -7,13 +7,13 @@
 <div class="col-sm-3">
     <h2><fmt:message key='corpBalanceSheet.heading'/></h2>
     <span>
-    	<c:if test = '${corpBalanceSheetModel.tradingRelationship.title == "counterparty"}' >
+    	<c:if test = '${param.type == "counterparty"}' >
     		<fmt:message key='corpBalanceSheet.counterpartyName'/> 
     	</c:if>
-    	<c:if test = '${corpBalanceSheetModel.tradingRelationship.title == "guarantor"}' >
+    	<c:if test = '${param.type == "guarantor"}' >
     		<fmt:message key='corpBalanceSheet.guarantorName'/> 
     	</c:if>
-    	: &nbsp; <c:out value="${corpBalanceSheetModel.counterpartyName}"/>
+    	: &nbsp; <c:out value="${corpBalanceSheetModel.counterpartyName}"/>, <fmt:message key="${param.ctype}"/>
     </span>
 </div>
  
@@ -27,7 +27,7 @@
     <div class="row">
     <div class="col-sm-8 form-group">
         <appfuse:label styleClass="control-label" key="report.type.name"/>: 
-        <form:select path="statementType">    		
+        <form:select path="statementType" id="statementType">    		
 			<form:options items="${statementTypes}" />
 		</form:select>        
     </div>  
@@ -401,3 +401,42 @@
 
 <v:javascript formName="corpBalanceSheetModel" cdata="false" dynamicJavascript="true" staticJavascript="false"/>
 <script type="text/javascript" src="<c:url value='/scripts/validator.jsp'/>"></script>
+<script language="javascript" type="text/javascript">
+$(document).ready(function(){
+	$('#statementType').change(function(){
+		var p1=$(this).children('option:selected').val(); 
+		if (p1 == 'profit_sheet')
+		{
+			window.location.href='<c:url value="/finance/profitStatement">
+				<c:param name="counterpartyId" value="${corpBalanceSheetModel.counterpartyId}"/>
+				<c:param name="type" value="${param.type}"/>
+				<c:param name="ctype" value="${param.ctype}"/>
+				</c:url>'; 
+		} 
+		else if (p1 == 'balance_sheet')
+		{
+			<c:if test='${param.ctype == institution}' >
+				window.location.href='<c:url value="/finance/instBalanceSheet">
+				<c:param name="counterpartyId" value="${corpBalanceSheetModel.counterpartyId}"/>
+				<c:param name="type" value="${param.type}"/>
+				<c:param name="ctype" value="${param.ctype}"/>
+				</c:url>';
+			</c:if>
+		}
+		else if (p1 == 'budget_sheet')
+		{
+			window.location.href='<c:url value="/finance/budgetStatementForm">
+				<c:param name="counterpartyId" value="${corpBalanceSheetModel.counterpartyId}"/>
+				<c:param name="type" value="${param.type}"/>
+				<c:param name="ctype" value="${param.ctype}"/>
+				</c:url>'; 
+		}
+		else if (p1 == 'cash_flow_sheet')
+		{
+			
+		}
+		
+	})
+})
+</script>
+

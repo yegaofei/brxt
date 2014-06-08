@@ -1,5 +1,7 @@
 package com.brxt.model.finance;
 
+import com.brxt.model.enums.StatementType;
+
 public class ProfitStatementModel {
 	private Long projectId;
 	private String projectName;
@@ -9,6 +11,8 @@ public class ProfitStatementModel {
 	private String reportName;	
 	private ProfitStatement beginBalSheet;
 	private ProfitStatement endBalSheet;
+	private StatementType statementType = StatementType.PROFIT_SHEET;
+	
 	public Long getProjectId() {
 		return projectId;
 	}
@@ -56,6 +60,12 @@ public class ProfitStatementModel {
 	}
 	public void setEndBalSheet(ProfitStatement endBalSheet) {
 		this.endBalSheet = endBalSheet;
+	}
+	public StatementType getStatementType() {
+		return statementType;
+	}
+	public void setStatementType(StatementType statementType) {
+		this.statementType = statementType;
 	}
 		
 }

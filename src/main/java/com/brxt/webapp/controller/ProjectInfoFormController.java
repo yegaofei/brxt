@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -90,15 +91,31 @@ public class ProjectInfoFormController extends BaseFormController {
 		}
 	}
 	
-	private ProjectInfo getProjectInfo(HttpServletRequest request){
+	@ModelAttribute
+	public ProjectInfo getProjectInfo(final HttpServletRequest request){
 		String id = request.getParameter("id");
 		if (!StringUtils.isBlank(id)) {
-			ProjectInfo pi = projectInfoManager.get(new Long(id));			
-			return pi;		
+			return loadProjectInfo(new Long(id));
 		}
 		return new ProjectInfo();
 	}
-
+	
+	private ProjectInfo loadProjectInfo(Long id)
+	{
+		ProjectInfo pi = projectInfoManager.get(new Long(id));
+		if(pi != null)
+		{
+			List<InvestmentProject> investmentProjs = progressManager.getInvestmentProjects(pi.getId());
+			if (investmentProjs != null && !investmentProjs.isEmpty()) {
+				for(InvestmentProject ip : investmentProjs)
+				{
+					pi.getInvestments().add(new InvestmentStatus(ip.getName(), ip.getType()));
+				}
+			}
+		}
+		return pi;	
+	}
+	
 	@RequestMapping(method = RequestMethod.GET)
 	protected ModelAndView showForm(HttpServletRequest request) throws Exception {
 		ModelAndView mav = new ModelAndView();
@@ -109,18 +126,6 @@ public class ProjectInfoFormController extends BaseFormController {
 		mav.addObject("capitalInvestmentTypes", CapitalInvestmentTypes);
 		mav.addObject("projectTypes", ProjectTypes);
 		mav.addObject("counterpartyTypes", CounterpartyTypes);
-		ProjectInfo projectInfo = getProjectInfo(request);
-		if(projectInfo.getId() != null)
-		{
-			List<InvestmentProject> investmentProjs = progressManager.getInvestmentProjects(projectInfo.getId());
-			if (investmentProjs != null && !investmentProjs.isEmpty()) {
-				for(InvestmentProject ip : investmentProjs)
-				{
-					projectInfo.getInvestments().add(new InvestmentStatus(ip.getName(), ip.getType()));
-				}
-			}
-		}
-		mav.addObject("projectInfo", projectInfo);	
 		request.getSession().setAttribute(SessionAttributes.PROJECT_INFO_ID, request.getParameter("id"));
 		return mav;
 	}
@@ -205,10 +210,13 @@ public class ProjectInfoFormController extends BaseFormController {
 			projectInfo.setCreateUser(currentUser);
 			projectInfo.setCreateTime(new Date());
 		} else {
+			ProjectInfo oldProjectInfo = loadProjectInfo(projectInfo.getId());
 			User createUser = getUserManager().getUserByUsername(projectInfo.getCreateUser().getUsername());
 			projectInfo.setCreateUser(createUser);
 			projectInfo.setUpdateUser(currentUser);
 			projectInfo.setUpdateTime(new Date());
+			projectInfo.setCounterparties(oldProjectInfo.getCounterparties());
+			projectInfo.setGuarantors(oldProjectInfo.getGuarantors());
 		}
 		projectInfoManager.save(projectInfo);
 		mav.addObject("ProjectInfo", projectInfo);

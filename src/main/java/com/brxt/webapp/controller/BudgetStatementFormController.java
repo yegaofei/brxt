@@ -1,103 +1,194 @@
 package com.brxt.webapp.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.appfuse.model.User;
-import org.appfuse.service.UserManager;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.ldap.userdetails.LdapUserDetails;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.brxt.constant.SessionAttributes;
+import com.brxt.model.Counterparty;
 import com.brxt.model.MockBudgetRepsitory;
+import com.brxt.model.ProjectInfo;
+import com.brxt.model.enums.CounterpartyType;
+import com.brxt.model.enums.StatementType;
+import com.brxt.model.enums.TradingRelationship;
 import com.brxt.model.finance.BudgetStatement;
+import com.brxt.model.finance.BudgetStatementModel;
+import com.brxt.model.finance.InstituteBalanceSheet;
+import com.brxt.service.FinanceSheetManager;
+import com.brxt.service.ProjectInfoManager;
 
 @Controller
-@RequestMapping("/budgetStatementForm*")
-public class BudgetStatementFormController extends BaseFormController{
-	//In the form of <2014, <201405, Statement> >
-	public static Map<String, Map<String,BudgetStatement>> savedBudgetStatement = new HashMap<String, Map<String,BudgetStatement>>();
-	private static final Map<String,String> availReportMonths = new TreeMap<String,String>();
-	private static final Map<String,String> budgetTypes = new TreeMap<String,String>();
+@RequestMapping("/finance/budgetStatementForm*")
+public class BudgetStatementFormController extends BaseFormController {
+	// In the form of <2014, <201405, Statement> >
+	public static Map<String, Map<String, BudgetStatement>> savedBudgetStatement = new HashMap<String, Map<String, BudgetStatement>>();
+	private static final Map<String, String> availReportMonths = new TreeMap<String, String>();
+	private static final Map<String, String> budgetTypes = new TreeMap<String, String>();
 	private static final int monthRange = 24;
-	public BudgetStatementFormController() {		
-		setCancelView("redirect:budgetStatementInfo");
-		setSuccessView("redirect:budgetStatementInfo");
+
+	private static final Map<String, String> statementTypes = new TreeMap<String, String>();
+
+	public BudgetStatementFormController() {
+		setCancelView("redirect:/finance/budgetStatementForm");
+		setSuccessView("redirect:/finance/budgetStatementForm");
 	}
-	
-	private synchronized void loadDropDownList(final Locale locale)
-	{
-		Date now = new Date();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");		
-		int currentMonth = Integer.parseInt(sdf.format(now));
-		availReportMonths.put(String.valueOf(currentMonth), String.valueOf(currentMonth));
-		for (int i=0; i<monthRange; i++){
-			now = DateUtils.addMonths(now, -1);
-			currentMonth = Integer.parseInt(sdf.format(now));
-			availReportMonths.put(String.valueOf(currentMonth), String.valueOf(currentMonth));
-		}		
-		
-		if(budgetTypes.isEmpty())
-		{
-//			BudgetType[] cits = BudgetType.values();
-//			for(BudgetType cit : cits)
-//			{
-//				budgetTypes.put(cit.toString(), getText(cit.toString(), locale));
-//			}
+
+	private ProjectInfoManager projectInfoManager;
+	private FinanceSheetManager financeSheetManager;
+
+	@Autowired
+	public void setProjectInfoManager(
+			@Qualifier("projectInfoManager") ProjectInfoManager projectInfoManager) {
+		this.projectInfoManager = projectInfoManager;
+	}
+
+	@Autowired
+	public void setFinanceSheetManager(
+			@Qualifier("financeSheetManager") FinanceSheetManager financeSheetManager) {
+		this.financeSheetManager = financeSheetManager;
+	}
+
+	private synchronized void loadDropDownList(final Locale locale) {
+		if (statementTypes.isEmpty()) {
+			StatementType[] types = StatementType.values();
+			for (StatementType st : types) {
+				statementTypes.put(st.toString(),
+						getText(st.toString(), locale));
+			}
 		}
 	}
 
-	
-	@RequestMapping(method = RequestMethod.GET)
-	protected ModelAndView showForm(HttpServletRequest request) throws Exception {			
-		ModelAndView mav = new ModelAndView();	
-		if(availReportMonths.isEmpty())
-		{
+	@ModelAttribute("statementTypes")
+	public Map<String, String> getStatementTypes(
+			final HttpServletRequest request) {
+		if (statementTypes.isEmpty()) {
 			loadDropDownList(request.getLocale());
 		}
-		mav.addObject("budgetTypes", budgetTypes);
-		mav.addObject("availReportMonths", availReportMonths);
-		mav.addObject("budgetStatementFormModel", new BudgetStatement());			
-		return mav;
-	}	
+		return statementTypes;
+	}
+
+	@RequestMapping(method = RequestMethod.GET)
+	protected String showForm() {
+		return "/finance/budgetStatementForm";
+	}
+
+	@ModelAttribute("budgetStatementModel")
+	public BudgetStatementModel getBudgetStatementModel(
+			final HttpServletRequest request, final HttpSession session) {
+		String projectInfoIdStr = (String) session
+				.getAttribute(SessionAttributes.PROJECT_INFO_ID);
+		String counterpartyIdStr = request.getParameter("counterpartyId");
+		String trStr = request.getParameter("type");
+		String ctype = request.getParameter("ctype");
+		final Locale locale = request.getLocale();
+		if (StringUtils.isBlank(projectInfoIdStr)
+				|| StringUtils.isBlank(counterpartyIdStr)
+				|| StringUtils.isBlank(trStr) || StringUtils.isBlank(ctype)) {
+			// Error out;
+			saveError(request, "request parameters are not enough");
+			return null;
+		}
+
 		
+		if(ctype.equalsIgnoreCase(CounterpartyType.COMMERCE_COMPANY.toString()) || ctype.equalsIgnoreCase(CounterpartyType.REAL_ESTATE_FIRM.toString()))
+		{
+			saveError(request, getText("budgetStatementForm.error.type", locale));
+		}
+		
+		TradingRelationship tradingRelationship = TradingRelationship
+				.valueOf(trStr.toUpperCase());
+		Long projectInfoId = Long.valueOf(projectInfoIdStr);
+		Long counterpartyId = Long.valueOf(counterpartyIdStr);
+
+		BudgetStatementModel bsm = new BudgetStatementModel();
+		bsm.setCounterpartyId(counterpartyId);
+		bsm.setProjectId(projectInfoId);
+
+		ProjectInfo projectInfo = projectInfoManager.get(projectInfoId);
+		Counterparty cpObj = null;
+		switch (tradingRelationship) {
+		case COUNTERPARTY:
+			Set<Counterparty> cp = projectInfo.getCounterparties();
+			Iterator<Counterparty> it = cp.iterator();
+			while (it.hasNext()) {
+				Counterparty counterparty = it.next();
+				if (counterparty.getId() == counterpartyId) {
+					cpObj = counterparty;
+					break;
+				}
+			}
+			break;
+		case GUARANTOR:
+			Set<Counterparty> ga = projectInfo.getGuarantors();
+			Iterator<Counterparty> iterator = ga.iterator();
+			while (iterator.hasNext()) {
+				Counterparty counterparty = iterator.next();
+				if (counterparty.getId() == counterpartyId) {
+					cpObj = counterparty;
+					break;
+				}
+			}
+			break;
+		default:
+		}
+
+		bsm.setCounterpartyName(cpObj.getName());
+		BudgetStatement latestBudgetStatement = financeSheetManager
+				.getLatestBudgetStatement(projectInfo, cpObj);
+		if (latestBudgetStatement != null) {
+			// TODO:
+			bsm.setThisYear(latestBudgetStatement);
+			bsm.setReportYear(latestBudgetStatement.getReportYear().toString());
+		} else {
+			bsm.setReportYear("");
+		}
+
+		return bsm;
+	}
+
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView onSubmit(BudgetStatement budgetStatement, BindingResult errors,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
+	public ModelAndView onSubmit(BudgetStatement budgetStatement,
+			BindingResult errors, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 		String method = request.getParameter("method");
 		final Locale locale = request.getLocale();
 		if (method != null) {
 			ModelAndView mav = new ModelAndView();
-			
+
 			switch (method) {
 			case "Cancel":
 				mav.setViewName(getCancelView());
 				break;
 			case "Delete":
-				MockBudgetRepsitory.getInstance().deleteBudget(budgetStatement);				
-				saveMessage(request, getText("budgetStatementForm.deleted", locale));
+				MockBudgetRepsitory.getInstance().deleteBudget(budgetStatement);
+				saveMessage(request,
+						getText("budgetStatementForm.deleted", locale));
 				mav.setViewName(getSuccessView());
 				break;
 			case "Save":
 				mav = saveBudgetStatement(budgetStatement, errors, request, mav);
-				break;			
+				break;
 			default:
-				//Error
+				// Error
 			}
 			return mav;
 		} else {
@@ -105,7 +196,7 @@ public class BudgetStatementFormController extends BaseFormController{
 		}
 		return new ModelAndView("budgetStatementForm");
 	}
-	
+
 	private ModelAndView saveBudgetStatement(BudgetStatement budgetStatement,
 			BindingResult errors, HttpServletRequest request, ModelAndView mav)
 			throws Exception {
@@ -119,9 +210,9 @@ public class BudgetStatementFormController extends BaseFormController{
 				mav.setViewName("budgetStatementForm");
 				return mav;
 			}
-		}		
+		}
 
-		boolean isNew = false;//(budgetStatement.getId() == null);
+		boolean isNew = false;// (budgetStatement.getId() == null);
 		User currentUser = getCurrentUser();
 		if (isNew) {
 			// Add
@@ -131,41 +222,24 @@ public class BudgetStatementFormController extends BaseFormController{
 			budgetStatement.setUpdateUser(currentUser.getUsername());
 			budgetStatement.setUpdateTime(new Date());
 		}
-		
+
 		String reportYear = budgetStatement.getReportYear().toString();
 		String reportMonth = budgetStatement.getReportMonth().toString();
-		
-//		if (BudgetType.BUDGET_MONTH.toString().equals(budgetStatement.getBudgetType())){
-//			reportMonth = reportYear + "00";
-//		}
-		//budgetStatement.setReportMonth(reportMonth);
-		
+
+		// if
+		// (BudgetType.BUDGET_MONTH.toString().equals(budgetStatement.getBudgetType())){
+		// reportMonth = reportYear + "00";
+		// }
+		// budgetStatement.setReportMonth(reportMonth);
+
 		MockBudgetRepsitory.getInstance().addOrUpdateBudget(budgetStatement);
-		
+
 		mav.addObject("budgetStatementFormModel", budgetStatement);
-		String key = (isNew) ? "budgetStatementForm.added" : "budgetStatementForm.updated";
+		String key = (isNew) ? "budgetStatementForm.added"
+				: "budgetStatementForm.updated";
 		saveMessage(request, getText(key, locale));
 		mav.setViewName(getSuccessView());
 		return mav;
 	}
-	
-	
-	private User getCurrentUser(Authentication auth, UserManager userManager) {
-		User currentUser;
-		if (auth.getPrincipal() instanceof LdapUserDetails) {
-			LdapUserDetails ldapDetails = (LdapUserDetails) auth.getPrincipal();
-			String username = ldapDetails.getUsername();
-			currentUser = userManager.getUserByUsername(username);
-		} else if (auth.getPrincipal() instanceof UserDetails) {
-			currentUser = (User) auth.getPrincipal();
-		} else if (auth.getDetails() instanceof UserDetails) {
-			currentUser = (User) auth.getDetails();
-		} else {
-			throw new AccessDeniedException("User not properly authenticated.");
-		}
-		return currentUser;
-	}
 
-
-	
 }

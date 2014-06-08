@@ -14,13 +14,8 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.appfuse.model.User;
-import org.appfuse.service.UserManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.ldap.userdetails.LdapUserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -74,10 +69,10 @@ public class CorpBalanceSheetController extends BaseFormController {
 			}
 		}
 	}
-	
+
 	@ModelAttribute("statementTypes")
-	public Map<String, String> getStatementTypes(final HttpServletRequest request)
-	{
+	public Map<String, String> getStatementTypes(
+			final HttpServletRequest request) {
 		if (statementTypes.isEmpty()) {
 			loadDropDownList(request.getLocale());
 		}
@@ -90,36 +85,38 @@ public class CorpBalanceSheetController extends BaseFormController {
 	}
 
 	@ModelAttribute("corpBalanceSheetModel")
-	public CorpBalanceSheetModel getCorpBalanceSheetModel(final HttpServletRequest request, final HttpSession session){
-		String projectInfoIdStr = (String) session.getAttribute(SessionAttributes.PROJECT_INFO_ID);
+	public CorpBalanceSheetModel getCorpBalanceSheetModel(
+			final HttpServletRequest request, final HttpSession session) {
+		String projectInfoIdStr = (String) session
+				.getAttribute(SessionAttributes.PROJECT_INFO_ID);
 		String counterpartyIdStr = request.getParameter("counterpartyId");
 		String trStr = request.getParameter("type");
-		if(StringUtils.isBlank(projectInfoIdStr) || StringUtils.isBlank(counterpartyIdStr) || StringUtils.isBlank(trStr))
-		{
-			//Error out;
+		String ctypeStr = request.getParameter("ctype");
+		if (StringUtils.isBlank(projectInfoIdStr)
+				|| StringUtils.isBlank(counterpartyIdStr)
+				|| StringUtils.isBlank(trStr) || StringUtils.isBlank(ctypeStr)) {
+			// Error out;
 		}
-		
-		TradingRelationship tradingRelationship = TradingRelationship.valueOf(trStr.toUpperCase());
+
+		TradingRelationship tradingRelationship = TradingRelationship
+				.valueOf(trStr.toUpperCase());
 		Long projectInfoId = Long.valueOf(projectInfoIdStr);
 		Long counterpartyId = Long.valueOf(counterpartyIdStr);
-		
-		CorpBalanceSheetModel csm  = new CorpBalanceSheetModel();
+
+		CorpBalanceSheetModel csm = new CorpBalanceSheetModel();
 		csm.setCounterpartyId(counterpartyId);
 		csm.setProjectId(projectInfoId);
 		csm.setTradingRelationship(tradingRelationship);
-		
+
 		ProjectInfo projectInfo = projectInfoManager.get(projectInfoId);
 		Counterparty cpObj = null;
-		switch (tradingRelationship)
-		{
+		switch (tradingRelationship) {
 		case COUNTERPARTY:
 			Set<Counterparty> cp = projectInfo.getCounterparties();
 			Iterator<Counterparty> it = cp.iterator();
-			while(it.hasNext())
-			{
+			while (it.hasNext()) {
 				Counterparty counterparty = it.next();
-				if(counterparty.getId() == counterpartyId)
-				{
+				if (counterparty.getId() == counterpartyId) {
 					cpObj = counterparty;
 					break;
 				}
@@ -128,29 +125,27 @@ public class CorpBalanceSheetController extends BaseFormController {
 		case GUARANTOR:
 			Set<Counterparty> ga = projectInfo.getGuarantors();
 			Iterator<Counterparty> iterator = ga.iterator();
-			while(iterator.hasNext())
-			{
+			while (iterator.hasNext()) {
 				Counterparty counterparty = iterator.next();
-				if(counterparty.getId() == counterpartyId)
-				{
+				if (counterparty.getId() == counterpartyId) {
 					cpObj = counterparty;
 					break;
 				}
 			}
 			break;
-			default:
+		default:
 		}
-		
+
 		csm.setCounterpartyName(cpObj.getName());
-		CorporateBalanceSheet latestCBSheet = financeSheetManager.getLatestCorpBalanceSheet(projectInfo, cpObj);
-		if(latestCBSheet != null)
-		{
-			//TODO:
+		CorporateBalanceSheet latestCBSheet = financeSheetManager
+				.getLatestCorpBalanceSheet(projectInfo, cpObj);
+		if (latestCBSheet != null) {
+			// TODO:
 			csm.setBeginBalSheet(latestCBSheet);
 			csm.setReportYear(latestCBSheet.getReportYear().toString());
 		}
-		
-		return csm;		
+
+		return csm;
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
@@ -245,22 +240,6 @@ public class CorpBalanceSheetController extends BaseFormController {
 		saveMessage(request, getText(key, locale));
 		mav.setViewName(getSuccessView());
 		return mav;
-	}
-
-	private User getCurrentUser(Authentication auth, UserManager userManager) {
-		User currentUser;
-		if (auth.getPrincipal() instanceof LdapUserDetails) {
-			LdapUserDetails ldapDetails = (LdapUserDetails) auth.getPrincipal();
-			String username = ldapDetails.getUsername();
-			currentUser = userManager.getUserByUsername(username);
-		} else if (auth.getPrincipal() instanceof UserDetails) {
-			currentUser = (User) auth.getPrincipal();
-		} else if (auth.getDetails() instanceof UserDetails) {
-			currentUser = (User) auth.getDetails();
-		} else {
-			throw new AccessDeniedException("User not properly authenticated.");
-		}
-		return currentUser;
 	}
 
 }

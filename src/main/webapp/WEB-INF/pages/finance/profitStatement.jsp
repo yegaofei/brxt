@@ -2,11 +2,22 @@
 <head>
     <title><fmt:message key="profitStatement.title"/></title>
     <meta name="menu" content="ProjectInfoSubMenu"/>
+    <link rel="stylesheet" type="text/css" href="${base}/webjars/bootstrap-datepicker/1.2.0/css/datepicker.css"/>
+    <script type="text/javascript" src="${base}/webjars/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="${base}/webjars/bootstrap-datepicker/1.2.0/js/locales/bootstrap-datepicker.zh-CN.js" charset="UTF-8"></script>
 </head>
  
 <div class="col-sm-3">
     <h2><fmt:message key='profitStatement.heading'/></h2>
-    <span><fmt:message key='profitStatement.counterpartyName'/>: &nbsp; <c:out value="${profitStatementModel.counterpartyName}"/></span>
+    <span>
+    	<c:if test = '${param.type == "counterparty"}' >
+    		<fmt:message key='corpBalanceSheet.counterpartyName'/> 
+    	</c:if>
+    	<c:if test = '${param.type == "guarantor"}' >
+    		<fmt:message key='corpBalanceSheet.guarantorName'/> 
+    	</c:if>
+    	: &nbsp; <c:out value="${profitStatementModel.counterpartyName}"/>, <fmt:message key="${param.ctype}"/>
+    </span>
 </div>
  
 <div class="col-sm-7">
@@ -16,30 +27,19 @@
 	<form:hidden path="counterpartyId"/>
 	<form:hidden path="reportName"/>
  
-    <spring:bind path="profitStatementModel.projectName">
-    <div class="col-sm-6 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
-    </spring:bind>
-        <appfuse:label styleClass="control-label" key="profitStatement.projectName"/>
-        <form:input path="projectName" id="projectName" maxlength="50" autofocus="true" cssClass="form-control"/>
-        <form:errors path="projectName" cssClass="help-inline"/>
-    </div>
-
-	
-
 	<div class="row">
-    <spring:bind path="profitStatementModel.reportName">
-    <div class="col-sm-4 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
-    </spring:bind>
-        <appfuse:label styleClass="control-label" key="profitStatement.reportName"/>        
-    </div>	
+    <div class="col-sm-6 form-group">
+        <appfuse:label styleClass="control-label" key="report.type.name"/>: 
+        <form:select path="statementType" id="statementType">    		
+			<form:options items="${statementTypes}" />
+		</form:select>        
+    </div>  
 	    
     <spring:bind path="profitStatementModel.reportYear">
-    <div class="col-sm-4 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    <div class="col-sm-6 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
-        <appfuse:label styleClass="control-label" key="profitStatement.reportYear"/>
-        <form:select path="reportYear">    		
-			<form:options items="${availReportYears}" />
-		</form:select>
+        <appfuse:label styleClass="control-label" key="profitStatement.reportYear"/>:
+        <form:input path="reportYear" id="reportYear" maxlength="20" />
         <form:errors path="reportYear" cssClass="help-block"/>
     </div>	
 	</div>
@@ -192,3 +192,49 @@
 
 <v:javascript formName="profitStatementModel" cdata="false" dynamicJavascript="true" staticJavascript="false"/>
 <script type="text/javascript" src="<c:url value='/scripts/validator.jsp'/>"></script>
+
+<script language="javascript" type="text/javascript">
+$(document).ready(function(){
+	$('#statementType').change(function(){
+		var p1=$(this).children('option:selected').val(); 
+		if (p1 == 'balance_sheet')
+		{
+			<c:if test='${param.ctype == institution}' >
+				window.location.href='<c:url value="/finance/instBalanceSheet">
+				<c:param name="counterpartyId" value="${profitStatementModel.counterpartyId}"/>
+				<c:param name="type" value="${param.type}"/>
+				<c:param name="ctype" value="${param.ctype}" />
+				</c:url>';
+			</c:if>
+			
+			<c:if test='${param.ctype != institution}' >
+				window.location.href='<c:url value="/finance/corpBalanceSheet">
+				<c:param name="counterpartyId" value="${profitStatementModel.counterpartyId}"/>
+				<c:param name="type" value="${param.type}"/>
+				<c:param name="ctype" value="${param.ctype}" />
+				</c:url>';
+			</c:if>
+		}
+		else if (p1 == 'budget_sheet')
+		{
+			window.location.href='<c:url value="/finance/budgetStatementForm">
+				<c:param name="counterpartyId" value="${profitStatementModel.counterpartyId}"/>
+				<c:param name="type" value="${param.type}"/>
+				<c:param name="ctype" value="${param.ctype}"/>
+				</c:url>'; 
+		}
+		else if (p1 == 'cash_flow_sheet')
+		{
+			
+		}
+		
+	})
+})
+
+$(function() {
+    $('#reportYear').datepicker({
+				format: '<fmt:message key="date.format.short.js"/>'
+			});
+  });
+</script>
+

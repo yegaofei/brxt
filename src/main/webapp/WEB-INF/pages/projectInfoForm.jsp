@@ -62,6 +62,25 @@
                 <fmt:message key="button.delete"/>
         </button>    
 	</div>
+	</c:if>
+	
+	<c:if test="${empty projectInfo.projectSizes}">
+    	<appfuse:label styleClass="control-label" key="projectSize.title"/>
+    	<div id="actions" class="btn-group">
+		<c:choose>
+		<c:when test="${method == 'EditProjectSize'}">
+    		<button type="submit" name="method" value="SaveProjectSize">
+                <fmt:message key="button.save"/>
+            </button>
+		</c:when>
+		<c:otherwise>
+        <button type="submit" name="method" value="AddProjectSize">
+                <fmt:message key="button.add"/>
+        </button>    
+        </c:otherwise>
+        </c:choose>
+		</div>
+    </c:if>
 	
     <div class="form-group">
 		<display:table name="projectInfo.projectSizes" id="projectSize" class="table table-condensed table-striped table-hover">
@@ -99,11 +118,7 @@
   			</display:column>
 		</display:table>
      </div>
-    </c:if>
-    <c:if test="${empty projectInfo.projectSizes}">
-    	<a href="<c:url value='/projectSizeForm?projectInfoId=${projectInfo.id}'/>"><fmt:message key="projectSize.addPage"/></a>
-    </c:if>
-        
+    
     <div class="row">
     <spring:bind path="projectInfo.fundUsage">
     <div class="col-sm-6 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
@@ -274,5 +289,5 @@
 				//format: 'yyyy-mm-dd'
 			});		
   });
-  </script>
+</script>
   
