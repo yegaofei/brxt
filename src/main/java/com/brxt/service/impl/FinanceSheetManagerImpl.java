@@ -192,5 +192,13 @@ public class FinanceSheetManagerImpl implements FinanceSheetManager {
 			Counterparty counterparty) {
 		return budgetStatementDao.findLatest(projectInfo, counterparty);
 	}
+
+	@Override
+	public void saveCorpBalanceSheets(CorporateBalanceSheet beginB,
+			CorporateBalanceSheet endB) {
+		corpBalanceSheetDao.save(beginB);
+		corpBalanceSheetDao.save(endB);
+	}
+
 	
 }

@@ -19,7 +19,7 @@
     <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="repayment.repaymentTime"/>
-        <form:input path="repaymentTime" id="queryTime" maxlength="20" cssClass="form-control"/>
+        <form:input path="repaymentTime" id="repaymentTime" maxlength="20" cssClass="form-control"/>
         <form:errors path="repaymentTime" cssClass="help-block"/>
     </div>
 

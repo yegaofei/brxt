@@ -22,4 +22,6 @@ public interface FinanceSheetManager {
 	
 	public BudgetStatement getLatestBudgetStatement(ProjectInfo projectInfo, Counterparty counterparty);
 	
+	public void saveCorpBalanceSheets(CorporateBalanceSheet beginB, CorporateBalanceSheet endB);
+	
 }

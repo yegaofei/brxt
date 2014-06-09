@@ -1,5 +1,7 @@
 package com.brxt.model.finance;
 
+import com.brxt.model.enums.StatementType;
+
 public class InstBalanceSheetModel {
 	private Long projectId;
 	private String projectName;
@@ -7,8 +9,10 @@ public class InstBalanceSheetModel {
 	private String counterpartyName;
 	private String reportYear;
 	private String reportName;	
-	private InstituteBalanceSheet beginBalSheet;
-	private InstituteBalanceSheet endBalSheet;
+	private InstituteBalanceSheet beginBalSheet = new InstituteBalanceSheet();
+	private InstituteBalanceSheet endBalSheet = new InstituteBalanceSheet();
+	private StatementType statementType = StatementType.BALANCE_SHEET;
+	
 	public Long getProjectId() {
 		return projectId;
 	}
@@ -56,6 +60,12 @@ public class InstBalanceSheetModel {
 	}
 	public void setEndBalSheet(InstituteBalanceSheet endBalSheet) {
 		this.endBalSheet = endBalSheet;
+	}
+	public StatementType getStatementType() {
+		return statementType;
+	}
+	public void setStatementType(StatementType statementType) {
+		this.statementType = statementType;
 	}	
 	
 }

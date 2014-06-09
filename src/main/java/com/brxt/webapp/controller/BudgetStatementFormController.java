@@ -32,18 +32,13 @@ import com.brxt.model.enums.StatementType;
 import com.brxt.model.enums.TradingRelationship;
 import com.brxt.model.finance.BudgetStatement;
 import com.brxt.model.finance.BudgetStatementModel;
-import com.brxt.model.finance.InstituteBalanceSheet;
 import com.brxt.service.FinanceSheetManager;
 import com.brxt.service.ProjectInfoManager;
 
 @Controller
 @RequestMapping("/finance/budgetStatementForm*")
 public class BudgetStatementFormController extends BaseFormController {
-	// In the form of <2014, <201405, Statement> >
 	public static Map<String, Map<String, BudgetStatement>> savedBudgetStatement = new HashMap<String, Map<String, BudgetStatement>>();
-	private static final Map<String, String> availReportMonths = new TreeMap<String, String>();
-	private static final Map<String, String> budgetTypes = new TreeMap<String, String>();
-	private static final int monthRange = 24;
 
 	private static final Map<String, String> statementTypes = new TreeMap<String, String>();
 
@@ -108,7 +103,6 @@ public class BudgetStatementFormController extends BaseFormController {
 			return null;
 		}
 
-		
 		if(ctype.equalsIgnoreCase(CounterpartyType.COMMERCE_COMPANY.toString()) || ctype.equalsIgnoreCase(CounterpartyType.REAL_ESTATE_FIRM.toString()))
 		{
 			saveError(request, getText("budgetStatementForm.error.type", locale));

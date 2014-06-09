@@ -59,6 +59,7 @@ public class InstBalanceSheetController extends BaseFormController{
 			@Qualifier("financeSheetManager") FinanceSheetManager financeSheetManager) {
 		this.financeSheetManager = financeSheetManager;
 	}
+	
 	private synchronized void loadDropDownList(final Locale locale) {
 		if (statementTypes.isEmpty()) {
 			StatementType[] types = StatementType.values();

@@ -26,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.brxt.constant.SessionAttributes;
 import com.brxt.model.Counterparty;
 import com.brxt.model.ProjectInfo;
+import com.brxt.model.enums.CounterpartyType;
 import com.brxt.model.enums.StatementType;
 import com.brxt.model.enums.TradingRelationship;
 import com.brxt.model.finance.ProfitStatement;
@@ -85,12 +86,20 @@ public class ProfitStatementController extends BaseFormController{
 		String projectInfoIdStr = (String) session.getAttribute(SessionAttributes.PROJECT_INFO_ID);
 		String counterpartyIdStr = request.getParameter("counterpartyId");
 		String trStr = request.getParameter("type");
+		String ctype = request.getParameter("ctype");
+		final Locale locale = request.getLocale();
 		if(StringUtils.isBlank(projectInfoIdStr) || StringUtils.isBlank(counterpartyIdStr) || StringUtils.isBlank(trStr))
 		{
 			//Error out;
 			saveError(request, "request parameters are not enough"); 
 			return null;
 		}
+		
+		if(ctype.equalsIgnoreCase(CounterpartyType.INSTITUTION.toString()))
+		{
+			saveError(request, getText("budgetStatementForm.error.type", locale));
+		}
+		
 		TradingRelationship tradingRelationship = TradingRelationship.valueOf(trStr.toUpperCase());
 		Long projectInfoId = Long.valueOf(projectInfoIdStr);
 		Long counterpartyId = Long.valueOf(counterpartyIdStr);

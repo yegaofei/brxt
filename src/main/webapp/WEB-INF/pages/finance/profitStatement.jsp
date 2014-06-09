@@ -182,9 +182,8 @@
               <i class="icon-trash"></i> <fmt:message key="button.delete"/>
           </button>
         </c:if>
-        <button type="submit" class="btn btn-default" name="method" value="Cancel" onclick="bCancel=true">
-            <i class="icon-remove"></i> <fmt:message key="button.cancel"/>
-        </button>
+        <a class="btn btn-default" href="<c:url value='/finance/financialStatements'/>">
+            <i class="icon-ok"></i> <fmt:message key="button.cancel"/></a>
     </div>
     
 	</form:form>

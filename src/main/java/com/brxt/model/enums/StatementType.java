@@ -5,7 +5,8 @@ public enum StatementType {
 	BALANCE_SHEET("balance_sheet"), 
 	PROFIT_SHEET("profit_sheet"), 
 	BUDGET_SHEET("budget_sheet"),
-	CASH_FLOW_SHEET("cash_flow_sheet");
+	//CASH_FLOW_SHEET("cash_flow_sheet")
+	;
 
 	private String title;
 

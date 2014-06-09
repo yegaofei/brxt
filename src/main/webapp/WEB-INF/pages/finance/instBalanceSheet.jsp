@@ -22,7 +22,7 @@
  
 <div class="col-sm-7">
     <form:errors path="*" cssClass="alert alert-danger alert-dismissable" element="div"/>
-    <form:form commandName="instBalanceSheetModel" method="post" action="instBalanceSheet" id="instBalanceSheetModel" cssClass="well" >
+    <form:form commandName="instBalanceSheetModel" method="post" action="/finance/instBalanceSheet" id="instBalanceSheetModel" cssClass="well" >
 	<form:hidden path="projectId"/>
 	<form:hidden path="counterpartyId"/>
 	<form:hidden path="reportName"/>
@@ -52,108 +52,136 @@
         </tr>   
         <tr>
         	<td><appfuse:label key="instBalanceSheet.assetGroupTotal"/> </td>
-        	<td><spring:bind path="instBalanceSheetModel.beginBalSheet">
-        <div >
-    	</spring:bind>        
-        <form:input path="beginBalSheet.assetGroupTotal" id="assetGroupTotal" maxlength="20" />
-        <form:errors path="beginBalSheet.assetGroupTotal" />
-        </div></td>
-        	<td><spring:bind path="instBalanceSheetModel.endBalSheet">
-        <div >
-    	</spring:bind>        
-        <form:input path="endBalSheet.assetGroupTotal" id="assetGroupTotal" maxlength="20" />
-        <form:errors path="endBalSheet.assetGroupTotal" />
-        </div></td>
+        	<td>
+        	<spring:bind path="instBalanceSheetModel.beginBalSheet">
+        	<div >
+    		</spring:bind>        
+        	<form:input path="beginBalSheet.assetGroupTotal" id="assetGroupTotal1" maxlength="20" />
+        	<form:errors path="beginBalSheet.assetGroupTotal" />
+        	</div>
+        	</td>
+        	<td>
+        	<spring:bind path="instBalanceSheetModel.endBalSheet">
+        	<div >
+    		</spring:bind>        
+        	<form:input path="endBalSheet.assetGroupTotal" id="assetGroupTotal2" maxlength="20" />
+        	<form:errors path="endBalSheet.assetGroupTotal" />
+        	</div>
+        	</td>
         </tr>
         <tr>
         	<td><appfuse:label  key="instBalanceSheet.assetTotal"/></td>
-        	<td><spring:bind path="instBalanceSheetModel.beginBalSheet">    	
-        <div >
-    	</spring:bind>        
-        <form:input path="beginBalSheet.assetTotal" id="assetTotal" maxlength="20"/>
-        <form:errors path="beginBalSheet.assetTotal"/>
- 		</div></td>
-        	<td><spring:bind path="instBalanceSheetModel.endBalSheet">    	
- 		<div >       
-    	</spring:bind>        
-        <form:input path="endBalSheet.assetTotal" id="assetTotal" maxlength="20" />
-        <form:errors path="endBalSheet.assetTotal" />
-        </div></td>
+        	<td>
+        		<spring:bind path="instBalanceSheetModel.beginBalSheet">    	
+        		<div >
+    			</spring:bind>        
+        		<form:input path="beginBalSheet.assetTotal" id="assetTotal" maxlength="20"/>
+        		<form:errors path="beginBalSheet.assetTotal"/>
+ 				</div>
+ 			</td>
+        	<td>
+        		<spring:bind path="instBalanceSheetModel.endBalSheet">    	
+ 				<div >       
+    			</spring:bind>        
+        		<form:input path="endBalSheet.assetTotal" id="assetTotal2" maxlength="20" />
+        		<form:errors path="endBalSheet.assetTotal" />
+        		</div>
+        	</td>
         </tr>
         <tr>
-        	<td><appfuse:label skey="instBalanceSheet.expenseTotal"/></td>
-        	<td><spring:bind path="instBalanceSheetModel.beginBalSheet">    	
-        <div >
-    	</spring:bind>        
-        <form:input path="beginBalSheet.expenseTotal" id="expenseTotal" maxlength="20" />
-        <form:errors path="beginBalSheet.expenseTotal"/>
-		</div></td>
-        	<td><spring:bind path="instBalanceSheetModel.endBalSheet">    	
-		<div >        
-    	</spring:bind>        
-        <form:input path="endBalSheet.expenseTotal" id="expenseTotal" maxlength="20" />
-        <form:errors path="endBalSheet.expenseTotal" />
-        </div></td>
+        	<td><appfuse:label key="instBalanceSheet.expenseTotal"/></td>
+        	<td>
+        		<spring:bind path="instBalanceSheetModel.beginBalSheet">    	
+        		<div >
+    			</spring:bind>        
+        		<form:input path="beginBalSheet.expenseTotal" id="expenseTotal" maxlength="20" />
+        		<form:errors path="beginBalSheet.expenseTotal"/>
+				</div>
+			</td>
+        	<td>
+        		<spring:bind path="instBalanceSheetModel.endBalSheet">    	
+				<div >        
+    			</spring:bind>        
+        		<form:input path="endBalSheet.expenseTotal" id="expenseTotal2" maxlength="20" />
+        		<form:errors path="endBalSheet.expenseTotal" />
+        		</div>
+        	</td>
         </tr>
         <tr>
         	<td> <appfuse:label  key="instBalanceSheet.debtGroupTotal"/> </td>
-        	<td><spring:bind path="instBalanceSheetModel.beginBalSheet">    	
-        <div >
-    	</spring:bind>        
-        <form:input path="beginBalSheet.debtGroupTotal" id="debtGroupTotal" maxlength="20" />
-        <form:errors path="beginBalSheet.debtGroupTotal" />
-        </div></td>
-        	<td><spring:bind path="instBalanceSheetModel.endBalSheet">    	
-        <div >
-    	</spring:bind>        
-        <form:input path="endBalSheet.debtGroupTotal" id="debtGroupTotal" maxlength="20" />
-        <form:errors path="endBalSheet.debtGroupTotal" />
-        </div></td>
+        	<td>
+        		<spring:bind path="instBalanceSheetModel.beginBalSheet">    	
+        		<div >
+    			</spring:bind>        
+        		<form:input path="beginBalSheet.debtGroupTotal" id="debtGroupTotal" maxlength="20" />
+        		<form:errors path="beginBalSheet.debtGroupTotal" />
+        		</div>
+        	</td>
+        	<td>
+        		<spring:bind path="instBalanceSheetModel.endBalSheet">    	
+        		<div >
+    			</spring:bind>        
+        		<form:input path="endBalSheet.debtGroupTotal" id="debtGroupTotal2" maxlength="20" />
+        		<form:errors path="endBalSheet.debtGroupTotal" />
+        		</div>
+        	</td>
         </tr>
         <tr>
         	<td><appfuse:label  key="instBalanceSheet.debtTotal"/></td>
-        	<td><spring:bind path="instBalanceSheetModel.beginBalSheet">    	
-        <div >
-    	</spring:bind>        
-        <form:input path="beginBalSheet.debtTotal" id="debtTotal" maxlength="20" />
-        <form:errors path="beginBalSheet.debtTotal"/>
-		</div></td>
-        	<td><spring:bind path="instBalanceSheetModel.endBalSheet">    	
-		<div >        
-    	</spring:bind>        
-        <form:input path="endBalSheet.debtTotal" id="debtTotal" maxlength="20" />
-        <form:errors path="endBalSheet.debtTotal" />
-        </div></td>
+        	<td>
+        		<spring:bind path="instBalanceSheetModel.beginBalSheet">    	
+        		<div >
+    			</spring:bind>        
+        		<form:input path="beginBalSheet.debtTotal" id="debtTotal" maxlength="20" />
+        		<form:errors path="beginBalSheet.debtTotal"/>
+				</div>
+			</td>
+        	<td>
+        		<spring:bind path="instBalanceSheetModel.endBalSheet">    	
+				<div >        
+    			</spring:bind>        
+        		<form:input path="endBalSheet.debtTotal" id="debtTotal2" maxlength="20" />
+        		<form:errors path="endBalSheet.debtTotal" />
+        		</div>
+        	</td>
         </tr>
         <tr>
         	<td><appfuse:label   key="instBalanceSheet.netAssetTotal"/></td>
-        	<td><spring:bind path="instBalanceSheetModel.beginBalSheet">    	
-        <div >
-    	</spring:bind>        
-        <form:input path="beginBalSheet.netAssetTotal" id="netAssetTotal" maxlength="20" />
-        <form:errors path="beginBalSheet.netAssetTotal" />
-        </div></td>
-        	<td><spring:bind path="instBalanceSheetModel.endBalSheet">    	
-        <div >
-    	</spring:bind>        
-        <form:input path="endBalSheet.netAssetTotal" id="netAssetTotal" maxlength="20" />
-        <form:errors path="endBalSheet.netAssetTotal" />
-        </div></td>
+        	<td>
+        		<spring:bind path="instBalanceSheetModel.beginBalSheet">    	
+        		<div >
+    			</spring:bind>        
+        		<form:input path="beginBalSheet.netAssetTotal" id="netAssetTotal" maxlength="20" />
+        		<form:errors path="beginBalSheet.netAssetTotal" />
+        		</div>
+        	</td>
+        	<td>
+        		<spring:bind path="instBalanceSheetModel.endBalSheet">    	
+        		<div >
+    			</spring:bind>        
+        		<form:input path="endBalSheet.netAssetTotal" id="netAssetTotal2" maxlength="20" />
+        		<form:errors path="endBalSheet.netAssetTotal" />
+        		</div>
+        	</td>
         </tr>
         <tr>
         	<td><appfuse:label  key="instBalanceSheet.incomeTotal"/> </td>
-        	<td><spring:bind path="instBalanceSheetModel.beginBalSheet">    	
-        <div >
-    	</spring:bind>        
-        <form:input path="beginBalSheet.incomeTotal" id="incomeTotal" maxlength="20" />
-        <form:errors path="beginBalSheet.incomeTotal" />
-        </div></td>
-        	<td><spring:bind path="instBalanceSheetModel.endBalSheet">    	
-        <div >
-    	</spring:bind>        
-        <form:input path="endBalSheet.incomeTotal" id="incomeTotal" maxlength="20" />
-        <form:errors path="endBalSheet.incomeTotal" />
-        </div></td>
+        	<td>
+        		<spring:bind path="instBalanceSheetModel.beginBalSheet">    	
+        		<div >
+    			</spring:bind>        
+        		<form:input path="beginBalSheet.incomeTotal" id="incomeTotal" maxlength="20" />
+        		<form:errors path="beginBalSheet.incomeTotal" />
+        		</div>
+        	</td>
+        	<td>
+        		<spring:bind path="instBalanceSheetModel.endBalSheet">    	
+        		<div >
+    			</spring:bind>        
+        		<form:input path="endBalSheet.incomeTotal" id="incomeTotal2" maxlength="20" />
+        		<form:errors path="endBalSheet.incomeTotal" />
+        		</div>
+        	</td>
         </tr>
 	</table>
     
@@ -167,9 +195,8 @@
               <i class="icon-trash"></i> <fmt:message key="button.delete"/>
           </button>
         </c:if>
-        <button type="submit" class="btn btn-default" name="method" value="Cancel" onclick="bCancel=true">
-            <i class="icon-remove"></i> <fmt:message key="button.cancel"/>
-        </button>
+        <a class="btn btn-default" href="<c:url value='/finance/financialStatements'/>">
+            <i class="icon-ok"></i> <fmt:message key="button.cancel"/></a>
     </div>
     
 	</form:form>
@@ -184,24 +211,17 @@ $(document).ready(function(){
 		if (p1 == 'profit_sheet')
 		{
 			window.location.href='<c:url value="/finance/profitStatement">
-				<c:param name="counterpartyId" value="${corpBalanceSheetModel.counterpartyId}"/>
+				<c:param name="counterpartyId" value="${instBalanceSheetModel.counterpartyId}"/>
 				<c:param name="type" value="${param.type}"/>
+				<c:param name="ctype" value="${param.ctype}"/>
 				</c:url>'; 
 		} 
-		else if (p1 == 'balance_sheet')
-		{
-			<c:if test='${param.ctype != institution}' >
-				window.location.href='<c:url value="/finance/corpBalanceSheet">
-				<c:param name="counterpartyId" value="${corpBalanceSheetModel.counterpartyId}"/>
-				<c:param name="type" value="${param.type}"/>
-				</c:url>';
-			</c:if>
-		}
 		else if (p1 == 'budget_sheet')
 		{
 			window.location.href='<c:url value="/finance/budgetStatementForm">
-				<c:param name="counterpartyId" value="${corpBalanceSheetModel.counterpartyId}"/>
+				<c:param name="counterpartyId" value="${instBalanceSheetModel.counterpartyId}"/>
 				<c:param name="type" value="${param.type}"/>
+				<c:param name="ctype" value="${param.ctype}"/>
 				</c:url>'; 
 		}
 		else if (p1 == 'cash_flow_sheet')
