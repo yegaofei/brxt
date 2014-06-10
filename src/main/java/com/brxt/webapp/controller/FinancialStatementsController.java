@@ -1,8 +1,10 @@
 package com.brxt.webapp.controller;
 
+import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,11 +19,11 @@ import com.brxt.constant.SessionAttributes;
 import com.brxt.model.ProjectInfo;
 import com.brxt.model.enums.CounterpartyType;
 import com.brxt.model.enums.TradingRelationship;
+import com.brxt.model.finance.FinanceStatement;
 import com.brxt.service.FinanceSheetManager;
 import com.brxt.service.ProjectInfoManager;
 
 @Controller
-@RequestMapping("/finance/financialStatements*")
 public class FinancialStatementsController extends BaseFormController {
 
 	private ProjectInfoManager projectInfoManager;
@@ -33,6 +35,7 @@ public class FinancialStatementsController extends BaseFormController {
 		this.projectInfoManager = projectInfoManager;
 	}
 
+	@Autowired
 	public void setFinanceSheetManager(
 			@Qualifier("financeSheetManager") FinanceSheetManager financeSheetManager) {
 		this.financeSheetManager = financeSheetManager;
@@ -49,6 +52,18 @@ public class FinancialStatementsController extends BaseFormController {
 		}
 		return null;
 	}
+	
+	public List<FinanceStatement> getFinanceStatements(final HttpServletRequest request, final HttpSession session) {
+		String projectInfoId = (String) session.getAttribute(SessionAttributes.PROJECT_INFO_ID);
+		final Locale locale = request.getLocale();
+		if (StringUtils.isBlank(projectInfoId)) {
+			saveError(request, getText("errors.projectInfoId.required", locale));
+			log.error("errors.projectInfoId.required");
+			return null;
+		} 
+		ProjectInfo projectInfo = projectInfoManager.get(Long.valueOf(projectInfoId));
+		return financeSheetManager.getAll(projectInfo);
+	}
 
 	@ModelAttribute
 	protected ProjectInfo getProjectInfo(final HttpServletRequest request) {
@@ -60,12 +75,11 @@ public class FinancialStatementsController extends BaseFormController {
 		}
 		return null;
 	}
-
-	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView handleRequest(final HttpServletRequest request)
+	
+	@RequestMapping(value="/finance/addStatements*", method = RequestMethod.GET)
+	public String addStatements(final HttpServletRequest request)
 			throws Exception {
-		ModelAndView mav = new ModelAndView();
-		String returnView = null;
+		String returnView = "/finance/addStatements";
 		String counterpartyId = request.getParameter("counterpartyId");
 		String guarantorId = request.getParameter("guarantorId");
 		String counterpartyType = request.getParameter("counterpartyType");
@@ -95,7 +109,13 @@ public class FinancialStatementsController extends BaseFormController {
 						.getTitle());
 			}
 		}
-		mav.setViewName(returnView);
+		return returnView;
+	}
+
+	@RequestMapping(value="/finance/financialStatements*", method = RequestMethod.GET)
+	public ModelAndView handleRequest(final HttpServletRequest request) throws Exception {
+		ModelAndView mav = new ModelAndView("/finance/financialStatements");
+		mav.addObject("financeStatementList", getFinanceStatements(request, request.getSession()));
 		return mav;
 	}
 

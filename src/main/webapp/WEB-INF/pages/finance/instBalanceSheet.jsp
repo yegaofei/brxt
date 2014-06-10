@@ -2,9 +2,6 @@
 <head>
     <title><fmt:message key="instBalanceSheet.title"/></title>
     <meta name="menu" content="ProjectInfoSubMenu"/>
-    <link rel="stylesheet" type="text/css" href="${base}/webjars/bootstrap-datepicker/1.2.0/css/datepicker.css"/>
-    <script type="text/javascript" src="${base}/webjars/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.js"></script>
-    <script type="text/javascript" src="${base}/webjars/bootstrap-datepicker/1.2.0/js/locales/bootstrap-datepicker.zh-CN.js" charset="UTF-8"></script>
 </head>
  
 <div class="col-sm-3">
@@ -36,14 +33,12 @@
 			<form:options items="${statementTypes}" />
 		</form:select>        
     </div>  
-	    
-	<spring:bind path="instBalanceSheetModel.reportYear">
-    <div class="col-sm-6 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
-    </spring:bind>
-        <appfuse:label styleClass="control-label" key="instBalanceSheetModel.reportYear"/>:
-        <form:input path="reportYear" id="reportYear" maxlength="20" />
-        <form:errors path="reportYear" cssClass="help-block"/>
+    
+    <div class="col-sm-5">
+        <appfuse:label styleClass="control-label" key="corpBalanceSheet.reportYear"/>:
+        <fmt:formatDate value="${instBalanceSheetModel.reportTime}" pattern="${shortDatePattern}" />
     </div>	
+
 	</div>
 	
 	<table class="table table-condensed">
@@ -192,11 +187,6 @@
         <button type="submit" class="btn btn-primary" name="method" value="Save" onclick="bCancel=false">
             <i class="icon-ok icon-white"></i> <fmt:message key="button.save"/>
         </button>
-        <c:if test="${not empty instBalanceSheetModel.beginBalSheet.id}">
-          <button type="submit" class="btn btn-default" name="method"  value="Delete" onclick="bCancel=true;return confirmMessage(msgDelConfirm)">
-              <i class="icon-trash"></i> <fmt:message key="button.delete"/>
-          </button>
-        </c:if>
         <a class="btn btn-default" href="<c:url value='/finance/financialStatements'/>">
             <i class="icon-ok"></i> <fmt:message key="button.cancel"/></a>
     </div>
@@ -233,11 +223,5 @@ $(document).ready(function(){
 		
 	})
 })
-
-$(function() {
-    $('#reportYear').datepicker({
-				format: '<fmt:message key="date.format.short.js"/>'
-			});
-  });
   
 </script>

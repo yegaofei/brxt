@@ -12,6 +12,7 @@ import com.brxt.model.finance.ProfitStatement;
 
 public interface FinanceSheetManager {
 
+	public Long getRealId(Long id);
 	public List<FinanceStatement> getAll(ProjectInfo projectInfo);
 	
 	public CorporateBalanceSheet getLatestCorpBalanceSheet(ProjectInfo projectInfo, Counterparty counterparty);

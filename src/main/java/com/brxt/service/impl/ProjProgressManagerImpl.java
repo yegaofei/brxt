@@ -26,8 +26,8 @@ implements ProjProgressManager {
 	private RepaymentProjectDao repaymentProjectDao;
 	
 	private static final Long BASE_INVESTMENT_PROJECT_ID = 100000L;
-	private static final Long BASE_SUPPLY_LIQUIDPROJECT_ID = 200000L;
-	private static final Long BASE_REPAYMENT_PROJECT_ID = 300000L;
+	private static final Long BASE_SUPPLY_LIQUIDPROJECT_ID = 300000L;
+	private static final Long BASE_REPAYMENT_PROJECT_ID = 600000L;
 	
 	@Autowired
 	public void setInvestmentProjectDao(InvestmentProjectDao investmentProjectDao) {

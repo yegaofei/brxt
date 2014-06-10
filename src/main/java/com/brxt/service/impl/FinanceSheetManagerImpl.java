@@ -27,6 +27,33 @@ public class FinanceSheetManagerImpl implements FinanceSheetManager {
 	private FinancialSheetDao<InstituteBalanceSheet, Long> instBalanceDao;
 	private FinancialSheetDao<ProfitStatement, Long> profitStatementDao;
 
+	private static final Long BASE_BUDGETSTATEMENT_ID = 100000L;
+	private static final Long BASE_CORPBALANCESHEET_ID = 300000L;
+	private static final Long BASE_INSTBALANCE_ID = 600000L;
+	private static final Long BASE_PROFITSTATEMENT_ID = 900000L;
+	
+	public Long getRealId(Long id)
+	{
+		Long realId = 0L;
+		if(id > BASE_BUDGETSTATEMENT_ID)
+		{
+			realId = id - BASE_BUDGETSTATEMENT_ID;
+		}
+		else if (id > BASE_CORPBALANCESHEET_ID)
+		{
+			realId = id - BASE_CORPBALANCESHEET_ID;
+		} 
+		else if (id > BASE_INSTBALANCE_ID)
+		{
+			realId = id - BASE_INSTBALANCE_ID;
+		}
+		else if (id > BASE_PROFITSTATEMENT_ID)
+		{
+			realId = id - BASE_PROFITSTATEMENT_ID;
+		}
+		return realId;
+	}
+	
 	@Autowired
 	public void setBudgetStatementDao(
 			FinancialSheetDao<BudgetStatement, Long> budgetStatementDao) {
@@ -70,9 +97,13 @@ public class FinanceSheetManagerImpl implements FinanceSheetManager {
 			String tableName = budgetStatementDao.getTableName();
 			for(BudgetStatement bs : budgetStatements)
 			{
+				if(bs.getReportMonth() == (short)0)
+				{
+					continue;
+				}
 				FinanceStatement fs = new FinanceStatement();
 				fs.setCounterpartyName(bs.getCounterparty().getName());
-				fs.setId(bs.getId());
+				fs.setId(bs.getId() + BASE_BUDGETSTATEMENT_ID);
 				fs.setTableName(tableName);
 				fs.setStatementTime(bs.getReportYear().toString() + "-" + bs.getReportMonth().toString());
 				fs.setStatementType(StatementType.BUDGET_SHEET);
@@ -96,9 +127,13 @@ public class FinanceSheetManagerImpl implements FinanceSheetManager {
 			String tableName = corpBalanceSheetDao.getTableName();
 			for(CorporateBalanceSheet bs : corporateBalanceSheets)
 			{
+				if(bs.getReportMonth() == (short)0)
+				{
+					continue;
+				}
 				FinanceStatement fs = new FinanceStatement();
 				fs.setCounterpartyName(bs.getCounterparty().getName());
-				fs.setId(bs.getId());
+				fs.setId(bs.getId() + BASE_CORPBALANCESHEET_ID);
 				fs.setTableName(tableName);
 				fs.setStatementTime(bs.getReportYear().toString() + "-" + bs.getReportMonth().toString());
 				fs.setStatementType(StatementType.BALANCE_SHEET);
@@ -122,9 +157,13 @@ public class FinanceSheetManagerImpl implements FinanceSheetManager {
 			String tableName = instBalanceDao.getTableName();
 			for(InstituteBalanceSheet bs : instituteBalanceSheets)
 			{
+				if(bs.getReportMonth() == (short)0)
+				{
+					continue;
+				}
 				FinanceStatement fs = new FinanceStatement();
 				fs.setCounterpartyName(bs.getCounterparty().getName());
-				fs.setId(bs.getId());
+				fs.setId(bs.getId() + BASE_INSTBALANCE_ID);
 				fs.setTableName(tableName);
 				fs.setStatementTime(bs.getReportYear().toString() + "-" + bs.getReportMonth().toString());
 				fs.setStatementType(StatementType.BALANCE_SHEET);
@@ -150,7 +189,7 @@ public class FinanceSheetManagerImpl implements FinanceSheetManager {
 			{
 				FinanceStatement fs = new FinanceStatement();
 				fs.setCounterpartyName(bs.getCounterparty().getName());
-				fs.setId(bs.getId());
+				fs.setId(bs.getId() + BASE_PROFITSTATEMENT_ID);
 				fs.setTableName(tableName);
 				fs.setStatementTime(bs.getReportYear().toString() + "-" + bs.getReportMonth().toString());
 				fs.setStatementType(StatementType.PROFIT_SHEET);

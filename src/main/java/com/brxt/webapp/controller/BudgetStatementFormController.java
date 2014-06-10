@@ -1,6 +1,8 @@
 package com.brxt.webapp.controller;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.Locale;
 
@@ -28,6 +30,8 @@ import com.brxt.model.finance.BudgetStatementModel;
 @RequestMapping("/finance/budgetStatementForm*")
 public class BudgetStatementFormController extends BaseSheetController {
 
+	private static final MathContext mc = new MathContext(2, RoundingMode.HALF_DOWN);
+	
 	public BudgetStatementFormController() {
 		setCancelView("/finance/budgetStatementForm");
 		setSuccessView("/finance/budgetStatementForm");
@@ -93,6 +97,7 @@ public class BudgetStatementFormController extends BaseSheetController {
 		bsm.setBudgetRatio(budgetRatio);
 		BudgetStatement growthRate = calculateGrowthRate(lastYear, thisYear);
 		bsm.setGrowthRate(growthRate);
+		bsm.setReportTime(new Date());
 		return bsm;
 	}
 	
@@ -124,7 +129,7 @@ public class BudgetStatementFormController extends BaseSheetController {
 		
 		if(!baseNumber.equals(BigDecimal.ZERO))
 		{
-			return number.divide(baseNumber);
+			return number.divide(baseNumber, mc);
 		}
 		
 		return null;

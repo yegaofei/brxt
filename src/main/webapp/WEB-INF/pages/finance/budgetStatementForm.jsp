@@ -36,7 +36,7 @@
 
     <div class="col-sm-5 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
         <appfuse:label styleClass="control-label" key="profitStatement.reportYear"/>:
-		<fmt:formatDate value="${instBalanceSheetModel.reportTime}" pattern="${shortDatePattern}" />
+		<fmt:formatDate value="${budgetStatementModel.reportTime}" pattern="${shortDatePattern}" />
     </div>	
 	</div>
 	
