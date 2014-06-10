@@ -41,57 +41,88 @@ public class CorpBalanceSheetController extends BaseSheetController {
 			final HttpServletRequest request, final HttpSession session) {
 		String projectInfoIdStr = (String) session
 				.getAttribute(SessionAttributes.PROJECT_INFO_ID);
-		String counterpartyIdStr = request.getParameter("counterpartyId");
-		String trStr = request.getParameter("type");
-		String ctypeStr = request.getParameter("ctype");
-		if (StringUtils.isBlank(projectInfoIdStr)
-				|| StringUtils.isBlank(counterpartyIdStr)
-				|| StringUtils.isBlank(trStr) || StringUtils.isBlank(ctypeStr)) {
-			// Error out;
-			saveError(request, "request parameters are not enough"); 
-			log.error("request parameters are not enough");
-			return null;
-		}
-
-		TradingRelationship tradingRelationship = TradingRelationship
-				.valueOf(trStr.toUpperCase());
-		Long projectInfoId = Long.valueOf(projectInfoIdStr);
-		Long counterpartyId = Long.valueOf(counterpartyIdStr);
-
+		CorporateBalanceSheet endBalSheet = null;
+		ProjectInfo projectInfo = null;
+		Counterparty counterparty = null;
 		CorpBalanceSheetModel csm = new CorpBalanceSheetModel();
-		csm.setCounterpartyId(counterpartyId);
-		csm.setProjectId(projectInfoId);
-		csm.setTradingRelationship(tradingRelationship);
-
-		ProjectInfo projectInfo = projectInfoManager.get(projectInfoId);
-		Counterparty cpObj = null;
-		switch (tradingRelationship) {
-		case COUNTERPARTY:
-			cpObj = findCounterparty(projectInfo, counterpartyId);
-			break;
-		case GUARANTOR:
-			cpObj = findGuarantor(projectInfo, counterpartyId);
-			break;
-		default:
+		String statementId = request.getParameter("id");
+		if(!StringUtils.isBlank(statementId))
+		{
+			endBalSheet = financeSheetManager.getCorpBalanceSheet(Long.valueOf(statementId));
+			counterparty = endBalSheet.getCounterparty();
+			csm.setCounterpartyId(counterparty.getId());
+			csm.setCounterpartyType(counterparty.getCounterpartyType());
+			projectInfo = endBalSheet.getProjectInfo();
+			csm.setProjectId(projectInfo.getId());
+			if(findCounterparty(projectInfo, counterparty.getId()) != null)
+			{
+				csm.setTradingRelationship(TradingRelationship.COUNTERPARTY);
+			}
+			else if(findGuarantor(projectInfo, counterparty.getId()) != null)
+			{
+				csm.setTradingRelationship(TradingRelationship.GUARANTOR);
+			}
+			csm.setCounterpartyName(counterparty.getName());
 		}
-		csm.setCounterpartyName(cpObj.getName());
-		CorporateBalanceSheet beginBalSheet = financeSheetManager.findCorporateBalanceSheet(projectInfo, cpObj, getCurrentYear(), 0);
+		else
+		{
+			String counterpartyIdStr = request.getParameter("counterpartyId");
+			String trStr = request.getParameter("type");
+			if (StringUtils.isBlank(projectInfoIdStr)
+					|| StringUtils.isBlank(counterpartyIdStr)
+					|| StringUtils.isBlank(trStr)) {
+				// Error out;
+				saveError(request, "request parameters are not enough"); 
+				log.error("request parameters are not enough");
+				return null;
+			}
+			TradingRelationship tradingRelationship = TradingRelationship
+					.valueOf(trStr.toUpperCase());
+			Long projectInfoId = Long.valueOf(projectInfoIdStr);
+			Long counterpartyId = Long.valueOf(counterpartyIdStr);
+			
+			csm.setCounterpartyId(counterpartyId);
+			
+			csm.setProjectId(projectInfoId);
+			csm.setTradingRelationship(tradingRelationship);
+			projectInfo = projectInfoManager.get(projectInfoId);
+			switch (tradingRelationship) {
+			case COUNTERPARTY:
+				counterparty = findCounterparty(projectInfo, counterpartyId);
+				break;
+			case GUARANTOR:
+				counterparty = findGuarantor(projectInfo, counterpartyId);
+				break;
+			default:
+			}
+			csm.setCounterpartyName(counterparty.getName());
+			csm.setCounterpartyType(counterparty.getCounterpartyType());
+			
+			endBalSheet = financeSheetManager.findCorporateBalanceSheet(projectInfo, counterparty, getCurrentYear(), getCurrentMonth());
+		}
+		
+		csm.setEndBalSheet(endBalSheet);
+		
+		int year = getCurrentYear();
+		if(endBalSheet != null && endBalSheet.getReportYear() != null)
+		{
+			year = endBalSheet.getReportYear();
+		}
+		
+		CorporateBalanceSheet beginBalSheet = financeSheetManager.findCorporateBalanceSheet(projectInfo, counterparty, year, 0);
 		if(beginBalSheet == null)
 		{
 			beginBalSheet = new CorporateBalanceSheet();
 			beginBalSheet.setProjectInfo(projectInfo);
-			beginBalSheet.setCounterparty(cpObj);
+			beginBalSheet.setCounterparty(counterparty);
 		}
+		csm.setBeginBalSheet(beginBalSheet);
 		
-		CorporateBalanceSheet endBalSheet =  financeSheetManager.findCorporateBalanceSheet(projectInfo, cpObj, getCurrentYear(), getCurrentMonth());
 		if(endBalSheet == null) {
 			endBalSheet = new CorporateBalanceSheet();
 			endBalSheet.setProjectInfo(projectInfo);
-			endBalSheet.setCounterparty(cpObj);
+			endBalSheet.setCounterparty(counterparty);
 		}
-		
-		csm.setBeginBalSheet(beginBalSheet);
-		csm.setEndBalSheet(endBalSheet);
 		csm.setReportTime(new Date());
 		return csm;
 	}

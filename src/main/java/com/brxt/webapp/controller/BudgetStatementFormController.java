@@ -47,51 +47,89 @@ public class BudgetStatementFormController extends BaseSheetController {
 			final HttpServletRequest request, final HttpSession session) {
 		String projectInfoIdStr = (String) session
 				.getAttribute(SessionAttributes.PROJECT_INFO_ID);
-		String counterpartyIdStr = request.getParameter("counterpartyId");
-		String trStr = request.getParameter("type");
-		String ctype = request.getParameter("ctype");
-		final Locale locale = request.getLocale();
-		if (StringUtils.isBlank(projectInfoIdStr)
-				|| StringUtils.isBlank(counterpartyIdStr)
-				|| StringUtils.isBlank(trStr) || StringUtils.isBlank(ctype)) {
-			// Error out;
-			saveError(request, "request parameters are not enough");
-			log.error("request parameters are not enough");
-			return null;
-		}
-
-		if(ctype.equalsIgnoreCase(CounterpartyType.COMMERCE_COMPANY.toString()) || ctype.equalsIgnoreCase(CounterpartyType.REAL_ESTATE_FIRM.toString()))
+		BudgetStatement thisYear = null;
+		ProjectInfo projectInfo = null;
+		Counterparty counterparty = null;
+		BudgetStatementModel bsm = new BudgetStatementModel();
+		String statementId = request.getParameter("id");
+		if(!StringUtils.isBlank(statementId))
 		{
-			saveError(request, getText("budgetStatementForm.error.type", locale));
+			thisYear = financeSheetManager.getBudgetStatement(Long.valueOf(statementId));
+			counterparty = thisYear.getCounterparty();
+			bsm.setCounterpartyId(counterparty.getId());
+			bsm.setCounterpartyType(counterparty.getCounterpartyType());
+			projectInfo = thisYear.getProjectInfo();
+			bsm.setProjectId(projectInfo.getId());
+			if(findCounterparty(projectInfo, counterparty.getId()) != null)
+			{
+				bsm.setTradingRelationship(TradingRelationship.COUNTERPARTY);
+			}
+			else if(findGuarantor(projectInfo, counterparty.getId()) != null)
+			{
+				bsm.setTradingRelationship(TradingRelationship.GUARANTOR);
+			}
+			bsm.setCounterpartyName(counterparty.getName());
+		}
+		else
+		{
+			String counterpartyIdStr = request.getParameter("counterpartyId");
+			String trStr = request.getParameter("type");
+			String ctype = request.getParameter("ctype");
+			final Locale locale = request.getLocale();
+			if (StringUtils.isBlank(projectInfoIdStr)
+					|| StringUtils.isBlank(counterpartyIdStr)
+					|| StringUtils.isBlank(trStr) || StringUtils.isBlank(ctype)) {
+				// Error out;
+				saveError(request, "request parameters are not enough");
+				log.error("request parameters are not enough");
+				return null;
+			}
+
+			if(ctype.equalsIgnoreCase(CounterpartyType.COMMERCE_COMPANY.toString()) || ctype.equalsIgnoreCase(CounterpartyType.REAL_ESTATE_FIRM.toString()))
+			{
+				saveError(request, getText("budgetStatementForm.error.type", locale));
+			}
+			
+			TradingRelationship tradingRelationship = TradingRelationship
+					.valueOf(trStr.toUpperCase());
+			Long projectInfoId = Long.valueOf(projectInfoIdStr);
+			Long counterpartyId = Long.valueOf(counterpartyIdStr);
+			bsm.setCounterpartyId(counterpartyId);
+			bsm.setProjectId(projectInfoId);
+			bsm.setTradingRelationship(tradingRelationship);
+			projectInfo = projectInfoManager.get(projectInfoId);
+			switch (tradingRelationship) {
+			case COUNTERPARTY:
+				counterparty = findCounterparty(projectInfo, counterpartyId);
+				break;
+			case GUARANTOR:
+				counterparty = findGuarantor(projectInfo, counterpartyId);
+				break;
+			default:
+			}
+
+			bsm.setCounterpartyName(counterparty.getName());
+			bsm.setCounterpartyType(counterparty.getCounterpartyType());
+			thisYear = financeSheetManager.findBudgetStatement(projectInfo, counterparty, getCurrentYear(), getCurrentMonth());
 		}
 		
-		TradingRelationship tradingRelationship = TradingRelationship
-				.valueOf(trStr.toUpperCase());
-		Long projectInfoId = Long.valueOf(projectInfoIdStr);
-		Long counterpartyId = Long.valueOf(counterpartyIdStr);
-
-		BudgetStatementModel bsm = new BudgetStatementModel();
-		bsm.setCounterpartyId(counterpartyId);
-		bsm.setProjectId(projectInfoId);
-
-		ProjectInfo projectInfo = projectInfoManager.get(projectInfoId);
-		Counterparty cpObj = null;
-		switch (tradingRelationship) {
-		case COUNTERPARTY:
-			cpObj = findCounterparty(projectInfo, counterpartyId);
-			break;
-		case GUARANTOR:
-			cpObj = findGuarantor(projectInfo, counterpartyId);
-			break;
-		default:
-		}
-
-		bsm.setCounterpartyName(cpObj.getName());
-		BudgetStatement thisYearBudget = financeSheetManager.findBudgetStatement(projectInfo, cpObj, getCurrentYear(), 0);
-		bsm.setThisYearBudget(thisYearBudget);
-		BudgetStatement thisYear = financeSheetManager.findBudgetStatement(projectInfo, cpObj, getCurrentYear(), getCurrentMonth());
 		bsm.setThisYear(thisYear);
-		BudgetStatement lastYear = financeSheetManager.findBudgetStatement(projectInfo, cpObj, getCurrentYear() - 1, getCurrentMonth());
+		
+		int year = getCurrentYear();
+		if(thisYear != null && thisYear.getReportYear() != null)
+		{
+			year = thisYear.getReportYear();
+		}
+		
+		int month = getCurrentMonth();
+		if(thisYear != null && thisYear.getReportMonth() != null)
+		{
+			month = thisYear.getReportMonth();
+		}
+		
+		BudgetStatement thisYearBudget = financeSheetManager.findBudgetStatement(projectInfo, counterparty, year, 0);
+		bsm.setThisYearBudget(thisYearBudget);
+		BudgetStatement lastYear = financeSheetManager.findBudgetStatement(projectInfo, counterparty, year - 1, month);
 		bsm.setLastYear(lastYear);
 		BudgetStatement budgetRatio = calculateBudgetRatio(thisYearBudget, thisYear);
 		bsm.setBudgetRatio(budgetRatio);

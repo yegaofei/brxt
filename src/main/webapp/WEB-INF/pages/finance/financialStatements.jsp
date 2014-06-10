@@ -32,6 +32,7 @@
     		<input type="checkbox" name="id" value="<c:out value='${financeStatement.id}'/>" 
     		<c:if test="${param.id == financeStatement.id and method != 'Save'}">checked="checked"</c:if> style="margin: 0 0 0 4px" onclick="radio(this)" />
   		</display:column>       
+        <display:column property="statementTime" sortable="true" titleKey="financeStatement.statementTime"/>
         <display:column sortable="false" titleKey="financeStatement.statementType">
         		<fmt:message key="${financeStatement.statementType.title}"/>
         </display:column>
@@ -39,7 +40,6 @@
         		<fmt:message key="${financeStatement.tradingRelationship.title}"/>
         </display:column>
         <display:column property="counterpartyName" sortable="false" titleKey="financeStatement.counterpartyName"/>
-        <display:column property="statementTime" sortable="false" titleKey="financeStatement.statementTime"/>
         <display:setProperty name="paging.banner.item_name"><fmt:message key="financeStatement.heading"/></display:setProperty>
         <display:setProperty name="paging.banner.items_name"><fmt:message key="financeStatement.heading"/></display:setProperty>
     </display:table>

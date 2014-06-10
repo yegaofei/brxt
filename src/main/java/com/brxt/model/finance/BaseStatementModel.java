@@ -2,6 +2,7 @@ package com.brxt.model.finance;
 
 import java.util.Date;
 
+import com.brxt.model.enums.CounterpartyType;
 import com.brxt.model.enums.TradingRelationship;
 
 public class BaseStatementModel {
@@ -9,6 +10,7 @@ public class BaseStatementModel {
 	protected Long projectId;
 	protected String projectName;
 	protected Long counterpartyId;
+	protected String counterpartyType;
 	protected String counterpartyName;
 	protected Date reportTime;
 	protected String reportName;
@@ -55,6 +57,12 @@ public class BaseStatementModel {
 	}
 	public void setTradingRelationship(TradingRelationship tradingRelationship) {
 		this.tradingRelationship = tradingRelationship;
+	}
+	public String getCounterpartyType() {
+		return counterpartyType;
+	}
+	public void setCounterpartyType(String counterpartyType) {
+		this.counterpartyType = counterpartyType;
 	}
 	
 	

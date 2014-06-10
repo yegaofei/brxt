@@ -81,8 +81,19 @@ public class ProfitStatementController extends BaseSheetController {
 		default:
 		}
 		psm.setCounterpartyName(cpObj.getName());
-		ProfitStatement latestPSheet = financeSheetManager.findProfitStatement(
-				projectInfo, cpObj, getCurrentYear(), getCurrentMonth());
+		
+		ProfitStatement latestPSheet = null;
+		String statementId = request.getParameter("id");
+		if(!StringUtils.isBlank(statementId))
+		{
+			latestPSheet = financeSheetManager.getProfitStatement(Long.valueOf(statementId));
+		}
+		else
+		{
+			latestPSheet = financeSheetManager.findProfitStatement(
+					projectInfo, cpObj, getCurrentYear(), getCurrentMonth());
+		}
+		
 		if (latestPSheet == null) {
 			latestPSheet = new ProfitStatement();
 			latestPSheet.setProjectInfo(projectInfo);

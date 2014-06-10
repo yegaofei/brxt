@@ -118,5 +118,31 @@ public class FinancialStatementsController extends BaseFormController {
 		mav.addObject("financeStatementList", getFinanceStatements(request, request.getSession()));
 		return mav;
 	}
+	
+	@RequestMapping(value="/finance/financialStatements*", method = RequestMethod.POST)
+	public String onSubmit(final HttpServletRequest request) throws Exception {
+		String method = request.getParameter("method");
+		String financialStatementId = request.getParameter("id");
+		final Locale locale = request.getLocale();
+		if (StringUtils.isBlank(method)
+				|| StringUtils.isBlank(financialStatementId)) {
+			saveError(request, getText("errors.repaymentId.required", locale));
+		} else {
+			final Long financialStatementID = Long.valueOf(financialStatementId);
+			switch (method) {
+			case "Edit":
+				String editForm = financeSheetManager.getStatementForm(financialStatementID);
+				Long id = financeSheetManager.getRealId(financialStatementID);
+				return "redirect:/finance/" + editForm + "?id=" + id;
+			case "Delete":
+				financeSheetManager.remove(financialStatementID);
+				saveMessage(request,
+						getText("financeStatement.delete.successful", locale));
+				return "redirect:/finance/financialStatements";
+			default:
+			}
+		}
+		return "/finance/financialStatements";
+	}
 
 }

@@ -7,13 +7,13 @@
 <div class="col-sm-2">
 	<h2><fmt:message key='budgetStatementForm.heading'/></h2> 
 	<span>
-    	<c:if test = '${param.type == "counterparty"}' >
+    	<c:if test = '${budgetStatementModel.tradingRelationship == "counterparty"}' >
     		<fmt:message key='corpBalanceSheet.counterpartyName'/> 
     	</c:if>
-    	<c:if test = '${param.type == "guarantor"}' >
+    	<c:if test = '${budgetStatementModel.tradingRelationship == "guarantor"}' >
     		<fmt:message key='corpBalanceSheet.guarantorName'/> 
     	</c:if>
-    	: &nbsp; <c:out value="${budgetStatementModel.counterpartyName}"/>, <fmt:message key="${param.ctype}"/>
+    	: &nbsp; <c:out value="${budgetStatementModel.counterpartyName}"/>, <fmt:message key="${budgetStatementModel.counterpartyType}"/>
     </span>
 </div>
  
@@ -22,9 +22,10 @@
     <form:form commandName="budgetStatementModel" method="post" action="/finance/budgetStatementForm" id="budgetStatementModel" cssClass="well" >
 	<form:hidden path="projectId"/>
 	<form:hidden path="counterpartyId"/>
-	<form:hidden path="reportName"/>
-	<input type="hidden" name="type" value='<c:out value="${param.type}" />' />
-	<input type="hidden" name="ctype" value='<c:out value="${param.ctype}" />' />
+	<form:hidden path="tradingRelationship"/>
+	<form:hidden path="counterpartyType"/>
+	<input type="hidden" name="type" value='<c:out value="${budgetStatementModel.tradingRelationship}" />' />
+	<input type="hidden" name="ctype" value='<c:out value="${budgetStatementModel.counterpartyType}" />' />
  
 	<div class="row">
     <div class="col-sm-6 form-group">
@@ -273,25 +274,25 @@ $(document).ready(function(){
 		{
 			window.location.href='<c:url value="/finance/profitStatement">
 				<c:param name="counterpartyId" value="${budgetStatementModel.counterpartyId}"/>
-				<c:param name="type" value="${param.type}"/>
-				<c:param name="ctype" value="${param.ctype}" />
+				<c:param name="type" value="${budgetStatementModel.tradingRelationship}"/>
+				<c:param name="ctype" value="${budgetStatementModel.counterpartyType}" />
 				</c:url>'; 
 		} 
 		else if (p1 == 'balance_sheet')
 		{
-			<c:if test='${param.ctype == "institution"}' >
+			<c:if test='${budgetStatementModel.counterpartyType == "institution"}' >
 				window.location.href='<c:url value="/finance/instBalanceSheet">
 				<c:param name="counterpartyId" value="${budgetStatementModel.counterpartyId}"/>
-				<c:param name="type" value="${param.type}"/>
-				<c:param name="ctype" value="${param.ctype}" />
+				<c:param name="type" value="${budgetStatementModel.tradingRelationship}"/>
+				<c:param name="ctype" value="${budgetStatementModel.counterpartyType}" />
 				</c:url>';
 			</c:if>
 			
-			<c:if test='${param.ctype != "institution"}' >
+			<c:if test='${budgetStatementModel.counterpartyType != "institution"}' >
 				window.location.href='<c:url value="/finance/corpBalanceSheet">
 				<c:param name="counterpartyId" value="${budgetStatementModel.counterpartyId}"/>
-				<c:param name="type" value="${param.type}"/>
-				<c:param name="ctype" value="${param.ctype}" />
+				<c:param name="type" value="${budgetStatementModel.tradingRelationship}"/>
+				<c:param name="ctype" value="${budgetStatementModel.counterpartyType}" />
 				</c:url>';
 			</c:if>
 			

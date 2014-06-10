@@ -35,23 +35,44 @@ public class FinanceSheetManagerImpl implements FinanceSheetManager {
 	public Long getRealId(Long id)
 	{
 		Long realId = 0L;
-		if(id > BASE_BUDGETSTATEMENT_ID)
-		{
-			realId = id - BASE_BUDGETSTATEMENT_ID;
-		}
-		else if (id > BASE_CORPBALANCESHEET_ID)
-		{
-			realId = id - BASE_CORPBALANCESHEET_ID;
-		} 
-		else if (id > BASE_INSTBALANCE_ID)
-		{
-			realId = id - BASE_INSTBALANCE_ID;
-		}
-		else if (id > BASE_PROFITSTATEMENT_ID)
+		if(id > BASE_PROFITSTATEMENT_ID)
 		{
 			realId = id - BASE_PROFITSTATEMENT_ID;
 		}
+		else if (id > BASE_INSTBALANCE_ID)
+		{
+			realId = id - BASE_INSTBALANCE_ID;
+		} 
+		else if (id > BASE_CORPBALANCESHEET_ID)
+		{
+			realId = id - BASE_CORPBALANCESHEET_ID;
+		}
+		else if (id > BASE_BUDGETSTATEMENT_ID)
+		{
+			realId = id - BASE_BUDGETSTATEMENT_ID;
+		}
 		return realId;
+	}
+	
+	public String getStatementForm(Long id)
+	{
+		if(id > BASE_PROFITSTATEMENT_ID)
+		{
+			return "profitStatement"; 
+		}
+		else if (id > BASE_INSTBALANCE_ID)
+		{
+			return "instBalanceSheet";
+		} 
+		else if (id > BASE_CORPBALANCESHEET_ID)
+		{
+			return  "corpBalanceSheet";
+		}
+		else if (id > BASE_BUDGETSTATEMENT_ID)
+		{
+			return "budgetStatementForm";
+		}
+		return "";
 	}
 	
 	@Autowired
@@ -277,6 +298,53 @@ public class FinanceSheetManagerImpl implements FinanceSheetManager {
 			BudgetStatement endB) {
 		budgetStatementDao.save(beginB);
 		budgetStatementDao.save(endB);
+	}
+
+	@Override
+	public void remove(Long id) {
+		
+		Long realId = 0L;
+		
+		if (id > BASE_PROFITSTATEMENT_ID)
+		{
+			realId = id - BASE_PROFITSTATEMENT_ID;
+			profitStatementDao.remove(realId);
+		}
+		else if (id > BASE_INSTBALANCE_ID)
+		{
+			realId = id - BASE_INSTBALANCE_ID;
+			instBalanceDao.remove(realId);
+		}
+		else if (id > BASE_CORPBALANCESHEET_ID)
+		{
+			realId = id - BASE_CORPBALANCESHEET_ID;
+			corpBalanceSheetDao.remove(realId);
+		} 
+		else if(id > BASE_BUDGETSTATEMENT_ID)
+		{
+			realId = id - BASE_BUDGETSTATEMENT_ID;
+			budgetStatementDao.remove(realId);
+		}
+	}
+
+	@Override
+	public CorporateBalanceSheet getCorpBalanceSheet(Long id) {
+		return corpBalanceSheetDao.get(id);
+	}
+
+	@Override
+	public ProfitStatement getProfitStatement(Long id) {
+		return profitStatementDao.get(id);
+	}
+
+	@Override
+	public InstituteBalanceSheet getInstituteBalanceSheet(Long id) {
+		return instBalanceDao.get(id);
+	}
+
+	@Override
+	public BudgetStatement getBudgetStatement(Long id) {
+		return budgetStatementDao.get(id);
 	}
 
 	

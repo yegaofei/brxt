@@ -43,10 +43,9 @@ public class InstBalanceSheetController extends BaseSheetController {
 				.getAttribute(SessionAttributes.PROJECT_INFO_ID);
 		String counterpartyIdStr = request.getParameter("counterpartyId");
 		String trStr = request.getParameter("type");
-		String ctypeStr = request.getParameter("ctype");
 		if (StringUtils.isBlank(projectInfoIdStr)
 				|| StringUtils.isBlank(counterpartyIdStr)
-				|| StringUtils.isBlank(trStr) || StringUtils.isBlank(ctypeStr)) {
+				|| StringUtils.isBlank(trStr) ) {
 			// Error out;
 			saveError(request, "request parameters are not enough");
 			log.error("request parameters are not enough");
@@ -75,9 +74,27 @@ public class InstBalanceSheetController extends BaseSheetController {
 		}
 
 		ibs.setCounterpartyName(cpObj.getName());
+		
+		InstituteBalanceSheet endSheet = null;
+		String statementId = request.getParameter("id");
+		if(!StringUtils.isBlank(statementId))
+		{
+			endSheet = financeSheetManager.getInstituteBalanceSheet(Long.valueOf(statementId));
+		}
+		else
+		{
+			endSheet = financeSheetManager.findInstituteBalanceSheet(projectInfo, cpObj, getCurrentYear(), getCurrentMonth());
+		}
+		ibs.setEndBalSheet(endSheet);
+		
+		int year = getCurrentYear();
+		if(endSheet != null && endSheet.getReportYear() != null)
+		{
+			year = endSheet.getReportYear();
+		}
+		
 		InstituteBalanceSheet beginSheet = financeSheetManager
-				.findInstituteBalanceSheet(projectInfo, cpObj,
-						getCurrentYear(), 0);
+				.findInstituteBalanceSheet(projectInfo, cpObj, year, 0);
 		if (beginSheet == null) {
 			beginSheet = new InstituteBalanceSheet();
 			beginSheet.setProjectInfo(projectInfo);
@@ -85,15 +102,12 @@ public class InstBalanceSheetController extends BaseSheetController {
 		}
 		ibs.setBeginBalSheet(beginSheet);
 
-		InstituteBalanceSheet endSheet = financeSheetManager
-				.findInstituteBalanceSheet(projectInfo, cpObj,
-						getCurrentYear(), getCurrentMonth());
 		if (endSheet == null) {
 			endSheet = new InstituteBalanceSheet();
 			endSheet.setProjectInfo(projectInfo);
 			endSheet.setCounterparty(cpObj);
 		}
-		ibs.setEndBalSheet(endSheet);
+		
 		ibs.setReportTime(new Date());
 		return ibs;
 	}
