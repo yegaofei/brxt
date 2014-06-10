@@ -34,7 +34,7 @@
 		</form:select>        
     </div>  
     
-    <spring:bind path="corpBalanceSheet.reportYear">
+    <spring:bind path="corpBalanceSheetModel.reportYear">
     <div class="col-sm-6 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="corpBalanceSheet.reportYear"/>:
