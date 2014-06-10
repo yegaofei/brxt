@@ -55,8 +55,6 @@ public class FinanceSheetManagerImpl implements FinanceSheetManager {
 		return corpBalanceSheetDao.findLatest(projectInfo, counterparty);
 	}
 	
-	
-	
 	public List<FinanceStatement> getAll(ProjectInfo projectInfo) {
 		List<FinanceStatement> statements = new ArrayList<FinanceStatement>();
 		List<BudgetStatement> budgetStatements = budgetStatementDao.getAll(projectInfo);
@@ -198,6 +196,48 @@ public class FinanceSheetManagerImpl implements FinanceSheetManager {
 			CorporateBalanceSheet endB) {
 		corpBalanceSheetDao.save(beginB);
 		corpBalanceSheetDao.save(endB);
+	}
+	
+	public CorporateBalanceSheet findCorporateBalanceSheet(ProjectInfo projectInfo, Counterparty counterparty, Integer year, Integer month){
+		return corpBalanceSheetDao.find(projectInfo, counterparty, year, month.shortValue());
+	}
+
+	@Override
+	public ProfitStatement findProfitStatement(ProjectInfo projectInfo,
+			Counterparty counterparty, Integer year, Integer month) {
+		return profitStatementDao.find(projectInfo, counterparty, year, month.shortValue());
+	}
+
+	@Override
+	public void saveProfitStatement(ProfitStatement statement) {
+		profitStatementDao.save(statement);
+	}
+
+	@Override
+	public InstituteBalanceSheet findInstituteBalanceSheet(
+			ProjectInfo projectInfo, Counterparty counterparty, Integer year,
+			Integer month) {
+		return instBalanceDao.find(projectInfo, counterparty, year, month.shortValue());
+	}
+
+	@Override
+	public void saveInstituteBalanceSheets(InstituteBalanceSheet beginB,
+			InstituteBalanceSheet endB) {
+		instBalanceDao.save(beginB);
+		instBalanceDao.save(endB);
+	}
+
+	@Override
+	public BudgetStatement findBudgetStatement(ProjectInfo projectInfo,
+			Counterparty counterparty, Integer year, Integer month) {
+		return budgetStatementDao.find(projectInfo, counterparty, year, month.shortValue());
+	}
+
+	@Override
+	public void saveBudgetStatements(BudgetStatement beginB,
+			BudgetStatement endB) {
+		budgetStatementDao.save(beginB);
+		budgetStatementDao.save(endB);
 	}
 
 	

@@ -2,61 +2,20 @@ package com.brxt.model.finance;
 
 import com.brxt.model.enums.StatementType;
 
-public class BudgetStatementModel {
-	private Long projectId;
-	private String projectName;
-	private Long counterpartyId;
-	private String counterpartyName;
-	private String reportYear;
-	private String reportName;	
-	private BudgetStatement fullYearBudget = new BudgetStatement();
-	private BudgetStatement thisYear = new BudgetStatement();
-	private BudgetStatement lastYear = new BudgetStatement();
-	private BudgetStatement budgetRatio = new BudgetStatement();
-	private BudgetStatement growthRate = new BudgetStatement();
+public class BudgetStatementModel extends BaseStatementModel{
+
+	private BudgetStatement thisYearBudget; //全年预算数值
+	private BudgetStatement thisYear; //本年数值
+	private BudgetStatement lastYear; //上年数值
+	private BudgetStatement budgetRatio; //占预算比例
+	private BudgetStatement growthRate; //比上年同期增长
 	private String statementType = StatementType.BUDGET_SHEET.getTitle();
-	
-	public Long getProjectId() {
-		return projectId;
+		
+	public BudgetStatement getThisYearBudget() {
+		return thisYearBudget;
 	}
-	public void setProjectId(Long projectId) {
-		this.projectId = projectId;
-	}
-	public String getProjectName() {
-		return projectName;
-	}
-	public void setProjectName(String projectName) {
-		this.projectName = projectName;
-	}
-	public Long getCounterpartyId() {
-		return counterpartyId;
-	}
-	public void setCounterpartyId(Long counterpartyId) {
-		this.counterpartyId = counterpartyId;
-	}
-	public String getCounterpartyName() {
-		return counterpartyName;
-	}
-	public void setCounterpartyName(String counterpartyName) {
-		this.counterpartyName = counterpartyName;
-	}
-	public String getReportYear() {
-		return reportYear;
-	}
-	public void setReportYear(String reportYear) {
-		this.reportYear = reportYear;
-	}
-	public String getReportName() {
-		return reportName;
-	}
-	public void setReportName(String reportName) {
-		this.reportName = reportName;
-	}
-	public BudgetStatement getFullYearBudget() {
-		return fullYearBudget;
-	}
-	public void setFullYearBudget(BudgetStatement fullYearBudget) {
-		this.fullYearBudget = fullYearBudget;
+	public void setThisYearBudget(BudgetStatement thisYearBudget) {
+		this.thisYearBudget = thisYearBudget;
 	}
 	public BudgetStatement getThisYear() {
 		return thisYear;

@@ -27,19 +27,16 @@
 	<input type="hidden" name="ctype" value='<c:out value="${param.ctype}" />' />
 	
     <div class="row">
-    <div class="col-sm-8 form-group">
+    <div class="col-sm-7 form-group">
         <appfuse:label styleClass="control-label" key="report.type.name"/>: 
         <form:select path="statementType" id="statementType">    		
 			<form:options items="${statementTypes}" />
 		</form:select>        
     </div>  
     
-    <spring:bind path="corpBalanceSheetModel.reportYear">
-    <div class="col-sm-6 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
-    </spring:bind>
+    <div class="col-sm-5">
         <appfuse:label styleClass="control-label" key="corpBalanceSheet.reportYear"/>:
-        <form:input path="reportYear" id="reportYear" maxlength="20" />
-        <form:errors path="reportYear" cssClass="help-block"/>
+        <fmt:formatDate value="${corpBalanceSheetModel.reportTime}" pattern="${shortDatePattern}" />
     </div>	
     </div>
     
@@ -389,11 +386,6 @@
         <button type="submit" class="btn btn-primary" name="method" value="Save" onclick="bCancel=false">
             <i class="icon-ok icon-white"></i> <fmt:message key="button.save"/>
         </button>
-        <c:if test="${not empty corpBalanceSheetModel.beginBalSheet.id}">
-          <button type="submit" class="btn btn-default" name="method"  value="Delete" onclick="bCancel=true;return confirmMessage(msgDelConfirm)">
-              <i class="icon-trash"></i> <fmt:message key="button.delete"/>
-          </button>
-        </c:if>
         <a class="btn btn-default" href="<c:url value='/finance/financialStatements'/>">
             <i class="icon-ok"></i> <fmt:message key="button.cancel"/></a>
     </div>

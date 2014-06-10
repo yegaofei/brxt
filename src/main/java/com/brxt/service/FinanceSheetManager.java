@@ -15,13 +15,18 @@ public interface FinanceSheetManager {
 	public List<FinanceStatement> getAll(ProjectInfo projectInfo);
 	
 	public CorporateBalanceSheet getLatestCorpBalanceSheet(ProjectInfo projectInfo, Counterparty counterparty);
-	
-	public ProfitStatement getLatestProfitStatement(ProjectInfo projectInfo, Counterparty counterparty);
-	
-	public InstituteBalanceSheet getLatestInstituteBalanceSheet(ProjectInfo projectInfo, Counterparty counterparty);
-	
-	public BudgetStatement getLatestBudgetStatement(ProjectInfo projectInfo, Counterparty counterparty);
-	
+	public CorporateBalanceSheet findCorporateBalanceSheet(ProjectInfo projectInfo, Counterparty counterparty, Integer year, Integer month);
 	public void saveCorpBalanceSheets(CorporateBalanceSheet beginB, CorporateBalanceSheet endB);
 	
+	public ProfitStatement getLatestProfitStatement(ProjectInfo projectInfo, Counterparty counterparty);
+	public ProfitStatement findProfitStatement(ProjectInfo projectInfo, Counterparty counterparty, Integer year, Integer month);
+	public void saveProfitStatement(ProfitStatement statement);
+	
+	public InstituteBalanceSheet getLatestInstituteBalanceSheet(ProjectInfo projectInfo, Counterparty counterparty);
+	public InstituteBalanceSheet findInstituteBalanceSheet(ProjectInfo projectInfo, Counterparty counterparty, Integer year, Integer month);
+	public void saveInstituteBalanceSheets(InstituteBalanceSheet beginB, InstituteBalanceSheet endB);
+	
+	public BudgetStatement getLatestBudgetStatement(ProjectInfo projectInfo, Counterparty counterparty);
+	public BudgetStatement findBudgetStatement(ProjectInfo projectInfo, Counterparty counterparty, Integer year, Integer month);
+	public void saveBudgetStatements(BudgetStatement beginB, BudgetStatement endB);
 }

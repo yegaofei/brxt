@@ -1,12 +1,8 @@
 package com.brxt.webapp.controller;
 
+import java.math.BigDecimal;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,76 +10,32 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.appfuse.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.brxt.constant.SessionAttributes;
 import com.brxt.model.Counterparty;
-import com.brxt.model.MockBudgetRepsitory;
 import com.brxt.model.ProjectInfo;
 import com.brxt.model.enums.CounterpartyType;
-import com.brxt.model.enums.StatementType;
 import com.brxt.model.enums.TradingRelationship;
 import com.brxt.model.finance.BudgetStatement;
 import com.brxt.model.finance.BudgetStatementModel;
-import com.brxt.service.FinanceSheetManager;
-import com.brxt.service.ProjectInfoManager;
 
 @Controller
 @RequestMapping("/finance/budgetStatementForm*")
-public class BudgetStatementFormController extends BaseFormController {
-	public static Map<String, Map<String, BudgetStatement>> savedBudgetStatement = new HashMap<String, Map<String, BudgetStatement>>();
-
-	private static final Map<String, String> statementTypes = new TreeMap<String, String>();
+public class BudgetStatementFormController extends BaseSheetController {
 
 	public BudgetStatementFormController() {
-		setCancelView("redirect:/finance/budgetStatementForm");
-		setSuccessView("redirect:/finance/budgetStatementForm");
-	}
-
-	private ProjectInfoManager projectInfoManager;
-	private FinanceSheetManager financeSheetManager;
-
-	@Autowired
-	public void setProjectInfoManager(
-			@Qualifier("projectInfoManager") ProjectInfoManager projectInfoManager) {
-		this.projectInfoManager = projectInfoManager;
-	}
-
-	@Autowired
-	public void setFinanceSheetManager(
-			@Qualifier("financeSheetManager") FinanceSheetManager financeSheetManager) {
-		this.financeSheetManager = financeSheetManager;
-	}
-
-	private synchronized void loadDropDownList(final Locale locale) {
-		if (statementTypes.isEmpty()) {
-			StatementType[] types = StatementType.values();
-			for (StatementType st : types) {
-				statementTypes.put(st.toString(),
-						getText(st.toString(), locale));
-			}
-		}
-	}
-
-	@ModelAttribute("statementTypes")
-	public Map<String, String> getStatementTypes(
-			final HttpServletRequest request) {
-		if (statementTypes.isEmpty()) {
-			loadDropDownList(request.getLocale());
-		}
-		return statementTypes;
+		setCancelView("/finance/budgetStatementForm");
+		setSuccessView("/finance/budgetStatementForm");
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
 	protected String showForm() {
-		return "/finance/budgetStatementForm";
+		return getSuccessView();
 	}
 
 	@ModelAttribute("budgetStatementModel")
@@ -100,6 +52,7 @@ public class BudgetStatementFormController extends BaseFormController {
 				|| StringUtils.isBlank(trStr) || StringUtils.isBlank(ctype)) {
 			// Error out;
 			saveError(request, "request parameters are not enough");
+			log.error("request parameters are not enough");
 			return null;
 		}
 
@@ -121,119 +74,185 @@ public class BudgetStatementFormController extends BaseFormController {
 		Counterparty cpObj = null;
 		switch (tradingRelationship) {
 		case COUNTERPARTY:
-			Set<Counterparty> cp = projectInfo.getCounterparties();
-			Iterator<Counterparty> it = cp.iterator();
-			while (it.hasNext()) {
-				Counterparty counterparty = it.next();
-				if (counterparty.getId() == counterpartyId) {
-					cpObj = counterparty;
-					break;
-				}
-			}
+			cpObj = findCounterparty(projectInfo, counterpartyId);
 			break;
 		case GUARANTOR:
-			Set<Counterparty> ga = projectInfo.getGuarantors();
-			Iterator<Counterparty> iterator = ga.iterator();
-			while (iterator.hasNext()) {
-				Counterparty counterparty = iterator.next();
-				if (counterparty.getId() == counterpartyId) {
-					cpObj = counterparty;
-					break;
-				}
-			}
+			cpObj = findGuarantor(projectInfo, counterpartyId);
 			break;
 		default:
 		}
 
 		bsm.setCounterpartyName(cpObj.getName());
-		BudgetStatement latestBudgetStatement = financeSheetManager
-				.getLatestBudgetStatement(projectInfo, cpObj);
-		if (latestBudgetStatement != null) {
-			// TODO:
-			bsm.setThisYear(latestBudgetStatement);
-			bsm.setReportYear(latestBudgetStatement.getReportYear().toString());
-		} else {
-			bsm.setReportYear("");
-		}
-
+		BudgetStatement thisYearBudget = financeSheetManager.findBudgetStatement(projectInfo, cpObj, getCurrentYear(), 0);
+		bsm.setThisYearBudget(thisYearBudget);
+		BudgetStatement thisYear = financeSheetManager.findBudgetStatement(projectInfo, cpObj, getCurrentYear(), getCurrentMonth());
+		bsm.setThisYear(thisYear);
+		BudgetStatement lastYear = financeSheetManager.findBudgetStatement(projectInfo, cpObj, getCurrentYear() - 1, getCurrentMonth());
+		bsm.setLastYear(lastYear);
+		BudgetStatement budgetRatio = calculateBudgetRatio(thisYearBudget, thisYear);
+		bsm.setBudgetRatio(budgetRatio);
+		BudgetStatement growthRate = calculateGrowthRate(lastYear, thisYear);
+		bsm.setGrowthRate(growthRate);
 		return bsm;
+	}
+	
+	private BudgetStatement calculateBudgetRatio(BudgetStatement thisYearBudget, BudgetStatement thisYear)
+	{
+		BudgetStatement budgetRatio = new BudgetStatement();
+		if(thisYearBudget == null || thisYear == null)
+		{
+			return budgetRatio;
+		}
+		
+		budgetRatio.setBudgetIncomeTotal(calculateRatio(thisYear.getBudgetIncomeTotal(), thisYearBudget.getBudgetIncomeTotal()));
+		budgetRatio.setBudgetPayTotal(calculateRatio(thisYear.getBudgetPayTotal(), thisYearBudget.getBudgetPayTotal()));
+		budgetRatio.setGovFundIncome(calculateRatio(thisYear.getGovFundIncome(), thisYearBudget.getGovFundIncome()));
+		budgetRatio.setGovFundPayment(calculateRatio(thisYear.getGovFundPayment(), thisYearBudget.getGovFundPayment()));
+		budgetRatio.setIncomeTotal(calculateRatio(thisYear.getIncomeTotal(), thisYearBudget.getIncomeTotal()));
+		budgetRatio.setNonTaxIncome(calculateRatio(thisYear.getNonTaxIncome(), thisYearBudget.getNonTaxIncome()));
+		budgetRatio.setPaymentTotal(calculateRatio(thisYear.getPaymentTotal(), thisYearBudget.getPaymentTotal()));
+		budgetRatio.setTaxIncome(calculateRatio(thisYear.getTaxIncome(), thisYearBudget.getTaxIncome()));
+		return budgetRatio;
+	}
+	
+	private final BigDecimal calculateRatio(BigDecimal number, BigDecimal baseNumber)
+	{
+		if(number == null || baseNumber == null)
+		{
+			return null;
+		}
+		
+		if(!baseNumber.equals(BigDecimal.ZERO))
+		{
+			return number.divide(baseNumber);
+		}
+		
+		return null;
+	}
+	
+	private BudgetStatement calculateGrowthRate(BudgetStatement lastYear, BudgetStatement thisYear)
+	{
+		BudgetStatement growthRate = new BudgetStatement();
+		if(lastYear == null || thisYear == null)
+		{
+			return growthRate;
+		}
+		
+		growthRate.setBudgetIncomeTotal(calculateRate(thisYear.getBudgetIncomeTotal(), lastYear.getBudgetIncomeTotal()));
+		growthRate.setBudgetPayTotal(calculateRate(thisYear.getBudgetPayTotal(), lastYear.getBudgetPayTotal()));
+		growthRate.setGovFundIncome(calculateRate(thisYear.getGovFundIncome(), lastYear.getGovFundIncome()));
+		growthRate.setGovFundPayment(calculateRate(thisYear.getGovFundPayment(), lastYear.getGovFundPayment()));
+		growthRate.setIncomeTotal(calculateRate(thisYear.getIncomeTotal(), lastYear.getIncomeTotal()));
+		growthRate.setNonTaxIncome(calculateRate(thisYear.getNonTaxIncome(), lastYear.getNonTaxIncome()));
+		growthRate.setPaymentTotal(calculateRate(thisYear.getPaymentTotal(), lastYear.getPaymentTotal()));
+		growthRate.setTaxIncome(calculateRate(thisYear.getTaxIncome(), lastYear.getTaxIncome()));
+		return growthRate;
+	}
+	
+	private final BigDecimal calculateRate(BigDecimal number, BigDecimal baseNumber)
+	{
+		if(number == null || baseNumber == null)
+		{
+			return null;
+		}
+		
+		if(!baseNumber.equals(BigDecimal.ZERO))
+		{
+			return number.subtract(baseNumber).divide(baseNumber);
+		}
+		
+		return null;
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView onSubmit(BudgetStatement budgetStatement,
-			BindingResult errors, HttpServletRequest request,
+	public String onSubmit(@ModelAttribute("budgetStatementModel") BudgetStatementModel budgetStatementModel,
+			BindingResult errors, final HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		String method = request.getParameter("method");
-		final Locale locale = request.getLocale();
-		if (method != null) {
-			ModelAndView mav = new ModelAndView();
+		if (validator != null) { 
+			validator.validate(budgetStatementModel, errors);
+			if (errors.hasErrors()) {
+				log.debug("error happens 'onSubmit' method..." + errors.toString());
+				saveMessage(request, errors.toString());
+				return getCancelView();
+			}
+		}
 
+		if (method != null) {
 			switch (method) {
-			case "Cancel":
-				mav.setViewName(getCancelView());
-				break;
-			case "Delete":
-				MockBudgetRepsitory.getInstance().deleteBudget(budgetStatement);
-				saveMessage(request,
-						getText("budgetStatementForm.deleted", locale));
-				mav.setViewName(getSuccessView());
-				break;
 			case "Save":
-				mav = saveBudgetStatement(budgetStatement, errors, request, mav);
+				saveBudgetStatement(budgetStatementModel, request);
 				break;
 			default:
 				// Error
 			}
-			return mav;
 		} else {
 			// error
+			log.error("The method is empty");
+			return getCancelView();
 		}
-		return new ModelAndView("budgetStatementForm");
+		return getSuccessView();
 	}
 
-	private ModelAndView saveBudgetStatement(BudgetStatement budgetStatement,
-			BindingResult errors, HttpServletRequest request, ModelAndView mav)
+	private void saveBudgetStatement(BudgetStatementModel budgetStatementModel, HttpServletRequest request)
 			throws Exception {
 		final Locale locale = request.getLocale();
-		if (validator != null) { // validator is null during testing
-			validator.validate(budgetStatement, errors);
-			if (errors.hasErrors()) {
-				log.debug("error happens 'onSubmit' method..."
-						+ errors.toString());
-				saveMessage(request, errors.toString());
-				mav.setViewName("budgetStatementForm");
-				return mav;
-			}
+		Long projectInfoId = budgetStatementModel.getProjectId();
+		Long counterpartyId = budgetStatementModel.getCounterpartyId();
+		if(projectInfoId == null || counterpartyId == null)
+		{
+			//Error out
+			saveError(request, "request parameters are not enough");
+			log.error("request parameters are not enough");
+			return;
 		}
-
-		boolean isNew = false;// (budgetStatement.getId() == null);
+		
+		ProjectInfo projectInfo = projectInfoManager.get(projectInfoId);
+		Counterparty cp = findCounterparty(projectInfo, counterpartyId);
+		if(cp == null)
+		{
+			cp = findGuarantor(projectInfo, counterpartyId);
+		}
+		
+		BudgetStatement thisYearBudget = budgetStatementModel.getThisYearBudget();
+		thisYearBudget.setProjectInfo(projectInfo);
+		thisYearBudget.setCounterparty(cp);
+		
+		boolean isNewThisYearBudget = (thisYearBudget.getId() == null);
 		User currentUser = getCurrentUser();
-		if (isNew) {
+		if (isNewThisYearBudget) {
 			// Add
-			budgetStatement.setCreateUser(currentUser.getUsername());
-			budgetStatement.setCreateTime(new Date());
+			thisYearBudget.setReportYear(getCurrentYear());
+			thisYearBudget.setReportMonth((short) 0);
+			thisYearBudget.setCreateUser(currentUser.getUsername());
+			thisYearBudget.setCreateTime(new Date());
 		} else {
-			budgetStatement.setUpdateUser(currentUser.getUsername());
-			budgetStatement.setUpdateTime(new Date());
+			thisYearBudget.setUpdateUser(currentUser.getUsername());
+			thisYearBudget.setUpdateTime(new Date());
 		}
 
-		String reportYear = budgetStatement.getReportYear().toString();
-		String reportMonth = budgetStatement.getReportMonth().toString();
-
-		// if
-		// (BudgetType.BUDGET_MONTH.toString().equals(budgetStatement.getBudgetType())){
-		// reportMonth = reportYear + "00";
-		// }
-		// budgetStatement.setReportMonth(reportMonth);
-
-		MockBudgetRepsitory.getInstance().addOrUpdateBudget(budgetStatement);
-
-		mav.addObject("budgetStatementFormModel", budgetStatement);
-		String key = (isNew) ? "budgetStatementForm.added"
-				: "budgetStatementForm.updated";
-		saveMessage(request, getText(key, locale));
-		mav.setViewName(getSuccessView());
-		return mav;
+		BudgetStatement thisYear = budgetStatementModel.getThisYear();
+		thisYear.setProjectInfo(projectInfo);
+		thisYear.setCounterparty(cp);
+		boolean isNewThisYear = (thisYear.getId() == null);
+		if (isNewThisYear) {
+			// Add
+			thisYear.setReportYear(getCurrentYear());
+			thisYear.setReportMonth(getCurrentMonth().shortValue());
+			thisYear.setCreateUser(currentUser.getUsername());
+			thisYear.setCreateTime(new Date());
+		} else {
+			thisYear.setUpdateUser(currentUser.getUsername());
+			thisYear.setUpdateTime(new Date());
+		}
+		
+		financeSheetManager.saveBudgetStatements(thisYearBudget, thisYear);
+		BudgetStatement budgetRatio = calculateBudgetRatio(thisYearBudget, thisYear);
+		budgetStatementModel.setBudgetRatio(budgetRatio);
+		BudgetStatement lastYear = budgetStatementModel.getLastYear();
+		BudgetStatement growthRate = calculateGrowthRate(lastYear, thisYear);
+		budgetStatementModel.setGrowthRate(growthRate);
+		saveMessage(request, getText("budgetStatementForm.updated", locale));
 	}
 
 }

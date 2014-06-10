@@ -2,9 +2,6 @@
 <head>
     <title><fmt:message key="budgetStatementForm.title"/></title>
     <meta name="menu" content="ProjectInfoSubMenu"/>
-    <link rel="stylesheet" type="text/css" href="${base}/webjars/bootstrap-datepicker/1.2.0/css/datepicker.css"/>
-    <script type="text/javascript" src="${base}/webjars/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.js"></script>
-    <script type="text/javascript" src="${base}/webjars/bootstrap-datepicker/1.2.0/js/locales/bootstrap-datepicker.zh-CN.js" charset="UTF-8"></script>
 </head>
  
 <div class="col-sm-2">
@@ -36,13 +33,10 @@
 			<form:options items="${statementTypes}" />
 		</form:select>        
     </div>  
-	    
-	<spring:bind path="budgetStatementModel.reportYear">
-    <div class="col-sm-6 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
-    </spring:bind>
-        <appfuse:label styleClass="control-label" key="instBalanceSheetModel.reportYear"/>:
-        <form:input path="reportYear" id="reportYear" maxlength="20" />
-        <form:errors path="reportYear" cssClass="help-block"/>
+
+    <div class="col-sm-5 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+        <appfuse:label styleClass="control-label" key="profitStatement.reportYear"/>:
+		<fmt:formatDate value="${instBalanceSheetModel.reportTime}" pattern="${shortDatePattern}" />
     </div>	
 	</div>
 	
@@ -59,11 +53,11 @@
         <tr>
 				<td> <appfuse:label key="budgetStatementInfo.budgetIncomeTotal"/> </td>
 				<td> 
-					<spring:bind path="budgetStatementModel.fullYearBudget.budgetIncomeTotal">        
+					<spring:bind path="budgetStatementModel.thisYearBudget.budgetIncomeTotal">        
                 		<div class="">
                 	</spring:bind>        
-                    <form:input path="fullYearBudget.budgetIncomeTotal" id="budgetIncomeTotal1"  />
-                   	<form:errors path="fullYearBudget.budgetIncomeTotal" /> 
+                    <form:input path="thisYearBudget.budgetIncomeTotal" id="budgetIncomeTotal1"  />
+                   	<form:errors path="thisYearBudget.budgetIncomeTotal" /> 
 				</td>
 				<td> 
 					<spring:bind path="budgetStatementModel.thisYear.budgetIncomeTotal">        
@@ -86,11 +80,11 @@
         <tr>
         		<td> <appfuse:label key="budgetStatementInfo.taxIncome"/> </td>
         		<td>        
-					<spring:bind path="budgetStatementModel.fullYearBudget.taxIncome">        
+					<spring:bind path="budgetStatementModel.thisYearBudget.taxIncome">        
                 		<div class="">
                 	</spring:bind>        
-                    <form:input path="fullYearBudget.taxIncome" id="taxIncome1"  />
-                   	<form:errors path="fullYearBudget.taxIncome" />         	
+                    <form:input path="thisYearBudget.taxIncome" id="taxIncome1"  />
+                   	<form:errors path="thisYearBudget.taxIncome" />         	
         		</td>
         		<td>          
 					<spring:bind path="budgetStatementModel.thisYear.taxIncome">        
@@ -113,11 +107,11 @@
 		<tr>
 				<td> <appfuse:label key="budgetStatementInfo.nonTaxIncome"/> </td>
         		<td>        
-					<spring:bind path="budgetStatementModel.fullYearBudget.nonTaxIncome">        
+					<spring:bind path="budgetStatementModel.thisYearBudget.nonTaxIncome">        
                 		<div class="">
                 	</spring:bind>        
-                    <form:input path="fullYearBudget.nonTaxIncome" id="nonTaxIncome1"  />
-                   	<form:errors path="fullYearBudget.nonTaxIncome" />         	        			
+                    <form:input path="thisYearBudget.nonTaxIncome" id="nonTaxIncome1"  />
+                   	<form:errors path="thisYearBudget.nonTaxIncome" />         	        			
         		</td>
         		<td>          
 					<spring:bind path="budgetStatementModel.thisYear.nonTaxIncome">        
@@ -141,11 +135,11 @@
 			<td> <appfuse:label key="budgetStatementInfo.govFundIncome"/> </td>
        
         <td>   
-					<spring:bind path="budgetStatementModel.fullYearBudget.govFundIncome">        
+					<spring:bind path="budgetStatementModel.thisYearBudget.govFundIncome">        
                 		<div class="">
                 	</spring:bind>        
-                    <form:input path="fullYearBudget.govFundIncome" id="govFundIncome1"  />
-                   	<form:errors path="fullYearBudget.govFundIncome" />                  
+                    <form:input path="thisYearBudget.govFundIncome" id="govFundIncome1"  />
+                   	<form:errors path="thisYearBudget.govFundIncome" />                  
         </td>
         <td>          
 					<spring:bind path="budgetStatementModel.thisYear.govFundIncome">        
@@ -168,11 +162,11 @@
 		<tr>
 			<td> <appfuse:label key="budgetStatementInfo.paymentTotal"/> </td>
         <td>  
-					<spring:bind path="budgetStatementModel.fullYearBudget.paymentTotal">        
+					<spring:bind path="budgetStatementModel.thisYearBudget.paymentTotal">        
                 		<div class="">
                 	</spring:bind>        
-                    <form:input path="fullYearBudget.paymentTotal" id="paymentTotal1"  />
-                   	<form:errors path="fullYearBudget.paymentTotal" />                   
+                    <form:input path="thisYearBudget.paymentTotal" id="paymentTotal1"  />
+                   	<form:errors path="thisYearBudget.paymentTotal" />                   
         </td>
         <td>          
 					<spring:bind path="budgetStatementModel.thisYear.paymentTotal">        
@@ -198,11 +192,11 @@
 		<tr>
 			<td> <appfuse:label key="budgetStatementInfo.budgetPayTotal"/> </td>
         <td> 
-					<spring:bind path="budgetStatementModel.fullYearBudget.budgetPayTotal">        
+					<spring:bind path="budgetStatementModel.thisYearBudget.budgetPayTotal">        
                 		<div class="">
                 	</spring:bind>        
-                    <form:input path="fullYearBudget.budgetPayTotal" id="budgetPayTotal1"  />
-                   	<form:errors path="fullYearBudget.budgetPayTotal" />                
+                    <form:input path="thisYearBudget.budgetPayTotal" id="budgetPayTotal1"  />
+                   	<form:errors path="thisYearBudget.budgetPayTotal" />                
         </td>
         <td>          
 					<spring:bind path="budgetStatementModel.thisYear.budgetPayTotal">        
@@ -227,11 +221,11 @@
 			<td> <appfuse:label key="budgetStatementInfo.govFundPayment"/> </td>
        
         <td> 
-					<spring:bind path="budgetStatementModel.fullYearBudget.govFundPayment">        
+					<spring:bind path="budgetStatementModel.thisYearBudget.govFundPayment">        
                 		<div class="">
                 	</spring:bind>        
-                    <form:input path="fullYearBudget.govFundPayment" id="govFundPayment1"  />
-                   	<form:errors path="fullYearBudget.govFundPayment" /> 
+                    <form:input path="thisYearBudget.govFundPayment" id="govFundPayment1"  />
+                   	<form:errors path="thisYearBudget.govFundPayment" /> 
         </td>
         
         <td>          
@@ -262,11 +256,6 @@
         <button type="submit" class="btn btn-primary" name="method" value="Save" onclick="bCancel=false">
             <i class="icon-ok icon-white"></i> <fmt:message key="button.save"/>
         </button>
-        <c:if test="${not empty budgetStatementModel.thisYear.id}">
-          <button type="submit" class="btn btn-default" name="method"  value="Delete" onclick="bCancel=true;return confirmMessage(msgDelConfirm)">
-              <i class="icon-trash"></i> <fmt:message key="button.delete"/>
-          </button>
-        </c:if>
         <a class="btn btn-default" href="<c:url value='/finance/financialStatements'/>">
             <i class="icon-ok"></i> <fmt:message key="button.cancel"/></a>
     </div>

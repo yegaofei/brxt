@@ -59,8 +59,6 @@ public class CorpBalanceSheetController extends BaseSheetController {
 		Long counterpartyId = Long.valueOf(counterpartyIdStr);
 
 		CorpBalanceSheetModel csm = new CorpBalanceSheetModel();
-		csm.setBeginBalSheet(new CorporateBalanceSheet());
-		csm.setEndBalSheet(new CorporateBalanceSheet());
 		csm.setCounterpartyId(counterpartyId);
 		csm.setProjectId(projectInfoId);
 		csm.setTradingRelationship(tradingRelationship);
@@ -77,14 +75,24 @@ public class CorpBalanceSheetController extends BaseSheetController {
 		default:
 		}
 		csm.setCounterpartyName(cpObj.getName());
-		CorporateBalanceSheet latestCBSheet = financeSheetManager
-				.getLatestCorpBalanceSheet(projectInfo, cpObj);
-		if (latestCBSheet != null) {
-			// TODO:
-			csm.setBeginBalSheet(latestCBSheet);
-			csm.setReportYear(latestCBSheet.getReportYear().toString());
+		CorporateBalanceSheet beginBalSheet = financeSheetManager.findCorporateBalanceSheet(projectInfo, cpObj, getCurrentYear(), 0);
+		if(beginBalSheet == null)
+		{
+			beginBalSheet = new CorporateBalanceSheet();
+			beginBalSheet.setProjectInfo(projectInfo);
+			beginBalSheet.setCounterparty(cpObj);
 		}
-
+		
+		CorporateBalanceSheet endBalSheet =  financeSheetManager.findCorporateBalanceSheet(projectInfo, cpObj, getCurrentYear(), getCurrentMonth());
+		if(endBalSheet == null) {
+			endBalSheet = new CorporateBalanceSheet();
+			endBalSheet.setProjectInfo(projectInfo);
+			endBalSheet.setCounterparty(cpObj);
+		}
+		
+		csm.setBeginBalSheet(beginBalSheet);
+		csm.setEndBalSheet(endBalSheet);
+		csm.setReportTime(new Date());
 		return csm;
 	}
 
@@ -119,7 +127,7 @@ public class CorpBalanceSheetController extends BaseSheetController {
 
 	private void saveCorpBalanceSheet(
 			CorpBalanceSheetModel corpBalanceSheetModel,
-			HttpServletRequest request) throws Exception {
+			final HttpServletRequest request) throws Exception {
 		final Locale locale = request.getLocale();
 		Long projectInfoId = corpBalanceSheetModel.getProjectId();
 		Long counterpartyId = corpBalanceSheetModel.getCounterpartyId();
