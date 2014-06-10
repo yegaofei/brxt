@@ -13,7 +13,7 @@ public class CorpBalanceSheetModel {
 	private TradingRelationship tradingRelationship;
 	private CorporateBalanceSheet beginBalSheet;
 	private CorporateBalanceSheet endBalSheet;
-	private StatementType statementType = StatementType.BALANCE_SHEET;
+	private String statementType = StatementType.BALANCE_SHEET.getTitle();
 	
 	public Long getProjectId() {
 		return projectId;
@@ -69,10 +69,10 @@ public class CorpBalanceSheetModel {
 	public void setEndBalSheet(CorporateBalanceSheet endBalSheet) {
 		this.endBalSheet = endBalSheet;
 	}
-	public StatementType getStatementType() {
+	public String getStatementType() {
 		return statementType;
 	}
-	public void setStatementType(StatementType statementType) {
+	public void setStatementType(String statementType) {
 		this.statementType = statementType;
 	}
 	

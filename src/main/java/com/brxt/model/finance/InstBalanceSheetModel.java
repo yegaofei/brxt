@@ -11,7 +11,7 @@ public class InstBalanceSheetModel {
 	private String reportName;	
 	private InstituteBalanceSheet beginBalSheet = new InstituteBalanceSheet();
 	private InstituteBalanceSheet endBalSheet = new InstituteBalanceSheet();
-	private StatementType statementType = StatementType.BALANCE_SHEET;
+	private String statementType = StatementType.BALANCE_SHEET.getTitle();
 	
 	public Long getProjectId() {
 		return projectId;
@@ -61,10 +61,10 @@ public class InstBalanceSheetModel {
 	public void setEndBalSheet(InstituteBalanceSheet endBalSheet) {
 		this.endBalSheet = endBalSheet;
 	}
-	public StatementType getStatementType() {
+	public String getStatementType() {
 		return statementType;
 	}
-	public void setStatementType(StatementType statementType) {
+	public void setStatementType(String statementType) {
 		this.statementType = statementType;
 	}	
 	

@@ -26,6 +26,8 @@
 	<form:hidden path="projectId"/>
 	<form:hidden path="counterpartyId"/>
 	<form:hidden path="reportName"/>
+	<input type="hidden" name="type" value='<c:out value="${param.type}" />' />
+	<input type="hidden" name="ctype" value='<c:out value="${param.ctype}" />' />
  
 	<div class="row">
     <div class="col-sm-6 form-group">

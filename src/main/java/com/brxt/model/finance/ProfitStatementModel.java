@@ -11,7 +11,7 @@ public class ProfitStatementModel {
 	private String reportName;	
 	private ProfitStatement beginBalSheet;
 	private ProfitStatement endBalSheet;
-	private StatementType statementType = StatementType.PROFIT_SHEET;
+	private String statementType = StatementType.PROFIT_SHEET.getTitle();
 	
 	public Long getProjectId() {
 		return projectId;
@@ -61,10 +61,10 @@ public class ProfitStatementModel {
 	public void setEndBalSheet(ProfitStatement endBalSheet) {
 		this.endBalSheet = endBalSheet;
 	}
-	public StatementType getStatementType() {
+	public String getStatementType() {
 		return statementType;
 	}
-	public void setStatementType(StatementType statementType) {
+	public void setStatementType(String statementType) {
 		this.statementType = statementType;
 	}
 		

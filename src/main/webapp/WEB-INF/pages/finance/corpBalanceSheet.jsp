@@ -23,6 +23,8 @@
 	<form:hidden path="projectId"/>
 	<form:hidden path="counterpartyId"/>
 	<form:hidden path="reportName"/>
+	<input type="hidden" name="type" value='<c:out value="${param.type}" />' />
+	<input type="hidden" name="ctype" value='<c:out value="${param.ctype}" />' />
 	
     <div class="row">
     <div class="col-sm-8 form-group">
@@ -31,14 +33,14 @@
 			<form:options items="${statementTypes}" />
 		</form:select>        
     </div>  
-        
-    <div class="col-sm-4 form-group">
+    
+    <spring:bind path="corpBalanceSheet.reportYear">
+    <div class="col-sm-6 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    </spring:bind>
         <appfuse:label styleClass="control-label" key="corpBalanceSheet.reportYear"/>:
-        <form:select path="reportYear">         
-            <form:options items="${availReportYears}" />
-        </form:select>
+        <form:input path="reportYear" id="reportYear" maxlength="20" />
         <form:errors path="reportYear" cssClass="help-block"/>
-    </div>  
+    </div>	
     </div>
     
     <table class="table table-condensed">

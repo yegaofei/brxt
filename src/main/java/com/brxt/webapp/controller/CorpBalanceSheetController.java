@@ -49,6 +49,7 @@ public class CorpBalanceSheetController extends BaseSheetController {
 				|| StringUtils.isBlank(trStr) || StringUtils.isBlank(ctypeStr)) {
 			// Error out;
 			saveError(request, "request parameters are not enough"); 
+			log.error("request parameters are not enough");
 			return null;
 		}
 
@@ -88,14 +89,10 @@ public class CorpBalanceSheetController extends BaseSheetController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public String onSubmit(@ModelAttribute("corpBalanceSheetModel")CorpBalanceSheetModel corpBalanceSheetModel,
+	public String onSubmit(@ModelAttribute("corpBalanceSheetModel") CorpBalanceSheetModel corpBalanceSheetModel,
 			BindingResult errors, final HttpServletRequest request,
 			final HttpServletResponse response) throws Exception {
-		String method = request.getParameter("method");
-		if(corpBalanceSheetModel == null)
-		{
-			log.debug("=================================corpBalanceSheetModel == null.======================" );
-		}
+		String method = request.getParameter("method");		
 		if (validator != null) {
 			validator.validate(corpBalanceSheetModel, errors);
 			if (errors.hasErrors()) {
@@ -114,6 +111,7 @@ public class CorpBalanceSheetController extends BaseSheetController {
 			}
 		} else {
 			// error
+			log.error("The method is empty");
 			return getCancelView();
 		}
 		return getSuccessView();
@@ -128,6 +126,9 @@ public class CorpBalanceSheetController extends BaseSheetController {
 		if(projectInfoId == null || counterpartyId == null)
 		{
 			//Error out
+			saveError(request, "request parameters are not enough");
+			log.error("request parameters are not enough");
+			return;
 		}
 		
 		ProjectInfo projectInfo = projectInfoManager.get(projectInfoId);

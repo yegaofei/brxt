@@ -14,7 +14,7 @@ public class BudgetStatementModel {
 	private BudgetStatement lastYear = new BudgetStatement();
 	private BudgetStatement budgetRatio = new BudgetStatement();
 	private BudgetStatement growthRate = new BudgetStatement();
-	private StatementType statementType = StatementType.BUDGET_SHEET;
+	private String statementType = StatementType.BUDGET_SHEET.getTitle();
 	
 	public Long getProjectId() {
 		return projectId;
@@ -82,10 +82,10 @@ public class BudgetStatementModel {
 	public void setGrowthRate(BudgetStatement growthRate) {
 		this.growthRate = growthRate;
 	}
-	public StatementType getStatementType() {
+	public String getStatementType() {
 		return statementType;
 	}
-	public void setStatementType(StatementType statementType) {
+	public void setStatementType(String statementType) {
 		this.statementType = statementType;
 	}	
 	
