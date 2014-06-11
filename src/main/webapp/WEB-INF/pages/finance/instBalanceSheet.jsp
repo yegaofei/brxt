@@ -7,10 +7,10 @@
 <div class="col-sm-3">
     <h2><fmt:message key='instBalanceSheet.heading'/></h2>
     <span>
-    	<c:if test = '${instBalanceSheetModel.tradingRelationship == "counterparty"}' >
+    	<c:if test = '${instBalanceSheetModel.tradingRelationship.title == "counterparty"}' >
     		<fmt:message key='corpBalanceSheet.counterpartyName'/> 
     	</c:if>
-    	<c:if test = '${instBalanceSheetModel.tradingRelationship == "guarantor"}' >
+    	<c:if test = '${instBalanceSheetModel.tradingRelationship.title == "guarantor"}' >
     		<fmt:message key='corpBalanceSheet.guarantorName'/> 
     	</c:if>
     	: &nbsp; <c:out value="${instBalanceSheetModel.counterpartyName}"/>, <fmt:message key="${instBalanceSheetModel.counterpartyType}"/>

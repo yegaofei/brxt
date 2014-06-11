@@ -42,62 +42,73 @@ public class ProfitStatementController extends BaseSheetController {
 			final HttpServletRequest request, final HttpSession session) {
 		String projectInfoIdStr = (String) session
 				.getAttribute(SessionAttributes.PROJECT_INFO_ID);
-		String counterpartyIdStr = request.getParameter("counterpartyId");
-		String trStr = request.getParameter("type");
-		String ctype = request.getParameter("ctype");
-		final Locale locale = request.getLocale();
-		if (StringUtils.isBlank(projectInfoIdStr)
-				|| StringUtils.isBlank(counterpartyIdStr)
-				|| StringUtils.isBlank(trStr) || StringUtils.isBlank(ctype)) {
-			// Error out;
-			saveError(request, "request parameters are not enough");
-			log.error("request parameters are not enough");
-			return null;
-		}
-
-		if (ctype.equalsIgnoreCase(CounterpartyType.INSTITUTION.toString())) {
-			saveError(request,
-					getText("budgetStatementForm.error.type", locale));
-		}
-
-		TradingRelationship tradingRelationship = TradingRelationship
-				.valueOf(trStr.toUpperCase());
-		Long projectInfoId = Long.valueOf(projectInfoIdStr);
-		Long counterpartyId = Long.valueOf(counterpartyIdStr);
-		ProfitStatementModel psm = new ProfitStatementModel();
-		psm.setCounterpartyId(counterpartyId);
-		psm.setProjectId(projectInfoId);
-		psm.setTradingRelationship(tradingRelationship);
-
-		ProjectInfo projectInfo = projectInfoManager.get(projectInfoId);
-		Counterparty cpObj = null;
-		switch (tradingRelationship) {
-		case COUNTERPARTY:
-			cpObj = findCounterparty(projectInfo, counterpartyId);
-			break;
-		case GUARANTOR:
-			cpObj = findGuarantor(projectInfo, counterpartyId);
-			break;
-		default:
-		}
-		psm.setCounterpartyName(cpObj.getName());
-		
 		ProfitStatement latestPSheet = null;
+		ProjectInfo projectInfo = null;
+		Counterparty counterparty = null;
+		ProfitStatementModel psm = new ProfitStatementModel();
 		String statementId = request.getParameter("id");
-		if(!StringUtils.isBlank(statementId))
-		{
-			latestPSheet = financeSheetManager.getProfitStatement(Long.valueOf(statementId));
+		if (!StringUtils.isBlank(statementId)) {
+			latestPSheet = financeSheetManager.getProfitStatement(Long
+					.valueOf(statementId));
+			counterparty = latestPSheet.getCounterparty();
+			psm.setCounterpartyId(counterparty.getId());
+			psm.setCounterpartyType(counterparty.getCounterpartyType());
+			projectInfo = latestPSheet.getProjectInfo();
+			psm.setProjectId(projectInfo.getId());
+			if (findCounterparty(projectInfo, counterparty.getId()) != null) {
+				psm.setTradingRelationship(TradingRelationship.COUNTERPARTY);
+			} else if (findGuarantor(projectInfo, counterparty.getId()) != null) {
+				psm.setTradingRelationship(TradingRelationship.GUARANTOR);
+			}
+			psm.setCounterpartyName(counterparty.getName());
+		} else {
+			String counterpartyIdStr = request.getParameter("counterpartyId");
+			String trStr = request.getParameter("type");
+			String ctype = request.getParameter("ctype");
+			final Locale locale = request.getLocale();
+			if (StringUtils.isBlank(projectInfoIdStr)
+					|| StringUtils.isBlank(counterpartyIdStr)
+					|| StringUtils.isBlank(trStr) || StringUtils.isBlank(ctype)) {
+				// Error out;
+				saveError(request, "request parameters are not enough");
+				log.error("request parameters are not enough");
+				return null;
+			}
+
+			if (ctype.equalsIgnoreCase(CounterpartyType.INSTITUTION.toString())) {
+				saveError(request,
+						getText("budgetStatementForm.error.type", locale));
+			}
+
+			TradingRelationship tradingRelationship = TradingRelationship
+					.valueOf(trStr.toUpperCase());
+			Long projectInfoId = Long.valueOf(projectInfoIdStr);
+			Long counterpartyId = Long.valueOf(counterpartyIdStr);
+
+			psm.setCounterpartyId(counterpartyId);
+			psm.setProjectId(projectInfoId);
+			psm.setTradingRelationship(tradingRelationship);
+
+			projectInfo = projectInfoManager.get(projectInfoId);
+			switch (tradingRelationship) {
+			case COUNTERPARTY:
+				counterparty = findCounterparty(projectInfo, counterpartyId);
+				break;
+			case GUARANTOR:
+				counterparty = findGuarantor(projectInfo, counterpartyId);
+				break;
+			default:
+			}
+			psm.setCounterpartyName(counterparty.getName());
+			psm.setCounterpartyType(counterparty.getCounterpartyType());
+			latestPSheet = financeSheetManager.findProfitStatement(projectInfo,
+					counterparty, getCurrentYear(), getCurrentMonth());
 		}
-		else
-		{
-			latestPSheet = financeSheetManager.findProfitStatement(
-					projectInfo, cpObj, getCurrentYear(), getCurrentMonth());
-		}
-		
+
 		if (latestPSheet == null) {
 			latestPSheet = new ProfitStatement();
 			latestPSheet.setProjectInfo(projectInfo);
-			latestPSheet.setCounterparty(cpObj);
+			latestPSheet.setCounterparty(counterparty);
 		}
 		psm.setEndBalSheet(latestPSheet);
 		psm.setReportTime(new Date());

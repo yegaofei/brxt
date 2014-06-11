@@ -2,7 +2,6 @@ package com.brxt.model.finance;
 
 import java.util.Date;
 
-import com.brxt.model.enums.CounterpartyType;
 import com.brxt.model.enums.TradingRelationship;
 
 public class BaseStatementModel {

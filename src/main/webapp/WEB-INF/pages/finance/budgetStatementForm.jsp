@@ -7,10 +7,10 @@
 <div class="col-sm-2">
 	<h2><fmt:message key='budgetStatementForm.heading'/></h2> 
 	<span>
-    	<c:if test = '${budgetStatementModel.tradingRelationship == "counterparty"}' >
+    	<c:if test = '${budgetStatementModel.tradingRelationship.title == "counterparty"}' >
     		<fmt:message key='corpBalanceSheet.counterpartyName'/> 
     	</c:if>
-    	<c:if test = '${budgetStatementModel.tradingRelationship == "guarantor"}' >
+    	<c:if test = '${budgetStatementModel.tradingRelationship.title == "guarantor"}' >
     		<fmt:message key='corpBalanceSheet.guarantorName'/> 
     	</c:if>
     	: &nbsp; <c:out value="${budgetStatementModel.counterpartyName}"/>, <fmt:message key="${budgetStatementModel.counterpartyType}"/>
