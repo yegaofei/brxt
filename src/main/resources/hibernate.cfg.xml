@@ -24,6 +24,11 @@
         <mapping class="com.brxt.model.finance.BudgetStatement"/>
         <mapping class="com.brxt.model.finance.InstituteBalanceSheet"/>
         <mapping class="com.brxt.model.finance.ProfitStatement"/>
+        <mapping class="com.brxt.model.collateral.Collateral"/>
+        <mapping class="com.brxt.model.collateral.CollateralOverview"/>
+        <mapping class="com.brxt.model.collateral.Land"/>
+        <mapping class="com.brxt.model.collateral.ConstructingProject"/>
+        <mapping class="com.brxt.model.collateral.Property"/>
     </session-factory>
 </hibernate-configuration>
 

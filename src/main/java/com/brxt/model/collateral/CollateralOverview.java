@@ -1,5 +1,6 @@
 package com.brxt.model.collateral;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,13 +12,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.appfuse.model.BaseObject;
-import org.appfuse.model.User;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import com.brxt.model.ProjectInfo;
 
@@ -26,14 +29,20 @@ import com.brxt.model.ProjectInfo;
 @Table(name = "collateral_overview")
 public class CollateralOverview extends BaseObject {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5687597785866292844L;
 	private Long id;
 	private ProjectInfo projectInfo; // 项目id
 	private String description;
-	private List<Collateral> collaterals;
+	private String evaluatedValue; //抵押物评估价值
+	private String rate;	//抵押率
+	private List<Collateral> collaterals = new ArrayList<Collateral>();
 	
-	private User createUser; // 创建人
+	private String createUser; // 创建人
 	private Date createTime; // 创建时间
-	private User updateUser; // 最后更新人
+	private String updateUser; // 最后更新人
 	private Date updateTime; // 最后更新时间
 	private Integer version;
 	
@@ -61,6 +70,8 @@ public class CollateralOverview extends BaseObject {
 		this.description = description;
 	}
 	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "collateralOverview", cascade = { CascadeType.ALL })
+	@Fetch(FetchMode.SELECT) 
 	public List<Collateral> getCollaterals() {
 		return collaterals;
 	}
@@ -68,12 +79,10 @@ public class CollateralOverview extends BaseObject {
 		this.collaterals = collaterals;
 	}
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "createUser", nullable = true)
-	public User getCreateUser() {
+	public String getCreateUser() {
 		return createUser;
 	}
-	public void setCreateUser(User createUser) {
+	public void setCreateUser(String createUser) {
 		this.createUser = createUser;
 	}
 	public Date getCreateTime() {
@@ -83,12 +92,10 @@ public class CollateralOverview extends BaseObject {
 		this.createTime = createTime;
 	}
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "updateUser", nullable = true)
-	public User getUpdateUser() {
+	public String getUpdateUser() {
 		return updateUser;
 	}
-	public void setUpdateUser(User updateUser) {
+	public void setUpdateUser(String updateUser) {
 		this.updateUser = updateUser;
 	}
 	public Date getUpdateTime() {
@@ -104,6 +111,18 @@ public class CollateralOverview extends BaseObject {
 	}
 	public void setVersion(Integer version) {
 		this.version = version;
+	}
+	public String getEvaluatedValue() {
+		return evaluatedValue;
+	}
+	public void setEvaluatedValue(String evaluatedValue) {
+		this.evaluatedValue = evaluatedValue;
+	}
+	public String getRate() {
+		return rate;
+	}
+	public void setRate(String rate) {
+		this.rate = rate;
 	}
 	@Override
 	public String toString() {
