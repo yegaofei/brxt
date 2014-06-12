@@ -6,9 +6,10 @@ import org.appfuse.service.impl.GenericManagerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.brxt.dao.InvestmentProjectDao;
+import com.brxt.dao.CounterpartyDao;
 import com.brxt.dao.ProjectInfoDao;
 import com.brxt.dao.ProjectSizeDao;
+import com.brxt.model.Counterparty;
 import com.brxt.model.ProjectInfo;
 import com.brxt.model.ProjectSize;
 import com.brxt.service.ProjectInfoManager;
@@ -20,6 +21,8 @@ public class ProjectInfoManagerImpl extends
 	ProjectInfoDao projectInfoDao;
 
 	ProjectSizeDao projectSizeDao;
+	
+	CounterpartyDao counterpartyDao;
 
 	@Autowired
 	public void setProjectInfoDao(ProjectInfoDao projectInfoDao) {
@@ -30,6 +33,11 @@ public class ProjectInfoManagerImpl extends
 	@Autowired
 	public void setProjectSizeDao(ProjectSizeDao projectSizeDao) {
 		this.projectSizeDao = projectSizeDao;
+	}
+
+	@Autowired
+	public void setCounterpartyDao(CounterpartyDao counterpartyDao) {
+		this.counterpartyDao = counterpartyDao;
 	}
 
 	@Override
@@ -59,6 +67,11 @@ public class ProjectInfoManagerImpl extends
 	@Override
 	public ProjectSize findProjectSize(Long projectSizeId) {
 		return projectSizeDao.get(projectSizeId);
+	}
+
+	@Override
+	public Counterparty saveCounterparty(Counterparty counterparty) {
+		return counterpartyDao.save(counterparty);
 	}
 
 }

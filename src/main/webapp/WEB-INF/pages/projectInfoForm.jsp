@@ -165,6 +165,15 @@
     </div>
 
 	<div class="row">
+	
+	<spring:bind path="projectInfo.guaranteeMode">
+    <div class="col-sm-6 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    </spring:bind>
+        <appfuse:label styleClass="control-label" key="projectInfo.guaranteeMode"/>:
+        <form:input path="guaranteeMode" id="guaranteeMode" maxlength="300" cssClass="form-control"/>
+        <form:errors path="guaranteeMode" cssClass="help-inline"/>
+    </div>
+    
     <spring:bind path="projectInfo.projectType">
     <div class="col-sm-6 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
@@ -177,7 +186,29 @@
 	</div>
 	
 	<div class="row">    
+	
     <div class="col-sm-6 form-group">
+    	<appfuse:label styleClass="control-label" key="projectInfo.counterparty.list"/>
+    	<div id="actions" class="btn-group">
+			<c:choose>
+			<c:when test="${method == 'EditCounterparty'}">
+    		<button type="submit" name="method" value="SaveCounterparty">
+                <fmt:message key="button.save"/>
+            </button>
+			</c:when>
+			<c:otherwise>
+        	<button type="submit" name="method" value="AddCounterparty">
+                <fmt:message key="button.add"/>
+        	</button>    
+        	</c:otherwise>
+        	</c:choose>
+        	<button type="submit" name="method" value="EditCounterparty">
+                <fmt:message key="button.edit"/>
+        	</button>
+        	<button type="submit" name="method" value="DeleteCounterparty">
+                <fmt:message key="button.delete"/>
+        	</button>    
+		</div>
 		<display:table name="projectInfo.counterparties" id="counterparty" class="table table-condensed table-striped table-hover">
   			<display:column style="width: 5%">
     			<input type="checkbox" name="counterpartyId" value="<c:out value='${counterparty.id}'/>" 
@@ -196,9 +227,11 @@
   			<display:column titleKey="projectInfo.counterparty.type">
       			<c:choose>
         			<c:when test="${method == 'EditCounterparty' and param.counterpartyId == counterparty.id}">
-                			<form:select path="counterparty.counterpartyType">    		
-								<form:options items="${counterpartyTypes}" />
-							</form:select> 
+						<c:forEach var="counterpartyType" items="${counterpartyTypes}" varStatus="status">
+							<c:if test="${status.first}"><select id="counterpartyType" name="counterpartyType"></c:if>
+							<option value="${counterpartyType.title}" <c:if test = "${counterpartyType.title == counterparty.counterpartyType}" > selected </c:if>><fmt:message key="${counterpartyType.title}" /></option>
+							<c:if test="${status.last}"></select></c:if>
+						</c:forEach>	
         			</c:when>
         			<c:otherwise>
         			<fmt:message key="${counterparty.counterpartyType}"/>
@@ -209,6 +242,27 @@
      </div>
      
      <div class="col-sm-6 form-group">
+     	<appfuse:label styleClass="control-label" key="projectInfo.guarantor.list"/>
+    	<div id="actions" class="btn-group">
+			<c:choose>
+			<c:when test="${method == 'EditGuarantor'}">
+    		<button type="submit" name="method" value="SaveGuarantor">
+                <fmt:message key="button.save"/>
+            </button>
+			</c:when>
+			<c:otherwise>
+        	<button type="submit" name="method" value="AddGuarantor">
+                <fmt:message key="button.add"/>
+        	</button>    
+        	</c:otherwise>
+        	</c:choose>
+        	<button type="submit" name="method" value="EditGuarantor">
+                <fmt:message key="button.edit"/>
+        	</button>
+        	<button type="submit" name="method" value="DeleteGuarantor">
+                <fmt:message key="button.delete"/>
+        	</button>    
+		</div>
 		<display:table name="projectInfo.guarantors" id="guarantor" class="table table-condensed table-striped table-hover">
   			<display:column style="width: 5%">
     			<input type="checkbox" name="guarantorId" value="<c:out value='${guarantor.id}'/>" 
@@ -229,7 +283,7 @@
         			<c:when test="${method == 'EditGuarantor' and param.guarantorId == guarantor.id}">
                 			<c:forEach var="guarantorType" items="${counterpartyTypes}" varStatus="status">
                     			<c:if test="${status.first}"><select id="guarantorType" name="guarantorType"></c:if>
-                    			<option value="${guarantorType.title}"><fmt:message key="${guarantorType.title}"/></option>
+                    			<option value="${guarantorType.title}" <c:if test = "${guarantorType.title == guarantor.counterpartyType}" > selected </c:if>><fmt:message key="${guarantorType.title}"/></option>
           						<c:if test="${status.last}"></select></c:if>
                 			</c:forEach>
         			</c:when>
@@ -270,7 +324,9 @@
         <button type="submit" class="btn btn-default" name="method" value="Cancel" onclick="bCancel=true">
             <i class="icon-remove"></i> <fmt:message key="button.cancel"/>
         </button>
+        
     </div>
+
     
     </form:form>
 </div>

@@ -36,7 +36,9 @@
     		<input type="checkbox" name="id" value="<c:out value='${progress.id}'/>" 
     		<c:if test="${param.id == progress.id and method != 'Save'}">checked="checked"</c:if> style="margin: 0 0 0 4px" onclick="radio(this)" />
   		</display:column>
-        <display:column property="deadline" format="{0,date,yyyy-MM}" sortable="true" titleKey="projectProgress.deadline"/>
+        <display:column sortable="true" titleKey="projectProgress.deadline">
+        	<fmt:formatDate value="${progress.deadline}" pattern="${shortDatePattern}" />
+        </display:column>
         <display:column sortable="false" titleKey="projectProgress.investmentType">
         		<fmt:message key="${progress.capitalInvestmentType.title}"/>
         </display:column>

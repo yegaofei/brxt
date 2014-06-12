@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.brxt.constant.SessionAttributes;
+import com.brxt.model.Counterparty;
 import com.brxt.model.InvestmentStatus;
 import com.brxt.model.ProjectInfo;
 import com.brxt.model.ProjectSize;
@@ -178,6 +180,56 @@ public class ProjectInfoFormController extends BaseFormController {
 				mav.addObject("method", "SaveProjectSize");
 				mav.addObject("projectInfo", projectInfo);
 				break;
+			case "EditCounterparty":	
+				mav.addObject("projectInfo", getProjectInfo(request));
+				mav.addObject("method", "EditCounterparty");
+				mav.setViewName("projectInfoForm");
+				break;
+			case "AddCounterparty":
+				projectInfo = getProjectInfo(request);
+				projectInfo.getCounterparties().add(new Counterparty());
+				mav.addObject("projectInfo", projectInfo);
+				mav.addObject("method", "EditCounterparty");
+				mav.setViewName("projectInfoForm");
+				break;
+			case "DeleteCounterparty":
+				String counterpartyId = request.getParameter("counterpartyId");
+				projectInfo = getProjectInfo(request);
+				deleteCounterparty(counterpartyId, projectInfo);
+				mav.addObject("method", "SaveCounterparty");
+				projectInfo = projectInfoManager.save(projectInfo);
+				mav.addObject("projectInfo", projectInfo);
+				break;
+			case "SaveCounterparty":
+				projectInfo = getProjectInfo(request);
+				mav = saveCounterparty(projectInfo, errors, request, mav);
+				mav.addObject("method", "SaveCounterparty");
+				break;
+			case "EditGuarantor":	
+				mav.addObject("projectInfo", getProjectInfo(request));
+				mav.addObject("method", "EditGuarantor");
+				mav.setViewName("projectInfoForm");
+				break;
+			case "AddGuarantor":
+				projectInfo = getProjectInfo(request);
+				projectInfo.getGuarantors().add(new Counterparty());
+				mav.addObject("projectInfo", projectInfo);
+				mav.addObject("method", "EditGuarantor");
+				mav.setViewName("projectInfoForm");
+				break;
+			case "DeleteGuarantor":
+				String guarantorId = request.getParameter("guarantorId");
+				projectInfo = getProjectInfo(request);
+				deleteGuarantor(guarantorId, projectInfo);
+				mav.addObject("method", "SaveGuarantor");
+				projectInfo = projectInfoManager.save(projectInfo);
+				mav.addObject("projectInfo", projectInfo);
+				break;
+			case "SaveGuarantor":
+				projectInfo = getProjectInfo(request);
+				mav = saveGuarantor(projectInfo, errors, request, mav);
+				mav.addObject("method", "SaveGuarantor");
+				break;
 			default:
 				//Error
 			}
@@ -210,19 +262,144 @@ public class ProjectInfoFormController extends BaseFormController {
 			projectInfo.setCreateUser(currentUser);
 			projectInfo.setCreateTime(new Date());
 		} else {
-			ProjectInfo oldProjectInfo = loadProjectInfo(projectInfo.getId());
 			User createUser = getUserManager().getUserByUsername(projectInfo.getCreateUser().getUsername());
 			projectInfo.setCreateUser(createUser);
 			projectInfo.setUpdateUser(currentUser);
 			projectInfo.setUpdateTime(new Date());
-			projectInfo.setCounterparties(oldProjectInfo.getCounterparties());
-			projectInfo.setGuarantors(oldProjectInfo.getGuarantors());
 		}
 		projectInfoManager.save(projectInfo);
 		mav.addObject("ProjectInfo", projectInfo);
 		String key = (isNew) ? "projectInfo.added" : "projectInfo.updated";
 		saveMessage(request, getText(key, locale));
 		mav.setViewName(getSuccessView());
+		return mav;
+	}
+	
+	private ModelAndView saveCounterparty(ProjectInfo projectInfo,
+			BindingResult errors, HttpServletRequest request,
+			final ModelAndView mav) throws Exception {
+		String id = request.getParameter("counterpartyId");
+		String[] idArray = request.getParameterValues("counterpartyId");
+		if (idArray != null && idArray.length > 0 && !"".equals(idArray[0])) {
+			StringBuilder sb = new StringBuilder("submit counterparty ids: ");
+			for (String idStr : idArray) {
+				sb.append(idStr).append(",");
+			}
+			log.debug(sb);
+		}
+		
+		String name = request.getParameter("counterpartyName");
+		String type = request.getParameter("counterpartyType");
+		
+		if (!StringUtils.isBlank(id)) {
+			Iterator<Counterparty> cpIt = projectInfo.getCounterparties().iterator();
+			while(cpIt.hasNext())
+			{
+				Counterparty cp = cpIt.next();
+				if(cp.getId() == Long.valueOf(id)){
+					if(name != null) {
+						cp.setName(name);
+					}
+					
+					if(type != null) {
+						cp.setCounterpartyType(type);
+					}
+					projectInfoManager.saveCounterparty(cp);
+				}				
+			}			
+		} else {
+			// Add
+			if (!StringUtils.isBlank(name)
+					|| !StringUtils.isBlank(type)) {
+				Counterparty cpObj = new Counterparty();
+				if (!StringUtils.isBlank(name)) {
+					cpObj.setName(name);
+				}
+
+				if (!StringUtils.isBlank(type)) {
+					cpObj.setCounterpartyType(type);
+				}
+				
+				if(projectInfo.getCounterparties().contains(cpObj))
+				{
+					saveError(request, getText("duplicate.counterparty.error", request.getLocale()));
+				} 
+				else
+				{
+					cpObj = projectInfoManager.saveCounterparty(cpObj);
+					projectInfo.getCounterparties().add(cpObj);
+				}
+				
+			} else {
+				// Error
+			}
+		}
+		projectInfo = projectInfoManager.save(projectInfo);
+		mav.addObject("projectInfo", projectInfo);
+		return mav;
+	}
+	
+	private ModelAndView saveGuarantor(ProjectInfo projectInfo,
+			BindingResult errors, HttpServletRequest request,
+			final ModelAndView mav) throws Exception {
+		String id = request.getParameter("guarantorId");
+		String[] idArray = request.getParameterValues("guarantorId");
+		if (idArray != null && idArray.length > 0 && !"".equals(idArray[0])) {
+			StringBuilder sb = new StringBuilder("submit guarantor ids: ");
+			for (String idStr : idArray) {
+				sb.append(idStr).append(",");
+			}
+			log.debug(sb);
+		}
+		
+		String name = request.getParameter("guarantorName");
+		String type = request.getParameter("guarantorType");
+		
+		if (!StringUtils.isBlank(id)) {
+			Iterator<Counterparty> cpIt = projectInfo.getGuarantors().iterator();
+			while(cpIt.hasNext())
+			{
+				Counterparty cp = cpIt.next();
+				if(cp.getId() == Long.valueOf(id)){
+					if(name != null) {
+						cp.setName(name);
+					}
+					
+					if(type != null) {
+						cp.setCounterpartyType(type);
+					}
+					projectInfoManager.saveCounterparty(cp);
+				}				
+			}			
+		} else {
+			// Add
+			if (!StringUtils.isBlank(name)
+					|| !StringUtils.isBlank(type)) {
+				Counterparty cpObj = new Counterparty();
+				if (!StringUtils.isBlank(name)) {
+					cpObj.setName(name);
+				}
+
+				if (!StringUtils.isBlank(type)) {
+					cpObj.setCounterpartyType(type);
+				}
+				
+				if(projectInfo.getGuarantors().contains(cpObj))
+				{
+					saveError(request, getText("duplicate.counterparty.error", request.getLocale()));
+				} 
+				else
+				{
+					cpObj = projectInfoManager.saveCounterparty(cpObj);
+					projectInfo.getGuarantors().add(cpObj);
+				}
+				
+			} else {
+				// Error
+			}
+		}
+		projectInfo = projectInfoManager.save(projectInfo);
+		mav.addObject("projectInfo", projectInfo);
 		return mav;
 	}
 
@@ -309,5 +486,45 @@ public class ProjectInfoFormController extends BaseFormController {
 			}
 		}
 		return list;
+	}
+	
+	private void deleteCounterparty(String counterpartyId, ProjectInfo projectInfo)
+	{
+		
+		Set<Counterparty> counterparties = projectInfo.getCounterparties();
+		if (StringUtils.isBlank(counterpartyId) || counterparties == null || counterparties.size() == 0) {
+			return;
+		}
+		
+		Iterator<Counterparty> it = counterparties.iterator();
+		while(it.hasNext())
+		{
+			Counterparty cp = it.next();
+			if(cp.getId() == Long.valueOf(counterpartyId))
+			{
+				it.remove();
+				break;
+			}
+		}
+	}
+	
+	private void deleteGuarantor(String counterpartyId, ProjectInfo projectInfo)
+	{
+		
+		Set<Counterparty> counterparties = projectInfo.getGuarantors();
+		if (StringUtils.isBlank(counterpartyId) || counterparties == null || counterparties.size() == 0) {
+			return;
+		}
+		
+		Iterator<Counterparty> it = counterparties.iterator();
+		while(it.hasNext())
+		{
+			Counterparty cp = it.next();
+			if(cp.getId() == Long.valueOf(counterpartyId))
+			{
+				it.remove();
+				break;
+			}
+		}
 	}
 }

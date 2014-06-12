@@ -30,7 +30,9 @@
     		<input type="checkbox" name="id" value="<c:out value='${creditInformation.id}'/>" 
     		<c:if test="${param.id == creditInformation.id and method != 'Save'}">checked="checked"</c:if> style="margin: 0 0 0 4px" onclick="radio(this)" />
   		</display:column>
-        <display:column property="queryTime" format="{0,date,yyyy-MM-dd}" sortable="true" titleKey="creditInformation.queryTime"/>
+        <display:column sortable="true" titleKey="creditInformation.queryTime">
+        		<fmt:formatDate value="${creditInformation.queryTime}" pattern="${datePattern}" />
+        </display:column>
         <display:column property="id" media="csv excel xml pdf" titleKey="creditInformation.id"/>
         <display:column sortable="true" titleKey="creditInformation.type">
         		<fmt:message key="${creditInformation.tradeRelationship.title}"/>

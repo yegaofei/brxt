@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.appfuse.service.GenericManager;
 
+import com.brxt.model.Counterparty;
 import com.brxt.model.ProjectInfo;
 import com.brxt.model.ProjectSize;
 
@@ -20,5 +21,7 @@ public interface ProjectInfoManager extends GenericManager<ProjectInfo, Long> {
 	void deleteProjectSize(ProjectSize projectSize);
 	
 	ProjectSize findProjectSize(Long projectSizeId);
+	
+	Counterparty saveCounterparty(Counterparty counterparty);
 	
 }

@@ -1,6 +1,9 @@
 <%@ include file="/common/taglibs.jsp"%>
 <head>
     <title><fmt:message key="repaymentProject.title"/></title>
+    <link rel="stylesheet" type="text/css" href="${base}/webjars/bootstrap-datepicker/1.2.0/css/datepicker.css"/>
+    <script type="text/javascript" src="${base}/webjars/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="${base}/webjars/bootstrap-datepicker/1.2.0/js/locales/bootstrap-datepicker.zh-CN.js" charset="UTF-8"></script>
 </head>
  
 <div class="col-sm-2">
@@ -126,3 +129,17 @@
 
 <v:javascript formName="repaymentProject" cdata="false" dynamicJavascript="true" staticJavascript="false"/>
 <script type="text/javascript" src="<c:url value='/scripts/validator.jsp'/>"></script>
+<script>
+  $(function() {
+    $('#projectEndTime').datepicker({
+				language: 'zh-CN'				
+			});
+  });
+  
+  $(function() {
+    $('#openDate').datepicker({
+				language: 'zh-CN'				
+			});
+  });
+  
+</script>
