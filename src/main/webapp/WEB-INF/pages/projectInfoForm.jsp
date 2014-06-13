@@ -18,7 +18,7 @@
  
 <div class="col-sm-8">
     <form:errors path="*" cssClass="alert alert-danger alert-dismissable" element="div"/>
-    <form:form commandName="projectInfo" method="post" action="projectInfoForm" id="projectInfoForm" cssClass="well">
+    <form:form commandName="projectInfo" method="post" action="${ctx}/projectInfoForm" id="projectInfoForm" cssClass="well" onsubmit="return validateProjectInfo(this)">
     <form:hidden path="id"/>
 	<form:hidden path="version"/>
 	 

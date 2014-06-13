@@ -12,6 +12,8 @@ public interface ProjectInfoManager extends GenericManager<ProjectInfo, Long> {
 
 	List<ProjectInfo> findByProjectName(String projectName);
 	
+	List<ProjectInfo> findByProjectInfo(ProjectInfo projectInfo);
+	
 	void batchSaveProjectSizeList(List<ProjectSize> psList);
 	
 	List<ProjectSize> getAllProjectSize(Long projectInfoId);

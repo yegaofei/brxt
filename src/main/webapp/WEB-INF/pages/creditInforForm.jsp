@@ -13,7 +13,7 @@
  
 <div class="col-sm-8">
     <form:errors path="*" cssClass="alert alert-danger alert-dismissable" element="div"/>
-    <form:form commandName="creditInformation" method="post" action="creditInforForm" id="creditInformationForm" cssClass="well">
+    <form:form commandName="creditInformation" method="post" action="creditInforForm" id="creditInformationForm" cssClass="well" onsubmit="return validateCreditInformation(this)">
     <form:hidden path="id"/>
 	<form:hidden path="version"/>
 	<input type="hidden" name="projectInfoId" value="${projectInfoId}"/>

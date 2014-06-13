@@ -10,7 +10,7 @@
 
 <div class="col-sm-10">
     <h2><fmt:message key='repayment.heading'/></h2>
- 	<form name="repayment" action="/repayment" method="post">
+ 	<form name="repayment" action="${ctx}/repayment" method="post">
  	<div id="actions" class="btn-group">
         <a class="btn btn-primary" href="<c:url value='/repaymentForm'/>">
             <i class="icon-plus icon-white"></i> <fmt:message key="button.add"/></a>

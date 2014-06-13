@@ -12,7 +12,8 @@
  
 <div class="col-sm-8">
     <form:errors path="*" cssClass="alert alert-danger alert-dismissable" element="div"/>
-    <form:form commandName="repaymentProject" method="post" action="/progress/repaymentProjectForm" id="repaymentProjectForm" cssClass="well">
+    <form:form commandName="repaymentProject" method="post" action="/progress/repaymentProjectForm" 
+    		id="repaymentProjectForm" cssClass="well" onsubmit="return validateRepaymentProject(this)">
     <form:hidden path="id"/>
 	<form:hidden path="version"/>
 	<input type="hidden" name="projectInfoId" value="${projectInfoId}"/>

@@ -50,5 +50,54 @@
                 <arg key="user.password"/>
             </field>
         </form>
+        <form name="projectInfo">
+        	<field property="projectName" depends="required">
+        		<arg key="projectInfo.projectName" />
+        	</field>
+        </form>
+        <form name="subjectCapacity">
+        	<field property="checkTime" depends="required">
+        		<arg key="subjectCapacity.checkTime" />
+        	</field>
+        </form>
+        <form name="creditInformation">
+        	<field property="queryTime" depends="required">
+        		<arg key="creditInformation.queryTime" />
+        	</field>
+        </form>
+        <form name="repayment">
+        	<field property="repaymentTime" depends="required">
+        		<arg key="repayment.repaymentTime" />
+        	</field>
+        </form>	
+		<form name="investmentProject">
+        	<field property="name" depends="required">
+        		<arg key="investmentProject.name" />
+        	</field>
+        	<field property="projectEndTime" depends="required">
+        		<arg key="investmentProject.projectEndTime" />
+        	</field>
+        </form>
+        <form name="repaymentProject">
+        	<field property="name" depends="required">
+        		<arg key="repaymentProject.name" />
+        	</field>
+        	<field property="projectEndTime" depends="required">
+        		<arg key="repaymentProject.projectEndTime" />
+        	</field>
+        </form>
+        <form name="supplyLiquidProject">
+        	<field property="name" depends="required">
+        		<arg key="supplyLiquidProject.name" />
+        	</field>
+        	<field property="projectEndTime" depends="required">
+        		<arg key="supplyLiquidProject.projectEndTime" />
+        	</field>
+        </form>
+        <form name="collateral">
+        	<field property="projectName" depends="required">
+        		<arg key="collateral.projectName" />
+        	</field>
+        </form>
     </formset>
 </form-validation>

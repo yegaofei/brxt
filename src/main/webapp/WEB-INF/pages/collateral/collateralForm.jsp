@@ -9,7 +9,8 @@
  
 <div class="col-sm-8">
     <form:errors path="*" cssClass="alert alert-danger alert-dismissable" element="div"/>
-    <form:form commandName="collateralDataModel" method="post" action="${ctx}/collateral/collateralForm" id="collateralForm" cssClass="well">
+    <form:form commandName="collateralDataModel" method="post" action="${ctx}/collateral/collateralForm" 
+    	id="collateralForm" cssClass="well"  onsubmit="return validateCollateral(this)">
     <form:hidden path="id"/>
     
     <spring:bind path="collateralDataModel.projectName">

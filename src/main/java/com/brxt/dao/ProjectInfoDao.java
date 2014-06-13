@@ -10,4 +10,6 @@ public interface ProjectInfoDao extends GenericDao<ProjectInfo, Long> {
 
 	
 	public List<ProjectInfo> findByProjectName(String projectName);
+	
+	public List<ProjectInfo> findByProjectInfo(ProjectInfo projectInfo);
 }

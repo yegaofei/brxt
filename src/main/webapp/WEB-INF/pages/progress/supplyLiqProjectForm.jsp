@@ -12,7 +12,8 @@
  
 <div class="col-sm-8">
     <form:errors path="*" cssClass="alert alert-danger alert-dismissable" element="div"/>
-    <form:form commandName="supplyLiquidProject" method="post" action="/progress/supplyLiqProjectForm" id="supplyLiqProjectForm" cssClass="well">
+    <form:form commandName="supplyLiquidProject" method="post" action="/progress/supplyLiqProjectForm" 
+    	id="supplyLiqProjectForm" cssClass="well"  onsubmit="return validateSupplyLiquidProject(this)">
     <form:hidden path="id"/>
 	<form:hidden path="version"/>
 	<input type="hidden" name="projectInfoId" value="${projectInfoId}"/>

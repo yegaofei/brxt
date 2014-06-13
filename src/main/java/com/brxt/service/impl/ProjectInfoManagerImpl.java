@@ -73,5 +73,16 @@ public class ProjectInfoManagerImpl extends
 	public Counterparty saveCounterparty(Counterparty counterparty) {
 		return counterpartyDao.save(counterparty);
 	}
+	
+	@Override
+	public List<ProjectInfo> findByProjectInfo(ProjectInfo projectInfo) {
+		
+		if(projectInfo != null)
+		{
+			return projectInfoDao.findByProjectInfo(projectInfo);
+		}
+		
+		return getAll();
+	}
 
 }

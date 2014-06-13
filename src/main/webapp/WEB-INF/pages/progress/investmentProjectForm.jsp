@@ -12,7 +12,7 @@
  
 <div class="col-sm-8">
     <form:errors path="*" cssClass="alert alert-danger alert-dismissable" element="div"/>
-    <form:form commandName="investmentProject" method="post" action="/progress/investmentProjectForm" id="investmentProjectForm" cssClass="well">
+    <form:form commandName="investmentProject" method="post" action="/progress/investmentProjectForm" id="investmentProjectForm" cssClass="well"  onsubmit="return validateInvestmentProject(this)">
     <form:hidden path="id"/>
 	<form:hidden path="version"/>
 	<form:hidden path="investmentProjectType"/>

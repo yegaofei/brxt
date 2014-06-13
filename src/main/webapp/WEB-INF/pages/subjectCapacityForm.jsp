@@ -13,7 +13,7 @@
  
 <div class="col-sm-8">
     <form:errors path="*" cssClass="alert alert-danger alert-dismissable" element="div"/>
-    <form:form commandName="subjectCapacity" method="post" action="subjectCapacityForm" id="subjectCapacityForm" cssClass="well">
+    <form:form commandName="subjectCapacity" method="post" action="subjectCapacityForm" id="subjectCapacityForm" cssClass="well" onsubmit="return validateSubjectCapacity(this)">
     <form:hidden path="id"/>
 	<form:hidden path="version"/>
 	<input type="hidden" name="projectInfoId" value="${projectInfoId}"/>
