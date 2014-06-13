@@ -11,9 +11,9 @@
 <div class="col-sm-10">
     <h2><fmt:message key='collateral.heading'/></h2>
     
-    <form name="collateralListForm" action="/collateral/collateralList" method="post">	
+    <form name="collateralListForm" action="${ctx}/collateral/collateralList" method="post">	
 	<div id="actions" class="btn-group">
-        <a class="btn btn-primary" href="<c:url value='/collateral/addCollatera'/>">
+        <a class="btn btn-primary" href="<c:url value='${ctx}/collateral/collateralForm'/>">
             <i class="icon-plus icon-white"></i> <fmt:message key="button.add"/></a>
         <button type="submit" class="btn btn-primary" name="method" value="Delete" onclick="bCancel=true;return confirmMessage(msgDelConfirm)">
                 <i class="icon-remove"></i> <fmt:message key="button.delete"/>

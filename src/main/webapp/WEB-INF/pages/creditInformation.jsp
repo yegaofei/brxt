@@ -20,7 +20,7 @@
         <button type="submit" class="btn btn-primary" name="method" value="Edit">
                 <i class="icon-ok icon-white"></i> <fmt:message key="button.edit"/>
         </button>    
-        <a class="btn btn-default" href="<c:url value='/projectInfoForm?id=${sessionScope.project_info_id}'/>">
+        <a class="btn btn-default" href="<c:url value='${ctx}/projectInfoForm?id=${sessionScope.project_info_id}'/>">
             <i class="icon-ok"></i> <fmt:message key="button.done"/></a>
     </div>
  

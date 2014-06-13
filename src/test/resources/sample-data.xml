@@ -480,4 +480,272 @@
             <value>1</value>
         </row>
 	</table>
+	
+	<table name="budget_statement">
+    	<column>id</column>
+        <column>projectInfo_id</column>
+		<column>counterparty_id</column>
+		<column>incomeTotal</column>		
+        <column>budgetIncomeTotal</column>   
+        <column>taxIncome</column>
+        <column>nonTaxIncome</column>
+        <column>govFundIncome</column>
+        <column>paymentTotal</column>
+        <column>budgetPayTotal</column>
+        <column>govFundPayment</column>
+        <column>reportYear</column>
+        <column>reportMonth</column>
+        <column>createUser</column>
+        <column>createTime</column>
+        <column>updateUser</column>
+        <column>updateTime</column>
+        <column>version</column>
+        <row>
+        	<value>1</value>
+            <value description="project_info_id">1</value>
+			<value description="counterparty_id">2</value>
+            <value>100000</value>
+            <value>200000</value>
+            <value>300000</value>
+            <value>400000</value>
+            <value>500000</value>
+            <value>600000</value>
+            <value>700000</value>
+            <value>800000</value>
+            <value>2014</value>
+            <value>0</value>
+			<value>-1</value>
+            <value>2014-06-11 06:06:06</value>
+            <value>-1</value>
+            <value>2014-06-11 06:06:06</value>
+            <value>1</value>
+        </row>
+		<row>
+        	<value>2</value>
+            <value description="project_info_id">1</value>
+			<value description="counterparty_id">2</value>
+            <value>10000</value>
+            <value>20000</value>
+            <value>30000</value>
+            <value>40000</value>
+            <value>50000</value>
+            <value>60000</value>
+            <value>70000</value>
+            <value>80000</value>
+            <value>2014</value>
+            <value>6</value>
+			<value>-1</value>
+            <value>2014-06-11 06:06:06</value>
+            <value>-1</value>
+            <value>2014-06-11 06:06:06</value>
+            <value>1</value>
+        </row>
+		<row>
+        	<value>3</value>
+            <value description="project_info_id">1</value>
+			<value description="counterparty_id">2</value>
+            <value>80000</value>
+            <value>70000</value>
+            <value>60000</value>
+            <value>50000</value>
+            <value>40000</value>
+            <value>30000</value>
+            <value>20000</value>
+            <value>10000</value>
+            <value>2013</value>
+            <value>6</value>
+			<value>-1</value>
+            <value>2014-06-11 06:06:06</value>
+            <value>-1</value>
+            <value>2014-06-11 06:06:06</value>
+            <value>1</value>
+        </row>
+	</table>
+	
+	<table name="profit_statement">
+    	<column>id</column>
+        <column>projectInfo_id</column>
+		<column>counterparty_id</column>
+		<column>operatingIncome</column>		
+        <column>operatingCost</column>   
+        <column>operatingProfit</column>
+        <column>interestCost</column>
+        <column>operatingTax</column>
+        <column>netProfit</column>        
+        <column>reportYear</column>
+        <column>reportMonth</column>
+        <column>createUser</column>
+        <column>createTime</column>
+        <column>updateUser</column>
+        <column>updateTime</column>
+        <column>version</column>        
+		<row>
+        	<value>1</value>
+            <value description="project_info_id">2</value>
+			<value description="counterparty_id">1</value>
+            <value>1000001</value>
+            <value>2000002</value>
+            <value>3000003</value>
+            <value>4000004</value>
+            <value>5000005</value>
+            <value>6000006</value>            
+            <value>2014</value>
+            <value>6</value>
+			<value>-1</value>
+            <value>2014-06-11 06:06:06</value>
+            <value>-1</value>
+            <value>2014-06-11 06:06:06</value>
+            <value>1</value>
+        </row>		
+	</table>
+	
+	<table name="corp_balancesheet">
+    	<column>id</column>
+        <column>projectInfo_id</column>
+		<column>counterparty_id</column>
+		<column>inventory</column>		
+        <column>cash</column>   
+        <column>receivableNote</column>
+        <column>receivables</column>
+        <column>receivableOther</column>
+        <column>liquidAsset</column>   
+		<column>totalAsset</column>   
+		<column>prepayment</column>   
+		<column>shortLoan</column>   
+		<column>payableNote</column>   
+		<column>payable</column>   
+		<column>prereceive</column>   
+		<column>liquidDebt</column>   
+		<column>longLoan</column>   
+		<column>totalDebt</column>   
+		<column>actualCapital</column>   
+		<column>unAssignedProfit</column>   
+		<column>netAsset</column> 		
+        <column>reportYear</column>
+        <column>reportMonth</column>
+        <column>createUser</column>
+        <column>createTime</column>
+        <column>updateUser</column>
+        <column>updateTime</column>
+        <column>version</column>
+        <row>
+        	<value>1</value>
+            <value description="project_info_id">2</value>
+			<value description="counterparty_id">1</value>
+            <value>100000</value>
+            <value>200000</value>
+            <value>300000</value>
+            <value>400000</value>
+            <value>500000</value>
+            <value>600000</value> 
+			<value>100000</value>
+            <value>200000</value>
+            <value>300000</value>
+            <value>400000</value>
+            <value>500000</value>
+            <value>600000</value>
+			<value>100000</value>
+            <value>200000</value>
+            <value>300000</value>
+            <value>400000</value>
+            <value>500000</value>
+            <value>600000</value>			
+            <value>2014</value>
+            <value>0</value>
+			<value>-1</value>
+            <value>2014-06-11 06:06:06</value>
+            <value>-1</value>
+            <value>2014-06-11 06:06:06</value>
+            <value>1</value>
+        </row>
+		<row>
+        	<value>2</value>
+            <value description="project_info_id">2</value>
+			<value description="counterparty_id">1</value>
+            <value>1000001</value>
+            <value>2000002</value>
+            <value>3000003</value>
+            <value>4000004</value>
+            <value>5000005</value>
+            <value>6000006</value> 
+			<value>1000001</value>
+            <value>2000002</value>
+            <value>3000003</value>
+            <value>4000004</value>
+            <value>5000005</value>
+            <value>6000006</value> 
+			<value>1000001</value>
+            <value>2000002</value>
+            <value>3000003</value>
+            <value>4000004</value>
+            <value>5000005</value>
+            <value>6000006</value> 			
+            <value>2014</value>
+            <value>6</value>
+			<value>-1</value>
+            <value>2014-06-11 06:06:06</value>
+            <value>-1</value>
+            <value>2014-06-11 06:06:06</value>
+            <value>1</value>
+        </row>		
+	</table>	
+	
+	<table name="inst_balancesheet">
+    	<column>id</column>
+        <column>projectInfo_id</column>
+		<column>counterparty_id</column>
+		<column>assetGroupTotal</column>		
+        <column>assetTotal</column>   
+        <column>expenseTotal</column>
+        <column>debtGroupTotal</column>
+        <column>debtTotal</column>
+        <column>netAssetTotal</column>   
+		<column>incomeTotal</column>	
+        <column>reportYear</column>
+        <column>reportMonth</column>
+        <column>createUser</column>
+        <column>createTime</column>
+        <column>updateUser</column>
+        <column>updateTime</column>
+        <column>version</column>
+        <row>
+        	<value>1</value>
+            <value description="project_info_id">1</value>
+			<value description="counterparty_id">2</value>
+            <value>100000</value>
+            <value>200000</value>
+            <value>300000</value>
+            <value>400000</value>
+            <value>500000</value>
+            <value>600000</value> 
+			<value>700000</value>            			
+            <value>2014</value>
+            <value>0</value>
+			<value>-1</value>
+            <value>2014-06-11 06:06:06</value>
+            <value>-1</value>
+            <value>2014-06-11 06:06:06</value>
+            <value>1</value>
+        </row>
+		<row>
+        	<value>2</value>
+            <value description="project_info_id">1</value>
+			<value description="counterparty_id">2</value>
+            <value>1000001</value>
+            <value>2000002</value>
+            <value>3000003</value>
+            <value>4000004</value>
+            <value>5000005</value>
+            <value>6000006</value> 
+			<value>7000007</value>           		
+            <value>2014</value>
+            <value>6</value>
+			<value>-1</value>
+            <value>2014-06-11 06:06:06</value>
+            <value>-1</value>
+            <value>2014-06-11 06:06:06</value>
+            <value>1</value>
+        </row>		
+	</table>	
+	
 </dataset>

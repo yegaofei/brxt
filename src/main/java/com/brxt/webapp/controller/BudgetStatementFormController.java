@@ -201,7 +201,7 @@ public class BudgetStatementFormController extends BaseSheetController {
 		
 		if(!baseNumber.equals(BigDecimal.ZERO))
 		{
-			return number.subtract(baseNumber).divide(baseNumber);
+			return number.subtract(baseNumber).divide(baseNumber, mc);
 		}
 		
 		return null;
