@@ -17,5 +17,10 @@ public enum CollateralType {
 	{
 		return type;
 	}
+	
+	public String toString()
+	{
+		return type;
+	}
 
 }

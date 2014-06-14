@@ -28,6 +28,7 @@ public class Land extends BaseObject {
 	private Long id;
 	private Collateral collateral;
 	private String owner;
+	private String landAttribute;
 	private String sourceMethod;
 	private Double size;
 	private Integer yearsLimit;
@@ -138,6 +139,14 @@ public class Land extends BaseObject {
 
 	public void setVersion(Integer version) {
 		this.version = version;
+	}
+
+	public String getLandAttribute() {
+		return landAttribute;
+	}
+
+	public void setLandAttribute(String landAttribute) {
+		this.landAttribute = landAttribute;
 	}
 
 	@Override

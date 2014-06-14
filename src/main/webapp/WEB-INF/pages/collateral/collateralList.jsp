@@ -34,8 +34,8 @@
         		<fmt:message key="${collateral.collateralType.type}"/>
         </display:column>
         <display:column property="executor" sortable="false" titleKey="collateral.executor"/>
-        <display:setProperty name="paging.banner.item_name"><fmt:message key="financeStatement.heading"/></display:setProperty>
-        <display:setProperty name="paging.banner.items_name"><fmt:message key="financeStatement.heading"/></display:setProperty>
+        <display:setProperty name="paging.banner.item_name"><fmt:message key="collateral.heading"/></display:setProperty>
+        <display:setProperty name="paging.banner.items_name"><fmt:message key="collateral.heading"/></display:setProperty>
     </display:table>
      
     </form> 

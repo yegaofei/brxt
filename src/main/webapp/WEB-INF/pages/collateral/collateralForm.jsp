@@ -63,7 +63,7 @@
         </button>    
 	</div>	
 	<div class="form-group">	
-		<display:table name="collateral.detailList" id="detail" class="table table-condensed table-striped table-hover">
+		<display:table name="collateralDataModel.detailList" id="detail" class="table table-condensed table-striped table-hover">
   			<display:column titleKey="collateral.form.title">
     			<c:url value="${ctx}/collateral/editCollateralDetail" var="editUrl">
         			<c:param name="id" value="${detail.realId}"/>

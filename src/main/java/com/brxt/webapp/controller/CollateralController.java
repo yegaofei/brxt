@@ -99,7 +99,7 @@ public class CollateralController extends BaseFormController{
 				Collateral collateral = collaterals.get(i - 1);
 				DetailListItem detail = new DetailListItem();
 				detail.setId(Long.valueOf(i));
-				detail.setDisplayId(String.valueOf(i));
+				detail.setDisplayId(getText("collateral.form.title", request.getLocale()) + String.valueOf(i));
 				detail.setEvaluatedTime(collateral.getEvaluatedTime());
 				detail.setRealId(collateral.getId());
 				detail.setCollateralValue(collateral.getEvaluatedValue());
@@ -183,12 +183,12 @@ public class CollateralController extends BaseFormController{
 		switch (method) {
 		case "Save":
 			saveCollateralDetail(collateralDataModel, request);
-			break;
+			return "redirect:/collateral/collateralForm?id="+collateralDataModel.getId();
 		case "AddCollateral":
 			CollateralType addType = collateralDataModel.getAddType();
 			switch (addType) {
 			case LAND:
-				break;
+				return "redirect:/collateral/collateralLand?overviewId=" + collateralDataModel.getId();
 			case PROPERTY:
 				break;
 			case CONSTRUCTING_PROJECT:
@@ -214,7 +214,7 @@ public class CollateralController extends BaseFormController{
 		{
 			//Add
 			String projectName = collateralDataModel.getProjectName();
-			ProjectInfo projectInfo = getProjectUnfo(projectName, request);
+			ProjectInfo projectInfo = getProjectInfo(projectName, request);
 			if(projectInfo == null)
 			{
 				return ;
@@ -226,7 +226,8 @@ public class CollateralController extends BaseFormController{
 			collateralOverview.setRate(collateralDataModel.getRate());
 			collateralOverview.setCreateUser(getCurrentUser().getUsername());
 			collateralOverview.setCreateTime(new Date());
-			collateralManager.save(collateralOverview);
+			CollateralOverview overview = collateralManager.save(collateralOverview);
+			collateralDataModel.setId(overview.getId());
 			saveMessage(request, getText("collateralOverview.added", locale));
 		}
 		else
@@ -238,7 +239,7 @@ public class CollateralController extends BaseFormController{
 				if(!collateralOverview.getProjectInfo().getProjectName().equals(collateralDataModel.getProjectName()))
 				{
 					String projectName = collateralDataModel.getProjectName();
-					ProjectInfo projectInfo = getProjectUnfo(projectName, request);
+					ProjectInfo projectInfo = getProjectInfo(projectName, request);
 					if(projectInfo == null)
 					{
 						return ;
@@ -254,7 +255,7 @@ public class CollateralController extends BaseFormController{
 		}
 	}
 	
-	private ProjectInfo getProjectUnfo(String projectName, final HttpServletRequest request)
+	private ProjectInfo getProjectInfo(String projectName, final HttpServletRequest request)
 	{
 		List<ProjectInfo> projectInfoList = projectInfoManager.findByProjectName(projectName);
 		if(projectInfoList == null || projectInfoList.isEmpty())

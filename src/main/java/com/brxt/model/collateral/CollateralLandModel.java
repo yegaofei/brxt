@@ -17,4 +17,9 @@ public class CollateralLandModel extends Collateral{
 		this.land = land;
 	}
 	
+	public CollateralType getCollateralType()
+	{
+		return CollateralType.LAND;
+	}
+	
 }
