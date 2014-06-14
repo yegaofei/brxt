@@ -152,7 +152,34 @@ public class CollateralController extends BaseFormController{
 		}
 		return "/collateral/collateralForm";
 	}
-
+	/*
+	@RequestMapping(value = "/collateral/editCollateralDetail*", method = RequestMethod.GET)
+	public String editCollateralDetail(final HttpServletRequest request){
+		String overviewId = request.getParameter("id");
+		String collateralId = request.getParameter("collateralId");
+		String collateralType = request.getParameter("collateralType");
+		String returnView = "/collateral/collateralForm";
+		if(StringUtils.isNotBlank(collateralType))
+		{
+			CollateralType type = CollateralType.valueOf(collateralType);
+			switch(type)
+			{
+			case LAND:
+				returnView = "redirect:/collateral/collateralLand?overviewId="+overviewId+"&collateralId="+collateralId;
+				break;
+			case PROPERTY:
+				break;
+			case CONSTRUCTING_PROJECT:
+				break;
+				default:
+			}
+		}
+		
+		
+		
+		return "";
+	}
+*/
 	@RequestMapping(value = "/collateral/collateralForm*", method = RequestMethod.POST)
 	public String onSubmit(
 			@ModelAttribute("collateralDataModel") CollateralDataModel collateralDataModel, BindingResult errors, 

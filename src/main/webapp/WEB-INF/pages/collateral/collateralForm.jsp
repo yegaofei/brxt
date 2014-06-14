@@ -65,10 +65,24 @@
 	<div class="form-group">	
 		<display:table name="collateralDataModel.detailList" id="detail" class="table table-condensed table-striped table-hover">
   			<display:column titleKey="collateral.form.title">
-    			<c:url value="${ctx}/collateral/editCollateralDetail" var="editUrl">
-        			<c:param name="id" value="${detail.realId}"/>
-        			<c:param name="collateralType" value="${detail.type}"/>
+  				<c:if test = '${detail.type == "LAND"}' >
+    			<c:url value="${ctx}/collateral/collateralLand" var="editUrl">
+        			<c:param name="overviewId" value="${collateralDataModel.id}"/>
+        			<c:param name="collateralId" value="${detail.realId}"/>
     			</c:url>
+    			</c:if>
+    			<c:if test = '${detail.type == "PROPERTY"}' >
+    			<c:url value="${ctx}/collateral/collateralProperty" var="editUrl">
+        			<c:param name="overviewId" value="${collateralDataModel.id}"/>
+        			<c:param name="collateralId" value="${detail.realId}"/>
+    			</c:url>
+    			</c:if>
+    			<c:if test = '${detail.type == "CONSTRUCTING_PROJECT"}' >
+    			<c:url value="${ctx}/collateral/collateralConstrPro" var="editUrl">
+        			<c:param name="overviewId" value="${collateralDataModel.id}"/>
+        			<c:param name="collateralId" value="${detail.realId}"/>
+    			</c:url>
+    			</c:if>
     			<a href="<c:out value="${editUrl}" escapeXml="false" />"><c:out value="${detail.displayId}"/> </a>
   			</display:column>
   			<display:column titleKey="collateral.type">

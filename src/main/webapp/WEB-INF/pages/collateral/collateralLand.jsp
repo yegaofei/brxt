@@ -15,7 +15,7 @@
     <form:errors path="*" cssClass="alert alert-danger alert-dismissable" element="div"/>
     <form:form commandName="collateralLand" method="post" action="${ctx}/collateral/collateralLand" 
     	id="collateralLandForm" cssClass="well"  onsubmit="return validateCollateralLand(this)">
-    <form:hidden path="id"/>
+    <input type="hidden" name="collateralId" value="${collateralLand.id}"/>
     <input type="hidden" name="overviewId" value="${param.overviewId}" >
 
 	<div class="row">
