@@ -156,7 +156,7 @@ public class ProjectInfoFormController extends BaseFormController {
 				mav = saveProjectInfo(projectInfo, errors, request, mav);
 				break;
 			case "AddProjectSize":
-				projectInfo = getProjectInfo(request);
+				projectInfo = getProjectInfo(request);					
 				projectInfo.getProjectSizes().add(new ProjectSize());
 				mav.addObject("projectInfo", projectInfo);
 				mav.addObject("method", "EditProjectSize");
@@ -198,6 +198,7 @@ public class ProjectInfoFormController extends BaseFormController {
 				deleteCounterparty(counterpartyId, projectInfo);
 				mav.addObject("method", "SaveCounterparty");
 				projectInfo = projectInfoManager.save(projectInfo);
+				projectInfo = loadProjectInfo(projectInfo.getId());
 				mav.addObject("projectInfo", projectInfo);
 				break;
 			case "SaveCounterparty":
@@ -223,6 +224,7 @@ public class ProjectInfoFormController extends BaseFormController {
 				deleteGuarantor(guarantorId, projectInfo);
 				mav.addObject("method", "SaveGuarantor");
 				projectInfo = projectInfoManager.save(projectInfo);
+				projectInfo = loadProjectInfo(projectInfo.getId());
 				mav.addObject("projectInfo", projectInfo);
 				break;
 			case "SaveGuarantor":
@@ -267,11 +269,12 @@ public class ProjectInfoFormController extends BaseFormController {
 			projectInfo.setUpdateUser(currentUser);
 			projectInfo.setUpdateTime(new Date());
 		}
-		projectInfoManager.save(projectInfo);
+		projectInfo = projectInfoManager.save(projectInfo);
 		mav.addObject("ProjectInfo", projectInfo);
 		String key = (isNew) ? "projectInfo.added" : "projectInfo.updated";
 		saveMessage(request, getText(key, locale));
-		mav.setViewName(getSuccessView());
+		mav.setViewName("redirect:/projectInfoForm");
+		mav.addObject("id", projectInfo.getId());		
 		return mav;
 	}
 	
@@ -335,6 +338,7 @@ public class ProjectInfoFormController extends BaseFormController {
 			}
 		}
 		projectInfo = projectInfoManager.save(projectInfo);
+		projectInfo = loadProjectInfo(projectInfo.getId());
 		mav.addObject("projectInfo", projectInfo);
 		return mav;
 	}
@@ -399,6 +403,7 @@ public class ProjectInfoFormController extends BaseFormController {
 			}
 		}
 		projectInfo = projectInfoManager.save(projectInfo);
+		projectInfo = loadProjectInfo(projectInfo.getId());
 		mav.addObject("projectInfo", projectInfo);
 		return mav;
 	}
@@ -490,7 +495,6 @@ public class ProjectInfoFormController extends BaseFormController {
 	
 	private void deleteCounterparty(String counterpartyId, ProjectInfo projectInfo)
 	{
-		
 		Set<Counterparty> counterparties = projectInfo.getCounterparties();
 		if (StringUtils.isBlank(counterpartyId) || counterparties == null || counterparties.size() == 0) {
 			return;
@@ -510,7 +514,6 @@ public class ProjectInfoFormController extends BaseFormController {
 	
 	private void deleteGuarantor(String counterpartyId, ProjectInfo projectInfo)
 	{
-		
 		Set<Counterparty> counterparties = projectInfo.getGuarantors();
 		if (StringUtils.isBlank(counterpartyId) || counterparties == null || counterparties.size() == 0) {
 			return;

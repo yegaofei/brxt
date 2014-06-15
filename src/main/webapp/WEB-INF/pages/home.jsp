@@ -16,5 +16,8 @@
     <li>
         <a href="<c:url value='/projectInfoForm'/>"><fmt:message key="menu.projectInfo.add"/></a>
     </li>
+    <li>
+        <a href="<c:url value='/collateral/collateralList'/>"><fmt:message key="collateral.title"/></a>
+    </li>
 </ul>
 </body>

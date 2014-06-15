@@ -78,7 +78,7 @@
     			</c:url>
     			</c:if>
     			<c:if test = '${detail.type == "CONSTRUCTING_PROJECT"}' >
-    			<c:url value="${ctx}/collateral/collateralConstrPro" var="editUrl">
+    			<c:url value="${ctx}/collateral/collateralConstrProj" var="editUrl">
         			<c:param name="overviewId" value="${collateralDataModel.id}"/>
         			<c:param name="collateralId" value="${detail.realId}"/>
     			</c:url>
@@ -88,7 +88,9 @@
   			<display:column titleKey="collateral.type">
        			<fmt:message key="${detail.type.type}"/>
   			</display:column>
-  			<display:column property="evaluatedTime" sortable="false" titleKey="collateral.evaluatedTime"/>
+  			<display:column sortable="false" titleKey="collateral.evaluatedTime">
+  				<fmt:formatDate value="${detail.evaluatedTime}" pattern="${datePattern}" />
+  			</display:column>
   			<display:column property="collateralValue" sortable="false" titleKey="collateral.collateralValue"/>
 		</display:table>
      </div>
@@ -108,6 +110,6 @@
 </div>
 
 
-<v:javascript formName="collateralForm" cdata="false" dynamicJavascript="true" staticJavascript="false"/>
+<v:javascript formName="collateral" cdata="false" dynamicJavascript="true" staticJavascript="false"/>
 <script type="text/javascript" src="<c:url value='/scripts/validator.jsp'/>"></script>
   

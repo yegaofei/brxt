@@ -27,6 +27,7 @@ public class Property extends BaseObject {
 	private static final long serialVersionUID = 976633855792536310L;
 	private Long id;
 	private Collateral collateral;
+	private String propertyType;
 	private String yearsLimit;
 	private String landUsageType;
 	private Integer landUsageYears;
@@ -111,6 +112,12 @@ public class Property extends BaseObject {
 		this.version = version;
 	}
 
+	public String getPropertyType() {
+		return propertyType;
+	}
+	public void setPropertyType(String propertyType) {
+		this.propertyType = propertyType;
+	}
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE).append(

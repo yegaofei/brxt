@@ -209,17 +209,31 @@ public class CollateralController extends BaseFormController{
 
 		switch (method) {
 		case "Save":
-			saveCollateralDetail(collateralDataModel, request);
-			return "redirect:/collateral/collateralForm?id="+collateralDataModel.getId();
+			boolean isCompleted = saveCollateralDetail(collateralDataModel, request);
+			if(isCompleted)
+			{
+				return "redirect:/collateral/collateralForm?id="+collateralDataModel.getId();				
+			}
+			else
+			{
+				if(collateralDataModel.getId() != null)
+				{
+					return "redirect:/collateral/collateralForm?id="+collateralDataModel.getId();	
+				}
+				else
+				{
+					return "/collateral/collateralForm";	
+				}
+			}
 		case "AddCollateral":
 			CollateralType addType = collateralDataModel.getAddType();
 			switch (addType) {
 			case LAND:
 				return "redirect:/collateral/collateralLand?overviewId=" + collateralDataModel.getId();
 			case PROPERTY:
-				break;
+				return "redirect:/collateral/collateralProperty?overviewId=" + collateralDataModel.getId();
 			case CONSTRUCTING_PROJECT:
-				break;
+				return "redirect:/collateral/collateralConstrProj?overviewId=" + collateralDataModel.getId();
 			default:
 			}
 
@@ -233,7 +247,7 @@ public class CollateralController extends BaseFormController{
 
 	}
 	
-	private void saveCollateralDetail(CollateralDataModel collateralDataModel, final HttpServletRequest request)
+	private boolean saveCollateralDetail(CollateralDataModel collateralDataModel, final HttpServletRequest request)
 	{
 		final Locale locale = request.getLocale();
 		Long collateralOverviewId = collateralDataModel.getId();
@@ -244,7 +258,7 @@ public class CollateralController extends BaseFormController{
 			ProjectInfo projectInfo = getProjectInfo(projectName, request);
 			if(projectInfo == null)
 			{
-				return ;
+				return false;
 			}
 			CollateralOverview collateralOverview = new CollateralOverview();
 			collateralOverview.setProjectInfo(projectInfo);
@@ -269,7 +283,7 @@ public class CollateralController extends BaseFormController{
 					ProjectInfo projectInfo = getProjectInfo(projectName, request);
 					if(projectInfo == null)
 					{
-						return ;
+						return false;
 					}
 				}
 				
@@ -280,6 +294,8 @@ public class CollateralController extends BaseFormController{
 				saveMessage(request, getText("collateralOverview.updated", locale));
 			}
 		}
+		
+		return true;
 	}
 	
 	private ProjectInfo getProjectInfo(String projectName, final HttpServletRequest request)

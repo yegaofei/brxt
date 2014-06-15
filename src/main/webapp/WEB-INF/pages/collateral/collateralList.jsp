@@ -31,7 +31,9 @@
   		</display:column>       
         <display:column property="projectName" sortable="true" titleKey="projectInfo.projectName"/>
         <display:column sortable="false" titleKey="collateral.collateralType">
-        		<fmt:message key="${collateral.collateralType.type}"/>
+        		<c:if test="${not empty collateral.collateralType}">
+        			<fmt:message key="${collateral.collateralType.type}"/>
+        		</c:if>
         </display:column>
         <display:column property="executor" sortable="false" titleKey="collateral.executor"/>
         <display:setProperty name="paging.banner.item_name"><fmt:message key="collateral.heading"/></display:setProperty>

@@ -17,6 +17,9 @@ public class CollateralPropertyModel extends Collateral{
 		this.property = property;
 	}
 	
-	
+	public CollateralType getCollateralType()
+	{
+		return CollateralType.PROPERTY;
+	}
 
 }

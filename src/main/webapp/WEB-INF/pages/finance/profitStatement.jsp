@@ -126,6 +126,8 @@
         </button>
         <a class="btn btn-default" href="<c:url value='/finance/financialStatements'/>">
             <i class="icon-ok"></i> <fmt:message key="button.cancel"/></a>
+        <a class="btn btn-default" href="<c:url value='/finance/financialStatements'/>">
+            <i class="icon-ok"></i> <fmt:message key="button.done"/></a>    
     </div>
     
 	</form:form>

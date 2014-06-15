@@ -1,6 +1,10 @@
 <%@ include file="/common/taglibs.jsp"%>
 <head>
     <title><fmt:message key="collateral.form.title"/></title>
+    <link rel="stylesheet" type="text/css" href="${base}/webjars/bootstrap-datepicker/1.2.0/css/datepicker.css"/>
+    <script type="text/javascript" src="${base}/webjars/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="${base}/webjars/bootstrap-datepicker/1.2.0/js/locales/bootstrap-datepicker.zh-CN.js" charset="UTF-8"></script>
+    
 </head>
 
 <div class="col-sm-2">
@@ -242,6 +246,14 @@
 </div>
 
 
-<v:javascript formName="collateralForm" cdata="false" dynamicJavascript="true" staticJavascript="false"/>
+<v:javascript formName="collateralLandForm" cdata="false" dynamicJavascript="true" staticJavascript="false"/>
 <script type="text/javascript" src="<c:url value='/scripts/validator.jsp'/>"></script>
+<script>
+  $(function() {
+    $('#evaluatedTime').datepicker({
+				language: 'zh-CN'
+				//format: 'yyyy-mm-dd'
+			});
+  });
+</script>
   

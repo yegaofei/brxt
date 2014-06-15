@@ -40,7 +40,7 @@
     </div>
 	</div>
 
-	<c:if test="${not empty projectInfo.projectSizes}">
+	<c:if test="${not empty projectInfo.projectSizes and not empty param.id}">
 	<appfuse:label styleClass="control-label" key="projectSize.title"/>
     <div id="actions" class="btn-group">
 		<c:choose>
@@ -64,7 +64,7 @@
 	</div>
 	</c:if>
 	
-	<c:if test="${empty projectInfo.projectSizes}">
+	<c:if test="${empty projectInfo.projectSizes and not empty param.id}">
     	<appfuse:label styleClass="control-label" key="projectSize.title"/>
     	<div id="actions" class="btn-group">
 		<c:choose>
@@ -82,6 +82,7 @@
 		</div>
     </c:if>
 	
+	<c:if test="${not empty param.id}">
     <div class="form-group">
 		<display:table name="projectInfo.projectSizes" id="projectSize" class="table table-condensed table-striped table-hover">
   			<display:column style="width: 5%">
@@ -118,6 +119,7 @@
   			</display:column>
 		</display:table>
      </div>
+    </c:if>
     
     <div class="row">
     <spring:bind path="projectInfo.fundUsage">
@@ -140,32 +142,31 @@
     
 	<div class="row">
     <spring:bind path="projectInfo.riskManager">
-    <div class="col-sm-4 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    <div class="col-sm-3 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="projectInfo.riskManager"/>
-        <form:input path="riskManager" id="riskManager" maxlength="20" cssClass="form-control"/>
+        <form:input path="riskManager" id="riskManager" maxlength="10" cssClass="form-control"/>
         <form:errors path="riskManager" cssClass="help-block"/>
     </div>
 
     <spring:bind path="projectInfo.delegateManager">
-    <div class="col-sm-4 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    <div class="col-sm-3 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="projectInfo.delegateManager"/>
-        <form:input path="delegateManager" id="delegateManager" maxlength="20" cssClass="form-control"/>
+        <form:input path="delegateManager" id="delegateManager" maxlength="10" cssClass="form-control"/>
         <form:errors path="delegateManager" cssClass="help-block"/>
     </div>
 
     <spring:bind path="projectInfo.trustManager">
-    <div class="col-sm-4 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    <div class="col-sm-3 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="projectInfo.trustManager"/>
-        <form:input path="trustManager" id="trustManager" maxlength="20" cssClass="form-control"/>
+        <form:input path="trustManager" id="trustManager" maxlength="10" cssClass="form-control"/>
         <form:errors path="trustManager" cssClass="help-block"/>
     </div>
     </div>
 
 	<div class="row">
-	
 	<spring:bind path="projectInfo.guaranteeMode">
     <div class="col-sm-6 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
@@ -178,15 +179,15 @@
     <div class="col-sm-6 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="projectInfo.projectType"/>:
-        <form:select path="projectType">    		
+        <form:select path="projectType" class="form-control">    		
 			<form:options items="${projectTypes}" />
 		</form:select>        
         <form:errors path="projectType" cssClass="help-block"/>
     </div>
 	</div>
 	
+	<c:if test="${not empty param.id}">
 	<div class="row">    
-	
     <div class="col-sm-6 form-group">
     	<appfuse:label styleClass="control-label" key="projectInfo.counterparty.list"/>
     	<div id="actions" class="btn-group">
@@ -205,9 +206,11 @@
         	<button type="submit" name="method" value="EditCounterparty">
                 <fmt:message key="button.edit"/>
         	</button>
+        	<!--
         	<button type="submit" name="method" value="DeleteCounterparty">
                 <fmt:message key="button.delete"/>
-        	</button>    
+        	</button>
+        	-->    
 		</div>
 		<display:table name="projectInfo.counterparties" id="counterparty" class="table table-condensed table-striped table-hover">
   			<display:column style="width: 5%">
@@ -259,9 +262,11 @@
         	<button type="submit" name="method" value="EditGuarantor">
                 <fmt:message key="button.edit"/>
         	</button>
+        	<!--
         	<button type="submit" name="method" value="DeleteGuarantor">
                 <fmt:message key="button.delete"/>
-        	</button>    
+        	</button>
+        	-->    
 		</div>
 		<display:table name="projectInfo.guarantors" id="guarantor" class="table table-condensed table-striped table-hover">
   			<display:column style="width: 5%">
@@ -293,20 +298,23 @@
 		</display:table>
      </div>
 	</div>	
+    </c:if>
     
     <c:if test="${not empty projectInfo.createUser}">
         <form:hidden path="createUser.username" id="createUser"/>        
     </c:if>
     
     <c:if test="${not empty projectInfo.updateUser}">
-    <div class="form-group">
+    <div class="row">
+    <div class="col-sm-5 form-group">
         <appfuse:label styleClass="control-label" key="projectInfo.updateUser.username"/>:
         <c:out value="${projectInfo.updateUser.username}" />     
     </div>
     
-    <div class="form-group">
+    <div class="col-sm-5 form-group">
     	<appfuse:label styleClass="control-label" key="projectInfo.updateTime"/>:
         <fmt:formatDate value="${projectInfo.updateTime}" pattern="${datePattern} HH:mm:ss" />
+    </div>
     </div>
     </c:if>
 
@@ -324,10 +332,10 @@
         <button type="submit" class="btn btn-default" name="method" value="Cancel" onclick="bCancel=true">
             <i class="icon-remove"></i> <fmt:message key="button.cancel"/>
         </button>
-        
+        <button type="submit" class="btn btn-default" name="method" value="Cancel" onclick="bCancel=true">
+            <i class="icon-remove"></i> <fmt:message key="button.done"/>
+        </button>
     </div>
-
-    
     </form:form>
 </div>
 

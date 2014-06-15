@@ -17,5 +17,9 @@ public class CollateralConstrProjModel extends Collateral{
 		this.constrProj = constrProj;
 	}
 	
+	public CollateralType getCollateralType()
+	{
+		return CollateralType.CONSTRUCTING_PROJECT;
+	}
 	
 }

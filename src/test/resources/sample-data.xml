@@ -245,6 +245,10 @@
             <value description="project_info_id">2</value>
             <value description="counterparty_id">3</value>
         </row>
+        <row>
+            <value description="project_info_id">2</value>
+            <value description="counterparty_id">1</value>
+        </row>
     </table>
     <table name="project_info_guarantors">
         <column>project_info_id</column>

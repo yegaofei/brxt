@@ -12,7 +12,7 @@
  
 <div class="col-sm-8">
     <form:errors path="*" cssClass="alert alert-danger alert-dismissable" element="div"/>
-    <form:form commandName="investmentProject" method="post" action="/progress/investmentProjectForm" id="investmentProjectForm" cssClass="well"  onsubmit="return validateInvestmentProject(this)">
+    <form:form commandName="investmentProject" method="post" action="${ctx}/progress/investmentProjectForm" id="investmentProjectForm" cssClass="well"  onsubmit="return validateInvestmentProject(this)">
     <form:hidden path="id"/>
 	<form:hidden path="version"/>
 	<form:hidden path="investmentProjectType"/>
@@ -100,11 +100,18 @@
     </div>
     
     <c:if test="${empty investmentProject.id}">
-    <div class="form-group">
-    	<form:checkbox path="sameAsRepayment" id="sameAsRepayment"/>
-        <fmt:message key="investmentProject.same.repayment"/>
-    </div>
+    	<c:if test="${param.type != 'infrastructure'}">
+    	<div class="form-group">
+    		<form:checkbox path="sameAsRepayment" id="sameAsRepayment"/>
+        	<fmt:message key="investmentProject.same.repayment"/>
+    	</div>
+    	</c:if>
+    	<c:if test="${param.type == 'infrastructure'}">
+    		<input type="hidden" name="sameAsRepayment" value="false">
+    	</c:if>
     </c:if>
+    
+    
     
     <c:if test="${not empty investmentProject.createUser}">
         <form:hidden path="createUser.username" id="createUser"/>      
