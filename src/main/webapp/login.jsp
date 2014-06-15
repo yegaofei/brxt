@@ -33,8 +33,10 @@
 </form>
 
 <p>
-    <fmt:message key="login.signup">
+    <fmt:message key="login.signup.ask.admin">
+    <!--
         <fmt:param><c:url value="/signup"/></fmt:param>
+     -->   
     </fmt:message>
 </p>
 
@@ -42,8 +44,10 @@
 <%@ include file="/scripts/login.js"%>
 </c:set>
 
+<!--
 <p><fmt:message key="login.passwordHint"/></p>
 
 <p><fmt:message key="updatePassword.requestRecoveryTokenLink"/></p>
+-->
 
 </body>

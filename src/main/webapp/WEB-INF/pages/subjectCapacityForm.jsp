@@ -19,10 +19,10 @@
 	<input type="hidden" name="projectInfoId" value="${projectInfoId}"/>
 	 
 	<div class="row">
-		<div class="col-sm-3 form-group">
+		<div class="col-sm-7 form-group">
 		<appfuse:label styleClass="control-label" key="projectInfo.counterparty.name"/> : 
 		<c:forEach var="counterparty" items="${counterparties}" varStatus="status">
-			<c:if test="${status.first}"><select id="counterpartyId" name="counterpartyId"></c:if>
+			<c:if test="${status.first}"><select id="counterpartyId" name="counterpartyId" class="form-control"></c:if>
 				<option value="${counterparty.id}"><c:out value="${counterparty.name}" /></option>
 			<c:if test="${status.last}"></select></c:if>
 		</c:forEach>

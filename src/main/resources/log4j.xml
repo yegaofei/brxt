@@ -10,10 +10,11 @@
         </layout>
     </appender>
     
-    <appender name="FILE" class="org.apache.log4j.FileAppender">
-        <param name="file" value="appfuse.log" />
-        <param name="append" value="false" />
-        <param name="threshold" value="debug" />
+    <appender name="FILE" class="org.apache.log4j.RollingFileAppender">
+        <param name="Append" value="true"/>
+		<param name="MaxFileSize" value="5MB"/>
+		<param name="File" value="riskController.log"/>
+		<param name="MaxBackupIndex" value="30"/> 
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d{ISO8601} %-5p [%c{1}] - %m%n" />
         </layout>
@@ -67,11 +68,11 @@
     </logger-->
 
     <logger name="org.springframework">
-        <level value="DEBUG"/>
+        <level value="ERROR"/>
     </logger>
 
     <logger name="org.appfuse">
-        <level value="DEBUG"/>
+        <level value="ERROR"/>
     </logger>
 
     <logger name="org.appfuse.tool">
@@ -79,7 +80,7 @@
     </logger>
     
     <logger name="com.brxt">
-        <level value="DEBUG"/>
+        <level value="ERROR"/>
     </logger>
 
     <root>
