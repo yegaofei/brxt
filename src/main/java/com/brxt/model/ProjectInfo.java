@@ -57,7 +57,7 @@ public class ProjectInfo extends BaseObject implements Serializable {
 	private Integer version;
 	private Set<Counterparty> counterparties = new HashSet<Counterparty>(); //交易对手
 	private Set<Counterparty> guarantors = new HashSet<Counterparty>(); //担保人关系
-	private ProjectInfoStatus projectInfoStatus;
+	private ProjectInfoStatus projectInfoStatus = new ProjectInfoStatus();
 		
 	@Column(name = "project_name", length = 50)
 	public String getProjectName() {

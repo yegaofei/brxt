@@ -22,6 +22,9 @@ public class ProjectInfoStatus {
 	private Boolean repayment;
 	private Boolean projectProgress;
 	private Boolean committed;
+	private Boolean offsiteDataInput;
+	private Boolean commitReport;
+	private Boolean reportAudit;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -40,7 +43,7 @@ public class ProjectInfoStatus {
 		this.projectInfo = projectInfo;
 	}
 	
-	@Column(name = "subjectCapacity", nullable=false, columnDefinition="char(1) default 'N'" )
+	@Column(name = "subjectCapacity", nullable=true, columnDefinition="char(1) default 'N'" )
 	@Type(type="yes_no")
 	public Boolean getSubjectCapacity() {
 		return subjectCapacity;
@@ -49,7 +52,7 @@ public class ProjectInfoStatus {
 		this.subjectCapacity = subjectCapacity;
 	}
 	
-	@Column(name = "financeStatement", nullable=false, columnDefinition="char(1) default 'N'" )
+	@Column(name = "financeStatement", nullable=true, columnDefinition="char(1) default 'N'" )
 	@Type(type="yes_no")
 	public Boolean getFinanceStatement() {
 		return financeStatement;
@@ -58,7 +61,7 @@ public class ProjectInfoStatus {
 		this.financeStatement = financeStatement;
 	}
 	
-	@Column(name = "creditInformation", nullable=false, columnDefinition="char(1) default 'N'" )
+	@Column(name = "creditInformation", nullable=true, columnDefinition="char(1) default 'N'" )
 	@Type(type="yes_no")
 	public Boolean getCreditInformation() {
 		return creditInformation;
@@ -67,7 +70,7 @@ public class ProjectInfoStatus {
 		this.creditInformation = creditInformation;
 	}
 	
-	@Column(name = "repayment", nullable=false, columnDefinition="char(1) default 'N'" )
+	@Column(name = "repayment", nullable=true, columnDefinition="char(1) default 'N'" )
 	@Type(type="yes_no")
 	public Boolean getRepayment() {
 		return repayment;
@@ -76,7 +79,7 @@ public class ProjectInfoStatus {
 		this.repayment = repayment;
 	}
 	
-	@Column(name = "projectProgress", nullable=false, columnDefinition="char(1) default 'N'" )
+	@Column(name = "projectProgress", nullable=true, columnDefinition="char(1) default 'N'" )
 	@Type(type="yes_no")
 	public Boolean getProjectProgress() {
 		return projectProgress;
@@ -85,13 +88,40 @@ public class ProjectInfoStatus {
 		this.projectProgress = projectProgress;
 	}
 	
-	@Column(name = "committed", nullable=false, columnDefinition="char(1) default 'N'" )
+	@Column(name = "committed", nullable=true, columnDefinition="char(1) default 'N'" )
 	@Type(type="yes_no")
 	public Boolean getCommitted() {
 		return committed;
 	}
 	public void setCommitted(Boolean commit) {
 		this.committed = commit;
+	}
+	
+	@Column(name = "offsiteDataInput", nullable=true, columnDefinition="char(1) default 'N'" )
+	@Type(type="yes_no")
+	public Boolean getOffsiteDataInput() {
+		return offsiteDataInput;
+	}
+	public void setOffsiteDataInput(Boolean offsiteDataInput) {
+		this.offsiteDataInput = offsiteDataInput;
+	}
+	
+	@Column(name = "commitReport", nullable=true, columnDefinition="char(1) default 'N'" )
+	@Type(type="yes_no")
+	public Boolean getCommitReport() {
+		return commitReport;
+	}
+	public void setCommitReport(Boolean commitReport) {
+		this.commitReport = commitReport;
+	}
+	
+	@Column(name = "reportAudit", nullable=true, columnDefinition="char(1) default 'N'" )
+	@Type(type="yes_no")
+	public Boolean getReportAudit() {
+		return reportAudit;
+	}
+	public void setReportAudit(Boolean reportAudit) {
+		this.reportAudit = reportAudit;
 	}
 	
 }

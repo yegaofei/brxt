@@ -9,6 +9,7 @@
 			Menu" page="/projectInfo" roles="ROLE_ADMIN,ROLE_USER,ROLE_RISK_MANAGER,ROLE_RISK_OPERATOR,ROLE_RISK_DIRECTOR">
 			<Item name="ProjectInfo" title="menu.projectInfo.list" page="/projectInfo"/>
 			<Item name="ProjectInfoForm" title="menu.projectInfo.add" page="/projectInfoForm"/>
+			<Item name="RiskControlReport" title="menu.projectInfo.report" page="/reports/reportSearch"/>
 		</Menu>
 		<Menu name="Collateral" title="collateral.title" page="/collateral/collateralList" roles="ROLE_ADMIN,ROLE_USER,ROLE_RISK_MANAGER,ROLE_RISK_OPERATOR,ROLE_RISK_DIRECTOR"></Menu>
 		<Menu name="ProjectInfoSubMenu" title="menu.offsite" description="Offsite Project Menu" roles="ROLE_ADMIN,ROLE_USER,ROLE_RISK_MANAGER,ROLE_RISK_OPERATOR,ROLE_RISK_DIRECTOR"
