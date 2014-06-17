@@ -27,14 +27,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.brxt.constant.SessionAttributes;
 import com.brxt.model.Counterparty;
-import com.brxt.model.InvestmentStatus;
 import com.brxt.model.ProjectInfo;
 import com.brxt.model.ProjectSize;
 import com.brxt.model.enums.CapitalInvestmentType;
 import com.brxt.model.enums.CounterpartyType;
 import com.brxt.model.enums.ProjectType;
-import com.brxt.model.projectprogress.InvestmentProject;
-import com.brxt.service.ProjProgressManager;
 import com.brxt.service.ProjectInfoManager;
 
 @Controller
@@ -42,7 +39,6 @@ import com.brxt.service.ProjectInfoManager;
 public class ProjectInfoFormController extends BaseFormController {
 
 	private ProjectInfoManager projectInfoManager = null;
-	private ProjProgressManager progressManager = null;
 	private static final Map<String,String> CapitalInvestmentTypes = new HashMap<String,String>();
 	private static final Map<String,String> ProjectTypes = new HashMap<String,String>();
 	private static final List<CounterpartyType> CounterpartyTypes = new ArrayList<CounterpartyType>();
@@ -53,11 +49,6 @@ public class ProjectInfoFormController extends BaseFormController {
 		this.projectInfoManager = projectInfoManager;
 	}
 	
-	@Autowired
-	public void setProjectProgressManager(@Qualifier("projectProgressManager") ProjProgressManager progressManager){
-		this.progressManager =  progressManager;
-	}
-
 	public ProjectInfoFormController() {
 		setCancelView("redirect:projectInfo");
 		setSuccessView("redirect:projectInfo");
@@ -104,18 +95,7 @@ public class ProjectInfoFormController extends BaseFormController {
 	
 	private ProjectInfo loadProjectInfo(Long id)
 	{
-		ProjectInfo pi = projectInfoManager.get(new Long(id));
-		if(pi != null)
-		{
-			List<InvestmentProject> investmentProjs = progressManager.getInvestmentProjects(pi.getId());
-			if (investmentProjs != null && !investmentProjs.isEmpty()) {
-				for(InvestmentProject ip : investmentProjs)
-				{
-					pi.getInvestments().add(new InvestmentStatus(ip.getName(), ip.getType()));
-				}
-			}
-		}
-		return pi;	
+		return projectInfoManager.loadProjectInfo(new Long(id));
 	}
 	
 	@RequestMapping(method = RequestMethod.GET)

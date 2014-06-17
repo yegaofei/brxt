@@ -279,7 +279,6 @@
         <column>bizScopeChanged</column>
         <column>otherBigChanges</column>
         <column>verifyResults</column>
-        <column>comments</column>
         <column>createUser</column>
         <column>createTime</column>
         <column>updateUser</column>
@@ -302,10 +301,9 @@
             <value>Y</value>
             <value>N</value>
             <value>2013年4月10日发证</value>
-            <value>排查通过</value>
-            <value>-1</value>
+            <value>admin</value>
             <value>2014-05-14 06:06:06</value>
-            <value>-1</value>
+            <value>admin</value>
             <value>2014-05-14 06:06:06</value>
             <value>1</value>
         </row>
@@ -326,10 +324,9 @@
             <value>Y</value>
             <value>N</value>
             <value>2013年4月10日发证</value>
-            <value>排查通过</value>
-            <value>-1</value>
+            <value>admin</value>
             <value>2014-05-14 06:06:06</value>
-            <value>-1</value>
+            <value>admin</value>
             <value>2014-05-14 06:06:06</value>
             <value>1</value>
         </row>
@@ -350,10 +347,9 @@
             <value>Y</value>
             <value>N</value>
             <value>2013年4月10日发证</value>
-            <value>排查通过</value>
-            <value>-1</value>
+            <value>admin</value>
             <value>2014-05-14 06:06:06</value>
-            <value>-1</value>
+            <value>admin</value>
             <value>2014-05-14 06:06:06</value>
             <value>1</value>
         </row>

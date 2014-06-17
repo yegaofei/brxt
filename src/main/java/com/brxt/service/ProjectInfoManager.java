@@ -26,4 +26,6 @@ public interface ProjectInfoManager extends GenericManager<ProjectInfo, Long> {
 	
 	Counterparty saveCounterparty(Counterparty counterparty);
 	
+	public ProjectInfo loadProjectInfo(Long id);
+	
 }

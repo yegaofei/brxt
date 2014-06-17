@@ -30,7 +30,6 @@ import com.brxt.model.ProjectInfo;
 import com.brxt.model.SubjectCapacity;
 import com.brxt.service.ProjectInfoManager;
 import com.brxt.service.SubjectCapacityManager;
-import com.brxt.webapp.util.RequestUtil;
 
 @Controller
 @RequestMapping("/subjectCapacityForm*")
@@ -103,15 +102,12 @@ public class SubjectCapacityFormController extends BaseFormController {
 					// Save new subject capacity
 					subjectCapacity.setCreateTime(new Date());
 					subjectCapacity.setUpdateTime(new Date());
-					subjectCapacity.setCreateUser(currentUser);
-					subjectCapacity.setUpdateUser(currentUser);
+					subjectCapacity.setCreateUser(currentUser.getUsername());
+					subjectCapacity.setUpdateUser(currentUser.getUsername());
 				} else {
 					// Update Existed
-					User createUser = getUserManager().getUserByUsername(
-							subjectCapacity.getCreateUser().getUsername());
-					subjectCapacity.setCreateUser(createUser);
 					subjectCapacity.setUpdateTime(new Date());
-					subjectCapacity.setUpdateUser(currentUser);
+					subjectCapacity.setUpdateUser(currentUser.getUsername());
 				}
 				subjectCapacityManager.save(subjectCapacity);
 				saveMessage(request,

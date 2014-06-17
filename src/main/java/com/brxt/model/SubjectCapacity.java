@@ -5,7 +5,6 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,7 +18,6 @@ import javax.persistence.Version;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.appfuse.model.BaseObject;
-import org.appfuse.model.User;
 import org.hibernate.annotations.Type;
 
 @NamedNativeQueries({
@@ -44,20 +42,30 @@ public class SubjectCapacity extends BaseObject {
 	private Integer reportSeason; // 报表季度
 	private Date checkTime; // 排查时间
 	private String licenseVerificationDate; // 营业执照最新年检日期
+	private String comment_lvd;
 	private String orgCodeVerificationDate; // 组织机构代码证最新年检日期
+	private String comment_ocvd;
 	private Boolean loanCardValid; // 贷款卡是否有效
+	private String comment_lcv;
 	private Boolean nameChanged; // 企业/单位名称是否变更
+	private String comment_nc;
 	private Boolean ownerChanged; // 企业/单位法人代表是否变化
+	private String comment_oc;
 	private Boolean ownershipChanged; // 企业股权结构是否变化
+	private String comment_osc;
 	private Boolean capitalChanged; // 企业注册资本或实收资本是否变化
+	private String comment_cc;
 	private Boolean devCapacityChanged; // 开发资质是否变化
+	private String comment_dcc;
 	private Boolean bizScopeChanged; // 经营范围是否有变化
+	private String comment_bsc;
 	private Boolean otherBigChanges; // 是否有其他重大变更事项
+	private String comment_obc;
 	private String verifyResults; // 事业单位法人证年检情况
-	private String comments; // 备注
-	private User createUser; // 创建人
+	private String comment_vr;
+	private String createUser; // 创建人
 	private Date createTime; // 创建时间
-	private User updateUser; // 最后更新人
+	private String updateUser; // 最后更新人
 	private Date updateTime; // 最后更新时间
 	private Integer version;
 
@@ -216,21 +224,99 @@ public class SubjectCapacity extends BaseObject {
 		this.verifyResults = verifyResults;
 	}
 
-	public String getComments() {
-		return comments;
+	public String getComment_lvd() {
+		return comment_lvd;
 	}
 
-	public void setComments(String comments) {
-		this.comments = comments;
+	public void setComment_lvd(String comment_lvd) {
+		this.comment_lvd = comment_lvd;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "createUser", nullable = true)
-	public User getCreateUser() {
+	public String getComment_ocvd() {
+		return comment_ocvd;
+	}
+
+	public void setComment_ocvd(String comment_ocvd) {
+		this.comment_ocvd = comment_ocvd;
+	}
+
+	public String getComment_lcv() {
+		return comment_lcv;
+	}
+
+	public void setComment_lcv(String comment_lcv) {
+		this.comment_lcv = comment_lcv;
+	}
+
+	public String getComment_nc() {
+		return comment_nc;
+	}
+
+	public void setComment_nc(String comment_nc) {
+		this.comment_nc = comment_nc;
+	}
+
+	public String getComment_oc() {
+		return comment_oc;
+	}
+
+	public void setComment_oc(String comment_oc) {
+		this.comment_oc = comment_oc;
+	}
+
+	public String getComment_osc() {
+		return comment_osc;
+	}
+
+	public void setComment_osc(String comment_osc) {
+		this.comment_osc = comment_osc;
+	}
+
+	public String getComment_cc() {
+		return comment_cc;
+	}
+
+	public void setComment_cc(String comment_cc) {
+		this.comment_cc = comment_cc;
+	}
+
+	public String getComment_dcc() {
+		return comment_dcc;
+	}
+
+	public void setComment_dcc(String comment_dcc) {
+		this.comment_dcc = comment_dcc;
+	}
+
+	public String getComment_bsc() {
+		return comment_bsc;
+	}
+
+	public void setComment_bsc(String comment_bsc) {
+		this.comment_bsc = comment_bsc;
+	}
+
+	public String getComment_obc() {
+		return comment_obc;
+	}
+
+	public void setComment_obc(String comment_obc) {
+		this.comment_obc = comment_obc;
+	}
+
+	public String getComment_vr() {
+		return comment_vr;
+	}
+
+	public void setComment_vr(String comment_vr) {
+		this.comment_vr = comment_vr;
+	}
+
+	public String getCreateUser() {
 		return createUser;
 	}
 
-	public void setCreateUser(User createUser) {
+	public void setCreateUser(String createUser) {
 		this.createUser = createUser;
 	}
 
@@ -242,13 +328,11 @@ public class SubjectCapacity extends BaseObject {
 		this.createTime = createTime;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "updateUser", nullable = true)
-	public User getUpdateUser() {
+	public String getUpdateUser() {
 		return updateUser;
 	}
 
-	public void setUpdateUser(User updateUser) {
+	public void setUpdateUser(String updateUser) {
 		this.updateUser = updateUser;
 	}
 

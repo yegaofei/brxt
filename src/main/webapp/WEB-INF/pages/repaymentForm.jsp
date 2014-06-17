@@ -44,6 +44,9 @@
         <label class="checkbox-inline">
 			<form:radiobutton path="type" value="interest" /><fmt:message key='interest'/>
 		</label>
+		<label class="checkbox-inline">
+			<form:radiobutton path="type" value="premium" /><fmt:message key='premium'/>
+		</label>
     </div>
     
     <spring:bind path="repayment.comment">

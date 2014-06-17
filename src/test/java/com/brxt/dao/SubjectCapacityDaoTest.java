@@ -50,7 +50,6 @@ public class SubjectCapacityDaoTest extends BaseDaoTestCase {
 			subjectCapacity.setCounterparty(cp);
 			subjectCapacity.setCheckTime(sf.parse("2014-02-02"));
 			subjectCapacity.setOwnerChanged(Boolean.FALSE);
-			subjectCapacity.setComments("Junit testing");
 			SubjectCapacity subjectCapacity2 = subjectCapacityDao.save(subjectCapacity);
 			flush();
 

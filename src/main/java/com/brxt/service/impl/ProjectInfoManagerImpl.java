@@ -7,11 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.brxt.dao.CounterpartyDao;
+import com.brxt.dao.InvestmentProjectDao;
 import com.brxt.dao.ProjectInfoDao;
 import com.brxt.dao.ProjectSizeDao;
+import com.brxt.dao.RepaymentProjectDao;
+import com.brxt.dao.SupplyLiquidProjectDao;
 import com.brxt.model.Counterparty;
+import com.brxt.model.InvestmentStatus;
 import com.brxt.model.ProjectInfo;
 import com.brxt.model.ProjectSize;
+import com.brxt.model.projectprogress.InvestmentProject;
 import com.brxt.service.ProjectInfoManager;
 
 @Service("projectInfoManager")
@@ -24,6 +29,13 @@ public class ProjectInfoManagerImpl extends
 	
 	CounterpartyDao counterpartyDao;
 
+	InvestmentProjectDao investmentProjectDao;
+	
+	@Autowired
+	public void setInvestmentProjectDao(InvestmentProjectDao investmentProjectDao) {
+		this.investmentProjectDao = investmentProjectDao;
+	}
+	
 	@Autowired
 	public void setProjectInfoDao(ProjectInfoDao projectInfoDao) {
 		this.dao = projectInfoDao;
@@ -85,4 +97,20 @@ public class ProjectInfoManagerImpl extends
 		return getAll();
 	}
 
+	@Override
+	public ProjectInfo loadProjectInfo(Long id) {
+		ProjectInfo pi = get(new Long(id));
+		if(pi != null)
+		{
+			List<InvestmentProject> investmentProjs = investmentProjectDao.findByProjId(pi.getId());
+			if (investmentProjs != null && !investmentProjs.isEmpty()) {
+				for(InvestmentProject ip : investmentProjs)
+				{
+					pi.getInvestments().add(new InvestmentStatus(ip.getName(), ip.getType()));
+				}
+			}
+		}
+		return pi;	
+	}
+	
 }

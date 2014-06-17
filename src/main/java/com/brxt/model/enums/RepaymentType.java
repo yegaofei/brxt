@@ -3,6 +3,7 @@ package com.brxt.model.enums;
 public enum RepaymentType {
 
 	PRINCIPLE("principle"),
+	PREMIUM("premium"),
 	INTEREST("interest");
 	
 	private String title;

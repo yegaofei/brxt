@@ -8,7 +8,7 @@
             <div class="bs-example">
               <ul class="nav nav-tabs" style="margin-bottom: 15px;">
                 <li class="active"><a href="#tab1" data-toggle="tab"><fmt:message key="report.riskcontrol.tab1"/></a></li>
-                <li><a href="#profile" data-toggle="tab"><fmt:message key="report.riskcontrol.tab2"/></a></li>
+                <li><a href="#tab2" data-toggle="tab"><fmt:message key="report.riskcontrol.tab2"/></a></li>
                 <li><a href="#profile" data-toggle="tab"><fmt:message key="report.riskcontrol.tab3"/></a></li>
                 <li><a href="#profile" data-toggle="tab"><fmt:message key="report.riskcontrol.tab4"/></a></li>
                 <li><a href="#profile" data-toggle="tab"><fmt:message key="report.riskcontrol.tab5"/></a></li>
@@ -57,7 +57,7 @@
                   		</div>
                   		
                   		<appfuse:label styleClass="control-label" key="repayment.heading"/>:
-                  		<display:table name="repaymentList" class="table table-condensed table-striped table-hover" requestURI="" id="repayment" export="false" pagesize="25">
+                  		<display:table name="repaymentList" class="table table-condensed table-striped table-hover" id="repayment">
         					<display:column sortable="true" titleKey="repayment.repaymentTime">
         						<fmt:formatDate value="${repayment.repaymentTime}" pattern="${datePattern}" />
         					</display:column>
@@ -71,8 +71,75 @@
     					</display:table>                  	
                   </div>
                 </div>
-                <div class="tab-pane fade" id="profile">
-                  <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit.</p>
+                <div class="tab-pane fade" id="tab2">
+                	<div class="form-group">
+                	<appfuse:label styleClass="control-label" key="projectInfo.counterparty.name"/> : 
+					<c:forEach var="counterparty" items="${counterparties}" varStatus="status">
+						<c:if test="${status.first}"><select id="counterpartyId" name="counterpartyId" class="form-control"></c:if>
+						<option value="${counterparty.id}" <c:if test = "${counterparty.id == subjectCapacity.counterparty.id}" > selected </c:if>><c:out value="${counterparty.name}" /></option>
+						<c:if test="${status.last}"></select></c:if>
+					</c:forEach>
+					</div>
+					
+					<div class="form-group">
+					<appfuse:label styleClass="control-label" key="subjectCapacity.heading"/> :
+					<table class="table table-striped table-bordered table-hover">
+						<thead>
+						<tr>
+							<th><fmt:message key="subjectCapacity.checkContent"/></th>
+							<th><fmt:message key="subjectCapacity.checkResults"/></th> 
+							<th><fmt:message key="subjectCapacity.comments"/></th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr>
+							<td><fmt:message key="subjectCapacity.licenseVerificationDate"/></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><fmt:message key="subjectCapacity.orgCodeVerificationDate"/></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><fmt:message key="subjectCapacity.loanCardValid"/></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><fmt:message key="subjectCapacity.nameChanged"/></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><fmt:message key="subjectCapacity.ownerChanged"/></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><fmt:message key="subjectCapacity.ownershipChanged"/></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><fmt:message key="subjectCapacity.capitalChanged"/></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><fmt:message key="subjectCapacity.bizScopeChanged"/></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><fmt:message key="subjectCapacity.otherBigChanges"/></td>
+							<td></td>
+							<td></td>
+						</tr>
+						</tbody>
+					</table>
+					</div>
                 </div>
                 <div class="tab-pane fade" id="dropdown1">
                   <p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork.</p>
