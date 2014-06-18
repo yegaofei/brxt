@@ -1,5 +1,6 @@
 package com.brxt.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -56,6 +57,7 @@ public class CreditInformation extends BaseObject {
 	private Date updateTime; // 最后更新时间
 	private Integer version;
 	
+	private BigDecimal debtBalance; //截至本期末的金融机构负债余额	
 	private TradingRelationship tradeRelationship;
 	
 	@Id
@@ -168,6 +170,13 @@ public class CreditInformation extends BaseObject {
 		this.version = version;
 	}
 	
+	@Transient 
+	public BigDecimal getDebtBalance() {
+		return debtBalance;
+	}
+	public void setDebtBalance(BigDecimal debtBalance) {
+		this.debtBalance = debtBalance;
+	}
 	@Transient  
 	public TradingRelationship getTradeRelationship() {
 		return tradeRelationship;

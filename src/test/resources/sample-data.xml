@@ -290,12 +290,12 @@
             <value description="counterparty_id">1</value>
             <value>2</value>
             <value>2014-04-01</value>
-            <value>2014年已年检</value>
-            <value>2014年已年检</value>
+            <value>2012年已年检</value>
+            <value>2013年已年检</value>
             <value>Y</value>
             <value>Y</value>
-            <value>N</value>
-            <value>N</value>
+            <value>Y</value>
+            <value>Y</value>
             <value>Y</value>
             <value>N</value>
             <value>Y</value>
@@ -313,17 +313,17 @@
             <value description="counterparty_id">3</value>
             <value>2</value>
             <value>2014-04-01</value>
+            <value>2013年已年检</value>
             <value>2014年已年检</value>
-            <value>2014年已年检</value>
-            <value>Y</value>
-            <value>Y</value>
-            <value>N</value>
             <value>N</value>
             <value>Y</value>
             <value>N</value>
+            <value>N</value>
             <value>Y</value>
             <value>N</value>
-            <value>2013年4月10日发证</value>
+            <value>N</value>
+            <value>N</value>
+            <value>2013年6月10日发证</value>
             <value>admin</value>
             <value>2014-05-14 06:06:06</value>
             <value>admin</value>
@@ -338,15 +338,15 @@
             <value>2014-04-01</value>
             <value>2014年已年检</value>
             <value>2014年已年检</value>
-            <value>Y</value>
-            <value>Y</value>
-            <value>N</value>
             <value>N</value>
             <value>Y</value>
             <value>N</value>
+            <value>N</value>
             <value>Y</value>
             <value>N</value>
-            <value>2013年4月10日发证</value>
+            <value>N</value>
+            <value>Y</value>
+            <value>2013年12月22日发证</value>
             <value>admin</value>
             <value>2014-05-14 06:06:06</value>
             <value>admin</value>

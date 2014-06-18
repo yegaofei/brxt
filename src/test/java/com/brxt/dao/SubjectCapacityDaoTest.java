@@ -4,9 +4,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 import org.appfuse.dao.BaseDaoTestCase;
 import org.junit.Test;
@@ -73,5 +78,22 @@ public class SubjectCapacityDaoTest extends BaseDaoTestCase {
 		
 		// should throw DataAccessException
 		subjectCapacityDao.get(1L);
+	}
+	
+	@Test
+	public void testFind() throws ParseException {
+		ProjectInfo projectInfo = projectInfoDao.get(1L);
+		Set<Counterparty> counterparties = projectInfo.getCounterparties();
+		Iterator<Counterparty> it = counterparties.iterator();
+		if(it.hasNext())
+		{
+			Counterparty cp = it.next();
+			Date startTime = sf.parse("2014-04-01");
+			Date endTime = sf.parse("2014-06-30");
+		
+			List<SubjectCapacity> l = subjectCapacityDao.findByProjIdCpId(projectInfo, cp, startTime, endTime);
+			assertNotNull(l);
+			assertTrue(l.size() >= 1);
+		}
 	}
 }
