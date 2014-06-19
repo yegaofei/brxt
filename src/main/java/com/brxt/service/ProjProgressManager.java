@@ -15,6 +15,10 @@ public interface ProjProgressManager extends
 	public List<ProjectProgress> getProjectProgressList(Long projectInfoId);
 	
 	public List<InvestmentProject> getInvestmentProjects(Long projectInfoId);
+	
+	public List<RepaymentProject> getRepaymentProjects(Long projectInfoId);
+	
+	public List<SupplyLiquidProject> getSupplyLiquidProjects(Long projectInfoId);
 
 	public String getProgressForm(Long id);
 

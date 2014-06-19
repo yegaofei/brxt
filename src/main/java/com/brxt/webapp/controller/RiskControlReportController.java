@@ -26,7 +26,11 @@ import com.brxt.model.ProjectInfo;
 import com.brxt.model.Repayment;
 import com.brxt.model.ReportContentKey;
 import com.brxt.model.SubjectCapacity;
+import com.brxt.model.projectprogress.InvestmentProject;
+import com.brxt.model.projectprogress.RepaymentProject;
+import com.brxt.model.projectprogress.SupplyLiquidProject;
 import com.brxt.service.CreditInformationManager;
+import com.brxt.service.ProjProgressManager;
 import com.brxt.service.ProjectInfoManager;
 import com.brxt.service.RepaymentManager;
 import com.brxt.service.SubjectCapacityManager;
@@ -39,6 +43,7 @@ public class RiskControlReportController extends BaseSheetController {
 	private SubjectCapacityManager subjectCapacityManager = null;
 	private SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 	private CreditInformationManager creditInformationManager;
+	private ProjProgressManager projectProgressManager;
 
 	@Autowired
 	public void setProjectInfoManager(
@@ -62,6 +67,12 @@ public class RiskControlReportController extends BaseSheetController {
 	public void setCreditInformationManager(
 			@Qualifier("creditInformationManager") CreditInformationManager creditInformationManager) {
 		this.creditInformationManager = creditInformationManager;
+	}
+	
+	@Autowired
+	public void setProjectProgressManager(
+			@Qualifier("projectProgressManager") ProjProgressManager projectProgressManager) {
+		this.projectProgressManager = projectProgressManager;
 	}
 
 	@ModelAttribute
@@ -127,6 +138,46 @@ public class RiskControlReportController extends BaseSheetController {
 						rck.getStartTime(), rck.getEndTime());
 		if (creditInformations != null && !creditInformations.isEmpty()) {
 			return creditInformations.get(0);
+		}
+		return null;
+	}
+	
+	@ModelAttribute("investmentProjects")
+	public List<InvestmentProject> getInvestmentProjects(final HttpServletRequest request){
+		String id = request.getParameter("id");
+		if (!StringUtils.isBlank(id)) {
+			List<InvestmentProject>  investmentProjects = projectProgressManager.getInvestmentProjects(Long.valueOf(id));
+			if (investmentProjects == null | investmentProjects.isEmpty()) {
+				return null;
+			}
+			return investmentProjects;
+		}
+		return null;
+	}
+	
+	@ModelAttribute("supplyLiquidProjects")
+	public List<SupplyLiquidProject> getSupplyLiquidProjects(final HttpServletRequest request){
+		String id = request.getParameter("id");
+		if (!StringUtils.isBlank(id)) {
+			List<SupplyLiquidProject>  supplyLiquidProjects = projectProgressManager.getSupplyLiquidProjects(Long.valueOf(id));
+			if (supplyLiquidProjects == null | supplyLiquidProjects.isEmpty()) {
+				return null;
+			}
+			return supplyLiquidProjects;
+		}
+		return null;
+	}
+	
+	@ModelAttribute("repaymentProjects")
+	public List<RepaymentProject> getRepaymentProjects(final HttpServletRequest request) {
+		
+		String id = request.getParameter("id");
+		if (!StringUtils.isBlank(id)) {
+			List<RepaymentProject>  repaymentProjects = projectProgressManager.getRepaymentProjects(Long.valueOf(id));
+			if (repaymentProjects == null | repaymentProjects.isEmpty()) {
+				return null;
+			}
+			return repaymentProjects;
 		}
 		return null;
 	}
