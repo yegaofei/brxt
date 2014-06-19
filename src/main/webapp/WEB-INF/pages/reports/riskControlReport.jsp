@@ -27,6 +27,7 @@
               <form name="riskControlReport" id="riskControlReport" action="${ctx}/reports/riskControlReport" method="post">
               	<input type="hidden" name="id" value="<c:out value="${param.id}" />" >
               	<input type="hidden" name="counterpartyId" id="counterpartyId" value="<c:out value="${param.counterpartyId}" />" >
+              	<input type="hidden" name="guarantorId" id="guarantorId" value="<c:out value="${param.guarantorId}" />" >
               	<input type="hidden" name="activeTab" id="activeTab" value="<c:out value="${param.activeTab}" />" >
               
               <div id="myTabContent" class="tab-content">
@@ -38,6 +39,7 @@
                 </div>
                 <div class="tab-pane fade" id="tab2-1">
                   <p><fmt:message key="report.riskcontrol.financeCheck"/></p>
+                  <fmt:message key="unfinished"/>
                 </div>
                 <div class="tab-pane fade <c:if test="${param.activeTab == 'tab2-2'}"> active in </c:if>" id="tab2-2">
                   <%@ include file="./tab2-2.jsp" %>
@@ -47,6 +49,18 @@
                 </div>
                 <div class="tab-pane fade <c:if test="${param.activeTab == 'tab4'}"> active in </c:if>" id="tab4">
                 	<%@ include file="./tab4.jsp" %>
+                </div>
+                <div class="tab-pane fade <c:if test="${param.activeTab == 'tab5'}"> active in </c:if>" id="tab5">
+                	<%@ include file="./tab5.jsp" %>
+                </div>
+                <div class="tab-pane fade <c:if test="${param.activeTab == 'tab6'}"> active in </c:if>" id="tab6">
+                	<%@ include file="./tab6.jsp" %>
+                </div>
+                <div class="tab-pane fade <c:if test="${param.activeTab == 'tab7'}"> active in </c:if>" id="tab7">
+                	<%@ include file="./tab7.jsp" %>
+                </div>
+                <div class="tab-pane fade <c:if test="${param.activeTab == 'tab8'}"> active in </c:if>" id="tab8">
+                	<%@ include file="./tab8.jsp" %>
                 </div>
               </div>
           	  </form>

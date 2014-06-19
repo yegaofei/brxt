@@ -11,57 +11,60 @@
 							<th><fmt:message key="subjectCapacity.checkResults"/></th>
 						</thead>
 						<tbody>
-						<c:if test="${repaymentProject.investmentProjectType == 'real_estate'}" >
 						<tr>
-							<td><fmt:message key="repaymentProject.policy"/></td>
-							<td><input type="text" maxlength="20" class="form-control" /></td>
+							<td><fmt:message key="repaymentProject.totalSize"/></td>
+							<td><c:out value="${repaymentProject.totalSize}" /></td>
 						</tr>
 						<tr>
-							<td><fmt:message key="repaymentProject.price"/></td>
-							<td><input type="text" maxlength="20" class="form-control" /></td>
+							<td><fmt:message key="repaymentProject.totalSaleSize"/></td>
+							<td><c:out value="${repaymentProject.totalSaleSize}" /></td>
 						</tr>
-						</c:if>
 						<tr>
-							<td><fmt:message key="repaymentProject.startTime"/></td>
+							<td><fmt:message key="repaymentProject.permitSaleSize"/></td>
 							<td>
-								<fmt:formatDate value="${repaymentProject.startTime}" pattern="${datePattern}" />
+								<c:out value="${repaymentProject.permitSaleSize}" />
 							 </td>
 						</tr>
 						<tr>
-							<td><fmt:message key="repaymentProject.endTime"/></td>
+							<td><fmt:message key="repaymentProject.openDate"/></td>
 							<td>
-								<fmt:formatDate value="${repaymentProject.endTime}" pattern="${datePattern}" />
+								<fmt:formatDate value="${repaymentProject.openDate}" pattern="${datePattern}" />
 							</td>
 						</tr>
 						<tr>
-							<td><fmt:message key="repaymentProject.totalAmout"/></td>
+							<td><fmt:message key="repaymentProject.preSaleSize"/></td>
 							<td>
-								<c:out value="${repaymentProject.totalAmout}" />
+								<c:out value="${repaymentProject.preSaleSize}" />
 							</td>
 						</tr>
 						<tr>
-							<td><fmt:message key="repaymentProject.investmentAmount"/></td>
+							<td><fmt:message key="repaymentProject.salePercentRate"/></td>
 							<td>
-								<c:out value="${repaymentProject.investmentAmount}" />
+								<c:out value="${repaymentProject.salePercentRate}" />
 							</td>
 						</tr>
 						<tr>
-							<td><fmt:message key="repaymentProject.description"/></td>
+							<td><fmt:message key="repaymentProject.preAvgPrice"/></td>
 							<td>
-								<c:out value="${repaymentProject.description}" />
+								<c:out value="${repaymentProject.preAvgPrice}" />
 							</td>
 						</tr>
 						<tr>
-							<td><fmt:message key="repaymentProject.delayed"/></td>
+							<td><fmt:message key="repaymentProject.currAvgPrice"/></td>
 							<td>
-								<c:if test="${repaymentProject.delayed}"><fmt:message key="label.yes"/></c:if>
-								<c:if test="${not repaymentProject.delayed}"><fmt:message key="label.no"/></c:if>
+								<c:out value="${repaymentProject.currAvgPrice}" />
+							</td>
+						</tr>
+						<tr>
+							<td><fmt:message key="repaymentProject.comments"/></td>
+							<td>
+								<c:out value="${repaymentProject.comments}" />
 							</td>
 						</tr>
 						<tr>
 							<td><fmt:message key="repaymentProject.evaluation"/></td>
 							<td>
-								<input type="text" maxlength="20" class="form-control" />
+								<input type="text" maxlength="20" class="form-control input-sm" />
 							</td>
 						</tr>
 						</tbody>

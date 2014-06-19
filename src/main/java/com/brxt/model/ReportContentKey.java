@@ -6,6 +6,7 @@ public class ReportContentKey {
 
 	private ProjectInfo projectInfo;
 	private Counterparty counterparty;
+	private Counterparty guarantor;
 	private Date startTime;
 	private Date endTime;
 	
@@ -33,6 +34,11 @@ public class ReportContentKey {
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
 	}
-	
+	public Counterparty getGuarantor() {
+		return guarantor;
+	}
+	public void setGuarantor(Counterparty guarantor) {
+		this.guarantor = guarantor;
+	}
 	
 }

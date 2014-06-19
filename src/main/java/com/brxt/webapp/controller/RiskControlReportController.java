@@ -116,11 +116,26 @@ public class RiskControlReportController extends BaseSheetController {
 		if (!StringUtils.isBlank(id)) {
 			ProjectInfo projectInfo = projectInfoManager.get(Long.valueOf(id));
 			Set<Counterparty> counterparties = projectInfo.getCounterparties();
-			if (counterparties == null | counterparties.isEmpty()) {
+			if (counterparties == null || counterparties.isEmpty()) {
 				return null;
 			}
 			List<Counterparty> cpList = new ArrayList<Counterparty>(
 					counterparties);
+			return cpList;
+		}
+		return null;
+	}
+	
+	@ModelAttribute("guarantors")
+	public List<Counterparty> getGuarantors(final HttpServletRequest request) {
+		String id = request.getParameter("id");
+		if (!StringUtils.isBlank(id)) {
+			ProjectInfo projectInfo = projectInfoManager.get(Long.valueOf(id));
+			Set<Counterparty> guarantors = projectInfo.getGuarantors();
+			if (guarantors == null || guarantors.isEmpty()) {
+				return null;
+			}
+			List<Counterparty> cpList = new ArrayList<Counterparty>(guarantors);
 			return cpList;
 		}
 		return null;
@@ -133,9 +148,21 @@ public class RiskControlReportController extends BaseSheetController {
 		if (rck == null) {
 			return null;
 		}
-		List<CreditInformation> creditInformations = creditInformationManager
-				.findByProjIdCpId(rck.getProjectInfo(), rck.getCounterparty(),
-						rck.getStartTime(), rck.getEndTime());
+		List<CreditInformation> creditInformations = null;
+		if( rck.getCounterparty() != null)
+		{
+			creditInformations = creditInformationManager
+					.findByProjIdCpId(rck.getProjectInfo(), rck.getCounterparty(),
+							rck.getStartTime(), rck.getEndTime());
+		}
+		
+		if( rck.getGuarantor() != null )
+		{
+			creditInformations = creditInformationManager
+					.findByProjIdCpId(rck.getProjectInfo(), rck.getGuarantor(),
+							rck.getStartTime(), rck.getEndTime());
+		}
+		
 		if (creditInformations != null && !creditInformations.isEmpty()) {
 			return creditInformations.get(0);
 		}
@@ -186,6 +213,7 @@ public class RiskControlReportController extends BaseSheetController {
 			final HttpServletRequest request) throws ParseException {
 		String projectInfoId = request.getParameter("id");
 		String counterpartyId = request.getParameter("counterpartyId");
+		String guarantorId = request.getParameter("guarantorId");
 		if (!StringUtils.isBlank(projectInfoId)) {
 			ProjectInfo projectInfo = projectInfoManager.get(Long
 					.valueOf(projectInfoId));
@@ -204,9 +232,20 @@ public class RiskControlReportController extends BaseSheetController {
 					counterparty = itc.next();
 				}
 			}
+			
+			Counterparty guarantor = null;
+			if(!StringUtils.isBlank(guarantorId)) {
+				guarantor = findGuarantor(projectInfo, Long.valueOf(guarantorId));
+			} else {
+				Iterator<Counterparty> itc = projectInfo.getGuarantors()
+						.iterator();
+				if (itc != null && itc.hasNext()) {
+					guarantor = itc.next();
+				}
+			}
 
-			if (counterparty == null) {
-				log.debug("No counterparty for project info ["
+			if (counterparty == null && guarantor == null) {
+				log.debug("No counterparty and guarantor for project info ["
 						+ projectInfo.toString() + "]");
 				return null;
 			}
@@ -247,6 +286,7 @@ public class RiskControlReportController extends BaseSheetController {
 			ReportContentKey rck = new ReportContentKey();
 			rck.setProjectInfo(projectInfo);
 			rck.setCounterparty(counterparty);
+			rck.setGuarantor(guarantor);
 			rck.setStartTime(startTime);
 			rck.setEndTime(endTime);
 			return rck;
