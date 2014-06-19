@@ -22,9 +22,6 @@ public class ProjectInfoStatus {
 	private Boolean repayment;
 	private Boolean projectProgress;
 	private Boolean committed;
-	private Boolean offsiteDataInput;
-	private Boolean commitReport;
-	private Boolean reportAudit;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -95,33 +92,6 @@ public class ProjectInfoStatus {
 	}
 	public void setCommitted(Boolean commit) {
 		this.committed = commit;
-	}
-	
-	@Column(name = "offsiteDataInput", nullable=true, columnDefinition="char(1) default 'N'" )
-	@Type(type="yes_no")
-	public Boolean getOffsiteDataInput() {
-		return offsiteDataInput;
-	}
-	public void setOffsiteDataInput(Boolean offsiteDataInput) {
-		this.offsiteDataInput = offsiteDataInput;
-	}
-	
-	@Column(name = "commitReport", nullable=true, columnDefinition="char(1) default 'N'" )
-	@Type(type="yes_no")
-	public Boolean getCommitReport() {
-		return commitReport;
-	}
-	public void setCommitReport(Boolean commitReport) {
-		this.commitReport = commitReport;
-	}
-	
-	@Column(name = "reportAudit", nullable=true, columnDefinition="char(1) default 'N'" )
-	@Type(type="yes_no")
-	public Boolean getReportAudit() {
-		return reportAudit;
-	}
-	public void setReportAudit(Boolean reportAudit) {
-		this.reportAudit = reportAudit;
 	}
 	
 }

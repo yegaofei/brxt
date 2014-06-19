@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 import com.brxt.dao.FinancialSheetDao;
 import com.brxt.model.Counterparty;
 import com.brxt.model.ProjectInfo;
-import com.brxt.model.finance.BudgetStatement;
 import com.brxt.model.finance.CorporateBalanceSheet;
 
 @Repository("corpBalanceSheetDao")
