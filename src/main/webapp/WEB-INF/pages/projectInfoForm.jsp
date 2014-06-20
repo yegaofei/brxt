@@ -10,6 +10,8 @@
 <c:set var="delObject" scope="request"><fmt:message key="projectInfoList.heading"/></c:set>
 <script type="text/javascript">var msgDelConfirm =
    "<fmt:message key="delete.confirm"><fmt:param value="${delObject}"/></fmt:message>";
+   var msgCommit = 
+   "<fmt:message key="commit.confirm"><fmt:param value="${delObject}"/></fmt:message>";
 </script>
  
 <div class="col-sm-2">
@@ -21,7 +23,7 @@
     <form:form commandName="projectInfo" method="post" action="${ctx}/projectInfoForm" id="projectInfoForm" cssClass="well" onsubmit="return validateProjectInfo(this)">
     <form:hidden path="id"/>
 	<form:hidden path="version"/>
-	 
+	<fieldset <c:if test="${projectInfo.projectInfoStatus.committed}">disabled</c:if>> 
 	<div class="row">
     <spring:bind path="projectInfo.projectName">
     <div class="col-sm-6 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
@@ -329,6 +331,11 @@
           </button>
         </c:if>
         -->
+        <c:if test="${not empty projectInfo.id}">
+          <button type="submit" class="btn btn-primary" name="method"  value="CommitProjectInfo" onclick="bCancel=true;return confirmMessage(msgCommit)">
+              <i class="icon-trash"></i> <fmt:message key="button.commit"/>
+          </button>
+        </c:if>
         <button type="submit" class="btn btn-default" name="method" value="Cancel" onclick="bCancel=true">
             <i class="icon-remove"></i> <fmt:message key="button.cancel"/>
         </button>
@@ -336,6 +343,7 @@
             <i class="icon-remove"></i> <fmt:message key="button.done"/>
         </button>
     </div>
+    </fieldset>
     </form:form>
 </div>
 

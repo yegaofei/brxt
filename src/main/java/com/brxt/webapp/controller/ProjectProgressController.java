@@ -201,6 +201,7 @@ public class ProjectProgressController extends BaseFormController {
 				{
 					projectProgressManager.saveRepaymentProject(repaymentProject);
 				}
+				updateProjectInfoStatus(projectInfo, true);
 				saveMessage(request,
 						getText("investmentProject.save.successful", locale));
 				break;
@@ -274,6 +275,7 @@ public class ProjectProgressController extends BaseFormController {
 					repaymentProject.setUpdateUser(currentUser);
 				}
 				projectProgressManager.saveRepaymentProject(repaymentProject);
+				updateProjectInfoStatus(projectInfo, true);
 				saveMessage(request,
 						getText("repaymentProject.save.successful", locale));
 				break;
@@ -347,6 +349,7 @@ public class ProjectProgressController extends BaseFormController {
 					supplyLiquidProject.setUpdateUser(currentUser);
 				}
 				projectProgressManager.saveSupplyLiqidProject(supplyLiquidProject);
+				updateProjectInfoStatus(projectInfo, true);
 				saveMessage(request,
 						getText("supplyLiquidProject.save.successful", locale));
 				break;
@@ -354,6 +357,16 @@ public class ProjectProgressController extends BaseFormController {
 			}
 		}
 		return "redirect:/projectProgress";
+	}
+	
+	private void updateProjectInfoStatus(ProjectInfo projectInfo, boolean newStatus)
+	{
+		
+		if(projectInfo.getProjectInfoStatus().getProjectProgress() != newStatus)
+		{
+			projectInfo.getProjectInfoStatus().setProjectProgress(newStatus);	
+			projectInfoManager.save(projectInfo);
+		}
 	}
 
 }

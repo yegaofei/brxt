@@ -212,6 +212,13 @@ public class ProjectInfoFormController extends BaseFormController {
 				mav = saveGuarantor(projectInfo, errors, request, mav);
 				mav.addObject("method", "SaveGuarantor");
 				break;
+			case "CommitProjectInfo":
+				projectInfo = getProjectInfo(request);
+				projectInfo.getProjectInfoStatus().setCommitted(true);
+				projectInfoManager.save(projectInfo);
+				saveMessage(request, getText("projectInfo.committed", locale));
+				mav.setViewName(getSuccessView());
+				break;
 			default:
 				//Error
 			}

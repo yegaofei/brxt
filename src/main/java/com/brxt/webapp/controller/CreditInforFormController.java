@@ -159,6 +159,12 @@ public class CreditInforFormController extends BaseFormController {
 					creditInformation.setUpdateUser(currentUser);
 				}
 				creditInformationManager.save(creditInformation);
+				if(!projectInfo.getProjectInfoStatus().getCreditInformation())
+				{
+					projectInfo.getProjectInfoStatus().setCreditInformation(true);
+					projectInfoManager.save(projectInfo);
+				}
+				
 				saveMessage(request,
 						getText("creditInformation.save.successful", locale));
 				break;

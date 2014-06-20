@@ -156,6 +156,11 @@ public class RepaymentController extends BaseFormController {
 					repayment.setUpdateUser(currentUser);
 				}
 				repaymentManager.save(repayment);
+				if(!projectInfo.getProjectInfoStatus().getRepayment())
+				{
+					projectInfo.getProjectInfoStatus().setRepayment(true);
+					projectInfoManager.save(projectInfo);
+				}
 				saveMessage(request,
 						getText("repayment.save.successful", locale));
 				break;
