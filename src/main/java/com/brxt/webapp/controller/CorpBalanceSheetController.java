@@ -212,6 +212,7 @@ public class CorpBalanceSheetController extends BaseSheetController {
 		}
 
 		financeSheetManager.saveCorpBalanceSheets(beginBalSheet, endBalSheet);
+		updateProjectInfoStatus(projectInfo, true);
 		saveMessage(request, getText("corpBalanceSheet.updated", locale));
 	}
 

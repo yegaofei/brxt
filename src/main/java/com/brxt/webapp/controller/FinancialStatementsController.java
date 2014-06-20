@@ -136,6 +136,16 @@ public class FinancialStatementsController extends BaseFormController {
 				return "redirect:/finance/" + editForm + "?id=" + id;
 			case "Delete":
 				financeSheetManager.remove(financialStatementID);
+				//Update the project info status after deleting
+				String projectInfoId = (String) request.getSession().getAttribute(SessionAttributes.PROJECT_INFO_ID);
+				ProjectInfo projectInfo = projectInfoManager.get(Long.valueOf(projectInfoId));
+				List<FinanceStatement> financeSttements = financeSheetManager.getAll(projectInfo);
+				if(financeSttements == null || financeSttements.isEmpty())
+				{
+					projectInfo.getProjectInfoStatus().setFinanceStatement(false);
+					projectInfoManager.save(projectInfo);
+				}
+				
 				saveMessage(request,
 						getText("financeStatement.delete.successful", locale));
 				return "redirect:/finance/financialStatements";

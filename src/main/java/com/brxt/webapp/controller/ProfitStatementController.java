@@ -177,6 +177,7 @@ public class ProfitStatementController extends BaseSheetController {
 			endBalSheet.setUpdateTime(new Date());
 		}
 		financeSheetManager.saveProfitStatement(endBalSheet);
+		updateProjectInfoStatus(projectInfo, true);
 		saveMessage(request, getText("profitStatement.updated", locale));
 	}
 

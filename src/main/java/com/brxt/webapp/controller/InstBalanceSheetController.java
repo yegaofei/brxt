@@ -211,6 +211,7 @@ public class InstBalanceSheetController extends BaseSheetController {
 
 		financeSheetManager.saveInstituteBalanceSheets(beginBalSheet,
 				endBalSheet);
+		updateProjectInfoStatus(projectInfo, true);
 		saveMessage(request, getText("instBalanceSheet.updated", locale));
 	}
 

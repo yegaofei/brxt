@@ -110,6 +110,11 @@ public class SubjectCapacityFormController extends BaseFormController {
 					subjectCapacity.setUpdateUser(currentUser.getUsername());
 				}
 				subjectCapacityManager.save(subjectCapacity);
+				if(!projectInfo.getProjectInfoStatus().getSubjectCapacity())
+				{
+					projectInfo.getProjectInfoStatus().setSubjectCapacity(true);
+					projectInfoManager.save(projectInfo);
+				}
 				saveMessage(request,
 						getText("subjectCapacity.save.successful", locale));
 				break;

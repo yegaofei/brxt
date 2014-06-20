@@ -1,5 +1,6 @@
 package com.brxt.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,12 +17,12 @@ public class ProjectInfoStatus {
 	
 	private Long id;
 	private ProjectInfo projectInfo;
-	private Boolean subjectCapacity;
-	private Boolean financeStatement;
-	private Boolean creditInformation;
-	private Boolean repayment;
-	private Boolean projectProgress;
-	private Boolean committed;
+	private Boolean subjectCapacity = Boolean.FALSE;
+	private Boolean financeStatement = Boolean.FALSE;
+	private Boolean creditInformation = Boolean.FALSE;
+	private Boolean repayment = Boolean.FALSE;
+	private Boolean projectProgress = Boolean.FALSE;
+	private Boolean committed = Boolean.FALSE;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,7 +33,7 @@ public class ProjectInfoStatus {
 		this.id = id;
 	}
 	
-	@OneToOne(mappedBy = "projectInfoStatus")
+	@OneToOne(mappedBy = "projectInfoStatus", cascade = CascadeType.ALL)
 	public ProjectInfo getProjectInfo() {
 		return projectInfo;
 	}

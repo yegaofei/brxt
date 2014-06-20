@@ -45,20 +45,20 @@
     <div id="actions" class="btn-group">
 		<c:choose>
 		<c:when test="${method == 'EditProjectSize'}">
-    		<button type="submit" name="method" value="SaveProjectSize">
+    		<button type="submit" name="method" value="SaveProjectSize" class="btn btn-default btn-xs">
                 <fmt:message key="button.save"/>
             </button>
 		</c:when>
 		<c:otherwise>
-        <button type="submit" name="method" value="AddProjectSize">
+        <button type="submit" name="method" value="AddProjectSize" class="btn btn-default btn-xs">
                 <fmt:message key="button.add"/>
         </button>    
         </c:otherwise>
         </c:choose>
-        <button type="submit" name="method" value="EditProjectSize">
+        <button type="submit" name="method" value="EditProjectSize" class="btn btn-default btn-xs">
                 <fmt:message key="button.edit"/>
         </button>
-        <button type="submit" name="method" value="DeleteProjectSize">
+        <button type="submit" name="method" value="DeleteProjectSize" class="btn btn-default btn-xs">
                 <fmt:message key="button.delete"/>
         </button>    
 	</div>
@@ -69,12 +69,12 @@
     	<div id="actions" class="btn-group">
 		<c:choose>
 		<c:when test="${method == 'EditProjectSize'}">
-    		<button type="submit" name="method" value="SaveProjectSize">
+    		<button type="submit" name="method" value="SaveProjectSize" class="btn btn-default btn-xs">
                 <fmt:message key="button.save"/>
             </button>
 		</c:when>
 		<c:otherwise>
-        <button type="submit" name="method" value="AddProjectSize">
+        <button type="submit" name="method" value="AddProjectSize" class="btn btn-default btn-xs">
                 <fmt:message key="button.add"/>
         </button>    
         </c:otherwise>
@@ -193,21 +193,21 @@
     	<div id="actions" class="btn-group">
 			<c:choose>
 			<c:when test="${method == 'EditCounterparty'}">
-    		<button type="submit" name="method" value="SaveCounterparty">
+    		<button type="submit" name="method" value="SaveCounterparty" class="btn btn-default btn-xs">
                 <fmt:message key="button.save"/>
             </button>
 			</c:when>
 			<c:otherwise>
-        	<button type="submit" name="method" value="AddCounterparty">
+        	<button type="submit" name="method" value="AddCounterparty" class="btn btn-default btn-xs">
                 <fmt:message key="button.add"/>
         	</button>    
         	</c:otherwise>
         	</c:choose>
-        	<button type="submit" name="method" value="EditCounterparty">
+        	<button type="submit" name="method" value="EditCounterparty" class="btn btn-default btn-xs">
                 <fmt:message key="button.edit"/>
         	</button>
         	<!--
-        	<button type="submit" name="method" value="DeleteCounterparty">
+        	<button type="submit" name="method" value="DeleteCounterparty" class="btn btn-default btn-xs">
                 <fmt:message key="button.delete"/>
         	</button>
         	-->    
@@ -249,21 +249,21 @@
     	<div id="actions" class="btn-group">
 			<c:choose>
 			<c:when test="${method == 'EditGuarantor'}">
-    		<button type="submit" name="method" value="SaveGuarantor">
+    		<button type="submit" name="method" value="SaveGuarantor" class="btn btn-default btn-xs">
                 <fmt:message key="button.save"/>
             </button>
 			</c:when>
 			<c:otherwise>
-        	<button type="submit" name="method" value="AddGuarantor">
+        	<button type="submit" name="method" value="AddGuarantor" class="btn btn-default btn-xs">
                 <fmt:message key="button.add"/>
         	</button>    
         	</c:otherwise>
         	</c:choose>
-        	<button type="submit" name="method" value="EditGuarantor">
+        	<button type="submit" name="method" value="EditGuarantor" class="btn btn-default btn-xs">
                 <fmt:message key="button.edit"/>
         	</button>
         	<!--
-        	<button type="submit" name="method" value="DeleteGuarantor">
+        	<button type="submit" name="method" value="DeleteGuarantor" class="btn btn-default btn-xs">
                 <fmt:message key="button.delete"/>
         	</button>
         	-->    

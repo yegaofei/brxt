@@ -290,6 +290,7 @@ public class BudgetStatementFormController extends BaseSheetController {
 		}
 		
 		financeSheetManager.saveBudgetStatements(thisYearBudget, thisYear);
+		updateProjectInfoStatus(projectInfo, true);
 		BudgetStatement budgetRatio = calculateBudgetRatio(thisYearBudget, thisYear);
 		budgetStatementModel.setBudgetRatio(budgetRatio);
 		BudgetStatement lastYear = budgetStatementModel.getLastYear();

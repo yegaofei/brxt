@@ -134,6 +134,33 @@
             <value description="role_id">-2</value>
         </row>
     </table>
+    <table name="project_info_status">
+		<column>id</column>
+		<column>subjectCapacity</column>
+		<column>financeStatement</column>
+		<column>creditInformation</column>
+		<column>repayment</column>
+		<column>projectProgress</column>
+		<column>committed</column>
+		<row>
+    		<value>1</value>
+    		<value>Y</value>
+    		<value>Y</value>
+    		<value>Y</value>
+    		<value>Y</value>
+    		<value>Y</value>
+    		<value>N</value>
+  		</row>
+  		<row>
+    		<value>2</value>
+    		<value>Y</value>
+    		<value>Y</value>
+    		<value>Y</value>
+    		<value>N</value>
+    		<value>N</value>
+    		<value>N</value>
+  		</row>
+	</table>
     <table name='project_info'>
   		<column>id</column>
   		<column>project_name</column>
@@ -149,6 +176,7 @@
 		<column>updateUser</column>
 		<column>updateTime</column>
 		<column>version</column>
+		<column>projectInfoStatus_id</column>
   		<row>
     		<value>1</value>
     		<value>宝盈238</value>
@@ -163,6 +191,7 @@
 			<value>2014-04-14 06:06:06</value>
 			<value>-2</value>
 			<value>2014-04-14 06:06:06</value>
+			<value>1</value>
 			<value>1</value>
   		</row>
   		<row>
@@ -180,6 +209,7 @@
 			<value>-1</value>
 			<value>2014-05-14 06:06:06</value>
 			<value>1</value>
+			<value>2</value>
   		</row>
 	</table>
 	<table name='project_size'>

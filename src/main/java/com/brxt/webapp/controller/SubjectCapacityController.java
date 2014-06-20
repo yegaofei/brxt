@@ -15,7 +15,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.tuckey.web.filters.urlrewrite.utils.StringUtils;
 
 import com.brxt.constant.SessionAttributes;
+import com.brxt.model.ProjectInfo;
 import com.brxt.model.SubjectCapacity;
+import com.brxt.service.ProjectInfoManager;
 import com.brxt.service.SubjectCapacityManager;
 
 @Controller
@@ -23,6 +25,14 @@ import com.brxt.service.SubjectCapacityManager;
 public class SubjectCapacityController extends BaseFormController {
 	
 	private SubjectCapacityManager subjectCapacityManager;
+	
+	private ProjectInfoManager projectInfoManager;
+
+	@Autowired
+	public void setProjectInfoManager(
+			@Qualifier("projectInfoManager") ProjectInfoManager projectInfoManager) {
+		this.projectInfoManager = projectInfoManager;
+	}
 
 	@Autowired
 	public void setSubjectCapacityManager(
@@ -66,7 +76,7 @@ public class SubjectCapacityController extends BaseFormController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response)
+	public ModelAndView onSubmit(final HttpServletRequest request)
 	{
 		ModelAndView mav = new ModelAndView();
 		String method = request.getParameter("method");
@@ -85,7 +95,21 @@ public class SubjectCapacityController extends BaseFormController {
 				break;
 			case "Delete":				
 				subjectCapacityManager.remove(Long.valueOf(subjectCapacityId));
-				mav.addObject("subjectCapacityList", fetchSubjectCapacityList(request));
+				List<SubjectCapacity> subjectCapacityList = fetchSubjectCapacityList(request);
+				mav.addObject("subjectCapacityList", subjectCapacityList);
+				if(subjectCapacityList == null || subjectCapacityList.isEmpty())
+				{
+					String projectInfoId = (String) request.getSession().getAttribute(SessionAttributes.PROJECT_INFO_ID);
+					if(!StringUtils.isBlank(projectInfoId))
+					{
+						ProjectInfo projectInfo = projectInfoManager.get(Long.valueOf(projectInfoId));
+						if(projectInfo.getProjectInfoStatus().getSubjectCapacity())
+						{
+							projectInfo.getProjectInfoStatus().setSubjectCapacity(false);
+							projectInfoManager.save(projectInfo);
+						}
+					}					
+				}
 				saveMessage(request, getText("subjectCapacity.delete.successful", locale));
 				break;
 				default:
