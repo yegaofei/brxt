@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,9 +27,12 @@ import com.brxt.model.ProjectInfo;
 import com.brxt.model.Repayment;
 import com.brxt.model.ReportContentKey;
 import com.brxt.model.SubjectCapacity;
+import com.brxt.model.enums.CounterpartyType;
+import com.brxt.model.finance.CorporateBalanceSheet;
 import com.brxt.model.projectprogress.InvestmentProject;
 import com.brxt.model.projectprogress.RepaymentProject;
 import com.brxt.model.projectprogress.SupplyLiquidProject;
+import com.brxt.model.report.FinanceCheck;
 import com.brxt.service.CreditInformationManager;
 import com.brxt.service.ProjProgressManager;
 import com.brxt.service.ProjectInfoManager;
@@ -68,7 +72,7 @@ public class RiskControlReportController extends BaseSheetController {
 			@Qualifier("creditInformationManager") CreditInformationManager creditInformationManager) {
 		this.creditInformationManager = creditInformationManager;
 	}
-	
+
 	@Autowired
 	public void setProjectProgressManager(
 			@Qualifier("projectProgressManager") ProjProgressManager projectProgressManager) {
@@ -107,6 +111,11 @@ public class RiskControlReportController extends BaseSheetController {
 		if (subjectCapacities != null && subjectCapacities.size() > 0) {
 			return subjectCapacities.get(0);
 		}
+		
+		if(rck.getCounterparty() != null && "tab2".equals(rck.getActiveTab()))
+		{
+			saveMessage(request, getText("report.subject.error", rck.getCounterparty().getName(), request.getLocale()));
+		}
 		return null;
 	}
 
@@ -125,7 +134,38 @@ public class RiskControlReportController extends BaseSheetController {
 		}
 		return null;
 	}
-	
+
+	@ModelAttribute("counterpartiesTab22")
+	public List<Counterparty> getCounterparties22(
+			final HttpServletRequest request) {
+		String id = request.getParameter("id");
+		if (!StringUtils.isBlank(id)) {
+			ProjectInfo projectInfo = projectInfoManager.get(Long.valueOf(id));
+			Set<Counterparty> counterparties = projectInfo.getCounterparties();
+			if (counterparties == null || counterparties.isEmpty()) {
+				return null;
+			}
+			List<Counterparty> cpList = new ArrayList<Counterparty>(
+					counterparties);
+
+			Set<Counterparty> guarantors = projectInfo.getGuarantors();
+			if (guarantors != null && !guarantors.isEmpty()) {
+				Iterator<Counterparty> gIt = guarantors.iterator();
+				while (gIt.hasNext()) {
+					Counterparty guarant = gIt.next();
+					if (guarant.getCounterpartyType().equalsIgnoreCase(
+							CounterpartyType.INSTITUTION.getTitle())) {
+						continue;
+					}
+					cpList.add(guarant);
+				}
+			}
+
+			return cpList;
+		}
+		return null;
+	}
+
 	@ModelAttribute("guarantors")
 	public List<Counterparty> getGuarantors(final HttpServletRequest request) {
 		String id = request.getParameter("id");
@@ -135,7 +175,17 @@ public class RiskControlReportController extends BaseSheetController {
 			if (guarantors == null || guarantors.isEmpty()) {
 				return null;
 			}
-			List<Counterparty> cpList = new ArrayList<Counterparty>(guarantors);
+			List<Counterparty> cpList = new ArrayList<Counterparty>();
+			
+			Iterator<Counterparty> gIt = guarantors.iterator();
+			while (gIt.hasNext()) {
+				Counterparty guarant = gIt.next();
+				if (guarant.getCounterpartyType().equalsIgnoreCase(
+						CounterpartyType.INSTITUTION.getTitle())) {
+					continue;
+				}
+				cpList.add(guarant);
+			}
 			return cpList;
 		}
 		return null;
@@ -149,31 +199,58 @@ public class RiskControlReportController extends BaseSheetController {
 			return null;
 		}
 		List<CreditInformation> creditInformations = null;
-		if( rck.getCounterparty() != null)
-		{
-			creditInformations = creditInformationManager
-					.findByProjIdCpId(rck.getProjectInfo(), rck.getCounterparty(),
-							rck.getStartTime(), rck.getEndTime());
+		if (rck.getCounterparty() != null && "tab2-2".equals(rck.getActiveTab())) {
+			creditInformations = creditInformationManager.findByProjIdCpId(
+					rck.getProjectInfo(), rck.getCounterparty(),
+					rck.getStartTime(), rck.getEndTime());
+			
+			if(creditInformations == null || creditInformations.isEmpty())
+			{
+				saveMessage(request, getText("report.creditInfo.error", rck.getCounterparty().getName(), request.getLocale()));
+			}
+		}		
+		
+		if (creditInformations != null && !creditInformations.isEmpty()) {
+			return creditInformations.get(0);
 		}
 		
-		if( rck.getGuarantor() != null )
-		{
-			creditInformations = creditInformationManager
-					.findByProjIdCpId(rck.getProjectInfo(), rck.getGuarantor(),
-							rck.getStartTime(), rck.getEndTime());
+		return null;
+	}
+	
+	@ModelAttribute("creditInformationTab6")
+	public CreditInformation getCreditInformationTab6(
+			final HttpServletRequest request) throws ParseException {
+		ReportContentKey rck = getReportContentKey(request);
+		if (rck == null) {
+			return null;
+		}
+		List<CreditInformation> creditInformations = null;
+		
+		if (rck.getGuarantor() != null && "tab6".equals(rck.getActiveTab())) {
+			creditInformations = creditInformationManager.findByProjIdCpId(
+					rck.getProjectInfo(), rck.getGuarantor(),
+					rck.getStartTime(), rck.getEndTime());
+			
+			if(creditInformations == null || creditInformations.isEmpty())
+			{
+				saveMessage(request, getText("report.creditInfo.error", rck.getGuarantor().getName(), request.getLocale()));
+			}
 		}
 		
 		if (creditInformations != null && !creditInformations.isEmpty()) {
 			return creditInformations.get(0);
 		}
+		
 		return null;
 	}
-	
+
 	@ModelAttribute("investmentProjects")
-	public List<InvestmentProject> getInvestmentProjects(final HttpServletRequest request){
+	public List<InvestmentProject> getInvestmentProjects(
+			final HttpServletRequest request) {
 		String id = request.getParameter("id");
 		if (!StringUtils.isBlank(id)) {
-			List<InvestmentProject>  investmentProjects = projectProgressManager.getInvestmentProjects(Long.valueOf(id));
+			List<InvestmentProject> investmentProjects = projectProgressManager
+					.getInvestmentProjects(Long.valueOf(id));
 			if (investmentProjects == null | investmentProjects.isEmpty()) {
 				return null;
 			}
@@ -181,12 +258,14 @@ public class RiskControlReportController extends BaseSheetController {
 		}
 		return null;
 	}
-	
+
 	@ModelAttribute("supplyLiquidProjects")
-	public List<SupplyLiquidProject> getSupplyLiquidProjects(final HttpServletRequest request){
+	public List<SupplyLiquidProject> getSupplyLiquidProjects(
+			final HttpServletRequest request) {
 		String id = request.getParameter("id");
 		if (!StringUtils.isBlank(id)) {
-			List<SupplyLiquidProject>  supplyLiquidProjects = projectProgressManager.getSupplyLiquidProjects(Long.valueOf(id));
+			List<SupplyLiquidProject> supplyLiquidProjects = projectProgressManager
+					.getSupplyLiquidProjects(Long.valueOf(id));
 			if (supplyLiquidProjects == null | supplyLiquidProjects.isEmpty()) {
 				return null;
 			}
@@ -194,13 +273,15 @@ public class RiskControlReportController extends BaseSheetController {
 		}
 		return null;
 	}
-	
+
 	@ModelAttribute("repaymentProjects")
-	public List<RepaymentProject> getRepaymentProjects(final HttpServletRequest request) {
-		
+	public List<RepaymentProject> getRepaymentProjects(
+			final HttpServletRequest request) {
+
 		String id = request.getParameter("id");
 		if (!StringUtils.isBlank(id)) {
-			List<RepaymentProject>  repaymentProjects = projectProgressManager.getRepaymentProjects(Long.valueOf(id));
+			List<RepaymentProject> repaymentProjects = projectProgressManager
+					.getRepaymentProjects(Long.valueOf(id));
 			if (repaymentProjects == null | repaymentProjects.isEmpty()) {
 				return null;
 			}
@@ -208,12 +289,13 @@ public class RiskControlReportController extends BaseSheetController {
 		}
 		return null;
 	}
-
+	
 	private ReportContentKey getReportContentKey(
 			final HttpServletRequest request) throws ParseException {
 		String projectInfoId = request.getParameter("id");
 		String counterpartyId = request.getParameter("counterpartyId");
 		String guarantorId = request.getParameter("guarantorId");
+		String activeTab = request.getParameter("activeTab");
 		if (!StringUtils.isBlank(projectInfoId)) {
 			ProjectInfo projectInfo = projectInfoManager.get(Long
 					.valueOf(projectInfoId));
@@ -232,10 +314,11 @@ public class RiskControlReportController extends BaseSheetController {
 					counterparty = itc.next();
 				}
 			}
-			
+
 			Counterparty guarantor = null;
-			if(!StringUtils.isBlank(guarantorId)) {
-				guarantor = findGuarantor(projectInfo, Long.valueOf(guarantorId));
+			if (!StringUtils.isBlank(guarantorId)) {
+				guarantor = findGuarantor(projectInfo,
+						Long.valueOf(guarantorId));
 			} else {
 				Iterator<Counterparty> itc = projectInfo.getGuarantors()
 						.iterator();
@@ -285,10 +368,17 @@ public class RiskControlReportController extends BaseSheetController {
 
 			ReportContentKey rck = new ReportContentKey();
 			rck.setProjectInfo(projectInfo);
-			rck.setCounterparty(counterparty);
-			rck.setGuarantor(guarantor);
+
+			if (activeTab != null && activeTab.startsWith("tab2")) {
+				rck.setCounterparty(counterparty);
+			}
+
+			if (activeTab != null && activeTab.equals("tab6")) {
+				rck.setGuarantor(guarantor);
+			}
 			rck.setStartTime(startTime);
 			rck.setEndTime(endTime);
+			rck.setActiveTab(activeTab);
 			return rck;
 		}
 		return null;
@@ -301,10 +391,56 @@ public class RiskControlReportController extends BaseSheetController {
 	}
 
 	@RequestMapping(value = "/reports/riskControlReport*", method = RequestMethod.POST)
-	public String onSubmit(final HttpServletRequest request) {
-
-		return "/reports/riskControlReport";
+	public ModelAndView onSubmit(final HttpServletRequest request) {
+		ModelAndView mav = new ModelAndView("/reports/riskControlReport");
+		String method = request.getParameter("method");
+		if(!StringUtils.isBlank(method))
+		{
+			
+			switch (method)
+			{
+			case "FinanceCheckTab21":
+				String prevTermTime = request.getParameter("prevTermTime");
+				String currTermTime = request.getParameter("currTermTime");
+				String projectInfoId = request.getParameter("id");
+				String counterpartyId = request.getParameter("counterpartiesTab21");
+				if(StringUtils.isBlank(prevTermTime) || StringUtils.isBlank(currTermTime) || StringUtils.isBlank(counterpartyId))
+				{
+					saveError(request, "please select the date for report and counterparty");
+					return mav;
+				}
+				SimpleDateFormat shortDate = new SimpleDateFormat(getText("date.format.short", request.getLocale()));	
+				try {
+					Date prevTerm = shortDate.parse(prevTermTime);
+					Date currTerm = shortDate.parse(currTermTime);
+					Calendar c1 = Calendar.getInstance();
+					Calendar c2 = Calendar.getInstance();
+					c1.setTime(prevTerm);
+					c2.setTime(currTerm);
+					ProjectInfo projectInfo = projectInfoManager.get(Long.valueOf(projectInfoId));
+					Counterparty counterparty = findCounterparty(projectInfo, Long.valueOf(counterpartyId));
+					CorporateBalanceSheet prevTermCbs = financeSheetManager.findCorporateBalanceSheet(projectInfo, counterparty, c1.get(Calendar.YEAR), c1.get(Calendar.MONTH)+1);
+					CorporateBalanceSheet currTermCbs = financeSheetManager.findCorporateBalanceSheet(projectInfo, counterparty, c2.get(Calendar.YEAR), c2.get(Calendar.MONTH)+1);
+					
+					FinanceCheck financeCheck = new FinanceCheck();
+					financeCheck.setCurrCorpBalanceSheet(currTermCbs);
+					financeCheck.setPrevCorpBalanceSheet(prevTermCbs);
+					mav.addObject("financeCheck", financeCheck);
+					
+				} catch (ParseException e) {
+					saveError(request, "Date format is incorrect ");
+					return mav;
+				}
+				
+				break;
+				default:
+			}
+		}
+		
+		return mav;
 	}
+	
+	
 
 	@RequestMapping(value = "/reports/reportSearch*", method = RequestMethod.GET)
 	public ModelAndView handleRequest() {

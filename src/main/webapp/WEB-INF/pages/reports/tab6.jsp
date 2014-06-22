@@ -1,46 +1,53 @@
 				<div class="form-group">
                 		<appfuse:label styleClass="control-label" key="projectInfo.guarantor.name"/> : 
+                		<c:if test="${empty guarantors}">
+                			<fmt:message key="report.creditInfo.empty"/>
+                		</c:if>
 						<c:forEach var="guarantor" items="${guarantors}" varStatus="status">
-							<c:if test="${status.first}"><select id="guarantors" name="guarantors" class="form-control"></c:if>
-							<option value="${guarantor.id}" <c:if test = "${guarantor.id == creditInformation.counterparty.id}" > selected </c:if>><c:out value="${guarantor.name}" /></option>
+							<c:if test="${status.first}">
+								<select id="guarantors" name="guarantors" class="form-control">
+									<option value=""> ---<fmt:message key="report.select.default"/>--- </option>
+							</c:if>
+							<option value="${guarantor.id}" <c:if test = "${guarantor.id == param.guarantorId}" > selected </c:if>><c:out value="${guarantor.name}" /></option>
 							<c:if test="${status.last}"></select></c:if>
 						</c:forEach>
 					</div>
 					<div class="form-group">
 					<appfuse:label styleClass="control-label" key="creditInformation.heading"/> :
+					<c:if test="${not empty creditInformationTab6}" >
 					<table class="table table-striped table-bordered table-hover">
 						<tbody>
 						<tr>
 							<td><fmt:message key="creditInformation.debtBalance"/></td>
-							<td><c:out value="${creditInformation.debtBalance}" /></td>
+							<td><c:out value="${creditInformationTab6.debtBalance}" /></td>
 						</tr>
 						<tr>
 							<td><fmt:message key="creditInformation.debt"/></td>
-							<td><c:out value="${creditInformation.debt}" /></td>
+							<td><c:out value="${creditInformationTab6.debt}" /></td>
 						</tr>
 						<tr>
 							<td><fmt:message key="creditInformation.outstanding"/></td>
 							<td>
-								<c:out value="${creditInformation.outstanding}" />
+								<c:out value="${creditInformationTab6.outstanding}" />
 							 </td>
 						</tr>
 						<tr>
 							<td><fmt:message key="creditInformation.balance"/></td>
 							<td>
-								<c:out value="${creditInformation.balance}" />
+								<c:out value="${creditInformationTab6.balance}" />
 							</td>
 						</tr>
 						<tr>
 							<td><fmt:message key="creditInformation.overdue"/></td>
 							<td>
-								<c:if test="${creditInformation.overdue}"><fmt:message key="label.yes"/></c:if>
-								<c:if test="${not creditInformation.overdue}"><fmt:message key="label.no"/></c:if>
+								<c:if test="${creditInformationTab6.overdue}"><fmt:message key="label.yes"/></c:if>
+								<c:if test="${not creditInformationTab6.overdue}"><fmt:message key="label.no"/></c:if>
 							</td>
 						</tr>
 						<tr>
 							<td><fmt:message key="creditInformation.comment"/></td>
 							<td>
-								<c:out value="${creditInformation.comment}" />
+								<c:out value="${creditInformationTab6.comment}" />
 							</td>
 						</tr>
 						<tr>
@@ -51,6 +58,7 @@
 						</tr>
 						</tbody>
 					</table>
+					</c:if>
 					</div>
 					
 <script language="javascript" type="text/javascript">

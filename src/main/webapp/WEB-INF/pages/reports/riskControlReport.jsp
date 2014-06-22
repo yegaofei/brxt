@@ -1,6 +1,10 @@
 <%@ include file="/common/taglibs.jsp"%>
 <head>
     <title><fmt:message key="report.riskcontrol.title"/></title>
+	<link rel="stylesheet" type="text/css" href="${base}/webjars/bootstrap-datepicker/1.2.0/css/datepicker.css"/>
+    <script type="text/javascript" src="${base}/webjars/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="${base}/webjars/bootstrap-datepicker/1.2.0/js/locales/bootstrap-datepicker.zh-CN.js" charset="UTF-8"></script>
+    
 </head>
 
 	<div class="col-lg-15">
@@ -11,8 +15,8 @@
                 <li class="dropdown"> <a class="dropdown-toggle" data-toggle="dropdown" href="#"> <fmt:message key="report.riskcontrol.tab2"/> <span class="caret"></span> </a>
                   <ul class="dropdown-menu">
                     <li <c:if test="${param.activeTab == 'tab2'}"> class="active" </c:if>><a href="#tab2" data-toggle="tab"><fmt:message key="subjectCapacity.heading"/></a></li>                    
-                    <li><a href="#tab2-1" data-toggle="tab"><fmt:message key="report.riskcontrol.financeCheck"/></a></li>
-                    <li><a href="#tab2-2" data-toggle="tab"><fmt:message key="report.riskcontrol.otherCheck"/></a></li>
+                    <li <c:if test="${param.activeTab == 'tab2-1'}"> class="active" </c:if>><a href="#tab2-1" data-toggle="tab"><fmt:message key="report.riskcontrol.financeCheck"/></a></li>
+                    <li <c:if test="${param.activeTab == 'tab2-2'}"> class="active" </c:if>><a href="#tab2-2" data-toggle="tab"><fmt:message key="report.riskcontrol.otherCheck"/></a></li>
                   </ul>
                 </li>
                 
@@ -24,12 +28,12 @@
                 <li <c:if test="${param.activeTab == 'tab8'}"> class="active" </c:if>><a href="#tab8" data-toggle="tab"><fmt:message key="report.riskcontrol.tab8"/></a></li>
               </ul>
               
+              
               <form name="riskControlReport" id="riskControlReport" action="${ctx}/reports/riskControlReport" method="post">
               	<input type="hidden" name="id" value="<c:out value="${param.id}" />" >
               	<input type="hidden" name="counterpartyId" id="counterpartyId" value="<c:out value="${param.counterpartyId}" />" >
               	<input type="hidden" name="guarantorId" id="guarantorId" value="<c:out value="${param.guarantorId}" />" >
               	<input type="hidden" name="activeTab" id="activeTab" value="<c:out value="${param.activeTab}" />" >
-              
               <div id="myTabContent" class="tab-content">
                 <div class="tab-pane fade <c:if test="${param.activeTab == 'tab1' or empty param.activeTab}"> active in </c:if>" id="tab1">
                   	<%@ include file="./tab1.jsp" %>
@@ -37,9 +41,8 @@
                 <div class="tab-pane fade <c:if test="${param.activeTab == 'tab2'}"> active in </c:if>" id="tab2">
                 	<%@ include file="./tab2.jsp" %>
                 </div>
-                <div class="tab-pane fade" id="tab2-1">
-                  <p><fmt:message key="report.riskcontrol.financeCheck"/></p>
-                  <fmt:message key="unfinished"/>
+                <div class="tab-pane fade <c:if test="${param.activeTab == 'tab2-1'}"> active in </c:if>" id="tab2-1">
+                  <%@ include file="./tab2-1.jsp" %>
                 </div>
                 <div class="tab-pane fade <c:if test="${param.activeTab == 'tab2-2'}"> active in </c:if>" id="tab2-2">
                   <%@ include file="./tab2-2.jsp" %>

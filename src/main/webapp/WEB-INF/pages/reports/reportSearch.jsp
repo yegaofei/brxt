@@ -22,51 +22,38 @@
         <a class="btn btn-default" href="<c:url value='{ctx}/mainMenu'/>">
             <i class="icon-ok"></i> <fmt:message key="button.print"/></a>                
     </div>
-    	<form:form commandName="projectInfo" method="post" action="${ctx}/reportSearch" id="reportSearchForm" cssClass="well">
-    		<div class="row">
-    		<div class="col-sm-3 form-group">
-        		<appfuse:label styleClass="control-label" key="projectInfo.nonrequired.projectName"/>
-        		<form:input path="projectName" id="projectName" maxlength="50" cssClass="form-control"/>
-        	</div>	
-    		<div class="col-sm-3 form-group">
-        		<appfuse:label styleClass="control-label" key="projectInfo.riskManager"/>
-        		<form:input path="riskManager" id="riskManager" maxlength="20" cssClass="form-control"/>
-    		</div>
-    		<div class="col-sm-3 form-group">
-        		<appfuse:label styleClass="control-label" key="projectInfo.createTime"/>
-        		<form:input path="createTime" id="createTime" maxlength="20" cssClass="form-control"/>
-    		</div>
-    		</div>
-
-			<div class="row">
-    		<div class="col-sm-3 form-group">
-        		<appfuse:label styleClass="control-label" key="projectInfo.delegateManager"/>
-        		<form:input path="delegateManager" id="delegateManager" maxlength="20" cssClass="form-control"/>
-    		</div>
-
-    		<div class="col-sm-3 form-group">
-        		<appfuse:label styleClass="control-label" key="projectInfo.trustManager"/>
-        		<form:input path="trustManager" id="trustManager" maxlength="20" cssClass="form-control"/>
-    		</div>
-    		
-    		<div class="col-sm-1 form-group">
-    			<label></label>
-    			<button type="submit" class="btn btn-primary form-control" name="method" value="SearchProjectInfo" onclick="bCancel=false">
-            		<i class="icon-ok icon-white"></i> <fmt:message key="button.search"/>
-        		</button>
-        	</div>
-        	</div>
-    	</form:form>
     
+    	<%@ include file="../searchForm.jsp" %>
+    	
     <display:table name="projectInfoList" class="table table-condensed table-striped table-hover" requestURI=""
-                   id="projectInfoList" export="false" pagesize="20">
+                   id="projectInfo" export="false" pagesize="20">
         <display:column property="id" media="csv excel xml pdf" titleKey="projectInfo.id"/>
         <display:column property="projectName" sortable="true" href="${ctx}/reports/riskControlReport" media="html"
             paramId="id" paramProperty="id"  titleKey="projectInfo.projectName"/>
-        <display:column property="expectedReturn" sortable="true" titleKey="projectInfo.expectedReturn"/>
-        <display:column property="riskManager" sortable="true" titleKey="projectInfo.riskManager"/>
-        <display:column property="delegateManager" sortable="true" titleKey="projectInfo.delegateManager"/>
-        <display:column property="trustManager" sortable="true" titleKey="projectInfo.trustManager"/>
+        <display:column titleKey="report.offsite.committed">
+        	<c:if test="${projectInfo.projectInfoStatus.committed}">
+        		<fmt:message key='report.committed'/>
+        	</c:if>
+        	<c:if test="${not projectInfo.projectInfoStatus.committed}">
+        		<fmt:message key='report.non.committed'/>
+        	</c:if>
+        </display:column>
+        <display:column titleKey="report.riskcontrol.committed">
+        	<c:if test="${projectInfo.riskControlReport.reportStatus.commitReport}">
+        		<fmt:message key='report.committed'/>
+        	</c:if>
+        	<c:if test="${not projectInfo.riskControlReport.reportStatus.commitReport}">
+        		<fmt:message key='report.non.committed'/>
+        	</c:if>
+        </display:column>
+        <display:column titleKey="report.riskcontrol.audit">
+        	<c:if test="${projectInfo.riskControlReport.reportStatus.reportAudit}">
+        		<fmt:message key='report.committed'/>
+        	</c:if>
+        	<c:if test="${not projectInfo.riskControlReport.reportStatus.reportAudit}">
+        		<fmt:message key='report.non.committed'/>
+        	</c:if>
+         </display:column>
         <display:setProperty name="paging.banner.item_name"><fmt:message key="projectInfoList.heading"/></display:setProperty>
         <display:setProperty name="paging.banner.items_name"><fmt:message key="projectInfoList.projects"/></display:setProperty>
         <display:setProperty name="export.excel.filename"><fmt:message key="projectInfoList.title"/>.xls</display:setProperty>

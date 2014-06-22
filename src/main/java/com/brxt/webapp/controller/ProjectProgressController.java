@@ -174,8 +174,8 @@ public class ProjectProgressController extends BaseFormController {
 					Date now = new Date();
 					investmentProject.setCreateTime(now);
 					investmentProject.setUpdateTime(now);
-					investmentProject.setCreateUser(currentUser);
-					investmentProject.setUpdateUser(currentUser);
+					investmentProject.setCreateUser(currentUser.getUsername());
+					investmentProject.setUpdateUser(currentUser.getUsername());
 					
 					if(investmentProject.getSameAsRepayment())
 					{
@@ -191,10 +191,8 @@ public class ProjectProgressController extends BaseFormController {
 				else
 				{
 					// Update Existed
-					User createUser = getUserManager().getUserByUsername(investmentProject.getCreateUser().getUsername());
-					investmentProject.setCreateUser(createUser);
 					investmentProject.setUpdateTime(new Date());
-					investmentProject.setUpdateUser(currentUser);
+					investmentProject.setUpdateUser(currentUser.getUsername());
 				}
 				projectProgressManager.save(investmentProject);
 				if(repaymentProject != null)

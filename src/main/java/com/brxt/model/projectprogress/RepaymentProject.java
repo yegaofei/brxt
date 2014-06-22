@@ -55,6 +55,8 @@ public class RepaymentProject extends BaseObject  {
 	private Double currAvgPrice;
 	private String comments;
 	
+	private String evaluation; //还款来源评价
+	
 	private User createUser; // 创建人
 	private Date createTime; // 创建时间
 	private User updateUser; // 最后更新人
@@ -146,6 +148,12 @@ public class RepaymentProject extends BaseObject  {
 		this.comments = comments;
 	}
 	
+	public String getEvaluation() {
+		return evaluation;
+	}
+	public void setEvaluation(String evaluation) {
+		this.evaluation = evaluation;
+	}
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "createUser", nullable = true)
 	public User getCreateUser() {

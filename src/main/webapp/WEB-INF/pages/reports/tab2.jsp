@@ -1,13 +1,21 @@
+				
 				<div class="form-group">
                 		<appfuse:label styleClass="control-label" key="projectInfo.counterparty.name"/> : 
 						<c:forEach var="counterparty" items="${counterparties}" varStatus="status">
-							<c:if test="${status.first}"><select id="counterparties" name="counterparties" class="form-control"></c:if>
-							<option value="${counterparty.id}" <c:if test = "${counterparty.id == subjectCapacity.counterparty.id}" > selected </c:if>><c:out value="${counterparty.name}" /></option>
+							<c:if test="${status.first}">
+								<select id="counterparties" name="counterparties" class="form-control">
+									<option value=""> ---<fmt:message key="report.select.default"/>--- </option>
+							</c:if>
+							<option value="${counterparty.id}" <c:if test = "${counterparty.id == param.counterpartyId}" > selected </c:if>><c:out value="${counterparty.name}" /></option>
 							<c:if test="${status.last}"></select></c:if>
 						</c:forEach>
 					</div>
 					<div class="form-group">
+					<div class="row>
 					<appfuse:label styleClass="control-label" key="subjectCapacity.heading"/> :
+					<c:out value="${subjectCapacity.counterparty.name}" />
+					</div>
+					<c:if test="${not empty subjectCapacity}" >
 					<table class="table table-striped table-bordered table-hover">
 						<thead>
 						<tr>
@@ -85,9 +93,9 @@
 						</tr>
 						</tbody>
 					</table>
+					</c:if>
 					</div>
-	
-	
+			
 <script language="javascript" type="text/javascript">
 $(document).ready(function(){
 	$('#counterparties').change(function(){

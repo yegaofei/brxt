@@ -13,11 +13,11 @@
 						<tbody>
 						<c:if test="${investmentProject.investmentProjectType == 'real_estate'}" >
 						<tr>
-							<td><fmt:message key="investmentProject.policy"/></td>
+							<td><fmt:message key="investmentProject.policyChanges"/></td>
 							<td><input type="text" maxlength="20" class="form-control input-sm" /></td>
 						</tr>
 						<tr>
-							<td><fmt:message key="investmentProject.price"/></td>
+							<td><fmt:message key="investmentProject.priceChanges"/></td>
 							<td><input type="text" maxlength="20" class="form-control input-sm" /></td>
 						</tr>
 						</c:if>

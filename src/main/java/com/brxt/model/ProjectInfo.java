@@ -31,6 +31,8 @@ import org.appfuse.model.User;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import com.brxt.model.report.RiskControlReport;
+
 @Entity
 @Table(name = "project_info")
 public class ProjectInfo extends BaseObject implements Serializable {
@@ -58,6 +60,7 @@ public class ProjectInfo extends BaseObject implements Serializable {
 	private Set<Counterparty> counterparties = new HashSet<Counterparty>(); //交易对手
 	private Set<Counterparty> guarantors = new HashSet<Counterparty>(); //担保人关系
 	private ProjectInfoStatus projectInfoStatus = new ProjectInfoStatus();
+	private RiskControlReport riskControlReport = new RiskControlReport();
 		
 	@Column(name = "project_name", length = 50)
 	public String getProjectName() {
@@ -235,6 +238,15 @@ public class ProjectInfo extends BaseObject implements Serializable {
 
 	public void setProjectInfoStatus(ProjectInfoStatus projectInfoStatus) {
 		this.projectInfoStatus = projectInfoStatus;
+	}
+
+	@OneToOne(cascade = CascadeType.ALL)
+	public RiskControlReport getRiskControlReport() {
+		return riskControlReport;
+	}
+
+	public void setRiskControlReport(RiskControlReport riskControlReport) {
+		this.riskControlReport = riskControlReport;
 	}
 
 	@Override

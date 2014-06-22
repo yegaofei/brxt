@@ -27,11 +27,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.brxt.constant.SessionAttributes;
 import com.brxt.model.Counterparty;
+import com.brxt.model.InvestmentStatus;
 import com.brxt.model.ProjectInfo;
 import com.brxt.model.ProjectSize;
 import com.brxt.model.enums.CapitalInvestmentType;
 import com.brxt.model.enums.CounterpartyType;
 import com.brxt.model.enums.ProjectType;
+import com.brxt.model.projectprogress.InvestmentProject;
+import com.brxt.service.ProjProgressManager;
 import com.brxt.service.ProjectInfoManager;
 
 @Controller
@@ -39,10 +42,16 @@ import com.brxt.service.ProjectInfoManager;
 public class ProjectInfoFormController extends BaseFormController {
 
 	private ProjectInfoManager projectInfoManager = null;
-	private static final Map<String,String> CapitalInvestmentTypes = new HashMap<String,String>();
+	private static final List<CapitalInvestmentType> CapitalInvestmentTypes = new ArrayList<CapitalInvestmentType>();
 	private static final Map<String,String> ProjectTypes = new HashMap<String,String>();
 	private static final List<CounterpartyType> CounterpartyTypes = new ArrayList<CounterpartyType>();
-	
+	private ProjProgressManager projectProgressManager;
+
+	@Autowired
+	public void setProjectProgressManager(
+			@Qualifier("projectProgressManager") ProjProgressManager projectProgressManager) {
+		this.projectProgressManager = projectProgressManager;
+	}
 	@Autowired
 	public void setProjectInfoManager(
 			@Qualifier("projectInfoManager") ProjectInfoManager projectInfoManager) {
@@ -61,7 +70,10 @@ public class ProjectInfoFormController extends BaseFormController {
 			CapitalInvestmentType[] cits = CapitalInvestmentType.values();
 			for(CapitalInvestmentType cit : cits)
 			{
-				CapitalInvestmentTypes.put(cit.toString(), getText(cit.toString(), locale));
+				if(cit == CapitalInvestmentType.SUPPLEMENTAL_LIQUIDITY){
+					continue;
+				}
+				CapitalInvestmentTypes.add(cit);
 			}
 		}
 		
@@ -219,6 +231,23 @@ public class ProjectInfoFormController extends BaseFormController {
 				saveMessage(request, getText("projectInfo.committed", locale));
 				mav.setViewName(getSuccessView());
 				break;
+			case "AddInvestment":
+				projectInfo = getProjectInfo(request);
+				projectInfo.getInvestments().add(new InvestmentStatus());
+				mav.addObject("projectInfo", projectInfo);
+				mav.addObject("method", "EditInvestment");
+				mav.setViewName("projectInfoForm");
+				break;
+			case "SaveInvestment":
+				projectInfo = getProjectInfo(request);
+				mav = saveInvestment(projectInfo, errors, request, mav);
+				mav.addObject("method", "SaveInvestment");
+				break;
+			case "EditInvestment":	
+				mav.addObject("projectInfo", getProjectInfo(request));
+				mav.addObject("method", "EditInvestment");
+				mav.setViewName("projectInfoForm");
+				break;
 			default:
 				//Error
 			}
@@ -328,6 +357,90 @@ public class ProjectInfoFormController extends BaseFormController {
 		projectInfo = loadProjectInfo(projectInfo.getId());
 		mav.addObject("projectInfo", projectInfo);
 		return mav;
+	}
+	
+	private ModelAndView saveInvestment(ProjectInfo projectInfo,
+			BindingResult errors, HttpServletRequest request,
+			final ModelAndView mav) throws Exception{
+		String id = request.getParameter("investmentId");
+		String name = request.getParameter("investmentProjectName");
+		String type = request.getParameter("investmentType");
+		Date now = new Date();
+		if (!StringUtils.isBlank(id)) {
+			//Edit
+			CapitalInvestmentType capitalInvestmentType = CapitalInvestmentType.valueOf(type.toUpperCase());
+			InvestmentProject ip = projectProgressManager.get(Long.valueOf(id));
+			switch (capitalInvestmentType)
+			{
+			case REAL_ESTATE:
+				ip.setName(name);
+				ip.setProjectInfo(projectInfo);
+				ip.setInvestmentProjectType(CapitalInvestmentType.REAL_ESTATE.getTitle());
+				ip.setUpdateUser(getCurrentUser().getUsername());
+				ip.setUpdateTime(now);
+				ip = projectProgressManager.save(ip);
+				break;
+			case INFRASTRUCTURE:
+				ip.setName(name);
+				ip.setProjectInfo(projectInfo);
+				ip.setInvestmentProjectType(CapitalInvestmentType.INFRASTRUCTURE.getTitle());
+				ip.setUpdateUser(getCurrentUser().getUsername());
+				ip.setUpdateTime(now);
+				ip = projectProgressManager.save(ip);
+				break;
+			case SUPPLEMENTAL_LIQUIDITY:
+				break;
+				default:
+			}
+			
+			List<InvestmentStatus> investments = projectInfo.getInvestments();
+			for(InvestmentStatus is : investments)
+			{
+				if(is.getId() == ip.getId())
+				{
+					is.setProjectName(ip.getName());
+					is.setCapitalInvestmentType(CapitalInvestmentType.valueOf(ip.getInvestmentProjectType().toUpperCase()));
+				}
+			}
+			 
+		} else {
+			// Add
+			if (!StringUtils.isBlank(name)
+					|| !StringUtils.isBlank(type)) {
+				CapitalInvestmentType capitalInvestmentType = CapitalInvestmentType.valueOf(type.toUpperCase());
+				switch (capitalInvestmentType)
+				{
+				case REAL_ESTATE:
+					InvestmentProject ip = new InvestmentProject();
+					ip.setName(name);
+					ip.setProjectInfo(projectInfo);
+					ip.setInvestmentProjectType(CapitalInvestmentType.REAL_ESTATE.getTitle());
+					ip.setCreateUser(getCurrentUser().getUsername());
+					ip.setCreateTime(now);
+					ip = projectProgressManager.save(ip);
+					projectInfo.getInvestments().add(new InvestmentStatus(ip.getId(), ip.getName(), CapitalInvestmentType.REAL_ESTATE));
+					break;
+				case INFRASTRUCTURE:
+					ip = new InvestmentProject();
+					ip.setName(name);
+					ip.setProjectInfo(projectInfo);
+					ip.setInvestmentProjectType(CapitalInvestmentType.INFRASTRUCTURE.getTitle());
+					ip.setCreateUser(getCurrentUser().getUsername());
+					ip.setCreateTime(now);
+					ip = projectProgressManager.save(ip);
+					projectInfo.getInvestments().add(new InvestmentStatus(ip.getId(), ip.getName(), CapitalInvestmentType.INFRASTRUCTURE));
+					break;
+				case SUPPLEMENTAL_LIQUIDITY:
+					break;
+					default:
+				}
+			} else {
+				// Error
+			}
+		}
+		mav.addObject("projectInfo", projectInfo);
+		return mav;
+		
 	}
 	
 	private ModelAndView saveGuarantor(ProjectInfo projectInfo,

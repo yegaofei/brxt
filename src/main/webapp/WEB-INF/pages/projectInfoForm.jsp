@@ -13,7 +13,7 @@
    var msgCommit = 
    "<fmt:message key="commit.confirm"><fmt:param value="${delObject}"/></fmt:message>";
 </script>
- 
+
 <div class="col-sm-2">
     <h3><fmt:message key='projectInfoDetail.heading'/></h3>
 </div>
@@ -133,11 +133,57 @@
     </div>
     
     <div class="col-sm-5 form-group">
+    	<appfuse:label styleClass="control-label" key="projectInfo.investment.projects"/>
+    	<div id="actions" class="btn-group">
+			<c:choose>
+			<c:when test="${method == 'EditInvestment'}">
+    		<button type="submit" name="method" value="SaveInvestment" class="btn btn-default btn-xs">
+                <fmt:message key="button.save"/>
+            </button>
+			</c:when>
+			<c:otherwise>
+        	<button type="submit" name="method" value="AddInvestment" class="btn btn-default btn-xs">
+                <fmt:message key="button.add"/>
+        	</button>    
+        	</c:otherwise>
+        	</c:choose>
+        	<button type="submit" name="method" value="EditInvestment" class="btn btn-default btn-xs">
+                <fmt:message key="button.edit"/>
+        	</button>
+        	<!--
+        	<button type="submit" name="method" value="DeleteInvestment" class="btn btn-default btn-xs">
+                <fmt:message key="button.delete"/>
+        	</button>
+        	-->    
+		</div>
 		<display:table name="projectInfo.investments" id="investment" class="table table-condensed table-striped table-hover">
-  			<display:column property="projectName" sortable="false" titleKey="projectInfo.investmentName"/>
-  			<display:column sortable="false" titleKey="projectInfo.capitalInvestmentType">
-  				<fmt:message key="${investment.capitalInvestmentType.title}"/>
+			<display:column style="width: 5%">
+    			<input type="checkbox" name="investmentId" value="<c:out value='${investment.id}'/>" 
+    			<c:if test="${param.investmentId == investment.id and method != 'SaveInvestment'}">checked="checked"</c:if>
+        			style="margin: 0 0 0 4px" onclick="radio(this)" />
   			</display:column>
+  			<display:column titleKey="projectInfo.investmentName">
+    			<c:choose>
+        			<c:when test="${method == 'EditInvestment' and param.investmentId == investment.id}">
+            			<input type="text" name="investmentProjectName" style="padding: 0"
+                			value="<c:out value="${investment.projectName}" />" />
+        			</c:when>
+        			<c:otherwise><c:out value="${investment.projectName}" /></c:otherwise>
+    			</c:choose>
+  			</display:column>
+			<display:column titleKey="projectInfo.capitalInvestmentType">
+      			<c:choose>
+        			<c:when test="${method == 'EditInvestment' and param.investmentId == investment.id}">
+                			<c:forEach var="investmentType" items="${capitalInvestmentTypes}" varStatus="status">
+                    			<c:if test="${status.first}"><select id="investmentType" name="investmentType"></c:if>
+                    			<option value="${investmentType.title}" <c:if test = "${investmentType.title == investment.capitalInvestmentType.title}" > selected </c:if>><fmt:message key="${investmentType.title}"/></option>
+          						<c:if test="${status.last}"></select></c:if>
+                			</c:forEach>
+        			</c:when>
+        			<c:otherwise><fmt:message key="${investment.capitalInvestmentType.title}"/></c:otherwise>
+    			</c:choose>
+  			</display:column>
+  			<display:column title="${investButtons}" />
 		</display:table>
      </div>
     </div>

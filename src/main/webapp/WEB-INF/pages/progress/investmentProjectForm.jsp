@@ -114,12 +114,12 @@
     
     
     <c:if test="${not empty investmentProject.createUser}">
-        <form:hidden path="createUser.username" id="createUser"/>      
+        <form:hidden path="createUser" id="createUser"/>      
         <form:hidden path="createTime"/>        
     </c:if>
     
     <c:if test="${not empty investmentProject.updateUser}">
-        <form:hidden path="updateUser.username" />     
+        <form:hidden path="updateUser" />     
         <form:hidden path="updateTime" />     
     </c:if>
     

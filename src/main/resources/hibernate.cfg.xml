@@ -29,6 +29,8 @@
         <mapping class="com.brxt.model.collateral.Land"/>
         <mapping class="com.brxt.model.collateral.ConstructingProject"/>
         <mapping class="com.brxt.model.collateral.Property"/>
+        <mapping class="com.brxt.model.report.RiskControlReport"/>
+        <mapping class="com.brxt.model.report.ReportStatus"/>
     </session-factory>
 </hibernate-configuration>
 

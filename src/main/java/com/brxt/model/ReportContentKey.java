@@ -9,6 +9,7 @@ public class ReportContentKey {
 	private Counterparty guarantor;
 	private Date startTime;
 	private Date endTime;
+	private String activeTab;
 	
 	public ProjectInfo getProjectInfo() {
 		return projectInfo;
@@ -39,6 +40,12 @@ public class ReportContentKey {
 	}
 	public void setGuarantor(Counterparty guarantor) {
 		this.guarantor = guarantor;
+	}
+	public String getActiveTab() {
+		return activeTab;
+	}
+	public void setActiveTab(String activeTab) {
+		this.activeTab = activeTab;
 	}
 	
 }

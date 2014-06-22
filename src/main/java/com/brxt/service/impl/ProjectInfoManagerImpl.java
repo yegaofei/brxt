@@ -10,8 +10,6 @@ import com.brxt.dao.CounterpartyDao;
 import com.brxt.dao.InvestmentProjectDao;
 import com.brxt.dao.ProjectInfoDao;
 import com.brxt.dao.ProjectSizeDao;
-import com.brxt.dao.RepaymentProjectDao;
-import com.brxt.dao.SupplyLiquidProjectDao;
 import com.brxt.model.Counterparty;
 import com.brxt.model.InvestmentStatus;
 import com.brxt.model.ProjectInfo;
@@ -106,7 +104,7 @@ public class ProjectInfoManagerImpl extends
 			if (investmentProjs != null && !investmentProjs.isEmpty()) {
 				for(InvestmentProject ip : investmentProjs)
 				{
-					pi.getInvestments().add(new InvestmentStatus(ip.getName(), ip.getType()));
+					pi.getInvestments().add(new InvestmentStatus(ip.getId(), ip.getName(), ip.getType()));
 				}
 			}
 		}

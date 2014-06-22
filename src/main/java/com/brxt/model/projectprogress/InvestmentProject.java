@@ -56,9 +56,14 @@ public class InvestmentProject extends BaseObject  {
 	private String description; //项目进度描述
 	private Boolean delayed;
 	private String comments;
-	private User createUser; // 创建人
+	
+	private String evaluation; //资金投向综合评价
+	private String policyChanges; //房地产市场调控政策有无变化
+	private String priceChanges; //项目所在区域商品房价格走势情况；如难以取得上述数据，可结合周边楼盘定价及销售情况
+	
+	private String createUser; // 创建人
 	private Date createTime; // 创建时间
-	private User updateUser; // 最后更新人
+	private String updateUser; // 最后更新人
 	private Date updateTime; // 最后更新时间
 	private Integer version;
 	
@@ -167,13 +172,35 @@ public class InvestmentProject extends BaseObject  {
 		this.comments = comments;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "createUser", nullable = true)
-	public User getCreateUser() {
+	public String getEvaluation() {
+		return evaluation;
+	}
+
+	public void setEvaluation(String evaluation) {
+		this.evaluation = evaluation;
+	}
+
+	public String getPolicyChanges() {
+		return policyChanges;
+	}
+
+	public void setPolicyChanges(String policyChanges) {
+		this.policyChanges = policyChanges;
+	}
+
+	public String getPriceChanges() {
+		return priceChanges;
+	}
+
+	public void setPriceChanges(String priceChanges) {
+		this.priceChanges = priceChanges;
+	}
+
+	public String getCreateUser() {
 		return createUser;
 	}
 
-	public void setCreateUser(User createUser) {
+	public void setCreateUser(String createUser) {
 		this.createUser = createUser;
 	}
 
@@ -185,13 +212,11 @@ public class InvestmentProject extends BaseObject  {
 		this.createTime = createTime;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "updateUser", nullable = true)
-	public User getUpdateUser() {
+	public String getUpdateUser() {
 		return updateUser;
 	}
 
-	public void setUpdateUser(User updateUser) {
+	public void setUpdateUser(String updateUser) {
 		this.updateUser = updateUser;
 	}
 

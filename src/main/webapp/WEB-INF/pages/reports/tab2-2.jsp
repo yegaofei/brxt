@@ -1,13 +1,20 @@
 				<div class="form-group">
                 		<appfuse:label styleClass="control-label" key="projectInfo.counterparty.name"/> : 
-						<c:forEach var="counterparty" items="${counterparties}" varStatus="status">
-							<c:if test="${status.first}"><select id="counterparties2-2" name="counterparties2-2" class="form-control"></c:if>
+						<c:forEach var="counterparty" items="${counterpartiesTab22}" varStatus="status">
+							<c:if test="${status.first}">
+								<select id="counterparties22" name="counterparties22" class="form-control">
+									<option value=""> ---<fmt:message key="report.select.default"/>--- </option>
+							</c:if>
 							<option value="${counterparty.id}" <c:if test = "${counterparty.id == creditInformation.counterparty.id}" > selected </c:if>><c:out value="${counterparty.name}" /></option>
 							<c:if test="${status.last}"></select></c:if>
 						</c:forEach>
 					</div>
 					<div class="form-group">
-					<appfuse:label styleClass="control-label" key="creditInformation.heading"/> :
+					<div class="row">
+					<appfuse:label styleClass="control-label" key="creditInformation.heading"/> : 
+					<c:out value="${creditInformation.counterparty.name}" />
+					</div>
+					<c:if test="${not empty creditInformation}" >
 					<table class="table table-striped table-bordered table-hover">
 						<tbody>
 						<tr>
@@ -45,13 +52,14 @@
 						</tr>
 						</tbody>
 					</table>
+					</c:if>
 					</div>
-					
 <script language="javascript" type="text/javascript">
 $(document).ready(function(){
-	$('#counterparties2-2').change(function(){
+	$('#counterparties22').change(function(){
 		var counterpartyId=$(this).children('option:selected').val(); 
 		$('#counterpartyId').val(counterpartyId);
+		$('#guarantorId').val("");
 		$('#activeTab').val("tab2-2");
 		$('#riskControlReport').submit();
 	})

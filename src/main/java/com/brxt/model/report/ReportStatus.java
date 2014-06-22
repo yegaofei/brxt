@@ -1,10 +1,12 @@
 package com.brxt.model.report;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
@@ -14,9 +16,10 @@ import org.hibernate.annotations.Type;
 public class ReportStatus {
 	
 	private Long id;
-	private Boolean offsiteDataInput;
-	private Boolean commitReport;
-	private Boolean reportAudit;
+	private RiskControlReport riskControlReport;
+	private Boolean offsiteDataInput = Boolean.FALSE;
+	private Boolean commitReport = Boolean.FALSE;
+	private Boolean reportAudit = Boolean.FALSE;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,6 +29,15 @@ public class ReportStatus {
 	public void setId(Long id) {
 		this.id = id;
 	}
+	
+	@OneToOne(mappedBy = "reportStatus", cascade = CascadeType.ALL)
+	public RiskControlReport getRiskControlReport() {
+		return riskControlReport;
+	}
+	public void setRiskControlReport(RiskControlReport riskControlReport) {
+		this.riskControlReport = riskControlReport;
+	}
+	
 	@Column(name = "offsiteDataInput", nullable=true, columnDefinition="char(1) default 'N'" )
 	@Type(type="yes_no")
 	public Boolean getOffsiteDataInput() {
