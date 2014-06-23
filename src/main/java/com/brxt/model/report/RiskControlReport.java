@@ -1,7 +1,9 @@
 package com.brxt.model.report;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -13,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
@@ -24,7 +27,6 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import com.brxt.model.ProjectInfo;
-import com.brxt.model.finance.BudgetStatement;
 import com.brxt.model.finance.CorporateBalanceSheet;
 import com.brxt.model.finance.InstituteBalanceSheet;
 import com.brxt.model.finance.ProfitStatement;
@@ -47,6 +49,7 @@ public class RiskControlReport extends BaseObject{
 	private Set<CorporateBalanceSheet> corporateBalanceSheets = new HashSet<CorporateBalanceSheet>();
 	private Set<InstituteBalanceSheet> instituteBalanceSheet = new HashSet<InstituteBalanceSheet>();
 	private Set<ProfitStatement> profitStatements = new HashSet<ProfitStatement>();
+	private List<FinanceCheckComment> financeCheckComment = new ArrayList<FinanceCheckComment>();
 	
 	private String financeStatementSummary; //财务状况排查结论
 	private String collateralSummary; //担保物的状况
@@ -146,6 +149,14 @@ public class RiskControlReport extends BaseObject{
 		this.profitStatements = profitStatements;
 	}
 	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "riskControlReport", cascade = { CascadeType.ALL })
+	@Fetch(FetchMode.SELECT) 
+	public List<FinanceCheckComment> getFinanceCheckComment() {
+		return financeCheckComment;
+	}
+	public void setFinanceCheckComment(List<FinanceCheckComment> financeCheckComment) {
+		this.financeCheckComment = financeCheckComment;
+	}
 	public String getFinanceStatementSummary() {
 		return financeStatementSummary;
 	}

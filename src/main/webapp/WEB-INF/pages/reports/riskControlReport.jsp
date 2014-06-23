@@ -15,8 +15,7 @@
                 <li class="dropdown"> <a class="dropdown-toggle" data-toggle="dropdown" href="#"> <fmt:message key="report.riskcontrol.tab2"/> <span class="caret"></span> </a>
                   <ul class="dropdown-menu">
                     <li <c:if test="${param.activeTab == 'tab2'}"> class="active" </c:if>><a href="#tab2" data-toggle="tab"><fmt:message key="subjectCapacity.heading"/></a></li>                    
-                    <li <c:if test="${param.activeTab == 'tab2-1'}"> class="active" </c:if>><a href="#tab2-1" data-toggle="tab"><fmt:message key="report.riskcontrol.financeCheck"/></a></li>
-                    <li <c:if test="${param.activeTab == 'tab2-2'}"> class="active" </c:if>><a href="#tab2-2" data-toggle="tab"><fmt:message key="report.riskcontrol.otherCheck"/></a></li>
+                    <li <c:if test="${param.activeTab == 'tab2-1'}"> class="active" </c:if>><a href="#tab2-1" data-toggle="tab"><fmt:message key="report.riskcontrol.financeOtherCheck"/></a></li>
                   </ul>
                 </li>
                 
@@ -43,9 +42,6 @@
                 </div>
                 <div class="tab-pane fade <c:if test="${param.activeTab == 'tab2-1'}"> active in </c:if>" id="tab2-1">
                   <%@ include file="./tab2-1.jsp" %>
-                </div>
-                <div class="tab-pane fade <c:if test="${param.activeTab == 'tab2-2'}"> active in </c:if>" id="tab2-2">
-                  <%@ include file="./tab2-2.jsp" %>
                 </div>
                 <div class="tab-pane fade <c:if test="${param.activeTab == 'tab3'}"> active in </c:if>" id="tab3">
                 	<%@ include file="./tab3.jsp" %>

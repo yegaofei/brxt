@@ -31,6 +31,7 @@
         <mapping class="com.brxt.model.collateral.Property"/>
         <mapping class="com.brxt.model.report.RiskControlReport"/>
         <mapping class="com.brxt.model.report.ReportStatus"/>
+        <mapping class="com.brxt.model.report.FinanceCheckComment"/>
     </session-factory>
 </hibernate-configuration>
 

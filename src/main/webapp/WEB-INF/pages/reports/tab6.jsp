@@ -1,4 +1,5 @@
-				<div class="form-group">
+			<div class="row">	
+				<div class="col-sm-3 form-group">
                 		<appfuse:label styleClass="control-label" key="projectInfo.guarantor.name"/> : 
                 		<c:if test="${empty guarantors}">
                 			<fmt:message key="report.creditInfo.empty"/>
@@ -11,7 +12,16 @@
 							<option value="${guarantor.id}" <c:if test = "${guarantor.id == param.guarantorId}" > selected </c:if>><c:out value="${guarantor.name}" /></option>
 							<c:if test="${status.last}"></select></c:if>
 						</c:forEach>
-					</div>
+					</div>	
+						
+					<div class="col-sm-1 form-group form-actions">
+      					<label></label>
+						<button type="submit" class="btn btn-primary form-control" name="method" value="SaveFinanceCheckTab21" onclick="$('#activeTab').val('tab2-1')">
+            				<i class="icon-ok icon-white"></i> <fmt:message key="button.save"/>
+						</button>
+					</div>	
+					
+				</div>	
 					<div class="form-group">
 					<appfuse:label styleClass="control-label" key="creditInformation.heading"/> :
 					<c:if test="${not empty creditInformationTab6}" >

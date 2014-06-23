@@ -131,33 +131,6 @@ public class RiskControlReportController extends BaseSheetController {
 		return null;
 	}
 
-	@ModelAttribute("counterpartiesTab22")
-	public List<Counterparty> getCounterparties22(final HttpServletRequest request) {
-		String id = request.getParameter("id");
-		if (!StringUtils.isBlank(id)) {
-			ProjectInfo projectInfo = projectInfoManager.get(Long.valueOf(id));
-			Set<Counterparty> counterparties = projectInfo.getCounterparties();
-			if (counterparties == null || counterparties.isEmpty()) {
-				return null;
-			}
-			List<Counterparty> cpList = new ArrayList<Counterparty>(counterparties);
-
-			Set<Counterparty> guarantors = projectInfo.getGuarantors();
-			if (guarantors != null && !guarantors.isEmpty()) {
-				Iterator<Counterparty> gIt = guarantors.iterator();
-				while (gIt.hasNext()) {
-					Counterparty guarant = gIt.next();
-					if (guarant.getCounterpartyType().equalsIgnoreCase(CounterpartyType.INSTITUTION.getTitle())) {
-						continue;
-					}
-					cpList.add(guarant);
-				}
-			}
-			return cpList;
-		}
-		return null;
-	}
-
 	@ModelAttribute("guarantors")
 	public List<Counterparty> getGuarantors(final HttpServletRequest request) {
 		String id = request.getParameter("id");
@@ -182,15 +155,17 @@ public class RiskControlReportController extends BaseSheetController {
 		return null;
 	}
 
-	@ModelAttribute("creditInformation")
 	public CreditInformation getCreditInformation(final HttpServletRequest request) throws ParseException {
 		ReportContentKey rck = getReportContentKey(request);
 		if (rck == null) {
 			return null;
 		}
 		List<CreditInformation> creditInformations = null;
-		if (rck.getCounterparty() != null && "tab2-2".equals(rck.getActiveTab())) {
-			creditInformations = creditInformationManager.findByProjIdCpId(rck.getProjectInfo(), rck.getCounterparty(), rck.getStartTime(),
+		String cpId = request.getParameter("counterpartiesTab21");
+		if (StringUtils.isNotBlank(cpId) && "tab2-1".equals(rck.getActiveTab())) {
+			ProjectInfo projectInfo  = rck.getProjectInfo();
+			Counterparty counterparty = findCounterparty(projectInfo, Long.valueOf(cpId));
+			creditInformations = creditInformationManager.findByProjIdCpId(projectInfo, counterparty, rck.getStartTime(),
 					rck.getEndTime());
 
 			if (creditInformations == null || creditInformations.isEmpty()) {
@@ -408,10 +383,16 @@ public class RiskControlReportController extends BaseSheetController {
 					if (prevTermCbs != null) {
 						FinanceRatio prevFinanceRatio = new FinanceRatio();
 						prevFinanceRatio.setAssetLiabilityRatio(calculateRatio(prevTermCbs.getTotalDebt(), prevTermCbs.getTotalAsset()));
-						prevFinanceRatio.setAssetRoR(calculateRatio(prevProfitStatement.getNetProfit(), prevTermCbs.getNetAsset()));
+						if(prevProfitStatement != null)
+						{
+							prevFinanceRatio.setAssetRoR(calculateRatio(prevProfitStatement.getNetProfit(), prevTermCbs.getNetAsset()));
+						}
 						prevFinanceRatio.setLiquidityRatio(calculateRatio(prevTermCbs.getLiquidAsset(), prevTermCbs.getLiquidDebt()));
-						prevFinanceRatio.setQuickRatio(calculateRatio(prevTermCbs.getLiquidAsset().subtract(prevTermCbs.getInventory()),
-								prevTermCbs.getLiquidDebt()));
+						if(prevTermCbs.getLiquidAsset() != null)
+						{
+							prevFinanceRatio.setQuickRatio(calculateRatio(prevTermCbs.getLiquidAsset().subtract(prevTermCbs.getInventory()),
+									prevTermCbs.getLiquidDebt()));
+						}
 						if (currProfitStatement != null && prevProfitStatement != null) {
 							prevFinanceRatio.setSalesIncrementRatio(calculateRatio(
 									currProfitStatement.getOperatingIncome().subtract(prevProfitStatement.getOperatingIncome()),
@@ -423,10 +404,15 @@ public class RiskControlReportController extends BaseSheetController {
 					if (currTermCbs != null) {
 						FinanceRatio currFinanceRatio = new FinanceRatio();
 						currFinanceRatio.setAssetLiabilityRatio(calculateRatio(currTermCbs.getTotalDebt(), currTermCbs.getTotalAsset()));
-						currFinanceRatio.setAssetRoR(calculateRatio(currProfitStatement.getNetProfit(), currTermCbs.getNetAsset()));
+						if(currProfitStatement != null)
+						{
+							currFinanceRatio.setAssetRoR(calculateRatio(currProfitStatement.getNetProfit(), currTermCbs.getNetAsset()));
+						}
 						currFinanceRatio.setLiquidityRatio(calculateRatio(currTermCbs.getLiquidAsset(), currTermCbs.getLiquidDebt()));
+						if(currTermCbs.getLiquidAsset() != null){
 						currFinanceRatio.setQuickRatio(calculateRatio(currTermCbs.getLiquidAsset().subtract(currTermCbs.getInventory()),
 								currTermCbs.getLiquidDebt()));
+						}
 						financeCheck.setCurrFinanceRatio(currFinanceRatio);
 					}
 					
@@ -457,8 +443,14 @@ public class RiskControlReportController extends BaseSheetController {
 						}
 						financeCheck.setFinanceRatioChanges(financeRatioChanges);
 					}
-
+					
 					mav.addObject("financeCheck", financeCheck);
+					CreditInformation creditInformation = getCreditInformation(request);
+					if(currTermCbs != null)
+					{
+						creditInformation.setDebtBalance(currTermCbs.getLongLoan().add(currTermCbs.getShortLoan()));
+					}
+					mav.addObject("creditInformation", creditInformation);
 				} catch (ParseException e) {
 					saveError(request, "Date format is incorrect ");
 					return mav;
