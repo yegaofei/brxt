@@ -1,7 +1,5 @@
 package com.brxt.model.report;
 
-import java.math.BigDecimal;
-
 import com.brxt.model.Counterparty;
 import com.brxt.model.finance.CorporateBalanceSheet;
 import com.brxt.model.finance.ProfitStatement;
@@ -12,18 +10,15 @@ public class FinanceCheck {
 	private Counterparty counterparty;
 	private ProfitStatement prevProfitStatement;
 	private CorporateBalanceSheet prevCorpBalanceSheet;
+	private FinanceRatio prevFinanceRatio;
 	
 	private ProfitStatement currProfitStatement;
 	private CorporateBalanceSheet currCorpBalanceSheet;
+	private FinanceRatio currFinanceRatio;
 	
 	private ProfitStatement profitStatementChanges;
 	private CorporateBalanceSheet corpBalanceSheetChanges;
-	
-	private BigDecimal assetLiabilityRatio; //资产负债率
-	private BigDecimal liquidityRatio; //流动比率
-	private BigDecimal quickRatio; //速动比率
-	private BigDecimal assetRoR;  //净资产收益率
-	private BigDecimal salesIncrementRatio; //销售收入年度增长率
+	private FinanceRatio financeRatioChanges;
 	
 	public Long getId() {
 		return id;
@@ -74,35 +69,23 @@ public class FinanceCheck {
 			CorporateBalanceSheet corpBalanceSheetChanges) {
 		this.corpBalanceSheetChanges = corpBalanceSheetChanges;
 	}
-	public BigDecimal getAssetLiabilityRatio() {
-		return assetLiabilityRatio;
+	public FinanceRatio getPrevFinanceRatio() {
+		return prevFinanceRatio;
 	}
-	public void setAssetLiabilityRatio(BigDecimal assetLiabilityRatio) {
-		this.assetLiabilityRatio = assetLiabilityRatio;
+	public void setPrevFinanceRatio(FinanceRatio prevFinanceRatio) {
+		this.prevFinanceRatio = prevFinanceRatio;
 	}
-	public BigDecimal getLiquidityRatio() {
-		return liquidityRatio;
+	public FinanceRatio getCurrFinanceRatio() {
+		return currFinanceRatio;
 	}
-	public void setLiquidityRatio(BigDecimal liquidityRatio) {
-		this.liquidityRatio = liquidityRatio;
+	public void setCurrFinanceRatio(FinanceRatio currFinanceRatio) {
+		this.currFinanceRatio = currFinanceRatio;
 	}
-	public BigDecimal getQuickRatio() {
-		return quickRatio;
+	public FinanceRatio getFinanceRatioChanges() {
+		return financeRatioChanges;
 	}
-	public void setQuickRatio(BigDecimal quickRatio) {
-		this.quickRatio = quickRatio;
-	}
-	public BigDecimal getAssetRoR() {
-		return assetRoR;
-	}
-	public void setAssetRoR(BigDecimal assetRoR) {
-		this.assetRoR = assetRoR;
-	}
-	public BigDecimal getSalesIncrementRatio() {
-		return salesIncrementRatio;
-	}
-	public void setSalesIncrementRatio(BigDecimal salesIncrementRatio) {
-		this.salesIncrementRatio = salesIncrementRatio;
+	public void setFinanceRatioChanges(FinanceRatio financeRatioChanges) {
+		this.financeRatioChanges = financeRatioChanges;
 	}
 	
 }

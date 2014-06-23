@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.brxt.model.Counterparty;
 import com.brxt.model.ProjectInfo;
-import com.brxt.model.finance.BudgetStatement;
+import com.brxt.model.finance.ProfitStatement;
 import com.brxt.model.report.RiskControlReport;
 
 public class RiskControlReportDaoTest extends BaseDaoTestCase {
@@ -23,7 +23,7 @@ public class RiskControlReportDaoTest extends BaseDaoTestCase {
     private ProjectInfoDao projectInfoDao;
 	
 	@Autowired
-	private FinancialSheetDao budgetStatementDao;
+	private FinancialSheetDao profitStatementDao;
 	
 	@Autowired
     private RiskControlReportDao riskControlReportDao;
@@ -65,11 +65,11 @@ public class RiskControlReportDaoTest extends BaseDaoTestCase {
 		
 		Set<Counterparty> counterparties = projectInfo.getCounterparties();
 		Iterator<Counterparty> itcp = counterparties.iterator();
-		BudgetStatement bs = null;
+		ProfitStatement bs = null;
 		while (itcp.hasNext())
 		{
 			Counterparty cp = itcp.next();
-			bs = (BudgetStatement)budgetStatementDao.findLatest(projectInfo, cp);
+			bs = (ProfitStatement)profitStatementDao.findLatest(projectInfo, cp);
 			if(bs != null)
 			{
 				break;
@@ -80,16 +80,16 @@ public class RiskControlReportDaoTest extends BaseDaoTestCase {
 		{
 			itcp = counterparties.iterator();
 			Counterparty cp = itcp.next();
-			bs = new BudgetStatement();
+			bs = new ProfitStatement();
 			bs.setProjectInfo(projectInfo);
 			bs.setCounterparty(cp);
 			bs.setReportYear(2014);
 			bs.setReportMonth((short)5);
-			bs.setBudgetIncomeTotal(new BigDecimal("50000"));
-			bs = (BudgetStatement)budgetStatementDao.save(bs);
+			bs.setOperatingIncome(new BigDecimal("50000"));
+			bs = (ProfitStatement)profitStatementDao.save(bs);
 		}
 		
-		riskControlReport.getBudgetStatements().add(bs);
+		riskControlReport.getProfitStatements().add(bs);
 		//riskControlReport = riskControlReportDao.save(riskControlReport);
 		projectInfo.setRiskControlReport(riskControlReport);
 		projectInfoDao.save(projectInfo);
@@ -98,9 +98,9 @@ public class RiskControlReportDaoTest extends BaseDaoTestCase {
 		projectInfo = projectInfoDao.get(1L);
 		riskControlReport = projectInfo.getRiskControlReport();
 		assertNotNull(riskControlReport);
-		assertNotNull(riskControlReport.getBudgetStatements());
-		assertTrue(riskControlReport.getBudgetStatements().size() > 0);
-		assertTrue(riskControlReport.getBudgetStatements().contains(bs));
+		assertNotNull(riskControlReport.getProfitStatements());
+		assertTrue(riskControlReport.getProfitStatements().size() > 0);
+		assertTrue(riskControlReport.getProfitStatements().contains(bs));
 		
 	}
 }

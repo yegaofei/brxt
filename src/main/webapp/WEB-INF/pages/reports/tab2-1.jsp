@@ -7,23 +7,30 @@
 				<select id="counterpartiesTab21" name="counterpartiesTab21" class="form-control">
 					<option value=""> ---<fmt:message key="report.select.default"/>--- </option>
 			</c:if>
-			<option value="${counterparty.id}" <c:if test = "${counterparty.id == param.counterpartyId}" > selected </c:if>><c:out value="${counterparty.name}" /></option>
+			<option value="${counterparty.id}" <c:if test = "${counterparty.id == param.counterpartiesTab21}" > selected </c:if>><c:out value="${counterparty.name}" /></option>
 			<c:if test="${status.last}"></select></c:if>
 		</c:forEach>
 		</div>
 	
 	<div class="col-sm-3 form-group">
 			<appfuse:label styleClass="control-label" key="report.prev.term.report"/>
-			<input type="text" id="prevTermTime" name="prevTermTime" maxlength="20" class="form-control"/>
+			<input type="text" id="prevTermTime" name="prevTermTime" maxlength="20" class="form-control" value="<c:out value='${param.prevTermTime}' />"/>
 	</div>	
 		<div class="col-sm-3 form-group">
 			<appfuse:label styleClass="control-label" key="report.curr.term.report"/>
-			<input type="text" id="currTermTime" name="currTermTime" maxlength="20" class="form-control"/>
+			<input type="text" id="currTermTime" name="currTermTime" maxlength="20" class="form-control" value="<c:out value='${param.currTermTime}' />"/>
       </div>
       	<div class="col-sm-1 form-group form-actions">
       	<label></label>
 			<button type="submit" class="btn btn-primary form-control" name="method" value="FinanceCheckTab21" onclick="$('#activeTab').val('tab2-1')">
             		<i class="icon-ok icon-white"></i> <fmt:message key="button.ok"/>
+			</button>
+			
+		</div>
+		<div class="col-sm-1 form-group form-actions">
+      	<label></label>
+			<button type="submit" class="btn btn-primary form-control" name="method" value="SaveFinanceCheckTab21" onclick="$('#activeTab').val('tab2-1')">
+            		<i class="icon-ok icon-white"></i> <fmt:message key="button.save"/>
 			</button>
 		</div>	
 
@@ -106,19 +113,19 @@
 					<td><fmt:message key="profitStatement.operatingIncome"/></td>
 					<td><c:out value="${financeCheck.prevProfitStatement.operatingIncome}" /></td>
 					<td><c:out value="${financeCheck.currProfitStatement.operatingIncome}" /></td>
-					<td><c:out value="${financeCheck.profitStatementChanges.operatingIncome}" /></td>
+					<td>-</td>
 				</tr>
 				<tr>
 					<td><fmt:message key="profitStatement.operatingProfit"/></td>
 					<td><c:out value="${financeCheck.prevProfitStatement.operatingProfit}" /></td>
 					<td><c:out value="${financeCheck.currProfitStatement.operatingProfit}" /></td>
-					<td><c:out value="${financeCheck.profitStatementChanges.operatingProfit}" /></td>
+					<td>-</td>
 				</tr>
 				<tr>
 					<td><fmt:message key="profitStatement.netProfit"/></td>
 					<td><c:out value="${financeCheck.prevProfitStatement.netProfit}" /></td>
 					<td><c:out value="${financeCheck.currProfitStatement.netProfit}" /></td>
-					<td><c:out value="${financeCheck.profitStatementChanges.netProfit}" /></td>
+					<td>-</td>
 				</tr>
 			</tbody>
 		</table>
@@ -136,21 +143,21 @@
 			<tbody>
 				<tr>
 					<td><fmt:message key="report.financeCheck.assetLiabilityRatio"/></td>
-					<td><c:out value="${financeCheck.assetLiabilityRatio}" /></td>
-					<td><c:out value="${financeCheck.assetLiabilityRatio}" /></td>
-					<td><c:out value="${financeCheck.assetLiabilityRatio}" /></td>
+					<td><c:out value="${financeCheck.prevFinanceRatio.assetLiabilityRatio}" /></td>
+					<td><c:out value="${financeCheck.currFinanceRatio.assetLiabilityRatio}" /></td>
+					<td><c:out value="${financeCheck.financeRatioChanges.assetLiabilityRatio}" /></td>
 				</tr>
 				<tr>
 					<td><fmt:message key="report.financeCheck.liquidityRatio"/></td>
-					<td><c:out value="${financeCheck.liquidityRatio}" /></td>
-					<td><c:out value="${financeCheck.liquidityRatio}" /></td>
-					<td><c:out value="${financeCheck.liquidityRatio}" /></td>
+					<td><c:out value="${financeCheck.prevFinanceRatio.liquidityRatio}" /></td>
+					<td><c:out value="${financeCheck.currFinanceRatio.liquidityRatio}" /></td>
+					<td><c:out value="${financeCheck.financeRatioChanges.liquidityRatio}" /></td>
 				</tr>
 				<tr>
 					<td><fmt:message key="report.financeCheck.quickRatio"/></td>
-					<td><c:out value="${financeCheck.quickRatio}" /></td>
-					<td><c:out value="${financeCheck.quickRatio}" /></td>
-					<td><c:out value="${financeCheck.quickRatio}" /></td>
+					<td><c:out value="${financeCheck.prevFinanceRatio.quickRatio}" /></td>
+					<td><c:out value="${financeCheck.currFinanceRatio.quickRatio}" /></td>
+					<td><c:out value="${financeCheck.financeRatioChanges.quickRatio}" /></td>
 				</tr>
 				<tr>
 					<td></td>
@@ -160,15 +167,15 @@
 				</tr>
 				<tr>
 					<td><fmt:message key="report.financeCheck.assetRoR"/></td>
-					<td><c:out value="${financeCheck.assetRoR}" /></td>
-					<td><c:out value="${financeCheck.assetRoR}" /></td>
-					<td><c:out value="${financeCheck.assetRoR}" /></td>
+					<td><c:out value="${financeCheck.prevFinanceRatio.assetRoR}" /></td>
+					<td><c:out value="${financeCheck.currFinanceRatio.assetRoR}" /></td>
+					<td><c:out value="${financeCheck.financeRatioChanges.assetRoR}" /></td>
 				</tr>
 				<tr>
 					<td><fmt:message key="report.financeCheck.salesIncrementRatio"/></td>
-					<td><c:out value="${financeCheck.salesIncrementRatio}" /></td>
-					<td><c:out value="${financeCheck.salesIncrementRatio}" /></td>
-					<td><c:out value="${financeCheck.salesIncrementRatio}" /></td>
+					<td><c:out value="${financeCheck.prevFinanceRatio.salesIncrementRatio}" /></td>
+					<td><c:out value="${financeCheck.currFinanceRatio.salesIncrementRatio}" /></td>
+					<td><c:out value="${financeCheck.financeRatioChanges.salesIncrementRatio}" /></td>
 				</tr>
 				<tr>
 					<td><fmt:message key="report.financeCheck.financeStatementSummary"/></td>

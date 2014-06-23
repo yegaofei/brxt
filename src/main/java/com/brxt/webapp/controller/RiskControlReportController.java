@@ -1,5 +1,8 @@
 package com.brxt.webapp.controller;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -7,7 +10,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,10 +31,12 @@ import com.brxt.model.ReportContentKey;
 import com.brxt.model.SubjectCapacity;
 import com.brxt.model.enums.CounterpartyType;
 import com.brxt.model.finance.CorporateBalanceSheet;
+import com.brxt.model.finance.ProfitStatement;
 import com.brxt.model.projectprogress.InvestmentProject;
 import com.brxt.model.projectprogress.RepaymentProject;
 import com.brxt.model.projectprogress.SupplyLiquidProject;
 import com.brxt.model.report.FinanceCheck;
+import com.brxt.model.report.FinanceRatio;
 import com.brxt.service.CreditInformationManager;
 import com.brxt.service.ProjProgressManager;
 import com.brxt.service.ProjectInfoManager;
@@ -42,6 +46,7 @@ import com.brxt.service.SubjectCapacityManager;
 @Controller
 public class RiskControlReportController extends BaseSheetController {
 
+	private static final MathContext mc = new MathContext(2, RoundingMode.HALF_DOWN);
 	private ProjectInfoManager projectInfoManager = null;
 	private RepaymentManager repaymentManager = null;
 	private SubjectCapacityManager subjectCapacityManager = null;
@@ -50,32 +55,27 @@ public class RiskControlReportController extends BaseSheetController {
 	private ProjProgressManager projectProgressManager;
 
 	@Autowired
-	public void setProjectInfoManager(
-			@Qualifier("projectInfoManager") ProjectInfoManager projectInfoManager) {
+	public void setProjectInfoManager(@Qualifier("projectInfoManager") ProjectInfoManager projectInfoManager) {
 		this.projectInfoManager = projectInfoManager;
 	}
 
 	@Autowired
-	public void setRepaymentManager(
-			@Qualifier("repaymentManager") RepaymentManager repaymentManager) {
+	public void setRepaymentManager(@Qualifier("repaymentManager") RepaymentManager repaymentManager) {
 		this.repaymentManager = repaymentManager;
 	}
 
 	@Autowired
-	public void setSubjectCapacityManager(
-			@Qualifier("subjectCapacityManager") SubjectCapacityManager subjectCapacityManager) {
+	public void setSubjectCapacityManager(@Qualifier("subjectCapacityManager") SubjectCapacityManager subjectCapacityManager) {
 		this.subjectCapacityManager = subjectCapacityManager;
 	}
 
 	@Autowired
-	public void setCreditInformationManager(
-			@Qualifier("creditInformationManager") CreditInformationManager creditInformationManager) {
+	public void setCreditInformationManager(@Qualifier("creditInformationManager") CreditInformationManager creditInformationManager) {
 		this.creditInformationManager = creditInformationManager;
 	}
 
 	@Autowired
-	public void setProjectProgressManager(
-			@Qualifier("projectProgressManager") ProjProgressManager projectProgressManager) {
+	public void setProjectProgressManager(@Qualifier("projectProgressManager") ProjProgressManager projectProgressManager) {
 		this.projectProgressManager = projectProgressManager;
 	}
 
@@ -99,21 +99,18 @@ public class RiskControlReportController extends BaseSheetController {
 	}
 
 	@ModelAttribute("subjectCapacity")
-	public SubjectCapacity getSubjectCapacity(final HttpServletRequest request)
-			throws ParseException {
+	public SubjectCapacity getSubjectCapacity(final HttpServletRequest request) throws ParseException {
 		ReportContentKey rck = getReportContentKey(request);
 		if (rck == null) {
 			return null;
 		}
-		List<SubjectCapacity> subjectCapacities = subjectCapacityManager
-				.findByProjIdCpId(rck.getProjectInfo(), rck.getCounterparty(),
-						rck.getStartTime(), rck.getEndTime());
+		List<SubjectCapacity> subjectCapacities = subjectCapacityManager.findByProjIdCpId(rck.getProjectInfo(), rck.getCounterparty(),
+				rck.getStartTime(), rck.getEndTime());
 		if (subjectCapacities != null && subjectCapacities.size() > 0) {
 			return subjectCapacities.get(0);
 		}
-		
-		if(rck.getCounterparty() != null && "tab2".equals(rck.getActiveTab()))
-		{
+
+		if (rck.getCounterparty() != null && "tab2".equals(rck.getActiveTab())) {
 			saveMessage(request, getText("report.subject.error", rck.getCounterparty().getName(), request.getLocale()));
 		}
 		return null;
@@ -128,16 +125,14 @@ public class RiskControlReportController extends BaseSheetController {
 			if (counterparties == null || counterparties.isEmpty()) {
 				return null;
 			}
-			List<Counterparty> cpList = new ArrayList<Counterparty>(
-					counterparties);
+			List<Counterparty> cpList = new ArrayList<Counterparty>(counterparties);
 			return cpList;
 		}
 		return null;
 	}
 
 	@ModelAttribute("counterpartiesTab22")
-	public List<Counterparty> getCounterparties22(
-			final HttpServletRequest request) {
+	public List<Counterparty> getCounterparties22(final HttpServletRequest request) {
 		String id = request.getParameter("id");
 		if (!StringUtils.isBlank(id)) {
 			ProjectInfo projectInfo = projectInfoManager.get(Long.valueOf(id));
@@ -145,22 +140,19 @@ public class RiskControlReportController extends BaseSheetController {
 			if (counterparties == null || counterparties.isEmpty()) {
 				return null;
 			}
-			List<Counterparty> cpList = new ArrayList<Counterparty>(
-					counterparties);
+			List<Counterparty> cpList = new ArrayList<Counterparty>(counterparties);
 
 			Set<Counterparty> guarantors = projectInfo.getGuarantors();
 			if (guarantors != null && !guarantors.isEmpty()) {
 				Iterator<Counterparty> gIt = guarantors.iterator();
 				while (gIt.hasNext()) {
 					Counterparty guarant = gIt.next();
-					if (guarant.getCounterpartyType().equalsIgnoreCase(
-							CounterpartyType.INSTITUTION.getTitle())) {
+					if (guarant.getCounterpartyType().equalsIgnoreCase(CounterpartyType.INSTITUTION.getTitle())) {
 						continue;
 					}
 					cpList.add(guarant);
 				}
 			}
-
 			return cpList;
 		}
 		return null;
@@ -176,12 +168,11 @@ public class RiskControlReportController extends BaseSheetController {
 				return null;
 			}
 			List<Counterparty> cpList = new ArrayList<Counterparty>();
-			
+
 			Iterator<Counterparty> gIt = guarantors.iterator();
 			while (gIt.hasNext()) {
 				Counterparty guarant = gIt.next();
-				if (guarant.getCounterpartyType().equalsIgnoreCase(
-						CounterpartyType.INSTITUTION.getTitle())) {
+				if (guarant.getCounterpartyType().equalsIgnoreCase(CounterpartyType.INSTITUTION.getTitle())) {
 					continue;
 				}
 				cpList.add(guarant);
@@ -192,65 +183,57 @@ public class RiskControlReportController extends BaseSheetController {
 	}
 
 	@ModelAttribute("creditInformation")
-	public CreditInformation getCreditInformation(
-			final HttpServletRequest request) throws ParseException {
+	public CreditInformation getCreditInformation(final HttpServletRequest request) throws ParseException {
 		ReportContentKey rck = getReportContentKey(request);
 		if (rck == null) {
 			return null;
 		}
 		List<CreditInformation> creditInformations = null;
 		if (rck.getCounterparty() != null && "tab2-2".equals(rck.getActiveTab())) {
-			creditInformations = creditInformationManager.findByProjIdCpId(
-					rck.getProjectInfo(), rck.getCounterparty(),
-					rck.getStartTime(), rck.getEndTime());
-			
-			if(creditInformations == null || creditInformations.isEmpty())
-			{
+			creditInformations = creditInformationManager.findByProjIdCpId(rck.getProjectInfo(), rck.getCounterparty(), rck.getStartTime(),
+					rck.getEndTime());
+
+			if (creditInformations == null || creditInformations.isEmpty()) {
 				saveMessage(request, getText("report.creditInfo.error", rck.getCounterparty().getName(), request.getLocale()));
 			}
-		}		
-		
+		}
+
 		if (creditInformations != null && !creditInformations.isEmpty()) {
 			return creditInformations.get(0);
 		}
-		
+
 		return null;
 	}
-	
+
 	@ModelAttribute("creditInformationTab6")
-	public CreditInformation getCreditInformationTab6(
-			final HttpServletRequest request) throws ParseException {
+	public CreditInformation getCreditInformationTab6(final HttpServletRequest request) throws ParseException {
 		ReportContentKey rck = getReportContentKey(request);
 		if (rck == null) {
 			return null;
 		}
 		List<CreditInformation> creditInformations = null;
-		
+
 		if (rck.getGuarantor() != null && "tab6".equals(rck.getActiveTab())) {
-			creditInformations = creditInformationManager.findByProjIdCpId(
-					rck.getProjectInfo(), rck.getGuarantor(),
-					rck.getStartTime(), rck.getEndTime());
-			
-			if(creditInformations == null || creditInformations.isEmpty())
-			{
+			creditInformations = creditInformationManager.findByProjIdCpId(rck.getProjectInfo(), rck.getGuarantor(), rck.getStartTime(),
+					rck.getEndTime());
+
+			if (creditInformations == null || creditInformations.isEmpty()) {
 				saveMessage(request, getText("report.creditInfo.error", rck.getGuarantor().getName(), request.getLocale()));
 			}
 		}
-		
+
 		if (creditInformations != null && !creditInformations.isEmpty()) {
 			return creditInformations.get(0);
 		}
-		
+
 		return null;
 	}
 
 	@ModelAttribute("investmentProjects")
-	public List<InvestmentProject> getInvestmentProjects(
-			final HttpServletRequest request) {
+	public List<InvestmentProject> getInvestmentProjects(final HttpServletRequest request) {
 		String id = request.getParameter("id");
 		if (!StringUtils.isBlank(id)) {
-			List<InvestmentProject> investmentProjects = projectProgressManager
-					.getInvestmentProjects(Long.valueOf(id));
+			List<InvestmentProject> investmentProjects = projectProgressManager.getInvestmentProjects(Long.valueOf(id));
 			if (investmentProjects == null | investmentProjects.isEmpty()) {
 				return null;
 			}
@@ -260,12 +243,10 @@ public class RiskControlReportController extends BaseSheetController {
 	}
 
 	@ModelAttribute("supplyLiquidProjects")
-	public List<SupplyLiquidProject> getSupplyLiquidProjects(
-			final HttpServletRequest request) {
+	public List<SupplyLiquidProject> getSupplyLiquidProjects(final HttpServletRequest request) {
 		String id = request.getParameter("id");
 		if (!StringUtils.isBlank(id)) {
-			List<SupplyLiquidProject> supplyLiquidProjects = projectProgressManager
-					.getSupplyLiquidProjects(Long.valueOf(id));
+			List<SupplyLiquidProject> supplyLiquidProjects = projectProgressManager.getSupplyLiquidProjects(Long.valueOf(id));
 			if (supplyLiquidProjects == null | supplyLiquidProjects.isEmpty()) {
 				return null;
 			}
@@ -275,13 +256,11 @@ public class RiskControlReportController extends BaseSheetController {
 	}
 
 	@ModelAttribute("repaymentProjects")
-	public List<RepaymentProject> getRepaymentProjects(
-			final HttpServletRequest request) {
+	public List<RepaymentProject> getRepaymentProjects(final HttpServletRequest request) {
 
 		String id = request.getParameter("id");
 		if (!StringUtils.isBlank(id)) {
-			List<RepaymentProject> repaymentProjects = projectProgressManager
-					.getRepaymentProjects(Long.valueOf(id));
+			List<RepaymentProject> repaymentProjects = projectProgressManager.getRepaymentProjects(Long.valueOf(id));
 			if (repaymentProjects == null | repaymentProjects.isEmpty()) {
 				return null;
 			}
@@ -289,27 +268,23 @@ public class RiskControlReportController extends BaseSheetController {
 		}
 		return null;
 	}
-	
-	private ReportContentKey getReportContentKey(
-			final HttpServletRequest request) throws ParseException {
+
+	private ReportContentKey getReportContentKey(final HttpServletRequest request) throws ParseException {
 		String projectInfoId = request.getParameter("id");
 		String counterpartyId = request.getParameter("counterpartyId");
 		String guarantorId = request.getParameter("guarantorId");
 		String activeTab = request.getParameter("activeTab");
 		if (!StringUtils.isBlank(projectInfoId)) {
-			ProjectInfo projectInfo = projectInfoManager.get(Long
-					.valueOf(projectInfoId));
+			ProjectInfo projectInfo = projectInfoManager.get(Long.valueOf(projectInfoId));
 			if (projectInfo == null) {
 				log.error("No project information for id " + projectInfoId);
 				return null;
 			}
 			Counterparty counterparty = null;
 			if (!StringUtils.isBlank(counterpartyId)) {
-				counterparty = findCounterparty(projectInfo,
-						Long.valueOf(counterpartyId));
+				counterparty = findCounterparty(projectInfo, Long.valueOf(counterpartyId));
 			} else {
-				Iterator<Counterparty> itc = projectInfo.getCounterparties()
-						.iterator();
+				Iterator<Counterparty> itc = projectInfo.getCounterparties().iterator();
 				if (itc != null && itc.hasNext()) {
 					counterparty = itc.next();
 				}
@@ -317,19 +292,16 @@ public class RiskControlReportController extends BaseSheetController {
 
 			Counterparty guarantor = null;
 			if (!StringUtils.isBlank(guarantorId)) {
-				guarantor = findGuarantor(projectInfo,
-						Long.valueOf(guarantorId));
+				guarantor = findGuarantor(projectInfo, Long.valueOf(guarantorId));
 			} else {
-				Iterator<Counterparty> itc = projectInfo.getGuarantors()
-						.iterator();
+				Iterator<Counterparty> itc = projectInfo.getGuarantors().iterator();
 				if (itc != null && itc.hasNext()) {
 					guarantor = itc.next();
 				}
 			}
 
 			if (counterparty == null && guarantor == null) {
-				log.debug("No counterparty and guarantor for project info ["
-						+ projectInfo.toString() + "]");
+				log.debug("No counterparty and guarantor for project info [" + projectInfo.toString() + "]");
 				return null;
 			}
 
@@ -394,22 +366,19 @@ public class RiskControlReportController extends BaseSheetController {
 	public ModelAndView onSubmit(final HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("/reports/riskControlReport");
 		String method = request.getParameter("method");
-		if(!StringUtils.isBlank(method))
-		{
-			
-			switch (method)
-			{
+		if (!StringUtils.isBlank(method)) {
+
+			switch (method) {
 			case "FinanceCheckTab21":
 				String prevTermTime = request.getParameter("prevTermTime");
 				String currTermTime = request.getParameter("currTermTime");
 				String projectInfoId = request.getParameter("id");
 				String counterpartyId = request.getParameter("counterpartiesTab21");
-				if(StringUtils.isBlank(prevTermTime) || StringUtils.isBlank(currTermTime) || StringUtils.isBlank(counterpartyId))
-				{
-					saveError(request, "please select the date for report and counterparty");
+				if (StringUtils.isBlank(prevTermTime) || StringUtils.isBlank(currTermTime) || StringUtils.isBlank(counterpartyId)) {
+					saveError(request, getText("report.counterparty.required.error", request.getLocale()));
 					return mav;
 				}
-				SimpleDateFormat shortDate = new SimpleDateFormat(getText("date.format.short", request.getLocale()));	
+				SimpleDateFormat shortDate = new SimpleDateFormat(getText("date.format.short", request.getLocale()));
 				try {
 					Date prevTerm = shortDate.parse(prevTermTime);
 					Date currTerm = shortDate.parse(currTermTime);
@@ -419,39 +388,137 @@ public class RiskControlReportController extends BaseSheetController {
 					c2.setTime(currTerm);
 					ProjectInfo projectInfo = projectInfoManager.get(Long.valueOf(projectInfoId));
 					Counterparty counterparty = findCounterparty(projectInfo, Long.valueOf(counterpartyId));
-					CorporateBalanceSheet prevTermCbs = financeSheetManager.findCorporateBalanceSheet(projectInfo, counterparty, c1.get(Calendar.YEAR), c1.get(Calendar.MONTH)+1);
-					CorporateBalanceSheet currTermCbs = financeSheetManager.findCorporateBalanceSheet(projectInfo, counterparty, c2.get(Calendar.YEAR), c2.get(Calendar.MONTH)+1);
-					
+					CorporateBalanceSheet prevTermCbs = financeSheetManager.findCorporateBalanceSheet(projectInfo, counterparty,
+							c1.get(Calendar.YEAR), c1.get(Calendar.MONTH) + 1);
+					CorporateBalanceSheet currTermCbs = financeSheetManager.findCorporateBalanceSheet(projectInfo, counterparty,
+							c2.get(Calendar.YEAR), c2.get(Calendar.MONTH) + 1);
+					CorporateBalanceSheet corpBalanceSheetChanges = calculate(prevTermCbs, currTermCbs);
 					FinanceCheck financeCheck = new FinanceCheck();
 					financeCheck.setCurrCorpBalanceSheet(currTermCbs);
 					financeCheck.setPrevCorpBalanceSheet(prevTermCbs);
-					mav.addObject("financeCheck", financeCheck);
+					financeCheck.setCorpBalanceSheetChanges(corpBalanceSheetChanges);
+
+					ProfitStatement prevProfitStatement = financeSheetManager.findProfitStatement(projectInfo, counterparty, c1.get(Calendar.YEAR),
+							c1.get(Calendar.MONTH) + 1);
+					ProfitStatement currProfitStatement = financeSheetManager.findProfitStatement(projectInfo, counterparty, c2.get(Calendar.YEAR),
+							c2.get(Calendar.MONTH) + 1);
+					financeCheck.setPrevProfitStatement(prevProfitStatement);
+					financeCheck.setCurrProfitStatement(currProfitStatement);
+
+					if (prevTermCbs != null) {
+						FinanceRatio prevFinanceRatio = new FinanceRatio();
+						prevFinanceRatio.setAssetLiabilityRatio(calculateRatio(prevTermCbs.getTotalDebt(), prevTermCbs.getTotalAsset()));
+						prevFinanceRatio.setAssetRoR(calculateRatio(prevProfitStatement.getNetProfit(), prevTermCbs.getNetAsset()));
+						prevFinanceRatio.setLiquidityRatio(calculateRatio(prevTermCbs.getLiquidAsset(), prevTermCbs.getLiquidDebt()));
+						prevFinanceRatio.setQuickRatio(calculateRatio(prevTermCbs.getLiquidAsset().subtract(prevTermCbs.getInventory()),
+								prevTermCbs.getLiquidDebt()));
+						if (currProfitStatement != null && prevProfitStatement != null) {
+							prevFinanceRatio.setSalesIncrementRatio(calculateRatio(
+									currProfitStatement.getOperatingIncome().subtract(prevProfitStatement.getOperatingIncome()),
+									prevProfitStatement.getOperatingIncome()));
+						}
+						financeCheck.setPrevFinanceRatio(prevFinanceRatio);
+					}
+
+					if (currTermCbs != null) {
+						FinanceRatio currFinanceRatio = new FinanceRatio();
+						currFinanceRatio.setAssetLiabilityRatio(calculateRatio(currTermCbs.getTotalDebt(), currTermCbs.getTotalAsset()));
+						currFinanceRatio.setAssetRoR(calculateRatio(currProfitStatement.getNetProfit(), currTermCbs.getNetAsset()));
+						currFinanceRatio.setLiquidityRatio(calculateRatio(currTermCbs.getLiquidAsset(), currTermCbs.getLiquidDebt()));
+						currFinanceRatio.setQuickRatio(calculateRatio(currTermCbs.getLiquidAsset().subtract(currTermCbs.getInventory()),
+								currTermCbs.getLiquidDebt()));
+						financeCheck.setCurrFinanceRatio(currFinanceRatio);
+					}
 					
+					if(financeCheck.getCurrFinanceRatio() != null && financeCheck.getPrevFinanceRatio() != null)
+					{
+						FinanceRatio financeRatioChanges = new FinanceRatio();
+						FinanceRatio currFinanceRatio = financeCheck.getCurrFinanceRatio();
+						FinanceRatio prevFinanceRatio = financeCheck.getPrevFinanceRatio();
+						
+						if(currFinanceRatio.getAssetLiabilityRatio() != null)
+						{
+							financeRatioChanges.setAssetLiabilityRatio(currFinanceRatio.getAssetLiabilityRatio().subtract(prevFinanceRatio.getAssetLiabilityRatio()));
+						}
+						
+						if(currFinanceRatio.getLiquidityRatio() != null)
+						{
+							financeRatioChanges.setLiquidityRatio(currFinanceRatio.getLiquidityRatio().subtract(prevFinanceRatio.getLiquidityRatio()));							
+						}
+						
+						if(currFinanceRatio.getQuickRatio() != null)
+						{
+							financeRatioChanges.setQuickRatio(currFinanceRatio.getQuickRatio().subtract(prevFinanceRatio.getQuickRatio()));
+						}
+						
+						if(currFinanceRatio.getAssetRoR() != null)
+						{
+							financeRatioChanges.setAssetRoR(currFinanceRatio.getAssetRoR().subtract(prevFinanceRatio.getAssetRoR()));
+						}
+						financeCheck.setFinanceRatioChanges(financeRatioChanges);
+					}
+
+					mav.addObject("financeCheck", financeCheck);
 				} catch (ParseException e) {
 					saveError(request, "Date format is incorrect ");
 					return mav;
 				}
-				
 				break;
-				default:
+			default:
 			}
 		}
-		
 		return mav;
 	}
-	
-	
+
+	private CorporateBalanceSheet calculate(CorporateBalanceSheet prevTermCbs, CorporateBalanceSheet currTermCbs) {
+		if (prevTermCbs == null || currTermCbs == null) {
+			return null;
+		}
+
+		CorporateBalanceSheet corpBalanceSheetChanges = new CorporateBalanceSheet();
+		corpBalanceSheetChanges.setTotalAsset(calculateChangesRatio(currTermCbs.getTotalAsset(), prevTermCbs.getTotalAsset()));
+		corpBalanceSheetChanges.setCash(calculateChangesRatio(currTermCbs.getCash(), prevTermCbs.getCash()));
+		corpBalanceSheetChanges.setInventory(calculateChangesRatio(currTermCbs.getInventory(), prevTermCbs.getInventory()));
+		corpBalanceSheetChanges.setTotalDebt(calculateChangesRatio(currTermCbs.getTotalDebt(), prevTermCbs.getTotalDebt()));
+		corpBalanceSheetChanges.setPrereceive(calculateChangesRatio(currTermCbs.getPrereceive(), prevTermCbs.getPrereceive()));
+		corpBalanceSheetChanges.setShortLoan(calculateChangesRatio(currTermCbs.getShortLoan(), prevTermCbs.getShortLoan()));
+		corpBalanceSheetChanges.setLongLoan(calculateChangesRatio(currTermCbs.getLongLoan(), prevTermCbs.getLongLoan()));
+		corpBalanceSheetChanges.setNetAsset(calculateChangesRatio(currTermCbs.getNetAsset(), prevTermCbs.getNetAsset()));
+		corpBalanceSheetChanges.setActualCapital(calculateChangesRatio(currTermCbs.getActualCapital(), prevTermCbs.getActualCapital()));
+		return corpBalanceSheetChanges;
+	}
+
+	private final BigDecimal calculateRatio(BigDecimal number, BigDecimal baseNumber) {
+		if (number == null || baseNumber == null) {
+			return null;
+		}
+
+		if (!baseNumber.equals(BigDecimal.ZERO)) {
+			return number.divide(baseNumber, mc);
+		}
+
+		return null;
+	}
+
+	private final BigDecimal calculateChangesRatio(BigDecimal number, BigDecimal baseNumber) {
+		if (number == null || baseNumber == null) {
+			return null;
+		}
+
+		if (!baseNumber.equals(BigDecimal.ZERO)) {
+			BigDecimal changes = number.subtract(baseNumber);
+			return changes.divide(baseNumber, mc);
+		}
+		return null;
+	}
 
 	@RequestMapping(value = "/reports/reportSearch*", method = RequestMethod.GET)
 	public ModelAndView handleRequest() {
-		return new ModelAndView("/reports/reportSearch")
-				.addObject(projectInfoManager.getAll());
+		return new ModelAndView("/reports/reportSearch").addObject(projectInfoManager.getAll());
 	}
 
 	@RequestMapping(value = "/reports/reportSearch*", method = RequestMethod.POST)
-	public ModelAndView onSearch(
-			@ModelAttribute("projectInfo") final ProjectInfo projectInfo,
-			final HttpServletRequest request) {
+	public ModelAndView onSearch(@ModelAttribute("projectInfo") final ProjectInfo projectInfo, final HttpServletRequest request) {
 		String method = request.getParameter("method");
 
 		if (StringUtils.isBlank(method)) {
@@ -460,14 +527,11 @@ public class RiskControlReportController extends BaseSheetController {
 
 		switch (method) {
 		case "SearchProjectInfo":
-			List<ProjectInfo> projectInfos = projectInfoManager
-					.findByProjectInfo(projectInfo);
-			return new ModelAndView("/reports/reportSearch").addObject(
-					"projectInfoList", projectInfos);
+			List<ProjectInfo> projectInfos = projectInfoManager.findByProjectInfo(projectInfo);
+			return new ModelAndView("/reports/reportSearch").addObject("projectInfoList", projectInfos);
 		default:
 		}
 
-		return new ModelAndView("/reports/reportSearch")
-				.addObject(projectInfoManager.getAll());
+		return new ModelAndView("/reports/reportSearch").addObject(projectInfoManager.getAll());
 	}
 }

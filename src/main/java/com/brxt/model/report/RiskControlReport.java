@@ -27,6 +27,7 @@ import com.brxt.model.ProjectInfo;
 import com.brxt.model.finance.BudgetStatement;
 import com.brxt.model.finance.CorporateBalanceSheet;
 import com.brxt.model.finance.InstituteBalanceSheet;
+import com.brxt.model.finance.ProfitStatement;
 
 @Entity
 @Table(name = "risk_control_report")
@@ -43,9 +44,9 @@ public class RiskControlReport extends BaseObject{
 	private Date timeRangeStart;  
 	private Date timeRangeEnd;  
 	
-	private Set<BudgetStatement> budgetStatements = new HashSet<BudgetStatement>();
 	private Set<CorporateBalanceSheet> corporateBalanceSheets = new HashSet<CorporateBalanceSheet>();
 	private Set<InstituteBalanceSheet> instituteBalanceSheet = new HashSet<InstituteBalanceSheet>();
+	private Set<ProfitStatement> profitStatements = new HashSet<ProfitStatement>();
 	
 	private String financeStatementSummary; //财务状况排查结论
 	private String collateralSummary; //担保物的状况
@@ -100,21 +101,7 @@ public class RiskControlReport extends BaseObject{
 	public void setTimeRangeEnd(Date timeRangeEnd) {
 		this.timeRangeEnd = timeRangeEnd;
 	}
-	
-	@ManyToMany(fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SELECT)    
-    @JoinTable(
-            name = "report_budget_statement",
-            joinColumns = { @JoinColumn(name = "risk_control_report_id") },
-            inverseJoinColumns = @JoinColumn(name = "budget_statement_id")
-    )
-	public Set<BudgetStatement> getBudgetStatements() {
-		return budgetStatements;
-	}
-	public void setBudgetStatements(Set<BudgetStatement> budgetStatements) {
-		this.budgetStatements = budgetStatements;
-	}
-	
+
 	@ManyToMany(fetch = FetchType.EAGER)
     @Fetch(FetchMode.SELECT)    
     @JoinTable(
@@ -144,6 +131,21 @@ public class RiskControlReport extends BaseObject{
 			Set<InstituteBalanceSheet> instituteBalanceSheet) {
 		this.instituteBalanceSheet = instituteBalanceSheet;
 	}
+	
+	@ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)    
+    @JoinTable(
+            name = "report_profit_statement",
+            joinColumns = { @JoinColumn(name = "risk_control_report_id") },
+            inverseJoinColumns = @JoinColumn(name = "profit_statement_id")
+    )
+	public Set<ProfitStatement> getProfitStatements() {
+		return profitStatements;
+	}
+	public void setProfitStatements(Set<ProfitStatement> profitStatements) {
+		this.profitStatements = profitStatements;
+	}
+	
 	public String getFinanceStatementSummary() {
 		return financeStatementSummary;
 	}
@@ -192,6 +194,7 @@ public class RiskControlReport extends BaseObject{
 	public void setUpdateUser(String updateUser) {
 		this.updateUser = updateUser;
 	}
+	
 	@Version
 	public Integer getVersion() {
 		return version;
