@@ -47,7 +47,7 @@ public class RiskControlReport extends BaseObject{
 	private Set<CorporateBalanceSheet> corporateBalanceSheets = new HashSet<CorporateBalanceSheet>();
 	private Set<InstituteBalanceSheet> instituteBalanceSheet = new HashSet<InstituteBalanceSheet>();
 	
-	private String financeStatementSummary;
+	private String financeStatementSummary; //财务状况排查结论
 	private String collateralSummary; //担保物的状况
 	private String statusBeforeMaturity; //到期前情况说明
 	private String comments; //结论和建议

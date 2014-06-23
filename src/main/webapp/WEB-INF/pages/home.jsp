@@ -11,13 +11,16 @@
 
 <ul class="glassList">
     <li>
-        <a href="<c:url value='/projectInfo'/>"><fmt:message key="menu.projectInfo.list"/></a>
+        <a href="<c:url value='${ctx}/projectInfo'/>"><fmt:message key="menu.projectInfo.list"/></a>
     </li>
     <li>
-        <a href="<c:url value='/projectInfoForm'/>"><fmt:message key="menu.projectInfo.add"/></a>
+        <a href="<c:url value='${ctx}/projectInfoForm'/>"><fmt:message key="menu.projectInfo.add"/></a>
     </li>
     <li>
-        <a href="<c:url value='/collateral/collateralList'/>"><fmt:message key="collateral.title"/></a>
+        <a href="<c:url value='${ctx}/collateral/collateralList'/>"><fmt:message key="collateral.title"/></a>
+    </li>
+    <li>
+        <a href="<c:url value='${ctx}/reports/reportSearch'/>"><fmt:message key="menu.projectInfo.report"/></a>
     </li>
 </ul>
 </body>

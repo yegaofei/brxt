@@ -9,8 +9,12 @@
         		<form:input path="riskManager" id="riskManager" maxlength="20" cssClass="form-control"/>
     		</div>
     		<div class="col-sm-3 form-group">
-        		<appfuse:label styleClass="control-label" key="projectInfo.createTime"/>
-        		<form:input path="createTime" id="createTime" maxlength="20" cssClass="form-control"/>
+        		<appfuse:label styleClass="control-label" key="projectInfo.search.startTime"/>
+        		<form:input path="searchTimeStart" id="searchTimeStart" maxlength="20" cssClass="form-control"/>
+    		</div>
+    		<div class="col-sm-3 form-group">
+        		<appfuse:label styleClass="control-label" key="projectInfo.search.endTime"/>
+        		<form:input path="searchTimeEnd" id="searchTimeEnd" maxlength="20" cssClass="form-control"/>
     		</div>
     		</div>
 
@@ -25,7 +29,7 @@
         		<form:input path="trustManager" id="trustManager" maxlength="20" cssClass="form-control"/>
     		</div>
     		
-    		<div class="col-sm-1 form-group">
+    		<div class="col-sm-2 form-group">
     			<label></label>
     			<button type="submit" class="btn btn-primary form-control" name="method" value="SearchProjectInfo" onclick="bCancel=false">
             		<i class="icon-ok icon-white"></i> <fmt:message key="button.search"/>
@@ -33,3 +37,19 @@
         	</div>
         	</div>
     	</form:form>
+    	
+<script>
+  $(function() {
+    $('#searchTimeStart').datepicker({
+				language: 'zh-CN'
+				//format: 'yyyy-mm-dd'
+			});	
+  });
+  
+  $(function() {
+    $('#searchTimeEnd').datepicker({
+				language: 'zh-CN'
+				//format: 'yyyy-mm-dd'
+			});	
+  });
+</script>

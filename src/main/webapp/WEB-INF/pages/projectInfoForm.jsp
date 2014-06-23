@@ -132,7 +132,8 @@
         <form:errors path="fundUsage" cssClass="help-inline"/>
     </div>
     
-    <div class="col-sm-5 form-group">
+    <c:if test="${not empty param.id}">
+    <div class="col-sm-6 form-group">
     	<appfuse:label styleClass="control-label" key="projectInfo.investment.projects"/>
     	<div id="actions" class="btn-group">
 			<c:choose>
@@ -182,10 +183,10 @@
         			</c:when>
         			<c:otherwise><fmt:message key="${investment.capitalInvestmentType.title}"/></c:otherwise>
     			</c:choose>
-  			</display:column>
-  			<display:column title="${investButtons}" />
+  			</display:column>  			
 		</display:table>
      </div>
+     </c:if>
     </div>
     
 	<div class="row">

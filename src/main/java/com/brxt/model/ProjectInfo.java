@@ -61,6 +61,9 @@ public class ProjectInfo extends BaseObject implements Serializable {
 	private Set<Counterparty> guarantors = new HashSet<Counterparty>(); //担保人关系
 	private ProjectInfoStatus projectInfoStatus = new ProjectInfoStatus();
 	private RiskControlReport riskControlReport = new RiskControlReport();
+	
+	private Date searchTimeStart;
+	private Date searchTimeEnd;
 		
 	@Column(name = "project_name", length = 50)
 	public String getProjectName() {
@@ -247,6 +250,24 @@ public class ProjectInfo extends BaseObject implements Serializable {
 
 	public void setRiskControlReport(RiskControlReport riskControlReport) {
 		this.riskControlReport = riskControlReport;
+	}
+
+	@Transient
+	public Date getSearchTimeStart() {
+		return searchTimeStart;
+	}
+
+	public void setSearchTimeStart(Date searchTimeStart) {
+		this.searchTimeStart = searchTimeStart;
+	}
+
+	@Transient
+	public Date getSearchTimeEnd() {
+		return searchTimeEnd;
+	}
+
+	public void setSearchTimeEnd(Date searchTimeEnd) {
+		this.searchTimeEnd = searchTimeEnd;
 	}
 
 	@Override

@@ -31,6 +31,7 @@
 		
 	
 	<div class=" form-group">
+		<appfuse:label styleClass="control-label" key="report.financeCheck.base"/>  
 		<table class="table table-striped table-bordered table-hover">
 			<thead>
 				<tr>
@@ -43,81 +44,135 @@
 			<tbody>
 				<tr>
 					<td><fmt:message key="instBalanceSheet.assetTotal"/></td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<td><c:out value="${financeCheck.prevCorpBalanceSheet.totalAsset}" /></td>
+					<td><c:out value="${financeCheck.currCorpBalanceSheet.totalAsset}" /></td>
+					<td><c:out value="${financeCheck.corpBalanceSheetChanges.totalAsset}" /></td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.cash"/></td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<td><c:out value="${financeCheck.prevCorpBalanceSheet.cash}" /></td>
+					<td><c:out value="${financeCheck.currCorpBalanceSheet.cash}" /></td>
+					<td><c:out value="${financeCheck.corpBalanceSheetChanges.cash}" /></td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.inventory"/></td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<td><c:out value="${financeCheck.prevCorpBalanceSheet.inventory}" /></td>
+					<td><c:out value="${financeCheck.currCorpBalanceSheet.inventory}" /></td>
+					<td><c:out value="${financeCheck.corpBalanceSheetChanges.inventory}" /></td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.nonLiquid"/></td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.totalDebt"/></td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<td><c:out value="${financeCheck.prevCorpBalanceSheet.totalDebt}" /></td>
+					<td><c:out value="${financeCheck.currCorpBalanceSheet.totalDebt}" /></td>
+					<td><c:out value="${financeCheck.corpBalanceSheetChanges.totalDebt}" /></td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.prereceive"/></td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<td><c:out value="${financeCheck.prevCorpBalanceSheet.prereceive}" /></td>
+					<td><c:out value="${financeCheck.currCorpBalanceSheet.prereceive}" /></td>
+					<td><c:out value="${financeCheck.corpBalanceSheetChanges.prereceive}" /></td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.shortLoan"/></td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<td><c:out value="${financeCheck.prevCorpBalanceSheet.shortLoan}" /></td>
+					<td><c:out value="${financeCheck.currCorpBalanceSheet.shortLoan}" /></td>
+					<td><c:out value="${financeCheck.corpBalanceSheetChanges.shortLoan}" /></td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.longLoan"/></td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<td><c:out value="${financeCheck.prevCorpBalanceSheet.longLoan}" /></td>
+					<td><c:out value="${financeCheck.currCorpBalanceSheet.longLoan}" /></td>
+					<td><c:out value="${financeCheck.corpBalanceSheetChanges.longLoan}" /></td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.netAsset"/></td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<td><c:out value="${financeCheck.prevCorpBalanceSheet.netAsset}" /></td>
+					<td><c:out value="${financeCheck.currCorpBalanceSheet.netAsset}" /></td>
+					<td><c:out value="${financeCheck.corpBalanceSheetChanges.netAsset}" /></td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.actualCapital"/></td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<td><c:out value="${financeCheck.prevCorpBalanceSheet.actualCapital}" /></td>
+					<td><c:out value="${financeCheck.currCorpBalanceSheet.actualCapital}" /></td>
+					<td><c:out value="${financeCheck.corpBalanceSheetChanges.actualCapital}" /></td>
 				</tr>
 				<tr>
 					<td><fmt:message key="profitStatement.operatingIncome"/></td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<td><c:out value="${financeCheck.prevProfitStatement.operatingIncome}" /></td>
+					<td><c:out value="${financeCheck.currProfitStatement.operatingIncome}" /></td>
+					<td><c:out value="${financeCheck.profitStatementChanges.operatingIncome}" /></td>
 				</tr>
 				<tr>
 					<td><fmt:message key="profitStatement.operatingProfit"/></td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<td><c:out value="${financeCheck.prevProfitStatement.operatingProfit}" /></td>
+					<td><c:out value="${financeCheck.currProfitStatement.operatingProfit}" /></td>
+					<td><c:out value="${financeCheck.profitStatementChanges.operatingProfit}" /></td>
 				</tr>
 				<tr>
 					<td><fmt:message key="profitStatement.netProfit"/></td>
+					<td><c:out value="${financeCheck.prevProfitStatement.netProfit}" /></td>
+					<td><c:out value="${financeCheck.currProfitStatement.netProfit}" /></td>
+					<td><c:out value="${financeCheck.profitStatementChanges.netProfit}" /></td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<appfuse:label styleClass="control-label" key="report.financeCheck.ratio"/>
+		<table class="table table-striped table-bordered table-hover">
+			<thead>
+				<tr>
+					<th> </th>
+					<th><fmt:message key="report.prev"/></th>
+					<th><fmt:message key="report.curr"/></th>
+					<th><fmt:message key="report.financeCheck.changes"/></th>
+				</tr>
+			</thead>			
+			<tbody>
+				<tr>
+					<td><fmt:message key="report.financeCheck.assetLiabilityRatio"/></td>
+					<td><c:out value="${financeCheck.assetLiabilityRatio}" /></td>
+					<td><c:out value="${financeCheck.assetLiabilityRatio}" /></td>
+					<td><c:out value="${financeCheck.assetLiabilityRatio}" /></td>
+				</tr>
+				<tr>
+					<td><fmt:message key="report.financeCheck.liquidityRatio"/></td>
+					<td><c:out value="${financeCheck.liquidityRatio}" /></td>
+					<td><c:out value="${financeCheck.liquidityRatio}" /></td>
+					<td><c:out value="${financeCheck.liquidityRatio}" /></td>
+				</tr>
+				<tr>
+					<td><fmt:message key="report.financeCheck.quickRatio"/></td>
+					<td><c:out value="${financeCheck.quickRatio}" /></td>
+					<td><c:out value="${financeCheck.quickRatio}" /></td>
+					<td><c:out value="${financeCheck.quickRatio}" /></td>
+				</tr>
+				<tr>
 					<td></td>
-					<td></td>
-					<td></td>
+					<th><fmt:message key="report.lastYear"/></th>
+					<th><fmt:message key="report.thisYear"/></th>
+					<th><fmt:message key="report.years.changes"/></th>
+				</tr>
+				<tr>
+					<td><fmt:message key="report.financeCheck.assetRoR"/></td>
+					<td><c:out value="${financeCheck.assetRoR}" /></td>
+					<td><c:out value="${financeCheck.assetRoR}" /></td>
+					<td><c:out value="${financeCheck.assetRoR}" /></td>
+				</tr>
+				<tr>
+					<td><fmt:message key="report.financeCheck.salesIncrementRatio"/></td>
+					<td><c:out value="${financeCheck.salesIncrementRatio}" /></td>
+					<td><c:out value="${financeCheck.salesIncrementRatio}" /></td>
+					<td><c:out value="${financeCheck.salesIncrementRatio}" /></td>
+				</tr>
+				<tr>
+					<td><fmt:message key="report.financeCheck.financeStatementSummary"/></td>
+					<td colspan="3"><input type="text" class="form-control input-sm"></td>
 				</tr>
 			</tbody>
 		</table>

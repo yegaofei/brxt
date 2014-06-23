@@ -79,11 +79,3 @@
     </display:table>
 </div>
 
-<script>
-  $(function() {
-    $('#createTime').datepicker({
-				language: 'zh-CN'
-				//format: 'yyyy-mm-dd'
-			});	
-  });
-</script>

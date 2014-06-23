@@ -19,9 +19,9 @@ public class FinanceCheck {
 	private ProfitStatement profitStatementChanges;
 	private CorporateBalanceSheet corpBalanceSheetChanges;
 	
-	private BigDecimal assetLiabilityRatio;
-	private BigDecimal liquidityRatio;
-	private BigDecimal quickRatio;
+	private BigDecimal assetLiabilityRatio; //资产负债率
+	private BigDecimal liquidityRatio; //流动比率
+	private BigDecimal quickRatio; //速动比率
 	private BigDecimal assetRoR;  //净资产收益率
 	private BigDecimal salesIncrementRatio; //销售收入年度增长率
 	

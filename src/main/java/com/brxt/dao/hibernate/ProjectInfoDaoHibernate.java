@@ -62,22 +62,11 @@ public class ProjectInfoDaoHibernate extends
 					projectInfo.getRiskManager()));
 		}
 
-		if (projectInfo.getCreateTime() != null) {
-			Date createDate = projectInfo.getCreateTime();
-			Calendar calendar = Calendar.getInstance(Locale.CHINESE);
-			calendar.setTime(createDate);
-			calendar.set(Calendar.HOUR_OF_DAY, 0);
-			calendar.set(Calendar.MINUTE, 0);
-			calendar.set(Calendar.SECOND, 0);
-			Date createDate1 = calendar.getTime();
-
-			calendar.setTime(createDate);
-			calendar.set(Calendar.HOUR_OF_DAY, 23);
-			calendar.set(Calendar.MINUTE, 59);
-			calendar.set(Calendar.SECOND, 59);
-			Date createDate2 = calendar.getTime();
-			criteria.add(Restrictions.ge("createTime", createDate1));
-			criteria.add(Restrictions.le("createTime", createDate2));
+		if (projectInfo.getSearchTimeStart() != null && projectInfo.getSearchTimeEnd() != null) {
+			Date startDate = projectInfo.getSearchTimeStart();
+			Date endDate = projectInfo.getSearchTimeEnd();
+			criteria.add(Restrictions.ge("createTime", startDate));
+			criteria.add(Restrictions.le("createTime", endDate));
 		}
 
 		return criteria.list();
