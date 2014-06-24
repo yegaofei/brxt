@@ -11,6 +11,9 @@
 			<c:if test="${status.last}"></select></c:if>
 		</c:forEach>
 		</div>
+	<input type="hidden" name="counterpartyIdTab21" value="<c:out value='${param.counterpartiesTab21}'/>" >
+	<input type="hidden" name="prevTermTimeTab21" value="<c:out value='${param.prevTermTime}'/>" >
+	<input type="hidden" name="currTermTimeTab21" value="<c:out value='${param.currTermTime}'/>" >
 	
 	<div class="col-sm-3 form-group">
 			<appfuse:label styleClass="control-label" key="report.prev.term.report"/>
@@ -184,7 +187,7 @@
 				</tr>
 				<tr>
 					<td><fmt:message key="report.financeCheck.financeStatementSummary"/></td>
-					<td colspan="3"><input type="text" class="form-control input-sm"></td>
+					<td colspan="3"><input type="text" name="financeStatementSummary" class="form-control input-sm"></td>
 				</tr>
 			</tbody>
 		</table>
