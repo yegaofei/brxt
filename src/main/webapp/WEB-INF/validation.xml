@@ -54,6 +54,9 @@
         	<field property="projectName" depends="required">
         		<arg key="projectInfo.projectName" />
         	</field>
+        	<field property="expectedReturn" depends="double">
+        		<arg key="projectInfo.expectedReturn" />
+        	</field>
         </form>
         <form name="subjectCapacity">
         	<field property="checkTime" depends="required">

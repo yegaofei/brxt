@@ -79,7 +79,7 @@ implements ProjProgressManager {
 			for(InvestmentProject ip : investmentProjects)
 			{
 				ProjectProgress pp = new ProjectProgress();
-				pp.setId(ip.getId() + BASE_INVESTMENT_PROJECT_ID);
+				pp.setId(wrapId(ip.getId(), CapitalInvestmentType.REAL_ESTATE));
 				pp.setDeadline(ip.getProjectEndTime());
 				pp.setCapitalInvestmentType(ip.getType());
 				pp.setProjectName(ip.getName());
@@ -94,7 +94,7 @@ implements ProjProgressManager {
 			for(SupplyLiquidProject sp : supplyLiquidProjects)
 			{
 				ProjectProgress pp = new ProjectProgress();
-				pp.setId(sp.getId() + BASE_SUPPLY_LIQUIDPROJECT_ID);
+				pp.setId(wrapId(sp.getId(), CapitalInvestmentType.SUPPLEMENTAL_LIQUIDITY));
 				pp.setDeadline(sp.getProjectEndTime());
 				pp.setProjectName(sp.getName());
 				pp.setCapitalInvestmentType(CapitalInvestmentType.SUPPLEMENTAL_LIQUIDITY);
@@ -109,7 +109,7 @@ implements ProjProgressManager {
 			for(RepaymentProject rp : repaymentProjecs)
 			{
 				ProjectProgress pp = new ProjectProgress();
-				pp.setId(rp.getId() + BASE_REPAYMENT_PROJECT_ID);
+				pp.setId(wrapId(rp.getId(), CapitalInvestmentType.REPAYMENT_PROJECT));
 				pp.setDeadline(rp.getProjectEndTime());
 				pp.setProjectName(rp.getName());
 				pp.setCapitalInvestmentType(rp.getType());
@@ -120,6 +120,26 @@ implements ProjProgressManager {
 		}
 		
 		return projectProgessList;
+	}
+
+	public Long wrapId(Long realId, CapitalInvestmentType type)
+	{
+		Long id = null;
+		switch (type)
+		{
+		case INFRASTRUCTURE:
+		case REAL_ESTATE:
+			id = realId + BASE_INVESTMENT_PROJECT_ID;
+			break;
+		case REPAYMENT_PROJECT:
+			id = realId + BASE_REPAYMENT_PROJECT_ID;
+			break;
+		case SUPPLEMENTAL_LIQUIDITY:
+			id = realId + BASE_SUPPLY_LIQUIDPROJECT_ID;
+			break;
+			default:
+		}
+		return id;
 	}
 	
 	@Override
@@ -178,12 +198,12 @@ implements ProjProgressManager {
 	}
 
 	@Override
-	public void saveRepaymentProject(RepaymentProject o) {
-		repaymentProjectDao.save(o);
+	public RepaymentProject saveRepaymentProject(RepaymentProject o) {
+		return repaymentProjectDao.save(o);
 	}
 
 	@Override
-	public void saveSupplyLiqidProject(SupplyLiquidProject o) {
-		supplyLiquidProjectDao.save(o);
+	public SupplyLiquidProject saveSupplyLiqidProject(SupplyLiquidProject o) {
+		return supplyLiquidProjectDao.save(o);
 	}
 }

@@ -29,15 +29,15 @@
     <div class="col-sm-6 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="projectInfo.projectName"/>
-        <form:input path="projectName" id="projectName" maxlength="50" cssClass="form-control"/>
+        <form:input path="projectName" id="projectName" maxlength="50" cssClass="form-control input-sm"/>
         <form:errors path="projectName" cssClass="help-inline"/>
     </div>
 
     <spring:bind path="projectInfo.expectedReturn">
-    <div class="col-sm-4 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    <div class="col-sm-2 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="projectInfo.expectedReturn"/>
-        <form:input path="expectedReturn" id="expectedReturn" maxlength="20" cssClass="form-control"/>
+        <div class="input-group"><form:input path="expectedReturn" id="expectedReturn" maxlength="20" cssClass="form-control input-sm"/><span class="input-group-addon input-sm">%</span></div>
         <form:errors path="expectedReturn" cssClass="help-block"/>
     </div>
 	</div>
@@ -95,28 +95,28 @@
   			<display:column titleKey="projectSize.startTime">
     			<c:choose>
         			<c:when test="${method == 'EditProjectSize' and param.projectSizeid == projectSize.id}">
-            			<input type="text" name="startTime" style="padding: 0" id="startTime" 
+            			<input type="text" name="startTime" style="padding: 0" id="startTime" class="form-control input-sm"
                 			value="<fmt:formatDate value="${projectSize.startTime}" pattern="${datePattern}" />" />
         			</c:when>
         			<c:otherwise><fmt:formatDate value="${projectSize.startTime}" pattern="${datePattern}" /></c:otherwise>
     			</c:choose>
   			</display:column>
-  			<display:column titleKey="projectSize.size">
-      			<c:choose>
-        			<c:when test="${method == 'EditProjectSize' and param.projectSizeid == projectSize.id}">
-            			<input type="text" name="projectSize" style="padding: 0"
-                			value="<c:out value="${projectSize.projectSize}"/>" />
-        			</c:when>
-        			<c:otherwise><c:out value="${projectSize.projectSize}"/></c:otherwise>
-    			</c:choose>
-  			</display:column>
   			<display:column titleKey="projectSize.endTime">
       			<c:choose>
         			<c:when test="${method == 'EditProjectSize' and param.projectSizeid == projectSize.id}">
-            			<input type="text" name="endTime" style="padding: 0" id="endTime" 
+            			<input type="text" name="endTime" style="padding: 0" id="endTime" class="form-control input-sm"
                 			value="<fmt:formatDate value="${projectSize.endTime}" pattern="${datePattern}" />" />
         			</c:when>
         			<c:otherwise><fmt:formatDate value="${projectSize.endTime}" pattern="${datePattern}" /></c:otherwise>
+    			</c:choose>
+  			</display:column>
+  			<display:column titleKey="projectSize.size">
+      			<c:choose>
+        			<c:when test="${method == 'EditProjectSize' and param.projectSizeid == projectSize.id}">
+            			<input type="text" name="projectSize" style="padding: 0" class="form-control input-sm"
+                			value="<c:out value="${projectSize.projectSize}"/>" />
+        			</c:when>
+        			<c:otherwise><c:out value="${projectSize.projectSize}"/></c:otherwise>
     			</c:choose>
   			</display:column>
 		</display:table>
@@ -128,7 +128,7 @@
     <div class="col-sm-6 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="projectInfo.fundUsage"/>:
-        <form:input path="fundUsage" id="fundUsage" maxlength="300" cssClass="form-control"/>
+        <form:input path="fundUsage" id="fundUsage" maxlength="300" cssClass="form-control input-sm"/>
         <form:errors path="fundUsage" cssClass="help-inline"/>
     </div>
     
@@ -166,7 +166,7 @@
   			<display:column titleKey="projectInfo.investmentName">
     			<c:choose>
         			<c:when test="${method == 'EditInvestment' and param.investmentId == investment.id}">
-            			<input type="text" name="investmentProjectName" style="padding: 0"
+            			<input type="text" name="investmentProjectName" style="padding: 0" class="form-control input-sm"
                 			value="<c:out value="${investment.projectName}" />" />
         			</c:when>
         			<c:otherwise><c:out value="${investment.projectName}" /></c:otherwise>
@@ -176,10 +176,11 @@
       			<c:choose>
         			<c:when test="${method == 'EditInvestment' and param.investmentId == investment.id}">
                 			<c:forEach var="investmentType" items="${capitalInvestmentTypes}" varStatus="status">
-                    			<c:if test="${status.first}"><select id="investmentType" name="investmentType"></c:if>
+                    			<c:if test="${status.first}"><select id="investmentType" name="investmentType" class="form-control input-sm"></c:if>
                     			<option value="${investmentType.title}" <c:if test = "${investmentType.title == investment.capitalInvestmentType.title}" > selected </c:if>><fmt:message key="${investmentType.title}"/></option>
           						<c:if test="${status.last}"></select></c:if>
                 			</c:forEach>
+                			<input type="hidden" name="oldInvestmentType" value="${investment.capitalInvestmentType.title}" >
         			</c:when>
         			<c:otherwise><fmt:message key="${investment.capitalInvestmentType.title}"/></c:otherwise>
     			</c:choose>
@@ -194,7 +195,7 @@
     <div class="col-sm-3 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="projectInfo.riskManager"/>
-        <form:input path="riskManager" id="riskManager" maxlength="10" cssClass="form-control"/>
+        <form:input path="riskManager" id="riskManager" maxlength="10" cssClass="form-control input-sm"/>
         <form:errors path="riskManager" cssClass="help-block"/>
     </div>
 
@@ -202,7 +203,7 @@
     <div class="col-sm-3 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="projectInfo.delegateManager"/>
-        <form:input path="delegateManager" id="delegateManager" maxlength="10" cssClass="form-control"/>
+        <form:input path="delegateManager" id="delegateManager" maxlength="10" cssClass="form-control input-sm"/>
         <form:errors path="delegateManager" cssClass="help-block"/>
     </div>
 
@@ -210,7 +211,7 @@
     <div class="col-sm-3 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="projectInfo.trustManager"/>
-        <form:input path="trustManager" id="trustManager" maxlength="10" cssClass="form-control"/>
+        <form:input path="trustManager" id="trustManager" maxlength="10" cssClass="form-control input-sm"/>
         <form:errors path="trustManager" cssClass="help-block"/>
     </div>
     </div>
@@ -220,7 +221,7 @@
     <div class="col-sm-6 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="projectInfo.guaranteeMode"/>:
-        <form:input path="guaranteeMode" id="guaranteeMode" maxlength="300" cssClass="form-control"/>
+        <form:input path="guaranteeMode" id="guaranteeMode" maxlength="300" cssClass="form-control input-sm"/>
         <form:errors path="guaranteeMode" cssClass="help-inline"/>
     </div>
     
@@ -228,7 +229,7 @@
     <div class="col-sm-6 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="projectInfo.projectType"/>:
-        <form:select path="projectType" class="form-control">    		
+        <form:select path="projectType" class="form-control input-sm">    		
 			<form:options items="${projectTypes}" />
 		</form:select>        
         <form:errors path="projectType" cssClass="help-block"/>
@@ -394,7 +395,7 @@
     </form:form>
 </div>
 
-<v:javascript formName="projectInfo" cdata="false" dynamicJavascript="true" staticJavascript="false"/>
+<v:javascript formName="projectInfo" cdata="false" dynamicJavascript="true" staticJavascript="true"/>
 <script type="text/javascript" src="<c:url value='/scripts/validator.jsp'/>"></script>
 
 <script>

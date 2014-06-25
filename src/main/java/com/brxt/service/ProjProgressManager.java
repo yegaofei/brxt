@@ -5,6 +5,7 @@ import java.util.List;
 import org.appfuse.service.GenericManager;
 
 import com.brxt.model.ProjectProgress;
+import com.brxt.model.enums.CapitalInvestmentType;
 import com.brxt.model.projectprogress.InvestmentProject;
 import com.brxt.model.projectprogress.RepaymentProject;
 import com.brxt.model.projectprogress.SupplyLiquidProject;
@@ -22,13 +23,15 @@ public interface ProjProgressManager extends
 
 	public String getProgressForm(Long id);
 
+	public Long wrapId(Long realId, CapitalInvestmentType type);
+	
 	public Long getRealId(Long id);
 
 	public RepaymentProject getRepaymentProject(Long id);
 
 	public SupplyLiquidProject getSupplyLiquidProject(Long id);
 
-	public void saveRepaymentProject(RepaymentProject o);
+	public RepaymentProject saveRepaymentProject(RepaymentProject o);
 	
-	public void saveSupplyLiqidProject(SupplyLiquidProject o);
+	public SupplyLiquidProject saveSupplyLiqidProject(SupplyLiquidProject o);
 }

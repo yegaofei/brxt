@@ -4,7 +4,9 @@ public enum CapitalInvestmentType {
 
 	REAL_ESTATE("real_estate"), 
 	INFRASTRUCTURE("infrastructure"), 
-	SUPPLEMENTAL_LIQUIDITY("supplemental_liquidity");
+	SUPPLEMENTAL_LIQUIDITY("supplemental_liquidity"),
+	REPAYMENT_PROJECT("repayment_project"),
+	REAL_ESTATE_REPAYMENT_PROJECT("real_estate_repayment_project");
 
 	private String title;
 

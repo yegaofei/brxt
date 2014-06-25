@@ -34,6 +34,8 @@ import com.brxt.model.enums.CapitalInvestmentType;
 import com.brxt.model.enums.CounterpartyType;
 import com.brxt.model.enums.ProjectType;
 import com.brxt.model.projectprogress.InvestmentProject;
+import com.brxt.model.projectprogress.RepaymentProject;
+import com.brxt.model.projectprogress.SupplyLiquidProject;
 import com.brxt.service.ProjProgressManager;
 import com.brxt.service.ProjectInfoManager;
 
@@ -70,9 +72,9 @@ public class ProjectInfoFormController extends BaseFormController {
 			CapitalInvestmentType[] cits = CapitalInvestmentType.values();
 			for(CapitalInvestmentType cit : cits)
 			{
-				if(cit == CapitalInvestmentType.SUPPLEMENTAL_LIQUIDITY){
-					continue;
-				}
+//				if(cit == CapitalInvestmentType.SUPPLEMENTAL_LIQUIDITY){
+//					continue;
+//				}
 				CapitalInvestmentTypes.add(cit);
 			}
 		}
@@ -232,10 +234,14 @@ public class ProjectInfoFormController extends BaseFormController {
 				mav.setViewName(getSuccessView());
 				break;
 			case "AddInvestment":
-				projectInfo = getProjectInfo(request);
-				projectInfo.getInvestments().add(new InvestmentStatus());
-				mav.addObject("projectInfo", projectInfo);
-				mav.addObject("method", "EditInvestment");
+				String investmentId = request.getParameter("investmentId");
+				if(StringUtils.isBlank(investmentId))
+				{
+					projectInfo = getProjectInfo(request);
+					projectInfo.getInvestments().add(new InvestmentStatus());					
+					mav.addObject("projectInfo", projectInfo);
+					mav.addObject("method", "EditInvestment");
+				}
 				mav.setViewName("projectInfoForm");
 				break;
 			case "SaveInvestment":
@@ -365,45 +371,68 @@ public class ProjectInfoFormController extends BaseFormController {
 		String id = request.getParameter("investmentId");
 		String name = request.getParameter("investmentProjectName");
 		String type = request.getParameter("investmentType");
+		String oldInvestmentType = request.getParameter("oldInvestmentType");
 		Date now = new Date();
+		if(StringUtils.isBlank(name))
+		{
+			saveError(request, getText("projectInfo.investmentName.error.empty", request.getLocale()));
+			return mav;
+		}
 		if (!StringUtils.isBlank(id)) {
 			//Edit
+			Long wrappedId = Long.valueOf(id);
+			Long realId = projectProgressManager.getRealId(wrappedId);
+			CapitalInvestmentType oldCapitalInvestmentType = CapitalInvestmentType.valueOf(oldInvestmentType.toUpperCase());
 			CapitalInvestmentType capitalInvestmentType = CapitalInvestmentType.valueOf(type.toUpperCase());
-			InvestmentProject ip = projectProgressManager.get(Long.valueOf(id));
-			switch (capitalInvestmentType)
+			InvestmentProject ip = null;
+			RepaymentProject rp = null;
+			SupplyLiquidProject sp = null;
+			if(capitalInvestmentType == oldCapitalInvestmentType)
 			{
-			case REAL_ESTATE:
-				ip.setName(name);
-				ip.setProjectInfo(projectInfo);
-				ip.setInvestmentProjectType(CapitalInvestmentType.REAL_ESTATE.getTitle());
-				ip.setUpdateUser(getCurrentUser().getUsername());
-				ip.setUpdateTime(now);
-				ip = projectProgressManager.save(ip);
-				break;
-			case INFRASTRUCTURE:
-				ip.setName(name);
-				ip.setProjectInfo(projectInfo);
-				ip.setInvestmentProjectType(CapitalInvestmentType.INFRASTRUCTURE.getTitle());
-				ip.setUpdateUser(getCurrentUser().getUsername());
-				ip.setUpdateTime(now);
-				ip = projectProgressManager.save(ip);
-				break;
-			case SUPPLEMENTAL_LIQUIDITY:
-				break;
-				default:
-			}
-			
-			List<InvestmentStatus> investments = projectInfo.getInvestments();
-			for(InvestmentStatus is : investments)
-			{
-				if(is.getId() == ip.getId())
+				switch (oldCapitalInvestmentType)
 				{
-					is.setProjectName(ip.getName());
-					is.setCapitalInvestmentType(CapitalInvestmentType.valueOf(ip.getInvestmentProjectType().toUpperCase()));
+				case REAL_ESTATE:
+					ip = projectProgressManager.get(realId);
+					ip.setName(name);
+					ip.setProjectInfo(projectInfo);
+					ip.setInvestmentProjectType(CapitalInvestmentType.REAL_ESTATE.getTitle());
+					ip.setUpdateUser(getCurrentUser().getUsername());
+					ip.setUpdateTime(now);
+					ip = projectProgressManager.save(ip);
+					break;
+				case INFRASTRUCTURE:
+					ip = projectProgressManager.get(realId);
+					ip.setName(name);
+					ip.setProjectInfo(projectInfo);
+					ip.setInvestmentProjectType(CapitalInvestmentType.INFRASTRUCTURE.getTitle());
+					ip.setUpdateUser(getCurrentUser().getUsername());
+					ip.setUpdateTime(now);
+					ip = projectProgressManager.save(ip);
+					break;
+				case REPAYMENT_PROJECT:
+					rp = projectProgressManager.getRepaymentProject(realId);
+					rp.setName(name);
+					rp.setProjectInfo(projectInfo);
+					rp.setUpdateUser(getCurrentUser());
+					projectProgressManager.saveRepaymentProject(rp);
+					break;
+				case SUPPLEMENTAL_LIQUIDITY:
+					sp = projectProgressManager.getSupplyLiquidProject(realId);
+					sp.setName(name);
+					sp.setProjectInfo(projectInfo);
+					sp.setUpdateUser(getCurrentUser());
+					sp.setUpdateTime(now);
+					projectProgressManager.saveSupplyLiqidProject(sp);
+					break;
+					default:
 				}
 			}
-			 
-		} else {
+			else
+			{
+				log.error("Not allow to modify the invetsment project data");
+			}
+			projectInfo = projectInfoManager.loadProjectInfo(projectInfo.getId());
+		} else if(StringUtils.isBlank(oldInvestmentType)){
 			// Add
 			if (!StringUtils.isBlank(name)
 					|| !StringUtils.isBlank(type)) {
@@ -418,7 +447,7 @@ public class ProjectInfoFormController extends BaseFormController {
 					ip.setCreateUser(getCurrentUser().getUsername());
 					ip.setCreateTime(now);
 					ip = projectProgressManager.save(ip);
-					projectInfo.getInvestments().add(new InvestmentStatus(ip.getId(), ip.getName(), CapitalInvestmentType.REAL_ESTATE));
+					projectInfo.getInvestments().add(new InvestmentStatus(projectProgressManager.wrapId(ip.getId(), CapitalInvestmentType.REAL_ESTATE), ip.getName(), CapitalInvestmentType.REAL_ESTATE));
 					break;
 				case INFRASTRUCTURE:
 					ip = new InvestmentProject();
@@ -428,10 +457,44 @@ public class ProjectInfoFormController extends BaseFormController {
 					ip.setCreateUser(getCurrentUser().getUsername());
 					ip.setCreateTime(now);
 					ip = projectProgressManager.save(ip);
-					projectInfo.getInvestments().add(new InvestmentStatus(ip.getId(), ip.getName(), CapitalInvestmentType.INFRASTRUCTURE));
+					projectInfo.getInvestments().add(new InvestmentStatus(projectProgressManager.wrapId(ip.getId(), CapitalInvestmentType.INFRASTRUCTURE), ip.getName(), CapitalInvestmentType.INFRASTRUCTURE));
 					break;
+				case REPAYMENT_PROJECT:
+					RepaymentProject rp = new RepaymentProject();
+					rp.setName(name);
+					rp.setProjectInfo(projectInfo);
+					rp.setCreateUser(getCurrentUser());
+					rp.setCreateTime(now);
+					rp = projectProgressManager.saveRepaymentProject(rp);
+					projectInfo.getInvestments().add(new InvestmentStatus(projectProgressManager.wrapId(rp.getId(), CapitalInvestmentType.REPAYMENT_PROJECT), rp.getName(), CapitalInvestmentType.REPAYMENT_PROJECT));
+					break;	
 				case SUPPLEMENTAL_LIQUIDITY:
+					SupplyLiquidProject sp = new SupplyLiquidProject();
+					sp.setName(name);
+					sp.setProjectInfo(projectInfo);
+					sp.setCreateUser(getCurrentUser());
+					sp.setCreateTime(now);
+					sp = projectProgressManager.saveSupplyLiqidProject(sp);
+					projectInfo.getInvestments().add(new InvestmentStatus(projectProgressManager.wrapId(sp.getId(), CapitalInvestmentType.SUPPLEMENTAL_LIQUIDITY),sp.getName(), CapitalInvestmentType.SUPPLEMENTAL_LIQUIDITY));
 					break;
+				case REAL_ESTATE_REPAYMENT_PROJECT:
+					ip = new InvestmentProject();
+					ip.setName(name);
+					ip.setProjectInfo(projectInfo);
+					ip.setInvestmentProjectType(CapitalInvestmentType.REAL_ESTATE.getTitle());
+					ip.setCreateUser(getCurrentUser().getUsername());
+					ip.setCreateTime(now);
+					ip = projectProgressManager.save(ip);
+					projectInfo.getInvestments().add(new InvestmentStatus(projectProgressManager.wrapId(ip.getId(), CapitalInvestmentType.REAL_ESTATE), ip.getName(), CapitalInvestmentType.REAL_ESTATE));
+					
+					rp = new RepaymentProject();
+					rp.setName(name);
+					rp.setProjectInfo(projectInfo);
+					rp.setCreateUser(getCurrentUser());
+					rp.setCreateTime(now);
+					rp = projectProgressManager.saveRepaymentProject(rp);
+					projectInfo.getInvestments().add(new InvestmentStatus(projectProgressManager.wrapId(rp.getId(), CapitalInvestmentType.REPAYMENT_PROJECT), rp.getName(), CapitalInvestmentType.REPAYMENT_PROJECT));
+					break;	
 					default:
 				}
 			} else {
@@ -440,7 +503,6 @@ public class ProjectInfoFormController extends BaseFormController {
 		}
 		mav.addObject("projectInfo", projectInfo);
 		return mav;
-		
 	}
 	
 	private ModelAndView saveGuarantor(ProjectInfo projectInfo,
