@@ -37,18 +37,16 @@ public class InstBalanceSheetController extends BaseSheetController {
 	}
 
 	@ModelAttribute("instBalanceSheetModel")
-	public InstBalanceSheetModel getInstBalanceSheetModel(
-			final HttpServletRequest request, final HttpSession session) {
-		String projectInfoIdStr = (String) session
-				.getAttribute(SessionAttributes.PROJECT_INFO_ID);
+	public InstBalanceSheetModel getInstBalanceSheetModel(final HttpServletRequest request, final HttpSession session) {
+		String projectInfoIdStr = (String) session.getAttribute(SessionAttributes.PROJECT_INFO_ID);
 		InstituteBalanceSheet endSheet = null;
 		ProjectInfo projectInfo = null;
 		Counterparty counterparty = null;
 		InstBalanceSheetModel ibs = new InstBalanceSheetModel();
 		String statementId = request.getParameter("id");
+		String reportTime = request.getParameter("reportTime");
 		if (!StringUtils.isBlank(statementId)) {
-			endSheet = financeSheetManager.getInstituteBalanceSheet(Long
-					.valueOf(statementId));
+			endSheet = financeSheetManager.getInstituteBalanceSheet(Long.valueOf(statementId));
 			counterparty = endSheet.getCounterparty();
 			ibs.setCounterpartyId(counterparty.getId());
 			ibs.setCounterpartyType(counterparty.getCounterpartyType());
@@ -60,19 +58,17 @@ public class InstBalanceSheetController extends BaseSheetController {
 				ibs.setTradingRelationship(TradingRelationship.GUARANTOR);
 			}
 			ibs.setCounterpartyName(counterparty.getName());
+			ibs.setReportTime(getDateObj(endSheet.getReportYear(), endSheet.getReportMonth()));
 		} else {
 			String counterpartyIdStr = request.getParameter("counterpartyId");
 			String trStr = request.getParameter("type");
-			if (StringUtils.isBlank(projectInfoIdStr)
-					|| StringUtils.isBlank(counterpartyIdStr)
-					|| StringUtils.isBlank(trStr)) {
+			if (StringUtils.isBlank(projectInfoIdStr) || StringUtils.isBlank(counterpartyIdStr) || StringUtils.isBlank(trStr)) {
 				// Error out;
 				saveError(request, "request parameters are not enough");
 				log.error("request parameters are not enough");
 				return null;
 			}
-			TradingRelationship tradingRelationship = TradingRelationship
-					.valueOf(trStr.toUpperCase());
+			TradingRelationship tradingRelationship = TradingRelationship.valueOf(trStr.toUpperCase());
 			Long projectInfoId = Long.valueOf(projectInfoIdStr);
 			Long counterpartyId = Long.valueOf(counterpartyIdStr);
 
@@ -93,20 +89,25 @@ public class InstBalanceSheetController extends BaseSheetController {
 
 			ibs.setCounterpartyName(counterparty.getName());
 			ibs.setCounterpartyType(counterparty.getCounterpartyType());
-			endSheet = financeSheetManager.findInstituteBalanceSheet(
-					projectInfo, counterparty, getCurrentYear(),
-					getCurrentMonth());
+			
+			if(StringUtils.isBlank(reportTime))
+			{
+				ibs.setReportTime(new Date());				
+				endSheet = financeSheetManager.findInstituteBalanceSheet(projectInfo, counterparty, getCurrentYear(), getCurrentMonth());
+				if(endSheet != null)
+				{
+					saveMessage(request, getText("finance.balSheet.existed", new String[]{ getCurrentYear().toString(), getCurrentMonth().toString()}, request.getLocale()));
+					endSheet = null;
+				} 
+			}	
 		}
-
-		ibs.setEndBalSheet(endSheet);
 
 		int year = getCurrentYear();
 		if (endSheet != null && endSheet.getReportYear() != null) {
 			year = endSheet.getReportYear();
 		}
 
-		InstituteBalanceSheet beginSheet = financeSheetManager
-				.findInstituteBalanceSheet(projectInfo, counterparty, year, 0);
+		InstituteBalanceSheet beginSheet = financeSheetManager.findInstituteBalanceSheet(projectInfo, counterparty, year, 0);
 		if (beginSheet == null) {
 			beginSheet = new InstituteBalanceSheet();
 			beginSheet.setProjectInfo(projectInfo);
@@ -119,22 +120,19 @@ public class InstBalanceSheetController extends BaseSheetController {
 			endSheet.setProjectInfo(projectInfo);
 			endSheet.setCounterparty(counterparty);
 		}
+		ibs.setEndBalSheet(endSheet);
 
-		ibs.setReportTime(new Date());
 		return ibs;
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public String onSubmit(
-			@ModelAttribute("instBalanceSheetModel") InstBalanceSheetModel instBalanceSheetModel,
-			BindingResult errors, final HttpServletRequest request,
-			final HttpServletResponse response) throws Exception {
+	public String onSubmit(@ModelAttribute("instBalanceSheetModel") InstBalanceSheetModel instBalanceSheetModel, BindingResult errors,
+			final HttpServletRequest request, final HttpServletResponse response) throws Exception {
 		String method = request.getParameter("method");
 		if (validator != null) { // validator is null during testing
 			validator.validate(instBalanceSheetModel, errors);
 			if (errors.hasErrors()) {
-				log.debug("error happens 'onSubmit' method..."
-						+ errors.toString());
+				log.debug("error happens 'onSubmit' method..." + errors.toString());
 				saveMessage(request, errors.toString());
 				return getCancelView();
 			}
@@ -155,9 +153,7 @@ public class InstBalanceSheetController extends BaseSheetController {
 		return getSuccessView();
 	}
 
-	private void saveInstBalanceSheet(
-			InstBalanceSheetModel instBalanceSheetModel,
-			HttpServletRequest request) throws Exception {
+	private void saveInstBalanceSheet(InstBalanceSheetModel instBalanceSheetModel, HttpServletRequest request) throws Exception {
 		final Locale locale = request.getLocale();
 		Long projectInfoId = instBalanceSheetModel.getProjectId();
 		Long counterpartyId = instBalanceSheetModel.getCounterpartyId();
@@ -174,22 +170,28 @@ public class InstBalanceSheetController extends BaseSheetController {
 			cp = findGuarantor(projectInfo, counterpartyId);
 		}
 
-		InstituteBalanceSheet beginBalSheet = instBalanceSheetModel
-				.getBeginBalSheet();
+		InstituteBalanceSheet beginBalSheet = instBalanceSheetModel.getBeginBalSheet();
 		beginBalSheet.setProjectInfo(projectInfo);
 		beginBalSheet.setCounterparty(cp);
 
-		InstituteBalanceSheet endBalSheet = instBalanceSheetModel
-				.getEndBalSheet();
+		InstituteBalanceSheet endBalSheet = instBalanceSheetModel.getEndBalSheet();
 		endBalSheet.setProjectInfo(projectInfo);
 		endBalSheet.setCounterparty(cp);
-
+		
+		Date reportTime = instBalanceSheetModel.getReportTime();
+		if(beginBalSheet.getReportYear() != null && beginBalSheet.getReportYear().intValue() != getYear(reportTime).intValue() )
+		{
+			beginBalSheet.setId(null);
+		}
+		beginBalSheet.setReportYear(getYear(reportTime));			
+		beginBalSheet.setReportMonth((short) 0);
+		endBalSheet.setReportYear(getYear(reportTime));
+		endBalSheet.setReportMonth(getMonth(reportTime));
+		
 		boolean isNewBeginBalSheet = (beginBalSheet.getId() == null);
 		User currentUser = getCurrentUser();
 		if (isNewBeginBalSheet) {
 			// Add
-			beginBalSheet.setReportYear(getCurrentYear());
-			beginBalSheet.setReportMonth((short) 0);
 			beginBalSheet.setCreateUser(currentUser.getUsername());
 			beginBalSheet.setCreateTime(new Date());
 		} else {
@@ -200,8 +202,6 @@ public class InstBalanceSheetController extends BaseSheetController {
 		boolean isNewEndBalSheet = (endBalSheet.getId() == null);
 		if (isNewEndBalSheet) {
 			// Add
-			endBalSheet.setReportYear(getCurrentYear());
-			endBalSheet.setReportMonth(getCurrentMonth().shortValue());
 			endBalSheet.setCreateUser(currentUser.getUsername());
 			endBalSheet.setCreateTime(new Date());
 		} else {
@@ -209,8 +209,7 @@ public class InstBalanceSheetController extends BaseSheetController {
 			endBalSheet.setUpdateTime(new Date());
 		}
 
-		financeSheetManager.saveInstituteBalanceSheets(beginBalSheet,
-				endBalSheet);
+		financeSheetManager.saveInstituteBalanceSheets(beginBalSheet, endBalSheet);
 		updateProjectInfoStatus(projectInfo, true);
 		saveMessage(request, getText("instBalanceSheet.updated", locale));
 	}

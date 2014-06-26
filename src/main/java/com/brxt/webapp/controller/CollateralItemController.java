@@ -8,7 +8,6 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,23 +23,15 @@ import com.brxt.model.collateral.ConstructingProject;
 import com.brxt.model.collateral.Land;
 import com.brxt.model.collateral.Property;
 import com.brxt.service.CollateralManager;
-import com.brxt.service.ProjectInfoManager;
 
 @Controller
 public class CollateralItemController extends BaseFormController {
 
 	private CollateralManager collateralManager;
-	private ProjectInfoManager projectInfoManager;
 
 	@Autowired
 	public void setCollateralManager(CollateralManager collateralManager) {
 		this.collateralManager = collateralManager;
-	}
-
-	@Autowired
-	public void setProjectInfoManager(
-			@Qualifier("projectInfoManager") ProjectInfoManager projectInfoManager) {
-		this.projectInfoManager = projectInfoManager;
 	}
 
 	@RequestMapping(value = "/collateral/collateralLand*", method = RequestMethod.GET)

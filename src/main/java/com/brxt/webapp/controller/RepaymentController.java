@@ -1,5 +1,6 @@
 package com.brxt.webapp.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -21,6 +22,7 @@ import org.tuckey.web.filters.urlrewrite.utils.StringUtils;
 import com.brxt.constant.SessionAttributes;
 import com.brxt.model.ProjectInfo;
 import com.brxt.model.Repayment;
+import com.brxt.model.enums.RepaymentType;
 import com.brxt.service.ProjectInfoManager;
 import com.brxt.service.RepaymentManager;
 
@@ -40,6 +42,18 @@ public class RepaymentController extends BaseFormController {
 	public void setRepaymentManager(
 			@Qualifier("repaymentManager") RepaymentManager repaymentManager) {
 		this.repaymentManager = repaymentManager;
+	}
+	
+	@ModelAttribute("repaymentTypes")
+	public List<String> getAllRepaymentTypes()
+	{
+		List<String> repaymentTypes = new ArrayList<String>();
+		RepaymentType[] types = RepaymentType.values();
+		for(RepaymentType type : types)
+		{
+			repaymentTypes.add(type.getTitle());
+		}
+		return repaymentTypes;
 	}
 
 	@RequestMapping(value = "/repayment*", method = RequestMethod.GET)

@@ -2,6 +2,9 @@
 <head>
     <title><fmt:message key="budgetStatementForm.title"/></title>
     <meta name="menu" content="ProjectInfoSubMenu"/>
+    <link rel="stylesheet" type="text/css" href="${base}/webjars/bootstrap-datepicker/1.2.0/css/datepicker.css"/>
+    <script type="text/javascript" src="${base}/webjars/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="${base}/webjars/bootstrap-datepicker/1.2.0/js/locales/bootstrap-datepicker.zh-CN.js" charset="UTF-8"></script>  
 </head>
  
 <div class="col-sm-2">
@@ -17,7 +20,7 @@
     </span>
 </div>
  
-<div class="col-sm-8">	
+<div class="col-sm-7">	
     <form:errors path="*" cssClass="alert alert-danger alert-dismissable" element="div"/>
     <form:form commandName="budgetStatementModel" method="post" action="/finance/budgetStatementForm" id="budgetStatementModel" cssClass="well" >
 	<form:hidden path="projectId"/>
@@ -26,23 +29,24 @@
 	<form:hidden path="counterpartyType"/>
 	<input type="hidden" name="type" value='<c:out value="${budgetStatementModel.tradingRelationship}" />' />
 	<input type="hidden" name="ctype" value='<c:out value="${budgetStatementModel.counterpartyType}" />' />
+	<input type="hidden" name="id" value='<c:out value="${param.id}" />' />
  
 	<div class="row">
-    <div class="col-sm-6 form-group">
+    <div class="col-sm-5 form-group">
         <appfuse:label styleClass="control-label" key="report.type.name"/>: 
-        <form:select path="statementType" id="statementType">    		
+        <form:select path="statementType" id="statementType" class="form-control input-sm">    		
 			<form:options items="${statementTypes}" />
 		</form:select>        
     </div>  
 
-    <div class="col-sm-5 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    <div class="col-sm-7 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
         <appfuse:label styleClass="control-label" key="profitStatement.reportYear"/>:
-		<!-- <fmt:formatDate value="${budgetStatementModel.reportTime}" pattern="${shortDatePattern}" />  -->
-		<form:input path="reportTime" id="reportTime" maxlength="20" cssClass="form-control"/>
+		<form:input path="reportTime" id="reportTime" maxlength="20" cssClass="form-control input-sm" />
     </div>	
 	</div>
 	
 	<table class="table table-condensed">
+		<thead>
 		 <tr>
 			<th><appfuse:label key="budgetStatementInfo.itemName"/> </th>
 			<th><appfuse:label key="budgetStatementInfo.fullYearBudget"/> </th>
@@ -51,21 +55,22 @@
 			<th><appfuse:label key="budgetStatementInfo.budgetRatio"/>   </th> 
 			<th><appfuse:label key="budgetStatementInfo.growthRate"/>   </th>    
         </tr>  
-        
+        </thead>
+        <tbody>
         <tr>
 				<td> <appfuse:label key="budgetStatementInfo.budgetIncomeTotal"/> </td>
 				<td> 
 					<spring:bind path="budgetStatementModel.thisYearBudget.budgetIncomeTotal">        
                 		<div class="">
                 	</spring:bind>        
-                    <form:input path="thisYearBudget.budgetIncomeTotal" id="budgetIncomeTotal1"  />
+                    <form:input path="thisYearBudget.budgetIncomeTotal" id="budgetIncomeTotal1"  cssClass="form-control input-sm"/>
                    	<form:errors path="thisYearBudget.budgetIncomeTotal" /> 
 				</td>
 				<td> 
 					<spring:bind path="budgetStatementModel.thisYear.budgetIncomeTotal">        
                 	<div class="">
                 	</spring:bind>        
-                    <form:input path="thisYear.budgetIncomeTotal" id="budgetIncomeTotal2"  />
+                    <form:input path="thisYear.budgetIncomeTotal" id="budgetIncomeTotal2"  cssClass="form-control input-sm"/>
                     <form:errors path="thisYear.budgetIncomeTotal" />
 				</td>
 				<td>
@@ -85,14 +90,14 @@
 					<spring:bind path="budgetStatementModel.thisYearBudget.taxIncome">        
                 		<div class="">
                 	</spring:bind>        
-                    <form:input path="thisYearBudget.taxIncome" id="taxIncome1"  />
+                    <form:input path="thisYearBudget.taxIncome" id="taxIncome1"  cssClass="form-control input-sm" />
                    	<form:errors path="thisYearBudget.taxIncome" />         	
         		</td>
         		<td>          
 					<spring:bind path="budgetStatementModel.thisYear.taxIncome">        
                 		<div class="">
                 	</spring:bind>        
-                    <form:input path="thisYear.taxIncome" id="taxIncome2"  />
+                    <form:input path="thisYear.taxIncome" id="taxIncome2"  cssClass="form-control input-sm" />
                    	<form:errors path="thisYear.taxIncome" />         	        	
         		</td>
         		<td>         
@@ -112,14 +117,14 @@
 					<spring:bind path="budgetStatementModel.thisYearBudget.nonTaxIncome">        
                 		<div class="">
                 	</spring:bind>        
-                    <form:input path="thisYearBudget.nonTaxIncome" id="nonTaxIncome1"  />
+                    <form:input path="thisYearBudget.nonTaxIncome" id="nonTaxIncome1" cssClass="form-control input-sm" />
                    	<form:errors path="thisYearBudget.nonTaxIncome" />         	        			
         		</td>
         		<td>          
 					<spring:bind path="budgetStatementModel.thisYear.nonTaxIncome">        
                 		<div class="">
                 	</spring:bind>        
-                    <form:input path="thisYear.nonTaxIncome" id="nonTaxIncome2"  />
+                    <form:input path="thisYear.nonTaxIncome" id="nonTaxIncome2" cssClass="form-control input-sm" />
                    	<form:errors path="thisYear.nonTaxIncome" />         	             		
         		</td>
         		<td>         
@@ -140,14 +145,14 @@
 					<spring:bind path="budgetStatementModel.thisYearBudget.govFundIncome">        
                 		<div class="">
                 	</spring:bind>        
-                    <form:input path="thisYearBudget.govFundIncome" id="govFundIncome1"  />
+                    <form:input path="thisYearBudget.govFundIncome" id="govFundIncome1" cssClass="form-control input-sm" />
                    	<form:errors path="thisYearBudget.govFundIncome" />                  
         </td>
         <td>          
 					<spring:bind path="budgetStatementModel.thisYear.govFundIncome">        
                 		<div class="">
                 	</spring:bind>        
-                    <form:input path="thisYear.govFundIncome" id="govFundIncome2"  />
+                    <form:input path="thisYear.govFundIncome" id="govFundIncome2" cssClass="form-control input-sm" />
                    	<form:errors path="thisYear.govFundIncome" />             
         </td>
         <td>         
@@ -167,14 +172,14 @@
 					<spring:bind path="budgetStatementModel.thisYearBudget.paymentTotal">        
                 		<div class="">
                 	</spring:bind>        
-                    <form:input path="thisYearBudget.paymentTotal" id="paymentTotal1"  />
+                    <form:input path="thisYearBudget.paymentTotal" id="paymentTotal1" cssClass="form-control input-sm" />
                    	<form:errors path="thisYearBudget.paymentTotal" />                   
         </td>
         <td>          
 					<spring:bind path="budgetStatementModel.thisYear.paymentTotal">        
                 		<div class="">
                 	</spring:bind>        
-                    <form:input path="thisYear.paymentTotal" id="paymentTotal2"  />
+                    <form:input path="thisYear.paymentTotal" id="paymentTotal2"  cssClass="form-control input-sm"/>
                    	<form:errors path="thisYear.paymentTotal" /> 
         </td>
         <td>         
@@ -197,14 +202,14 @@
 					<spring:bind path="budgetStatementModel.thisYearBudget.budgetPayTotal">        
                 		<div class="">
                 	</spring:bind>        
-                    <form:input path="thisYearBudget.budgetPayTotal" id="budgetPayTotal1"  />
+                    <form:input path="thisYearBudget.budgetPayTotal" id="budgetPayTotal1" cssClass="form-control input-sm" />
                    	<form:errors path="thisYearBudget.budgetPayTotal" />                
         </td>
         <td>          
 					<spring:bind path="budgetStatementModel.thisYear.budgetPayTotal">        
                 		<div class="">
                 	</spring:bind>        
-                    <form:input path="thisYear.budgetPayTotal" id="budgetPayTotal2"  />
+                    <form:input path="thisYear.budgetPayTotal" id="budgetPayTotal2" cssClass="form-control input-sm"  />
                    	<form:errors path="thisYear.budgetPayTotal" /> 
         </td>
         <td>         
@@ -226,7 +231,7 @@
 					<spring:bind path="budgetStatementModel.thisYearBudget.govFundPayment">        
                 		<div class="">
                 	</spring:bind>        
-                    <form:input path="thisYearBudget.govFundPayment" id="govFundPayment1"  />
+                    <form:input path="thisYearBudget.govFundPayment" id="govFundPayment1" cssClass="form-control input-sm" />
                    	<form:errors path="thisYearBudget.govFundPayment" /> 
         </td>
         
@@ -234,7 +239,7 @@
 					<spring:bind path="budgetStatementModel.thisYear.govFundPayment">        
                 		<div class="">
                 	</spring:bind>        
-                    <form:input path="thisYear.govFundPayment" id="govFundPayment2"  />
+                    <form:input path="thisYear.govFundPayment" id="govFundPayment2" cssClass="form-control input-sm" />
                    	<form:errors path="thisYear.govFundPayment" />         
         </td>
         
@@ -251,6 +256,7 @@
         </td>
 		
 		</tr>
+		</tbody>
 	</table>
 	    
 

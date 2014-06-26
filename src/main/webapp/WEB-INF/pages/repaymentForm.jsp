@@ -38,15 +38,11 @@
     <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="repayment.type"/>
-        <label class="checkbox-inline">
-        	<form:radiobutton path="type" value="principle" /><fmt:message key='principle'/> 
-        </label>
-        <label class="checkbox-inline">
-			<form:radiobutton path="type" value="interest" /><fmt:message key='interest'/>
-		</label>
-		<label class="checkbox-inline">
-			<form:radiobutton path="type" value="premium" /><fmt:message key='premium'/>
-		</label>
+        <c:forEach var="repaymentType" items="${repaymentTypes}" varStatus="status">
+        	<label class="checkbox-inline">
+        		<form:radiobutton path="type" value="${repaymentType}" /><fmt:message key='${repaymentType}'/> 
+        	</label>
+        </c:forEach>
     </div>
     
     <spring:bind path="repayment.comment">

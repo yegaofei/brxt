@@ -17,8 +17,9 @@
     <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="collateral.projectName"/>
-        <form:input path="projectName" id="projectName" maxlength="50" cssClass="form-control"/>
-        <form:errors path="projectName" cssClass="help-inline"/>
+        <form:select path="projectName" id="projectName" cssClass="form-control" >    		
+			<form:options items="${allProjectNames}" />
+		</form:select>     
     </div>
 
     <spring:bind path="collateralDataModel.description">

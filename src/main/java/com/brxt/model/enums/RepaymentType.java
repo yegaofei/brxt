@@ -4,7 +4,10 @@ public enum RepaymentType {
 
 	PRINCIPLE("principle"),
 	PREMIUM("premium"),
-	INTEREST("interest");
+	TRUST_INCOME("trust_income"),
+	REPURCHASE("repurchase"),
+	INTEREST("interest"),
+	OTHER_REPAYMENT_TYPES("other_repayment_types");
 	
 	private String title;
 	

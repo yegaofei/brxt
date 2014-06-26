@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -42,6 +44,22 @@ public class CollateralController extends BaseFormController{
 	public void setProjectInfoManager(
 			@Qualifier("projectInfoManager") ProjectInfoManager projectInfoManager) {
 		this.projectInfoManager = projectInfoManager;
+	}
+	
+	@ModelAttribute("allProjectNames")
+	public Map<String, String> getAllProjectNames(final HttpServletRequest request) {
+		Map<String, String> projectNames = new TreeMap<String, String>();
+		List<String> nameList = projectInfoManager.getAllProjectNames();
+		
+		if(nameList !=null && !nameList.isEmpty())
+		{
+			for(int i = 0; i < nameList.size(); i++)
+			{
+				String name = nameList.get(i);
+				projectNames.put(name, name);
+			}
+		}
+		return projectNames;
 	}
 
 	@ModelAttribute("collateralList")

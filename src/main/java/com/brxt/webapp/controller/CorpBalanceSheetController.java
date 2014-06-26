@@ -196,7 +196,7 @@ public class CorpBalanceSheetController extends BaseSheetController {
 		endBalSheet.setCounterparty(cp);
 
 		Date reportTime = corpBalanceSheetModel.getReportTime();
-		if(beginBalSheet.getReportYear() != null && beginBalSheet.getReportYear() != getYear(reportTime) )
+		if(beginBalSheet.getReportYear() != null && beginBalSheet.getReportYear().intValue() != getYear(reportTime).intValue() )
 		{
 			beginBalSheet.setId(null);
 		}

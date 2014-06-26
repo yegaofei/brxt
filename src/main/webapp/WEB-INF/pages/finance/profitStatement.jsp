@@ -2,6 +2,9 @@
 <head>
     <title><fmt:message key="profitStatement.title"/></title>
     <meta name="menu" content="ProjectInfoSubMenu"/>
+    <link rel="stylesheet" type="text/css" href="${base}/webjars/bootstrap-datepicker/1.2.0/css/datepicker.css"/>
+    <script type="text/javascript" src="${base}/webjars/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="${base}/webjars/bootstrap-datepicker/1.2.0/js/locales/bootstrap-datepicker.zh-CN.js" charset="UTF-8"></script>  
 </head>
  
 <div class="col-sm-3">
@@ -26,18 +29,19 @@
 	<form:hidden path="counterpartyType"/>
  	<input type="hidden" name="type" value='<c:out value="${profitStatementModel.tradingRelationship}" />' />
 	<input type="hidden" name="ctype" value='<c:out value="${profitStatementModel.counterpartyType}" />' />
+	<input type="hidden" name="id" value='<c:out value="${param.id}" />' />
 	
 	<div class="row">
-    <div class="col-sm-6 form-group">
+    <div class="col-sm-5 form-group">
         <appfuse:label styleClass="control-label" key="report.type.name"/>: 
-        <form:select path="statementType" id="statementType">    		
+        <form:select path="statementType" id="statementType" class="form-control input-sm">    		
 			<form:options items="${statementTypes}" />
 		</form:select>        
     </div>  
 	    
-    <div class="col-sm-5 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    <div class="col-sm-7 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
         <appfuse:label styleClass="control-label" key="profitStatement.reportYear"/>:
-		<fmt:formatDate value="${profitStatementModel.reportTime}" pattern="${shortDatePattern}" />
+		<form:input path="reportTime" id="reportTime" maxlength="20"  class="form-control input-sm"/>
     </div>	
 	</div>
 	
@@ -53,7 +57,7 @@
 				<spring:bind path="profitStatementModel.endBalSheet">
         		<div class="">
     			</spring:bind>        
-        		<form:input path="endBalSheet.operatingIncome" id="operatingIncome" maxlength="20" />
+        		<form:input path="endBalSheet.operatingIncome" id="operatingIncome" maxlength="20" class="form-control input-sm"/>
         		<form:errors path="endBalSheet.operatingIncome" />
         		</div>               
             </td>
@@ -65,7 +69,7 @@
 				<spring:bind path="profitStatementModel.endBalSheet">    	
  				<div class="">       
     			</spring:bind>        
-        		<form:input path="endBalSheet.operatingCost" id="operatingCost" maxlength="20" />
+        		<form:input path="endBalSheet.operatingCost" id="operatingCost" maxlength="20" class="form-control input-sm"/>
         		<form:errors path="endBalSheet.operatingCost" />
         		</div>         
             </td>
@@ -77,7 +81,7 @@
 				<spring:bind path="profitStatementModel.endBalSheet">    	
 				<div class="">        
     			</spring:bind>        
-        		<form:input path="endBalSheet.operatingProfit" id="operatingProfit" maxlength="20" />
+        		<form:input path="endBalSheet.operatingProfit" id="operatingProfit" maxlength="20" class="form-control input-sm"/>
         		<form:errors path="endBalSheet.operatingProfit" />
         		</div>
             </td>
@@ -89,7 +93,7 @@
         		<spring:bind path="profitStatementModel.endBalSheet">    	
         		<div class="">
     			</spring:bind>        
-        		<form:input path="endBalSheet.interestCost" id="interestCost" maxlength="20" />
+        		<form:input path="endBalSheet.interestCost" id="interestCost" maxlength="20" class="form-control input-sm"/>
         		<form:errors path="endBalSheet.interestCost" />
         		</div>       
             </td>
@@ -101,7 +105,7 @@
 				<spring:bind path="profitStatementModel.endBalSheet">    	
 				<div class="">        
     			</spring:bind>        
-        		<form:input path="endBalSheet.operatingTax" id="operatingTax" maxlength="20" />
+        		<form:input path="endBalSheet.operatingTax" id="operatingTax" maxlength="20" class="form-control input-sm"/>
         		<form:errors path="endBalSheet.operatingTax" />
         		</div>
             </td>
@@ -113,7 +117,7 @@
                 <spring:bind path="profitStatementModel.endBalSheet">    	
         		<div class="">
     			</spring:bind>        
-        		<form:input path="endBalSheet.netProfit" id="netProfit" maxlength="20" />
+        		<form:input path="endBalSheet.netProfit" id="netProfit" maxlength="20" class="form-control input-sm"/>
         		<form:errors path="endBalSheet.netProfit" />
         		</div>
             </td>
@@ -173,6 +177,12 @@ $(document).ready(function(){
 		
 	})
 })
-
 </script>
-
+<script>
+  $(function() {
+    $('#reportTime').datepicker({
+				//language: 'zh-CN'
+				format: '<c:out value="${shortDatePatternJs}" />'
+			});
+  });
+</script>

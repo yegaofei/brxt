@@ -2,6 +2,9 @@
 <head>
     <title><fmt:message key="instBalanceSheet.title"/></title>
     <meta name="menu" content="ProjectInfoSubMenu"/>
+    <link rel="stylesheet" type="text/css" href="${base}/webjars/bootstrap-datepicker/1.2.0/css/datepicker.css"/>
+    <script type="text/javascript" src="${base}/webjars/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="${base}/webjars/bootstrap-datepicker/1.2.0/js/locales/bootstrap-datepicker.zh-CN.js" charset="UTF-8"></script>  
 </head>
  
 <div class="col-sm-3">
@@ -26,18 +29,19 @@
 	<form:hidden path="counterpartyType"/>
 	<input type="hidden" name="type" value='<c:out value="${instBalanceSheetModel.tradingRelationship}" />' />
 	<input type="hidden" name="ctype" value='<c:out value="${instBalanceSheetModel.counterpartyType}" />' />
+	<input type="hidden" name="id" value='<c:out value="${param.id}" />' />
  
 	<div class="row">
     <div class="col-sm-6 form-group">
         <appfuse:label styleClass="control-label" key="report.type.name"/>: 
-        <form:select path="statementType" id="statementType">    		
+        <form:select path="statementType" id="statementType" cssClass="form-control input-sm">    		
 			<form:options items="${statementTypes}" />
 		</form:select>        
     </div>  
     
     <div class="col-sm-5">
         <appfuse:label styleClass="control-label" key="corpBalanceSheet.reportYear"/>:
-        <fmt:formatDate value="${instBalanceSheetModel.reportTime}" pattern="${shortDatePattern}" />
+        <form:input path="reportTime" id="reportTime" maxlength="20"  class="form-control input-sm"/>
     </div>	
 
 	</div>
@@ -54,7 +58,7 @@
         	<spring:bind path="instBalanceSheetModel.beginBalSheet">
         	<div >
     		</spring:bind>        
-        	<form:input path="beginBalSheet.assetGroupTotal" id="assetGroupTotal1" maxlength="20" />
+        	<form:input path="beginBalSheet.assetGroupTotal" id="assetGroupTotal1" maxlength="20" cssClass="form-control input-sm"/>
         	<form:errors path="beginBalSheet.assetGroupTotal" />
         	</div>
         	</td>
@@ -62,7 +66,7 @@
         	<spring:bind path="instBalanceSheetModel.endBalSheet">
         	<div >
     		</spring:bind>        
-        	<form:input path="endBalSheet.assetGroupTotal" id="assetGroupTotal2" maxlength="20" />
+        	<form:input path="endBalSheet.assetGroupTotal" id="assetGroupTotal2" maxlength="20" cssClass="form-control input-sm"/>
         	<form:errors path="endBalSheet.assetGroupTotal" />
         	</div>
         	</td>
@@ -73,7 +77,7 @@
         		<spring:bind path="instBalanceSheetModel.beginBalSheet">    	
         		<div >
     			</spring:bind>        
-        		<form:input path="beginBalSheet.assetTotal" id="assetTotal" maxlength="20"/>
+        		<form:input path="beginBalSheet.assetTotal" id="assetTotal" maxlength="20" cssClass="form-control input-sm"/>
         		<form:errors path="beginBalSheet.assetTotal"/>
  				</div>
  			</td>
@@ -81,7 +85,7 @@
         		<spring:bind path="instBalanceSheetModel.endBalSheet">    	
  				<div >       
     			</spring:bind>        
-        		<form:input path="endBalSheet.assetTotal" id="assetTotal2" maxlength="20" />
+        		<form:input path="endBalSheet.assetTotal" id="assetTotal2" maxlength="20" cssClass="form-control input-sm"/>
         		<form:errors path="endBalSheet.assetTotal" />
         		</div>
         	</td>
@@ -92,7 +96,7 @@
         		<spring:bind path="instBalanceSheetModel.beginBalSheet">    	
         		<div >
     			</spring:bind>        
-        		<form:input path="beginBalSheet.expenseTotal" id="expenseTotal" maxlength="20" />
+        		<form:input path="beginBalSheet.expenseTotal" id="expenseTotal" maxlength="20" cssClass="form-control input-sm"/>
         		<form:errors path="beginBalSheet.expenseTotal"/>
 				</div>
 			</td>
@@ -100,7 +104,7 @@
         		<spring:bind path="instBalanceSheetModel.endBalSheet">    	
 				<div >        
     			</spring:bind>        
-        		<form:input path="endBalSheet.expenseTotal" id="expenseTotal2" maxlength="20" />
+        		<form:input path="endBalSheet.expenseTotal" id="expenseTotal2" maxlength="20" cssClass="form-control input-sm" />
         		<form:errors path="endBalSheet.expenseTotal" />
         		</div>
         	</td>
@@ -111,7 +115,7 @@
         		<spring:bind path="instBalanceSheetModel.beginBalSheet">    	
         		<div >
     			</spring:bind>        
-        		<form:input path="beginBalSheet.debtGroupTotal" id="debtGroupTotal" maxlength="20" />
+        		<form:input path="beginBalSheet.debtGroupTotal" id="debtGroupTotal" maxlength="20" cssClass="form-control input-sm"/>
         		<form:errors path="beginBalSheet.debtGroupTotal" />
         		</div>
         	</td>
@@ -119,7 +123,7 @@
         		<spring:bind path="instBalanceSheetModel.endBalSheet">    	
         		<div >
     			</spring:bind>        
-        		<form:input path="endBalSheet.debtGroupTotal" id="debtGroupTotal2" maxlength="20" />
+        		<form:input path="endBalSheet.debtGroupTotal" id="debtGroupTotal2" maxlength="20" cssClass="form-control input-sm"/>
         		<form:errors path="endBalSheet.debtGroupTotal" />
         		</div>
         	</td>
@@ -130,7 +134,7 @@
         		<spring:bind path="instBalanceSheetModel.beginBalSheet">    	
         		<div >
     			</spring:bind>        
-        		<form:input path="beginBalSheet.debtTotal" id="debtTotal" maxlength="20" />
+        		<form:input path="beginBalSheet.debtTotal" id="debtTotal" maxlength="20" cssClass="form-control input-sm"/>
         		<form:errors path="beginBalSheet.debtTotal"/>
 				</div>
 			</td>
@@ -138,7 +142,7 @@
         		<spring:bind path="instBalanceSheetModel.endBalSheet">    	
 				<div >        
     			</spring:bind>        
-        		<form:input path="endBalSheet.debtTotal" id="debtTotal2" maxlength="20" />
+        		<form:input path="endBalSheet.debtTotal" id="debtTotal2" maxlength="20" cssClass="form-control input-sm"/>
         		<form:errors path="endBalSheet.debtTotal" />
         		</div>
         	</td>
@@ -149,7 +153,7 @@
         		<spring:bind path="instBalanceSheetModel.beginBalSheet">    	
         		<div >
     			</spring:bind>        
-        		<form:input path="beginBalSheet.netAssetTotal" id="netAssetTotal" maxlength="20" />
+        		<form:input path="beginBalSheet.netAssetTotal" id="netAssetTotal" maxlength="20" cssClass="form-control input-sm"/>
         		<form:errors path="beginBalSheet.netAssetTotal" />
         		</div>
         	</td>
@@ -157,7 +161,7 @@
         		<spring:bind path="instBalanceSheetModel.endBalSheet">    	
         		<div >
     			</spring:bind>        
-        		<form:input path="endBalSheet.netAssetTotal" id="netAssetTotal2" maxlength="20" />
+        		<form:input path="endBalSheet.netAssetTotal" id="netAssetTotal2" maxlength="20" cssClass="form-control input-sm"/>
         		<form:errors path="endBalSheet.netAssetTotal" />
         		</div>
         	</td>
@@ -168,7 +172,7 @@
         		<spring:bind path="instBalanceSheetModel.beginBalSheet">    	
         		<div >
     			</spring:bind>        
-        		<form:input path="beginBalSheet.incomeTotal" id="incomeTotal" maxlength="20" />
+        		<form:input path="beginBalSheet.incomeTotal" id="incomeTotal" maxlength="20" cssClass="form-control input-sm"/>
         		<form:errors path="beginBalSheet.incomeTotal" />
         		</div>
         	</td>
@@ -176,7 +180,7 @@
         		<spring:bind path="instBalanceSheetModel.endBalSheet">    	
         		<div >
     			</spring:bind>        
-        		<form:input path="endBalSheet.incomeTotal" id="incomeTotal2" maxlength="20" />
+        		<form:input path="endBalSheet.incomeTotal" id="incomeTotal2" maxlength="20" cssClass="form-control input-sm"/>
         		<form:errors path="endBalSheet.incomeTotal" />
         		</div>
         	</td>
@@ -227,4 +231,12 @@ $(document).ready(function(){
 	})
 })
   
+</script>
+<script>
+  $(function() {
+    $('#reportTime').datepicker({
+				//language: 'zh-CN'
+				format: '<c:out value="${shortDatePatternJs}" />'
+			});
+  });
 </script>

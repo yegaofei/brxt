@@ -34,7 +34,7 @@
     <div class="row">
     <div class="col-sm-7 form-group">
         <appfuse:label styleClass="control-label" key="report.type.name"/>: 
-        <form:select path="statementType" id="statementType" class="form-control input-sm">    		
+        <form:select path="statementType" id="statementType" cssClass="form-control input-sm">    		
 			<form:options items="${statementTypes}" />
 		</form:select>        
     </div>  

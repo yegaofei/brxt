@@ -1,5 +1,6 @@
 package com.brxt.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.service.impl.GenericManagerImpl;
@@ -155,6 +156,21 @@ public class ProjectInfoManagerImpl extends
 			
 		}
 		return pi;	
+	}
+
+	@Override
+	public List<String> getAllProjectNames() {
+		List<ProjectInfo> projectInfos = projectInfoDao.getAll();
+		if(projectInfos != null && !projectInfos.isEmpty())
+		{
+			List<String> names = new ArrayList<String>();
+			for(ProjectInfo projectInfo : projectInfos)
+			{
+				names.add(projectInfo.getProjectName());
+			}
+			return names;
+		}
+		return null;
 	}
 	
 }
