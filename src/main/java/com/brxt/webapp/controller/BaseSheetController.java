@@ -1,6 +1,8 @@
 package com.brxt.webapp.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
@@ -11,6 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.brxt.model.Counterparty;
@@ -45,6 +50,16 @@ public class BaseSheetController extends BaseFormController {
 		return statementTypes;
 	}
 	
+	@Override
+	@InitBinder
+	protected void initBinder(final HttpServletRequest request,
+			final ServletRequestDataBinder binder) {
+		super.initBinder(request, binder);
+		SimpleDateFormat checkTimeDateFormat = new SimpleDateFormat(getText(
+				"date.format.short", request.getLocale()));
+		binder.registerCustomEditor(Date.class, "reportTime",
+				new CustomDateEditor(checkTimeDateFormat, true));
+	}
 	
 	@Autowired
 	public void setProjectInfoManager(
@@ -61,6 +76,20 @@ public class BaseSheetController extends BaseFormController {
 	protected Integer getCurrentYear()
 	{
 		return CALENDAR.get(Calendar.YEAR);
+	}
+	
+	protected Integer getYear(Date date)
+	{
+		Calendar calendar = Calendar.getInstance(Locale.CHINESE);
+		calendar.setTime(date);
+		return calendar.get(Calendar.YEAR);
+	}
+	
+	protected Short getMonth(Date date)
+	{
+		Calendar calendar = Calendar.getInstance(Locale.CHINESE);
+		calendar.setTime(date);
+		return (short)(calendar.get(Calendar.MONTH) + 1);
 	}
 	
 	protected Integer getCurrentMonth()
@@ -106,5 +135,16 @@ public class BaseSheetController extends BaseFormController {
 			projectInfoManager.save(projectInfo);
 		}
 	}
+	
+	protected Date getDateObj(Integer year, Short month)
+	{
+		Calendar calendar = Calendar.getInstance(Locale.CHINESE);
+		calendar.set(Calendar.YEAR, year);
+		calendar.set(Calendar.MONTH, (int)month - 1);
+		calendar.set(Calendar.DATE, 1);
+		return calendar.getTime();
+	}
+	
+	
 
 }

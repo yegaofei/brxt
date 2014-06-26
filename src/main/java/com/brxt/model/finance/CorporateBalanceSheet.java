@@ -292,9 +292,6 @@ public class CorporateBalanceSheet extends BaseObject {
 				&& !(projectInfo != null ? !projectInfo
 						.equals(statement.projectInfo)
 						: statement.projectInfo != null)
-				&& !(statementType != null ? !statementType
-						.equals(statement.statementType)
-						: statement.statementType != null)
 				&& !(reportYear != null ? !reportYear
 						.equals(statement.reportYear)
 						: statement.reportYear != null)		

@@ -39,13 +39,13 @@ public class CorpBalanceSheetController extends BaseSheetController {
 	@ModelAttribute("corpBalanceSheetModel")
 	public CorpBalanceSheetModel getCorpBalanceSheetModel(
 			final HttpServletRequest request, final HttpSession session) {
-		String projectInfoIdStr = (String) session
-				.getAttribute(SessionAttributes.PROJECT_INFO_ID);
+		String projectInfoIdStr = (String) session.getAttribute(SessionAttributes.PROJECT_INFO_ID);
 		CorporateBalanceSheet endBalSheet = null;
 		ProjectInfo projectInfo = null;
 		Counterparty counterparty = null;
 		CorpBalanceSheetModel csm = new CorpBalanceSheetModel();
 		String statementId = request.getParameter("id");
+		String reportTime = request.getParameter("reportTime");
 		if(!StringUtils.isBlank(statementId))
 		{
 			endBalSheet = financeSheetManager.getCorpBalanceSheet(Long.valueOf(statementId));
@@ -63,9 +63,11 @@ public class CorpBalanceSheetController extends BaseSheetController {
 				csm.setTradingRelationship(TradingRelationship.GUARANTOR);
 			}
 			csm.setCounterpartyName(counterparty.getName());
+			csm.setReportTime(getDateObj(endBalSheet.getReportYear(), endBalSheet.getReportMonth()));
 		}
 		else
 		{
+			//Add
 			String counterpartyIdStr = request.getParameter("counterpartyId");
 			String trStr = request.getParameter("type");
 			if (StringUtils.isBlank(projectInfoIdStr)
@@ -97,11 +99,17 @@ public class CorpBalanceSheetController extends BaseSheetController {
 			}
 			csm.setCounterpartyName(counterparty.getName());
 			csm.setCounterpartyType(counterparty.getCounterpartyType());
-			
-			endBalSheet = financeSheetManager.findCorporateBalanceSheet(projectInfo, counterparty, getCurrentYear(), getCurrentMonth());
+			if(StringUtils.isBlank(reportTime))
+			{
+				csm.setReportTime(new Date());				
+				endBalSheet = financeSheetManager.findCorporateBalanceSheet(projectInfo, counterparty, getYear(csm.getReportTime()), getMonth(csm.getReportTime()).intValue());
+				if(endBalSheet != null)
+				{
+					saveMessage(request, getText("finance.balSheet.existed", new String[]{ getCurrentYear().toString(), getCurrentMonth().toString()}, request.getLocale()));
+					endBalSheet = null;
+				} 
+			}					
 		}
-		
-		csm.setEndBalSheet(endBalSheet);
 		
 		int year = getCurrentYear();
 		if(endBalSheet != null && endBalSheet.getReportYear() != null)
@@ -123,7 +131,8 @@ public class CorpBalanceSheetController extends BaseSheetController {
 			endBalSheet.setProjectInfo(projectInfo);
 			endBalSheet.setCounterparty(counterparty);
 		}
-		csm.setReportTime(new Date());
+		csm.setEndBalSheet(endBalSheet);
+		
 		return csm;
 	}
 
@@ -186,12 +195,20 @@ public class CorpBalanceSheetController extends BaseSheetController {
 		endBalSheet.setProjectInfo(projectInfo);
 		endBalSheet.setCounterparty(cp);
 
+		Date reportTime = corpBalanceSheetModel.getReportTime();
+		if(beginBalSheet.getReportYear() != null && beginBalSheet.getReportYear() != getYear(reportTime) )
+		{
+			beginBalSheet.setId(null);
+		}
+		beginBalSheet.setReportYear(getYear(reportTime));			
+		beginBalSheet.setReportMonth((short) 0);
+		endBalSheet.setReportYear(getYear(reportTime));
+		endBalSheet.setReportMonth(getMonth(reportTime));
+		
 		boolean isNewBeginBalSheet = (beginBalSheet.getId() == null);
 		User currentUser = getCurrentUser();
 		if (isNewBeginBalSheet) {
 			// Add
-			beginBalSheet.setReportYear(getCurrentYear());
-			beginBalSheet.setReportMonth((short) 0);
 			beginBalSheet.setCreateUser(currentUser.getUsername());
 			beginBalSheet.setCreateTime(new Date());
 		} else {
@@ -202,8 +219,6 @@ public class CorpBalanceSheetController extends BaseSheetController {
 		boolean isNewEndBalSheet = (endBalSheet.getId() == null);
 		if (isNewEndBalSheet) {
 			// Add
-			endBalSheet.setReportYear(getCurrentYear());
-			endBalSheet.setReportMonth(getCurrentMonth().shortValue());
 			endBalSheet.setCreateUser(currentUser.getUsername());
 			endBalSheet.setCreateTime(new Date());
 		} else {
@@ -213,7 +228,13 @@ public class CorpBalanceSheetController extends BaseSheetController {
 
 		financeSheetManager.saveCorpBalanceSheets(beginBalSheet, endBalSheet);
 		updateProjectInfoStatus(projectInfo, true);
-		saveMessage(request, getText("corpBalanceSheet.updated", locale));
+		if (isNewEndBalSheet) {
+			saveMessage(request, getText("corpBalanceSheet.added", new String[]{endBalSheet.getReportYear().toString(), endBalSheet.getReportMonth().toString()}, locale));
+		}
+		else
+		{
+			saveMessage(request, getText("corpBalanceSheet.updated", new String[]{endBalSheet.getReportYear().toString(), endBalSheet.getReportMonth().toString()}, locale));
+		}
 	}
 
 }

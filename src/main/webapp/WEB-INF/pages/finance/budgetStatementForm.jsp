@@ -37,7 +37,8 @@
 
     <div class="col-sm-5 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
         <appfuse:label styleClass="control-label" key="profitStatement.reportYear"/>:
-		<fmt:formatDate value="${budgetStatementModel.reportTime}" pattern="${shortDatePattern}" />
+		<!-- <fmt:formatDate value="${budgetStatementModel.reportTime}" pattern="${shortDatePattern}" />  -->
+		<form:input path="reportTime" id="reportTime" maxlength="20" cssClass="form-control"/>
     </div>	
 	</div>
 	
@@ -308,3 +309,11 @@ $(document).ready(function(){
 })
 </script>
 
+<script>
+  $(function() {
+    $('#reportTime').datepicker({
+				//language: 'zh-CN'
+				format: '<c:out value="${shortDatePatternJs}" />'
+			});
+  });
+</script>
