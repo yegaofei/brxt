@@ -31,6 +31,7 @@ import com.brxt.model.ReportContentKey;
 import com.brxt.model.SubjectCapacity;
 import com.brxt.model.enums.CounterpartyType;
 import com.brxt.model.finance.CorporateBalanceSheet;
+import com.brxt.model.finance.InstituteBalanceSheet;
 import com.brxt.model.finance.ProfitStatement;
 import com.brxt.model.projectprogress.InvestmentProject;
 import com.brxt.model.projectprogress.RepaymentProject;
@@ -372,101 +373,118 @@ public class RiskControlReportController extends BaseSheetController {
 			c2.setTime(currTerm);
 			ProjectInfo projectInfo = projectInfoManager.get(Long.valueOf(projectInfoId));
 			Counterparty counterparty = findCounterparty(projectInfo, Long.valueOf(counterpartyId));
-			CorporateBalanceSheet prevTermCbs = financeSheetManager.findCorporateBalanceSheet(projectInfo, counterparty,
-					c1.get(Calendar.YEAR), c1.get(Calendar.MONTH) + 1);
-			CorporateBalanceSheet currTermCbs = financeSheetManager.findCorporateBalanceSheet(projectInfo, counterparty,
-					c2.get(Calendar.YEAR), c2.get(Calendar.MONTH) + 1);
-			CorporateBalanceSheet corpBalanceSheetChanges = calculate(prevTermCbs, currTermCbs);
 			FinanceCheck financeCheck = new FinanceCheck();
-			financeCheck.setCurrCorpBalanceSheet(currTermCbs);
-			financeCheck.setPrevCorpBalanceSheet(prevTermCbs);
-			financeCheck.setCorpBalanceSheetChanges(corpBalanceSheetChanges);
+			financeCheck.setCounterparty(counterparty);
+			//房地产企业和一般工商企业
+			if(counterparty.getCounterpartyType().equals(CounterpartyType.REAL_ESTATE_FIRM.toString()) || 
+					counterparty.getCounterpartyType().equals(CounterpartyType.COMMERCE_COMPANY.toString())){
+				CorporateBalanceSheet prevTermCbs = financeSheetManager.findCorporateBalanceSheet(projectInfo, counterparty,
+						c1.get(Calendar.YEAR), c1.get(Calendar.MONTH) + 1);
+				CorporateBalanceSheet currTermCbs = financeSheetManager.findCorporateBalanceSheet(projectInfo, counterparty,
+						c2.get(Calendar.YEAR), c2.get(Calendar.MONTH) + 1);
+				CorporateBalanceSheet corpBalanceSheetChanges = calculate(prevTermCbs, currTermCbs);
+				
+				financeCheck.setCurrCorpBalanceSheet(currTermCbs);
+				financeCheck.setPrevCorpBalanceSheet(prevTermCbs);
+				financeCheck.setCorpBalanceSheetChanges(corpBalanceSheetChanges);
 
-			ProfitStatement prevProfitStatement = financeSheetManager.findProfitStatement(projectInfo, counterparty, c1.get(Calendar.YEAR),
-					c1.get(Calendar.MONTH) + 1);
-			ProfitStatement currProfitStatement = financeSheetManager.findProfitStatement(projectInfo, counterparty, c2.get(Calendar.YEAR),
-					c2.get(Calendar.MONTH) + 1);
-			financeCheck.setPrevProfitStatement(prevProfitStatement);
-			financeCheck.setCurrProfitStatement(currProfitStatement);
+				ProfitStatement prevProfitStatement = financeSheetManager.findProfitStatement(projectInfo, counterparty, c1.get(Calendar.YEAR),
+						c1.get(Calendar.MONTH) + 1);
+				ProfitStatement currProfitStatement = financeSheetManager.findProfitStatement(projectInfo, counterparty, c2.get(Calendar.YEAR),
+						c2.get(Calendar.MONTH) + 1);
+				financeCheck.setPrevProfitStatement(prevProfitStatement);
+				financeCheck.setCurrProfitStatement(currProfitStatement);
 
-			if (prevTermCbs != null) {
-				FinanceRatio prevFinanceRatio = new FinanceRatio();
-				prevFinanceRatio.setAssetLiabilityRatio(calculateRatio(prevTermCbs.getTotalDebt(), prevTermCbs.getTotalAsset()));
-				if(prevProfitStatement != null)
-				{
-					prevFinanceRatio.setAssetRoR(calculateRatio(prevProfitStatement.getNetProfit(), prevTermCbs.getNetAsset()));
+				if (prevTermCbs != null) {
+					FinanceRatio prevFinanceRatio = new FinanceRatio();
+					prevFinanceRatio.setAssetLiabilityRatio(calculateRatio(prevTermCbs.getTotalDebt(), prevTermCbs.getTotalAsset()));
+					if(prevProfitStatement != null)
+					{
+						prevFinanceRatio.setAssetRoR(calculateRatio(prevProfitStatement.getNetProfit(), prevTermCbs.getNetAsset()));
+					}
+					prevFinanceRatio.setLiquidityRatio(calculateRatio(prevTermCbs.getLiquidAsset(), prevTermCbs.getLiquidDebt()));
+					if(prevTermCbs.getLiquidAsset() != null)
+					{
+						prevFinanceRatio.setQuickRatio(calculateRatio(prevTermCbs.getLiquidAsset().subtract(prevTermCbs.getInventory()),
+								prevTermCbs.getLiquidDebt()));
+					}
+					if (currProfitStatement != null && prevProfitStatement != null) {
+						prevFinanceRatio.setSalesIncrementRatio(calculateRatio(
+								currProfitStatement.getOperatingIncome().subtract(prevProfitStatement.getOperatingIncome()),
+								prevProfitStatement.getOperatingIncome()));
+					}
+					financeCheck.setPrevFinanceRatio(prevFinanceRatio);
 				}
-				prevFinanceRatio.setLiquidityRatio(calculateRatio(prevTermCbs.getLiquidAsset(), prevTermCbs.getLiquidDebt()));
-				if(prevTermCbs.getLiquidAsset() != null)
-				{
-					prevFinanceRatio.setQuickRatio(calculateRatio(prevTermCbs.getLiquidAsset().subtract(prevTermCbs.getInventory()),
-							prevTermCbs.getLiquidDebt()));
-				}
-				if (currProfitStatement != null && prevProfitStatement != null) {
-					prevFinanceRatio.setSalesIncrementRatio(calculateRatio(
-							currProfitStatement.getOperatingIncome().subtract(prevProfitStatement.getOperatingIncome()),
-							prevProfitStatement.getOperatingIncome()));
-				}
-				financeCheck.setPrevFinanceRatio(prevFinanceRatio);
-			}
 
-			if (currTermCbs != null) {
-				FinanceRatio currFinanceRatio = new FinanceRatio();
-				currFinanceRatio.setAssetLiabilityRatio(calculateRatio(currTermCbs.getTotalDebt(), currTermCbs.getTotalAsset()));
-				if(currProfitStatement != null)
+				if (currTermCbs != null) {
+					FinanceRatio currFinanceRatio = new FinanceRatio();
+					currFinanceRatio.setAssetLiabilityRatio(calculateRatio(currTermCbs.getTotalDebt(), currTermCbs.getTotalAsset()));
+					if(currProfitStatement != null)
+					{
+						currFinanceRatio.setAssetRoR(calculateRatio(currProfitStatement.getNetProfit(), currTermCbs.getNetAsset()));
+					}
+					currFinanceRatio.setLiquidityRatio(calculateRatio(currTermCbs.getLiquidAsset(), currTermCbs.getLiquidDebt()));
+					if(currTermCbs.getLiquidAsset() != null){
+					currFinanceRatio.setQuickRatio(calculateRatio(currTermCbs.getLiquidAsset().subtract(currTermCbs.getInventory()),
+							currTermCbs.getLiquidDebt()));
+					}
+					financeCheck.setCurrFinanceRatio(currFinanceRatio);
+				}
+				
+				if(financeCheck.getCurrFinanceRatio() != null && financeCheck.getPrevFinanceRatio() != null)
 				{
-					currFinanceRatio.setAssetRoR(calculateRatio(currProfitStatement.getNetProfit(), currTermCbs.getNetAsset()));
+					FinanceRatio financeRatioChanges = new FinanceRatio();
+					FinanceRatio currFinanceRatio = financeCheck.getCurrFinanceRatio();
+					FinanceRatio prevFinanceRatio = financeCheck.getPrevFinanceRatio();
+					
+					if(currFinanceRatio.getAssetLiabilityRatio() != null)
+					{
+						financeRatioChanges.setAssetLiabilityRatio(currFinanceRatio.getAssetLiabilityRatio().subtract(prevFinanceRatio.getAssetLiabilityRatio()));
+					}
+					
+					if(currFinanceRatio.getLiquidityRatio() != null)
+					{
+						financeRatioChanges.setLiquidityRatio(currFinanceRatio.getLiquidityRatio().subtract(prevFinanceRatio.getLiquidityRatio()));							
+					}
+					
+					if(currFinanceRatio.getQuickRatio() != null)
+					{
+						financeRatioChanges.setQuickRatio(currFinanceRatio.getQuickRatio().subtract(prevFinanceRatio.getQuickRatio()));
+					}
+					
+					if(currFinanceRatio.getAssetRoR() != null)
+					{
+						financeRatioChanges.setAssetRoR(currFinanceRatio.getAssetRoR().subtract(prevFinanceRatio.getAssetRoR()));
+					}
+					financeCheck.setFinanceRatioChanges(financeRatioChanges);
 				}
-				currFinanceRatio.setLiquidityRatio(calculateRatio(currTermCbs.getLiquidAsset(), currTermCbs.getLiquidDebt()));
-				if(currTermCbs.getLiquidAsset() != null){
-				currFinanceRatio.setQuickRatio(calculateRatio(currTermCbs.getLiquidAsset().subtract(currTermCbs.getInventory()),
-						currTermCbs.getLiquidDebt()));
+				
+				CreditInformation creditInformation = getCreditInformation(request);
+				if(currTermCbs != null && creditInformation != null)
+				{
+					if(currTermCbs.getLongLoan() != null)
+					{
+						creditInformation.setDebtBalance(currTermCbs.getLongLoan().add(currTermCbs.getShortLoan()));					
+					}
+					else
+					{
+						creditInformation.setDebtBalance(currTermCbs.getShortLoan());	
+					}
 				}
-				financeCheck.setCurrFinanceRatio(currFinanceRatio);
+				mav.addObject("creditInformation", creditInformation);
 			}
 			
-			if(financeCheck.getCurrFinanceRatio() != null && financeCheck.getPrevFinanceRatio() != null)
-			{
-				FinanceRatio financeRatioChanges = new FinanceRatio();
-				FinanceRatio currFinanceRatio = financeCheck.getCurrFinanceRatio();
-				FinanceRatio prevFinanceRatio = financeCheck.getPrevFinanceRatio();
+			// 事业法人
+			if(counterparty.getCounterpartyType().equals(CounterpartyType.INSTITUTION.toString())) {
+				InstituteBalanceSheet prevIBS = financeSheetManager.findInstituteBalanceSheet(projectInfo, counterparty,
+						c1.get(Calendar.YEAR), c1.get(Calendar.MONTH) + 1);
+				InstituteBalanceSheet currIBS = financeSheetManager.findInstituteBalanceSheet(projectInfo, counterparty,
+						c2.get(Calendar.YEAR), c2.get(Calendar.MONTH) + 1);
 				
-				if(currFinanceRatio.getAssetLiabilityRatio() != null)
-				{
-					financeRatioChanges.setAssetLiabilityRatio(currFinanceRatio.getAssetLiabilityRatio().subtract(prevFinanceRatio.getAssetLiabilityRatio()));
-				}
-				
-				if(currFinanceRatio.getLiquidityRatio() != null)
-				{
-					financeRatioChanges.setLiquidityRatio(currFinanceRatio.getLiquidityRatio().subtract(prevFinanceRatio.getLiquidityRatio()));							
-				}
-				
-				if(currFinanceRatio.getQuickRatio() != null)
-				{
-					financeRatioChanges.setQuickRatio(currFinanceRatio.getQuickRatio().subtract(prevFinanceRatio.getQuickRatio()));
-				}
-				
-				if(currFinanceRatio.getAssetRoR() != null)
-				{
-					financeRatioChanges.setAssetRoR(currFinanceRatio.getAssetRoR().subtract(prevFinanceRatio.getAssetRoR()));
-				}
-				financeCheck.setFinanceRatioChanges(financeRatioChanges);
+				financeCheck.setCurrInstituteBalanceSheet(currIBS);
+				financeCheck.setPrevInstituteBalanceSheet(prevIBS);
 			}
-			
 			mav.addObject("financeCheck", financeCheck);
-			CreditInformation creditInformation = getCreditInformation(request);
-			if(currTermCbs != null && creditInformation != null)
-			{
-				if(currTermCbs.getLongLoan() != null)
-				{
-					creditInformation.setDebtBalance(currTermCbs.getLongLoan().add(currTermCbs.getShortLoan()));					
-				}
-				else
-				{
-					creditInformation.setDebtBalance(currTermCbs.getShortLoan());	
-				}
-			}
-			mav.addObject("creditInformation", creditInformation);
 		} catch (ParseException e) {
 			saveError(request, "Date format is incorrect ");
 			return mav;

@@ -43,9 +43,11 @@
 	<div class=" form-group">
 		<div class="row">
 			<appfuse:label styleClass="control-label" key="projectInfo.counterparty.name"/> : 
-			<c:out value="${creditInformation.counterparty.name}" />	
+			<c:out value="${financeCheck.counterparty.name}" />	
 		</div>
 		<appfuse:label styleClass="control-label" key="report.riskcontrol.financeCheck"/> <br>
+		
+		<c:if test="${financeCheck.counterparty.counterpartyType != 'institution'}">
 		<appfuse:label styleClass="control-label" key="report.financeCheck.base"/>  
 		<table class="table table-striped table-bordered table-hover">
 			<thead>
@@ -191,13 +193,96 @@
 				</tr>
 			</tbody>
 		</table>
+		</c:if>
+		
+		<c:if test="${financeCheck.counterparty.counterpartyType == 'institution'}">
+			<table class="table table-striped table-bordered table-hover">
+			<thead>
+				<tr>
+					<th><fmt:message key="instBalanceSheet.itemName"/></th>
+					<th><fmt:message key="report.prev"/></th>
+					<th><fmt:message key="report.curr"/></th>
+				</tr>
+			</thead>	
+			<tbody>
+				<tr>
+        			<td><appfuse:label key="instBalanceSheet.assetGroupTotal"/> </td>
+        			<td>
+						<c:out value="${financeCheck.prevInstituteBalanceSheet.assetGroupTotal}" />
+		        	</td>
+        			<td>
+        				<c:out value="${financeCheck.currInstituteBalanceSheet.assetGroupTotal}" />
+		        	</td>
+        		</tr>
+        		<tr>
+        			<td><appfuse:label  key="instBalanceSheet.assetTotal"/></td>
+        			<td>
+        				<c:out value="${financeCheck.prevInstituteBalanceSheet.assetTotal}" />
+ 					</td>
+        			<td>
+        				<c:out value="${financeCheck.currInstituteBalanceSheet.assetTotal}" />
+        			</td>
+        		</tr>
+        		<tr>
+        			<td><appfuse:label key="instBalanceSheet.expenseTotal"/></td>
+        			<td>
+        				<c:out value="${financeCheck.prevInstituteBalanceSheet.expenseTotal}" />
+					</td>
+        			<td>
+        				<c:out value="${financeCheck.currInstituteBalanceSheet.expenseTotal}" />
+        			</td>
+        		</tr>
+        		<tr>
+        			<td> <appfuse:label  key="instBalanceSheet.debtGroupTotal"/> </td>
+        			<td>
+        				<c:out value="${financeCheck.prevInstituteBalanceSheet.debtGroupTotal}" />
+        			</td>
+        			<td>
+        				<c:out value="${financeCheck.prevInstituteBalanceSheet.debtGroupTotal}" />
+        			</td>
+        		</tr>
+        		<tr>
+        			<td><appfuse:label  key="instBalanceSheet.debtTotal"/></td>
+        			<td>
+        				<c:out value="${financeCheck.prevInstituteBalanceSheet.debtTotal}" />
+					</td>
+        			<td>
+        				<c:out value="${financeCheck.prevInstituteBalanceSheet.debtTotal}" />
+        			</td>
+        		</tr>
+        		<tr>
+        			<td><appfuse:label   key="instBalanceSheet.netAssetTotal"/></td>
+        			<td>
+        				<c:out value="${financeCheck.prevInstituteBalanceSheet.netAssetTotal}" />
+        			</td>
+        			<td>
+        				<c:out value="${financeCheck.prevInstituteBalanceSheet.netAssetTotal}" />
+        			</td>
+        		</tr>
+        		<tr>
+        			<td><appfuse:label  key="instBalanceSheet.incomeTotal"/> </td>
+        			<td>
+        				<c:out value="${financeCheck.prevInstituteBalanceSheet.incomeTotal}" />
+        			</td>
+        			<td>
+        				<c:out value="${financeCheck.prevInstituteBalanceSheet.incomeTotal}" />
+        			</td>
+        		</tr>
+        		<tr>
+					<td><appfuse:label key="report.financeCheck.financeStatementSummary"/></td>
+					<td colspan="3"><input type="text" name="financeStatementSummary" class="form-control input-sm"></td>
+				</tr>
+			</tbody>
+			</table>
+		</c:if>
+		
 </div>
 </c:if>
 				<div class="form-group">
+					<c:if test="${not empty creditInformation}" >
 					<div class="row">
 					<appfuse:label styleClass="control-label" key="report.riskcontrol.otherCheck"/> : 
 					</div>
-					<c:if test="${not empty creditInformation}" >
 					<table class="table table-striped table-bordered table-hover">
 						<tbody>
 						<tr>

@@ -9,17 +9,17 @@
     <h2><fmt:message key='report.search.heading'/></h2>
  
     <div id="actions" class="btn-group">
-        <a class="btn btn-primary" href="<c:url value='${ctx}/projectInfoForm'/>">
+        <a class="btn btn-primary disabled" href="<c:url value='${ctx}/projectInfoForm'/>">
             <i class="icon-plus icon-white"></i> <fmt:message key="button.new"/></a>
-        <a class="btn btn-default" href="<c:url value='{ctx}/mainMenu'/>">
+        <a class="btn btn-default disabled" href="<c:url value='{ctx}/mainMenu'/>">
             <i class="icon-ok"></i> <fmt:message key="button.modify"/></a>
-        <a class="btn btn-default" href="<c:url value='{ctx}/mainMenu'/>">
+        <a class="btn btn-default disabled" href="<c:url value='{ctx}/mainMenu'/>">
             <i class="icon-ok"></i> <fmt:message key="button.commit"/></a>
-        <a class="btn btn-default" href="<c:url value='{ctx}/mainMenu'/>">
+        <a class="btn btn-default disabled" href="<c:url value='{ctx}/mainMenu'/>">
             <i class="icon-ok"></i> <fmt:message key="button.audit"/></a>
-        <a class="btn btn-default" href="<c:url value='{ctx}/mainMenu'/>">
+        <a class="btn btn-default disabled" href="<c:url value='{ctx}/mainMenu'/>">
             <i class="icon-ok"></i> <fmt:message key="button.export"/></a>
-        <a class="btn btn-default" href="<c:url value='{ctx}/mainMenu'/>">
+        <a class="btn btn-default disabled" href="<c:url value='{ctx}/mainMenu'/>">
             <i class="icon-ok"></i> <fmt:message key="button.print"/></a>                
     </div>
     

@@ -2,6 +2,7 @@ package com.brxt.model.report;
 
 import com.brxt.model.Counterparty;
 import com.brxt.model.finance.CorporateBalanceSheet;
+import com.brxt.model.finance.InstituteBalanceSheet;
 import com.brxt.model.finance.ProfitStatement;
 
 public class FinanceCheck {
@@ -10,14 +11,17 @@ public class FinanceCheck {
 	private Counterparty counterparty;
 	private ProfitStatement prevProfitStatement;
 	private CorporateBalanceSheet prevCorpBalanceSheet;
+	private InstituteBalanceSheet prevInstituteBalanceSheet;
 	private FinanceRatio prevFinanceRatio;
 	
 	private ProfitStatement currProfitStatement;
 	private CorporateBalanceSheet currCorpBalanceSheet;
+	private InstituteBalanceSheet currInstituteBalanceSheet;
 	private FinanceRatio currFinanceRatio;
 	
 	private ProfitStatement profitStatementChanges;
 	private CorporateBalanceSheet corpBalanceSheetChanges;
+	private InstituteBalanceSheet instituteBalanceSheetChanges;
 	private FinanceRatio financeRatioChanges;
 	
 	public Long getId() {
@@ -86,6 +90,27 @@ public class FinanceCheck {
 	}
 	public void setFinanceRatioChanges(FinanceRatio financeRatioChanges) {
 		this.financeRatioChanges = financeRatioChanges;
+	}
+	public InstituteBalanceSheet getPrevInstituteBalanceSheet() {
+		return prevInstituteBalanceSheet;
+	}
+	public void setPrevInstituteBalanceSheet(
+			InstituteBalanceSheet prevInstituteBalanceSheet) {
+		this.prevInstituteBalanceSheet = prevInstituteBalanceSheet;
+	}
+	public InstituteBalanceSheet getCurrInstituteBalanceSheet() {
+		return currInstituteBalanceSheet;
+	}
+	public void setCurrInstituteBalanceSheet(
+			InstituteBalanceSheet currInstituteBalanceSheet) {
+		this.currInstituteBalanceSheet = currInstituteBalanceSheet;
+	}
+	public InstituteBalanceSheet getInstituteBalanceSheetChanges() {
+		return instituteBalanceSheetChanges;
+	}
+	public void setInstituteBalanceSheetChanges(
+			InstituteBalanceSheet instituteBalanceSheetChanges) {
+		this.instituteBalanceSheetChanges = instituteBalanceSheetChanges;
 	}
 	
 }
