@@ -34,9 +34,16 @@
 	<div class="row">
     <div class="col-sm-5 form-group">
         <appfuse:label styleClass="control-label" key="report.type.name"/>: 
-        <form:select path="statementType" id="statementType" class="form-control input-sm">    		
-			<form:options items="${statementTypes}" />
-		</form:select>        
+        <c:if test="${budgetStatementModel.counterpartyType == 'institution'}">
+        	<form:select path="statementType" id="statementType" class="form-control input-sm">    		
+				<form:options items="${statementTypes1}" />
+			</form:select>  
+		</c:if>  
+		<c:if test="${budgetStatementModel.counterpartyType != 'institution'}">
+        	<form:select path="statementType" id="statementType" class="form-control input-sm">    		
+				<form:options items="${statementTypes2}" />
+			</form:select>  
+		</c:if>      
     </div>  
 
     <div class="col-sm-7 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">

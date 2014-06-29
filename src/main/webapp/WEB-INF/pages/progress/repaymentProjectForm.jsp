@@ -22,7 +22,7 @@
     <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="repaymentProject.name"/>
-        <form:input path="name" id="name" maxlength="20" cssClass="form-control"/>
+        <form:input path="name" id="name" maxlength="20" cssClass="form-control" readonly="true"/>
         <form:errors path="name" cssClass="help-block"/>
     </div>
 

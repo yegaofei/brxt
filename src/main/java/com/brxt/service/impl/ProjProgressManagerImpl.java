@@ -112,7 +112,7 @@ implements ProjProgressManager {
 				pp.setId(wrapId(rp.getId(), CapitalInvestmentType.REPAYMENT_PROJECT));
 				pp.setDeadline(rp.getProjectEndTime());
 				pp.setProjectName(rp.getName());
-				pp.setCapitalInvestmentType(rp.getType());
+				pp.setCapitalInvestmentType(CapitalInvestmentType.REPAYMENT_PROJECT);
 				pp.setInvestment(false);
 				pp.setSupplyLiquid(false);
 				projectProgessList.add(pp);

@@ -8,7 +8,7 @@
     <h2><fmt:message key='financialStatements.title'/></h2>
     <span class="pagebanner"><fmt:message key="financialStatements.heading"/></span>
     <form:errors path="*" cssClass="alert alert-danger alert-dismissable" element="div"/>
-    <form:form commandName="projectInfo" method="post" action="/finance/financialStatements" id="projectInfoForm" cssClass="well">
+    <form:form commandName="projectInfo" method="post" action="${ctx}/finance/financialStatements" id="projectInfoForm" cssClass="well">
     <form:hidden path="id"/>
 	<form:hidden path="version"/>
 	

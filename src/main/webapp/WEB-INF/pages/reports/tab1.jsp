@@ -9,15 +9,15 @@
   								<display:column titleKey="projectSize.startTime">
     								<fmt:formatDate value="${projectSize.startTime}" pattern="${datePattern}" />
   								</display:column>
-  								<display:column property="projectSize" titleKey="projectSize.size" />      			
   								<display:column titleKey="projectSize.endTime">
       								<fmt:formatDate value="${projectSize.endTime}" pattern="${datePattern}" />
   								</display:column>
+  								<display:column property="projectSize" titleKey="projectSize.size" />      			
 							</display:table>
      					</div>
      					<div class="form-group">
                   			<appfuse:label styleClass="control-label" key="projectInfo.expectedReturn"/>:
-                  			<c:out value="${projectInfo.expectedReturn}" />
+                  			<c:out value="${projectInfo.expectedReturn}" />%
                   		</div>
                   		
                   		<div class="form-group">

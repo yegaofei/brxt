@@ -1,5 +1,6 @@
 package com.brxt.webapp.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -72,6 +73,42 @@ public class ProjectProgressController extends BaseFormController {
 					.valueOf(projectInfoId));
 		}
 		return null;
+	}
+	
+	@RequestMapping(value="/progress/addProgress*", method = RequestMethod.GET)
+	public ModelAndView addProgress(final HttpServletRequest request)
+	{
+		ModelAndView mav = new ModelAndView("/progress/addProgress");
+		List<ProjectProgress> allProgress = getProjectProgressList(request);
+		List<ProjectProgress> investments = new ArrayList<ProjectProgress>();
+		List<ProjectProgress> repayments = new ArrayList<ProjectProgress>();
+		if(allProgress != null) 
+		{
+			for(ProjectProgress pp : allProgress)
+			{
+				Long id = projectProgressManager.getRealId(pp.getId());
+				pp.setId(id);
+				switch (pp.getCapitalInvestmentType())
+				{
+				case REPAYMENT_PROJECT:
+					repayments.add(pp);
+					break;
+					default:
+						investments.add(pp);
+				}
+			}
+			
+			if(!investments.isEmpty())
+			{
+				mav.addObject("investments", investments);
+			}
+			
+			if(!repayments.isEmpty())
+			{
+				mav.addObject("repayments", repayments);
+			}
+		}
+		return mav;
 	}
 
 	@RequestMapping(value = "/projectProgress*", method = RequestMethod.GET)

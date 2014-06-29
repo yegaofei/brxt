@@ -26,28 +26,48 @@ import com.brxt.service.ProjectInfoManager;
 
 public class BaseSheetController extends BaseFormController {
 
-	protected static final Map<String, String> statementTypes = new TreeMap<String, String>();
+	protected static final Map<String, String> statementTypes1 = new TreeMap<String, String>();
+	protected static final Map<String, String> statementTypes2 = new TreeMap<String, String>();
 	protected ProjectInfoManager projectInfoManager;
 	protected FinanceSheetManager financeSheetManager;
 	protected static final Calendar CALENDAR = Calendar.getInstance(Locale.CHINA);
 	
 	protected synchronized void loadDropDownList(final Locale locale) {
-		if (statementTypes.isEmpty()) {
+		if (statementTypes1.isEmpty()) {
 			StatementType[] types = StatementType.values();
 			for (StatementType st : types) {
-				statementTypes.put(st.toString(),
+				if(st == StatementType.PROFIT_SHEET) continue;
+				statementTypes1.put(st.toString(),
+						getText(st.toString(), locale));
+			}
+		}
+		
+		if (statementTypes2.isEmpty()) {
+			StatementType[] types = StatementType.values();
+			for (StatementType st : types) {
+				if(st == StatementType.BUDGET_SHEET) continue;
+				statementTypes2.put(st.toString(),
 						getText(st.toString(), locale));
 			}
 		}
 	}
 	
-	@ModelAttribute("statementTypes")
-	public Map<String, String> getStatementTypes(
+	@ModelAttribute("statementTypes1")
+	public Map<String, String> getStatementTypes1(
 			final HttpServletRequest request) {
-		if (statementTypes.isEmpty()) {
+		if (statementTypes1.isEmpty()) {
 			loadDropDownList(request.getLocale());
 		}
-		return statementTypes;
+		return statementTypes1;
+	}
+	
+	@ModelAttribute("statementTypes2")
+	public Map<String, String> getStatementTypes2(
+			final HttpServletRequest request) {
+		if (statementTypes2.isEmpty()) {
+			loadDropDownList(request.getLocale());
+		}
+		return statementTypes2;
 	}
 	
 	@Override
