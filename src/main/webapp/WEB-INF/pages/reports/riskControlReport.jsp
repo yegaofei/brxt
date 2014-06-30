@@ -27,9 +27,9 @@
                 <li <c:if test="${param.activeTab == 'tab8'}"> class="active" </c:if>><a href="#tab8" data-toggle="tab"><fmt:message key="report.riskcontrol.tab8"/></a></li>
               </ul>
               
-              
               <form name="riskControlReport" id="riskControlReport" action="${ctx}/reports/riskControlReport" method="post">
               	<input type="hidden" name="id" value="<c:out value="${param.id}" />" >
+              	<input type="hidden" name="reportId" value="<c:out value="${param.reportId}" />" >
               	<input type="hidden" name="counterpartyId" id="counterpartyId" value="<c:out value="${param.counterpartyId}" />" >
               	<input type="hidden" name="guarantorId" id="guarantorId" value="<c:out value="${param.guarantorId}" />" >
               	<input type="hidden" name="activeTab" id="activeTab" value="<c:out value="${param.activeTab}" />" >

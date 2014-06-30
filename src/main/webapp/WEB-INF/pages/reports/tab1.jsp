@@ -5,7 +5,7 @@
                   		</div>
                   		<div class="form-group">
 	                  		<appfuse:label styleClass="control-label" key="projectSize.title"/>:
-							<display:table name="projectInfo.projectSizes" id="projectSize" class="table table-condensed table-striped table-hover">
+							<display:table name="projectInfo.projectSizes" id="projectSize" class="table table-condensed table-bordered  table-striped table-hover">
   								<display:column titleKey="projectSize.startTime">
     								<fmt:formatDate value="${projectSize.startTime}" pattern="${datePattern}" />
   								</display:column>
@@ -36,8 +36,8 @@
                   		</div>
                   		
                   		<appfuse:label styleClass="control-label" key="repayment.heading"/>:
-                  		<display:table name="repaymentList" class="table table-condensed table-striped table-hover" id="repayment">
-        					<display:column sortable="true" titleKey="repayment.repaymentTime">
+                  		<display:table name="repaymentList" class="table table-condensed table-bordered table-striped table-hover" id="repayment">
+        					<display:column sortable="false" titleKey="repayment.repaymentTime">
         						<fmt:formatDate value="${repayment.repaymentTime}" pattern="${datePattern}" />
         					</display:column>
         					<display:column sortable="false" titleKey="repayment.type">

@@ -51,7 +51,6 @@ import com.brxt.service.SubjectCapacityManager;
 
 @Controller
 public class RiskControlReportController extends BaseSheetController {
-
 	private static final MathContext mc = new MathContext(2, RoundingMode.HALF_DOWN);
 	private ProjectInfoManager projectInfoManager = null;
 	private RepaymentManager repaymentManager = null;
@@ -95,17 +94,26 @@ public class RiskControlReportController extends BaseSheetController {
 	public ProjectInfo getProjectInfo(final HttpServletRequest request) {
 		String id = request.getParameter("id");
 		if (!StringUtils.isBlank(id)) {
-			return projectInfoManager.loadProjectInfo(new Long(id));
-		}
+			return projectInfoManager.get(Long.valueOf(id));
+		} 
 		return new ProjectInfo();
+	}
+	
+	private RiskControlReport getRiskControlReport(final HttpServletRequest request) {
+		String reportId = request.getParameter("reportId");
+		if (!StringUtils.isBlank(reportId)) {
+			return reportManager.get(Long.valueOf(reportId));
+		} 
+		return null;
 	}
 
 	@ModelAttribute("repaymentList")
 	public List<Repayment> getRepaymentList(final HttpServletRequest request) {
-		String projectInfoId = request.getParameter("id");
+		ProjectInfo projectInfo = getProjectInfo(request);
+		RiskControlReport report = getRiskControlReport(request);
 		List<Repayment> ciList = null;
-		if (!StringUtils.isBlank(projectInfoId)) {
-			ciList = repaymentManager.findByProjId(Long.valueOf(projectInfoId));
+		if (projectInfo != null && report != null) {
+			ciList = repaymentManager.findByProjId(projectInfo, report.getTimeRangeStart(), report.getTimeRangeEnd());
 		}
 		return ciList;
 	}
@@ -306,50 +314,17 @@ public class RiskControlReportController extends BaseSheetController {
 			}
 
 			// TODO: How to confirm the date range ??
-			Date projectInfoCreateTime = projectInfo.getCreateTime();
-			Calendar createTime = Calendar.getInstance(request.getLocale());
-			createTime.setTime(projectInfoCreateTime);
-
-			int month = createTime.get(Calendar.MONTH);
-			int year = createTime.get(Calendar.YEAR);
-			Date startTime = null;
-			Date endTime = null;
-			StringBuilder sbStartTime = new StringBuilder();
-			StringBuilder sbEndTime = new StringBuilder();
-			if (month < 3) {
-				// Q1
-				sbStartTime.append(year).append("-01-01");
-				sbEndTime.append(year).append("-03-31");
-			} else if (month < 6) {
-				// Q2
-				sbStartTime.append(year).append("-04-01");
-				sbEndTime.append(year).append("-06-30");
-
-			} else if (month < 9) {
-				// Q3
-				sbStartTime.append(year).append("-07-01");
-				sbEndTime.append(year).append("-09-30");
-
-			} else if (month < 12) {
-				// Q4
-				sbStartTime.append(year).append("-10-01");
-				sbEndTime.append(year).append("-12-31");
-			}
-			startTime = sf.parse(sbStartTime.toString());
-			endTime = sf.parse(sbEndTime.toString());
-
+			RiskControlReport report = getRiskControlReport(request);
 			ReportContentKey rck = new ReportContentKey();
 			rck.setProjectInfo(projectInfo);
-
 			if (activeTab != null && activeTab.startsWith("tab2")) {
 				rck.setCounterparty(counterparty);
 			}
-
 			if (activeTab != null && activeTab.equals("tab6")) {
 				rck.setGuarantor(guarantor);
 			}
-			rck.setStartTime(startTime);
-			rck.setEndTime(endTime);
+			rck.setStartTime(report.getTimeRangeStart());
+			rck.setEndTime(report.getTimeRangeEnd());
 			rck.setActiveTab(activeTab);
 			return rck;
 		}
@@ -358,7 +333,6 @@ public class RiskControlReportController extends BaseSheetController {
 
 	@RequestMapping(value = "/reports/riskControlReport*", method = RequestMethod.GET)
 	public String handleRequest(final HttpServletRequest request) {
-
 		return "/reports/riskControlReport";
 	}
 	
@@ -659,8 +633,12 @@ public class RiskControlReportController extends BaseSheetController {
 	}
 
 	@RequestMapping(value = "/reports/reportSearch*", method = RequestMethod.GET)
-	public ModelAndView handleRequest() {
+	public ModelAndView reportSearch(final HttpServletRequest request) {
 		List<RiskControlReport> reports = reportManager.getAll();
+		if(reports == null || reports.isEmpty())
+		{
+			saveMessage(request, getText("report.add.help", request.getLocale()));
+		}
 		return new ModelAndView("/reports/reportSearch").addObject("reportList", reports);
 	}
 
@@ -737,7 +715,7 @@ public class RiskControlReportController extends BaseSheetController {
 	}
 	
 	@RequestMapping(value = "/reports/addReport*", method = RequestMethod.POST)
-	public ModelAndView addReport(final HttpServletRequest request) {
+	public ModelAndView addReport(final HttpServletRequest request) throws ParseException {
 		ModelAndView mav =  addReport();
 		String projectName = request.getParameter("projectInfo.projectName");
 		String reportSeason = request.getParameter("reportSeason");
@@ -753,13 +731,38 @@ public class RiskControlReportController extends BaseSheetController {
 		report = new RiskControlReport();
 		report.setProjectInfo(projectInfo);
 		report.setReportSeason(reportSeason);
+		String reportYear = reportSeason.substring(0, 4);
+		String reportQuanter = reportSeason.substring(5, 6);
+		Date timeRangeStart = null;
+		Date timeRangeEnd = null;
+		switch (reportQuanter)
+		{
+		case "1":
+			timeRangeStart = sf.parse(reportYear + "-01-01");
+			timeRangeEnd = sf.parse(reportYear + "-03-31");
+			break;
+		case "2":
+			timeRangeStart = sf.parse(reportYear + "-04-01");
+			timeRangeEnd = sf.parse(reportYear + "-06-30");
+			break;
+		case "3":
+			timeRangeStart = sf.parse(reportYear + "-07-01");
+			timeRangeEnd = sf.parse(reportYear + "-09-30");
+			break;
+		case "4":
+			timeRangeStart = sf.parse(reportYear + "-10-01");
+			timeRangeEnd = sf.parse(reportYear + "-12-31");
+			break;
+			default:
+				//Error
+		}
+		report.setTimeRangeStart(timeRangeStart);
+		report.setTimeRangeEnd(timeRangeEnd);
 		report.setCreateUser(getCurrentUser().getUsername());
 		report.setCreateTime(new Date());
 		reportManager.save(report);
 		saveMessage(request, getText("report.add.success", new String[]{projectInfo.getProjectName(), reportSeason}, request.getLocale()) );
 		mav.setViewName("redirect:/reports/reportSearch");
-		
 		return mav;
-				
 	}
 }

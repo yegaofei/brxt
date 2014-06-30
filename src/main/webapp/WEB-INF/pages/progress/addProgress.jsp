@@ -6,10 +6,9 @@
     
 <div class="col-sm-10">
     <h2><fmt:message key='projectProgress.title'/></h2>
-    <span class="pagebanner"><fmt:message key="projectProgress.type.investment"/></span>     
 	<div class="row">
 		<div class="col-sm-4 form-group">
-		<display:table name="investments" id="investment" class="table table-condensed table-striped table-hover">  			
+		<display:table name="investments" id="investment" class="table table-bordered table-condensed table-striped table-hover">  			
   			<display:column titleKey="projectProgress.projectName">
   				<c:url value="${ctx}/progress/investmentProjectForm" var="investmentProjectUrl">
         			<c:param name="id" value="${investment.id}"/>
@@ -27,16 +26,12 @@
   			<display:column sortable="false" titleKey="projectProgress.investmentType">
         		<fmt:message key="${investment.capitalInvestmentType.title}"/>
         	</display:column>
+        	<display:caption><fmt:message key="projectProgress.type.investment"/></display:caption>
 		</display:table>
 		</div>
    
-   		<div class="col-sm-2 form-group">
-   			<span></span>
-   		</div>
-   		
    		<div class="col-sm-4 form-group">
-   		<span class="pagebanner"><fmt:message key="projectProgress.type.repayment"/></span>     
-		<display:table name="repayments" id="repayment" class="table table-condensed table-striped table-hover">  			
+		<display:table name="repayments" id="repayment" class="table table-bordered table-condensed table-striped table-hover">  			
   			<display:column titleKey="projectProgress.projectName">   
   				<c:url value="${ctx}/progress/repaymentProjectForm" var="repaymentProjectUrl">
         			<c:param name="id" value="${repayment.id}"/>
@@ -46,6 +41,7 @@
   			<display:column sortable="false" titleKey="projectProgress.investmentType">
         		<fmt:message key="${repayment.capitalInvestmentType.title}"/>
         	</display:column>
+        	<display:caption><fmt:message key="projectProgress.type.repayment"/></display:caption>
 		</display:table>
      </div>
      </div>

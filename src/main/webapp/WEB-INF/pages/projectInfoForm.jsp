@@ -86,13 +86,13 @@
 	
 	<c:if test="${not empty param.id}">
     <div class="form-group">
-		<display:table name="projectInfo.projectSizes" id="projectSize" class="table table-condensed table-striped table-hover">
+		<display:table name="projectInfo.projectSizes" id="projectSize" class="table table-bordered table-condensed table-striped table-hover">
   			<display:column style="width: 5%">
     			<input type="checkbox" name="projectSizeid" value="<c:out value='${projectSize.id}'/>" 
     			<c:if test="${param.projectSizeid == projectSize.id and method != 'SaveProjectSize'}">checked="checked"</c:if>
         			style="margin: 0 0 0 4px" onclick="radio(this)" />
   			</display:column>
-  			<display:column titleKey="projectSize.startTime">
+  			<display:column titleKey="projectSize.startTime" class="input-sm">
     			<c:choose>
         			<c:when test="${method == 'EditProjectSize' and param.projectSizeid == projectSize.id}">
             			<input type="text" name="startTime" style="padding: 0" id="startTime" class="form-control input-sm"
@@ -101,7 +101,7 @@
         			<c:otherwise><fmt:formatDate value="${projectSize.startTime}" pattern="${datePattern}" /></c:otherwise>
     			</c:choose>
   			</display:column>
-  			<display:column titleKey="projectSize.endTime">
+  			<display:column titleKey="projectSize.endTime"  class="input-sm">
       			<c:choose>
         			<c:when test="${method == 'EditProjectSize' and param.projectSizeid == projectSize.id}">
             			<input type="text" name="endTime" style="padding: 0" id="endTime" class="form-control input-sm"
@@ -110,7 +110,7 @@
         			<c:otherwise><fmt:formatDate value="${projectSize.endTime}" pattern="${datePattern}" /></c:otherwise>
     			</c:choose>
   			</display:column>
-  			<display:column titleKey="projectSize.size">
+  			<display:column titleKey="projectSize.size"  class="input-sm">
       			<c:choose>
         			<c:when test="${method == 'EditProjectSize' and param.projectSizeid == projectSize.id}">
             			<input type="text" name="projectSize" style="padding: 0" class="form-control input-sm"
@@ -157,13 +157,13 @@
         	</button>
         	-->    
 		</div>
-		<display:table name="projectInfo.investments" id="investment" class="table table-condensed table-striped table-hover">
+		<display:table name="projectInfo.investments" id="investment" class="table table-bordered table-condensed table-striped table-hover">
 			<display:column style="width: 5%">
     			<input type="checkbox" name="investmentId" value="<c:out value='${investment.id}'/>" 
     			<c:if test="${param.investmentId == investment.id and method != 'SaveInvestment'}">checked="checked"</c:if>
         			style="margin: 0 0 0 4px" onclick="radio(this)" />
   			</display:column>
-  			<display:column titleKey="projectInfo.investmentName">
+  			<display:column titleKey="projectInfo.investmentName"  class="input-sm">
     			<c:choose>
         			<c:when test="${method == 'EditInvestment' and param.investmentId == investment.id}">
             			<input type="text" name="investmentProjectName" style="padding: 0" class="form-control input-sm"
@@ -172,7 +172,7 @@
         			<c:otherwise><c:out value="${investment.projectName}" /></c:otherwise>
     			</c:choose>
   			</display:column>
-			<display:column titleKey="projectInfo.capitalInvestmentType">
+			<display:column titleKey="projectInfo.capitalInvestmentType"  class="input-sm">
       			<c:choose>
         			<c:when test="${method == 'EditInvestment' and param.investmentId == investment.id}">
                 			<c:forEach var="investmentType" items="${capitalInvestmentTypes}" varStatus="status">
@@ -262,13 +262,13 @@
         	</button>
         	-->    
 		</div>
-		<display:table name="projectInfo.counterparties" id="counterparty" class="table table-condensed table-striped table-hover">
+		<display:table name="projectInfo.counterparties" id="counterparty" class="table table-bordered table-condensed table-striped table-hover">
   			<display:column style="width: 5%">
     			<input type="checkbox" name="counterpartyId" value="<c:out value='${counterparty.id}'/>" 
     			<c:if test="${param.counterpartyId == counterparty.id and method != 'SaveCounterparty'}">checked="checked"</c:if>
         			style="margin: 0 0 0 4px" onclick="radio(this)" />
   			</display:column>
-  			<display:column titleKey="projectInfo.counterparty.name">
+  			<display:column titleKey="projectInfo.counterparty.name"  class="input-sm">
     			<c:choose>
         			<c:when test="${method == 'EditCounterparty' and param.counterpartyId == counterparty.id}">
             			<input type="text" name="counterpartyName" style="padding: 0"
@@ -277,7 +277,7 @@
         			<c:otherwise><c:out value="${counterparty.name}" /></c:otherwise>
     			</c:choose>
   			</display:column>
-  			<display:column titleKey="projectInfo.counterparty.type">
+  			<display:column titleKey="projectInfo.counterparty.type"  class="input-sm">
       			<c:choose>
         			<c:when test="${method == 'EditCounterparty' and param.counterpartyId == counterparty.id}">
 						<c:forEach var="counterpartyType" items="${counterpartyTypes}" varStatus="status">
@@ -318,13 +318,13 @@
         	</button>
         	-->    
 		</div>
-		<display:table name="projectInfo.guarantors" id="guarantor" class="table table-condensed table-striped table-hover">
+		<display:table name="projectInfo.guarantors" id="guarantor" class="table table-bordered table-condensed table-striped table-hover">
   			<display:column style="width: 5%">
     			<input type="checkbox" name="guarantorId" value="<c:out value='${guarantor.id}'/>" 
     			<c:if test="${param.guarantorId == guarantor.id and method != 'SaveGuarantor'}">checked="checked"</c:if>
         			style="margin: 0 0 0 4px" onclick="radio(this)" />
   			</display:column>
-  			<display:column titleKey="projectInfo.guarantor.name">
+  			<display:column titleKey="projectInfo.guarantor.name"  class="input-sm">
     			<c:choose>
         			<c:when test="${method == 'EditGuarantor' and param.guarantorId == guarantor.id}">
             			<input type="text" name="guarantorName" style="padding: 0"
@@ -333,7 +333,7 @@
         			<c:otherwise><c:out value="${guarantor.name}" /></c:otherwise>
     			</c:choose>
   			</display:column>
-  			<display:column titleKey="projectInfo.guarantor.type">
+  			<display:column titleKey="projectInfo.guarantor.type"  class="input-sm">
       			<c:choose>
         			<c:when test="${method == 'EditGuarantor' and param.guarantorId == guarantor.id}">
                 			<c:forEach var="guarantorType" items="${counterpartyTypes}" varStatus="status">

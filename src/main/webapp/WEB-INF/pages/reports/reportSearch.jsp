@@ -63,11 +63,15 @@
         	</div>
 	</form:form>
     	
-    <display:table name="reportList" class="table table-condensed table-striped table-hover" requestURI=""
-                   id="riskControlReport" export="false" pagesize="20">
-        <display:column property="id" media="csv excel xml pdf" titleKey="projectInfo.id"/>
-        <display:column property="projectInfo.projectName" sortable="true" href="${ctx}/reports/riskControlReport" media="html"
-            paramId="id" paramProperty="id"  titleKey="projectInfo.projectName"/>
+    <display:table name="reportList" class="table table-condensed table-bordered table-striped table-hover" requestURI=""
+                   id="riskControlReport" export="false" pagesize="20">        
+        <display:column titleKey="projectInfo.projectName">
+            <c:url value="${ctx}/reports/riskControlReport" var="reportUrl">
+        			<c:param name="id" value="${riskControlReport.projectInfo.id}"/>
+        			<c:param name="reportId" value="${riskControlReport.id}"/>
+    		</c:url>
+    		<a href="<c:out value="${reportUrl}" escapeXml="false" />"><c:out value="${riskControlReport.projectInfo.projectName}"/> </a>
+        </display:column>    
         <display:column property="reportSeason" titleKey="report.riskcontrol.reportSeason" />    
         <display:column titleKey="report.offsite.committed">
         	<c:if test="${riskControlReport.projectInfo.projectInfoStatus.committed}">
@@ -95,9 +99,6 @@
          </display:column>
         <display:setProperty name="paging.banner.item_name"><fmt:message key="projectInfoList.heading"/></display:setProperty>
         <display:setProperty name="paging.banner.items_name"><fmt:message key="projectInfoList.projects"/></display:setProperty>
-        <display:setProperty name="export.excel.filename"><fmt:message key="projectInfoList.title"/>.xls</display:setProperty>
-        <display:setProperty name="export.csv.filename"><fmt:message key="projectInfoList.title"/>.csv</display:setProperty>
-        <display:setProperty name="export.pdf.filename"><fmt:message key="projectInfoList.title"/>.pdf</display:setProperty>
     </display:table>
 </div>
 
