@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -15,9 +16,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -42,16 +45,17 @@ public class RiskControlReport extends BaseObject{
 	private Long id;
 	private ProjectInfo projectInfo;
 	private ReportStatus reportStatus = new ReportStatus();
-	private Date reportTime;
+	private String reportSeason; //报表季度  2014Q1, 2014Q2
 	private Date timeRangeStart;  
 	private Date timeRangeEnd;  
 	
 	private Set<CorporateBalanceSheet> corporateBalanceSheets = new HashSet<CorporateBalanceSheet>();
 	private Set<InstituteBalanceSheet> instituteBalanceSheet = new HashSet<InstituteBalanceSheet>();
 	private Set<ProfitStatement> profitStatements = new HashSet<ProfitStatement>();
+	
+	//财务状况排查结论
 	private List<FinanceCheckComment> financeCheckComment = new ArrayList<FinanceCheckComment>();
 	
-	private String financeStatementSummary; //财务状况排查结论
 	private String collateralSummary; //担保物的状况
 	private String statusBeforeMaturity; //到期前情况说明
 	private String comments; //结论和建议
@@ -62,6 +66,9 @@ public class RiskControlReport extends BaseObject{
 	private String updateUser;
 	private Integer version;
 	
+	private Date searchTimeStart;
+	private Date searchTimeEnd;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Long getId() {
@@ -71,7 +78,8 @@ public class RiskControlReport extends BaseObject{
 		this.id = id;
 	}
 	
-	@OneToOne(mappedBy = "riskControlReport", cascade = CascadeType.ALL)
+	@ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH},optional=true)  
+	@JoinColumn(name="projectInfo_id") 
 	public ProjectInfo getProjectInfo() {
 		return projectInfo;
 	}
@@ -86,11 +94,13 @@ public class RiskControlReport extends BaseObject{
 	public void setReportStatus(ReportStatus reportStatus) {
 		this.reportStatus = reportStatus;
 	}
-	public Date getReportTime() {
-		return reportTime;
+	
+	@Column(nullable = false)
+	public String getReportSeason() {
+		return reportSeason;
 	}
-	public void setReportTime(Date reportTime) {
-		this.reportTime = reportTime;
+	public void setReportSeason(String reportSeason) {
+		this.reportSeason = reportSeason;
 	}
 	public Date getTimeRangeStart() {
 		return timeRangeStart;
@@ -157,12 +167,7 @@ public class RiskControlReport extends BaseObject{
 	public void setFinanceCheckComment(List<FinanceCheckComment> financeCheckComment) {
 		this.financeCheckComment = financeCheckComment;
 	}
-	public String getFinanceStatementSummary() {
-		return financeStatementSummary;
-	}
-	public void setFinanceStatementSummary(String financeStatementSummary) {
-		this.financeStatementSummary = financeStatementSummary;
-	}
+	
 	public String getCollateralSummary() {
 		return collateralSummary;
 	}
@@ -213,10 +218,29 @@ public class RiskControlReport extends BaseObject{
 	public void setVersion(Integer version) {
 		this.version = version;
 	}
+	
+	@Transient
+	public Date getSearchTimeStart() {
+		return searchTimeStart;
+	}
+
+	public void setSearchTimeStart(Date searchTimeStart) {
+		this.searchTimeStart = searchTimeStart;
+	}
+
+	@Transient
+	public Date getSearchTimeEnd() {
+		return searchTimeEnd;
+	}
+
+	public void setSearchTimeEnd(Date searchTimeEnd) {
+		this.searchTimeEnd = searchTimeEnd;
+	}
+	
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE).append(
-				this.reportTime).append(this.projectInfo).toString();
+				this.reportSeason).append(this.projectInfo).toString();
 	}
 	
 	@Override
@@ -233,16 +257,16 @@ public class RiskControlReport extends BaseObject{
 		return !(projectInfo != null ? !projectInfo
 				.equals(report.projectInfo)
 				: report.projectInfo != null)
-				&& !(reportTime != null ? !reportTime
-						.equals(report.reportTime)
-						: report.reportTime != null);
+				&& !(reportSeason != null ? !reportSeason
+						.equals(report.reportSeason)
+						: report.reportSeason != null);
 	}
 	
 	@Override
 	public int hashCode() {
 		int result;
         result = (projectInfo != null ? projectInfo.hashCode() : 0);
-        result = 29 * result + (reportTime != null ? reportTime.hashCode() : 0);
+        result = 29 * result + (reportSeason != null ? reportSeason.hashCode() : 0);
         return result;
 	}
 

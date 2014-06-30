@@ -17,7 +17,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -27,7 +26,6 @@ import javax.persistence.Version;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.appfuse.model.BaseObject;
-import org.appfuse.model.User;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -52,15 +50,15 @@ public class ProjectInfo extends BaseObject implements Serializable {
 	private String guaranteeMode; //保障措施
 	private String projectType; //是否事务管理类信托项目
 	private List<ProjectSize> projectSizes = new ArrayList<ProjectSize>(); //信托规模
-	private User createUser; //创建人
+	private String createUser; //创建人
 	private Date createTime; //创建时间
-	private User updateUser; //最后更新人
+	private String updateUser; //最后更新人
 	private Date updateTime; //最后更新时间
 	private Integer version;
 	private Set<Counterparty> counterparties = new HashSet<Counterparty>(); //交易对手
-	private Set<Counterparty> guarantors = new HashSet<Counterparty>(); //担保人关系
+	private Set<Counterparty> guarantors = new HashSet<Counterparty>(); //担保人
 	private ProjectInfoStatus projectInfoStatus = new ProjectInfoStatus();
-	private RiskControlReport riskControlReport = new RiskControlReport();
+	private List<RiskControlReport> riskControlReports = new ArrayList<RiskControlReport>(); //风险排查报告
 	
 	private Date searchTimeStart;
 	private Date searchTimeEnd;
@@ -159,13 +157,11 @@ public class ProjectInfo extends BaseObject implements Serializable {
 		this.investments = investments;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "createUser", nullable = true)
-	public User getCreateUser() {
+	public String getCreateUser() {
 		return createUser;
 	}
 
-	public void setCreateUser(User create) {
+	public void setCreateUser(String create) {
 		this.createUser = create;
 	}
 
@@ -177,13 +173,11 @@ public class ProjectInfo extends BaseObject implements Serializable {
 		this.createTime = createTime;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "updateUser", nullable = true)
-	public User getUpdateUser() {
+	public String getUpdateUser() {
 		return updateUser;
 	}
 
-	public void setUpdateUser(User update) {
+	public void setUpdateUser(String update) {
 		this.updateUser = update;
 	}
 
@@ -243,13 +237,14 @@ public class ProjectInfo extends BaseObject implements Serializable {
 		this.projectInfoStatus = projectInfoStatus;
 	}
 
-	@OneToOne(cascade = CascadeType.ALL)
-	public RiskControlReport getRiskControlReport() {
-		return riskControlReport;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "projectInfo", cascade = { CascadeType.ALL })
+	@Fetch(FetchMode.SELECT)
+	public List<RiskControlReport> getRiskControlReports() {
+		return riskControlReports;
 	}
 
-	public void setRiskControlReport(RiskControlReport riskControlReport) {
-		this.riskControlReport = riskControlReport;
+	public void setRiskControlReports(List<RiskControlReport> riskControlReports) {
+		this.riskControlReports = riskControlReports;
 	}
 
 	@Transient

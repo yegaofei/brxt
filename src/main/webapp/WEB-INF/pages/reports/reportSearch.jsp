@@ -9,7 +9,7 @@
     <h2><fmt:message key='report.search.heading'/></h2>
  
     <div id="actions" class="btn-group">
-        <a class="btn btn-primary disabled" href="<c:url value='${ctx}/projectInfoForm'/>">
+        <a class="btn btn-primary" href="<c:url value='${ctx}/reports/addReport'/>">
             <i class="icon-plus icon-white"></i> <fmt:message key="button.new"/></a>
         <a class="btn btn-default disabled" href="<c:url value='{ctx}/mainMenu'/>">
             <i class="icon-ok"></i> <fmt:message key="button.modify"/></a>
@@ -23,34 +23,73 @@
             <i class="icon-ok"></i> <fmt:message key="button.print"/></a>                
     </div>
     
-    	<%@ include file="../searchForm.jsp" %>
+    <form:form commandName="projectInfo" method="post" action="${ctx}/reports/reportSearch" id="projectInfoSearchForm" cssClass="well">
+    		<div class="row">
+    		<div class="col-sm-3 form-group">
+        		<appfuse:label styleClass="control-label" key="projectInfo.nonrequired.projectName"/>
+        		<form:input path="projectName" id="projectName" maxlength="50" cssClass="form-control"/>
+        	</div>	
+    		<div class="col-sm-3 form-group">
+        		<appfuse:label styleClass="control-label" key="projectInfo.riskManager"/>
+        		<form:input path="riskManager" id="riskManager" maxlength="20" cssClass="form-control"/>
+    		</div>
+    		<div class="col-sm-3 form-group">
+        		<appfuse:label styleClass="control-label" key="projectInfo.search.startTime"/>
+        		<form:input path="searchTimeStart" id="searchTimeStart" maxlength="20" cssClass="form-control"/>
+    		</div>
+    		<div class="col-sm-3 form-group">
+        		<appfuse:label styleClass="control-label" key="projectInfo.search.endTime"/>
+        		<form:input path="searchTimeEnd" id="searchTimeEnd" maxlength="20" cssClass="form-control"/>
+    		</div>
+    		</div>
+
+			<div class="row">
+    		<div class="col-sm-3 form-group">
+        		<appfuse:label styleClass="control-label" key="projectInfo.delegateManager"/>
+        		<form:input path="delegateManager" id="delegateManager" maxlength="20" cssClass="form-control"/>
+    		</div>
+
+    		<div class="col-sm-3 form-group">
+        		<appfuse:label styleClass="control-label" key="projectInfo.trustManager"/>
+        		<form:input path="trustManager" id="trustManager" maxlength="20" cssClass="form-control"/>
+    		</div>
+    		
+    		<div class="col-sm-2 form-group">
+    			<label></label>
+    			<button type="submit" class="btn btn-primary form-control" name="method" value="SearchReport" onclick="bCancel=false">
+            		<i class="icon-ok icon-white"></i> <fmt:message key="button.search"/>
+        		</button>
+        	</div>
+        	</div>
+	</form:form>
     	
-    <display:table name="projectInfoList" class="table table-condensed table-striped table-hover" requestURI=""
-                   id="projectInfo" export="false" pagesize="20">
+    <display:table name="reportList" class="table table-condensed table-striped table-hover" requestURI=""
+                   id="riskControlReport" export="false" pagesize="20">
         <display:column property="id" media="csv excel xml pdf" titleKey="projectInfo.id"/>
-        <display:column property="projectName" sortable="true" href="${ctx}/reports/riskControlReport" media="html"
+        <display:column property="projectInfo.projectName" sortable="true" href="${ctx}/reports/riskControlReport" media="html"
             paramId="id" paramProperty="id"  titleKey="projectInfo.projectName"/>
+        <display:column property="reportSeason" titleKey="report.riskcontrol.reportSeason" />    
         <display:column titleKey="report.offsite.committed">
-        	<c:if test="${projectInfo.projectInfoStatus.committed}">
+        	<c:if test="${riskControlReport.projectInfo.projectInfoStatus.committed}">
         		<fmt:message key='report.committed'/>
         	</c:if>
-        	<c:if test="${not projectInfo.projectInfoStatus.committed}">
+        	<c:if test="${not riskControlReport.projectInfo.projectInfoStatus.committed}">
         		<fmt:message key='report.non.committed'/>
         	</c:if>
         </display:column>
         <display:column titleKey="report.riskcontrol.committed">
-        	<c:if test="${projectInfo.riskControlReport.reportStatus.commitReport}">
+        	<c:if test="${riskControlReport.reportStatus.commitReport}">
         		<fmt:message key='report.committed'/>
         	</c:if>
-        	<c:if test="${not projectInfo.riskControlReport.reportStatus.commitReport}">
+        	<c:if test="${not riskControlReport.reportStatus.commitReport}">
         		<fmt:message key='report.non.committed'/>
         	</c:if>
         </display:column>
         <display:column titleKey="report.riskcontrol.audit">
-        	<c:if test="${projectInfo.riskControlReport.reportStatus.reportAudit}">
+        	<c:if test="${riskControlReport.reportStatus.reportAudit}">
         		<fmt:message key='report.committed'/>
         	</c:if>
-        	<c:if test="${not projectInfo.riskControlReport.reportStatus.reportAudit}">
+        	<c:if test="${not riskControlReport.reportStatus.reportAudit}">
         		<fmt:message key='report.non.committed'/>
         	</c:if>
          </display:column>
@@ -62,4 +101,18 @@
     </display:table>
 </div>
 
-
+<script>
+  $(function() {
+    $('#searchTimeStart').datepicker({
+				language: 'zh-CN'
+				//format: 'yyyy-mm-dd'
+			});	
+  });
+  
+  $(function() {
+    $('#searchTimeEnd').datepicker({
+				language: 'zh-CN'
+				//format: 'yyyy-mm-dd'
+			});	
+  });
+</script>

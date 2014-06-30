@@ -351,14 +351,14 @@
     </c:if>
     
     <c:if test="${not empty projectInfo.createUser}">
-        <form:hidden path="createUser.username" id="createUser"/>        
+        <form:hidden path="createUser" id="createUser"/>        
     </c:if>
     
     <c:if test="${not empty projectInfo.updateUser}">
     <div class="row">
     <div class="col-sm-5 form-group">
         <appfuse:label styleClass="control-label" key="projectInfo.updateUser.username"/>:
-        <c:out value="${projectInfo.updateUser.username}" />     
+        <c:out value="${projectInfo.updateUser}" />     
     </div>
     
     <div class="col-sm-5 form-group">

@@ -10,4 +10,8 @@ import com.brxt.model.report.RiskControlReport;
 public interface RiskControlReportDao extends GenericDao<RiskControlReport, Long>{
 
 	public List<RiskControlReport> findByProjectInfo(ProjectInfo projectInfo);
+	
+	public RiskControlReport find(ProjectInfo projectInfo, String reportSeason);
+	
+	public List<RiskControlReport> findByReport(RiskControlReport report);
 }

@@ -79,9 +79,9 @@ public class ProjectInfoManagerImpl extends
 	public void setCounterpartyDao(CounterpartyDao counterpartyDao) {
 		this.counterpartyDao = counterpartyDao;
 	}
-
+	
 	@Override
-	public List<ProjectInfo> findByProjectName(String projectName) {
+	public ProjectInfo findByProjectName(String projectName) {
 		return projectInfoDao.findByProjectName(projectName);
 	}
 
@@ -153,11 +153,10 @@ public class ProjectInfoManagerImpl extends
 					pi.getInvestments().add(new InvestmentStatus(projectProgressManager.wrapId(sp.getId(), CapitalInvestmentType.SUPPLEMENTAL_LIQUIDITY), sp.getName(), CapitalInvestmentType.SUPPLEMENTAL_LIQUIDITY));
 				}
 			}
-			
 		}
 		return pi;	
 	}
-
+	
 	@Override
 	public List<String> getAllProjectNames() {
 		List<ProjectInfo> projectInfos = projectInfoDao.getAll();

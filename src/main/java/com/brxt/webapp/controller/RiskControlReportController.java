@@ -8,9 +8,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -43,6 +46,7 @@ import com.brxt.service.CreditInformationManager;
 import com.brxt.service.ProjProgressManager;
 import com.brxt.service.ProjectInfoManager;
 import com.brxt.service.RepaymentManager;
+import com.brxt.service.ReportManager;
 import com.brxt.service.SubjectCapacityManager;
 
 @Controller
@@ -55,6 +59,7 @@ public class RiskControlReportController extends BaseSheetController {
 	private SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 	private CreditInformationManager creditInformationManager;
 	private ProjProgressManager projectProgressManager;
+	private ReportManager reportManager;
 
 	@Autowired
 	public void setProjectInfoManager(@Qualifier("projectInfoManager") ProjectInfoManager projectInfoManager) {
@@ -79,6 +84,11 @@ public class RiskControlReportController extends BaseSheetController {
 	@Autowired
 	public void setProjectProgressManager(@Qualifier("projectProgressManager") ProjProgressManager projectProgressManager) {
 		this.projectProgressManager = projectProgressManager;
+	}
+	
+	@Autowired
+	public void setReportManager(@Qualifier("reportManager") ReportManager reportManager) {
+		this.reportManager = reportManager;
 	}
 
 	@ModelAttribute
@@ -234,7 +244,6 @@ public class RiskControlReportController extends BaseSheetController {
 
 	@ModelAttribute("repaymentProjects")
 	public List<RepaymentProject> getRepaymentProjects(final HttpServletRequest request) {
-
 		String id = request.getParameter("id");
 		if (!StringUtils.isBlank(id)) {
 			List<RepaymentProject> repaymentProjects = projectProgressManager.getRepaymentProjects(Long.valueOf(id));
@@ -251,7 +260,7 @@ public class RiskControlReportController extends BaseSheetController {
 		String projectInfoId = request.getParameter("id");
 		if (!StringUtils.isBlank(projectInfoId)) {
 			ProjectInfo projectInfo = projectInfoManager.get(Long.valueOf(projectInfoId));
-			RiskControlReport report = projectInfo.getRiskControlReport();
+			RiskControlReport report = loadRiskControlReport(projectInfo);
 			if(report != null)
 			{
 				return report.getCollateralSummary();
@@ -534,7 +543,7 @@ public class RiskControlReportController extends BaseSheetController {
 			report.getProfitStatements().add(prevProfitStatement);
 			report.getProfitStatements().add(currProfitStatement);
 			
-			report.setFinanceStatementSummary(comments);
+			//report.setFinanceStatementSummary(comments);
 			projectInfoManager.save(projectInfo);
 		} catch (ParseException e) {
 			saveError(request, "Date format is incorrect ");
@@ -545,20 +554,21 @@ public class RiskControlReportController extends BaseSheetController {
 	
 	private RiskControlReport loadRiskControlReport(ProjectInfo projectInfo)
 	{
-		RiskControlReport report = projectInfo.getRiskControlReport();
+		//RiskControlReport report = projectInfo.getRiskControlReport();
+		RiskControlReport report = null;
 		if(report == null)
 		{
 			report = new RiskControlReport();
 			report.setProjectInfo(projectInfo);
 			report.setCreateUser(getCurrentUser().getUsername());
 			report.setCreateTime(new Date());
-			projectInfo.setRiskControlReport(report);
+			//projectInfo.setRiskControlReport(report);
 		}
-		else
-		{
-			report.setUpdateUser(getCurrentUser().getUsername());
-			report.setUpdateTime(new Date());
-		}
+//		else
+//		{
+//			report.setUpdateUser(getCurrentUser().getUsername());
+//			report.setUpdateTime(new Date());
+//		}
 		return report;
 	}
 	
@@ -650,24 +660,106 @@ public class RiskControlReportController extends BaseSheetController {
 
 	@RequestMapping(value = "/reports/reportSearch*", method = RequestMethod.GET)
 	public ModelAndView handleRequest() {
-		return new ModelAndView("/reports/reportSearch").addObject(projectInfoManager.getAll());
+		List<RiskControlReport> reports = reportManager.getAll();
+		return new ModelAndView("/reports/reportSearch").addObject("reportList", reports);
 	}
 
 	@RequestMapping(value = "/reports/reportSearch*", method = RequestMethod.POST)
 	public ModelAndView onSearch(@ModelAttribute("projectInfo") final ProjectInfo projectInfo, final HttpServletRequest request) {
 		String method = request.getParameter("method");
-
 		if (StringUtils.isBlank(method)) {
 			return new ModelAndView();
 		}
-
 		switch (method) {
-		case "SearchProjectInfo":
-			List<ProjectInfo> projectInfos = projectInfoManager.findByProjectInfo(projectInfo);
-			return new ModelAndView("/reports/reportSearch").addObject("projectInfoList", projectInfos);
+		case "SearchReport":
+			RiskControlReport report = new RiskControlReport();
+			report.setSearchTimeStart(projectInfo.getSearchTimeStart());
+			report.setSearchTimeEnd(projectInfo.getSearchTimeEnd());
+			List<RiskControlReport> reports = reportManager.findByReport(report);
+			projectInfo.setSearchTimeStart(null);
+			projectInfo.setSearchTimeEnd(null);
+			List<ProjectInfo> projectInfoList = projectInfoManager.findByProjectInfo(projectInfo);
+			projectInfo.setSearchTimeStart(report.getSearchTimeStart());
+			projectInfo.setSearchTimeEnd(report.getSearchTimeEnd());
+			Set<ProjectInfo> projectInfoSet = new HashSet<ProjectInfo>(projectInfoList);
+			
+			if(reports != null && !reports.isEmpty())
+			{
+				Iterator<RiskControlReport> itR = reports.iterator();
+				while(itR.hasNext())
+				{
+					RiskControlReport r = itR.next();
+					if(!projectInfoSet.contains(r.getProjectInfo())) 
+					{
+						itR.remove();
+					}
+				}
+			}
+			
+			return new ModelAndView("/reports/reportSearch").addObject("reportList", reports);
 		default:
 		}
-
 		return new ModelAndView("/reports/reportSearch").addObject(projectInfoManager.getAll());
+	}
+	
+	@RequestMapping(value = "/reports/addReport*", method = RequestMethod.GET)
+	public ModelAndView addReport() {
+		ModelAndView mav =  new ModelAndView("/reports/addReport");
+		Map<String, String> projectNames = new TreeMap<String, String>();
+		List<String> nameList = projectInfoManager.getAllProjectNames();
+		if(nameList !=null && !nameList.isEmpty())
+		{
+			for(int i = 0; i < nameList.size(); i++)
+			{
+				String name = nameList.get(i);
+				projectNames.put(name, name);
+			}
+		}
+		mav.addObject("allProjectNames", projectNames);
+		
+		Map<String, String> allReportSeasons = new TreeMap<String, String>();
+		int startYear = getCurrentYear() - 3;
+		int endYear = getCurrentYear() + 3;
+		for(int y = startYear; y < endYear; y++)
+		{
+			for(int s = 1; s < 5; s++)
+			{
+				String reportSeason = y + "Q" + s;
+				allReportSeasons.put(reportSeason, reportSeason);
+			}
+		}
+		mav.addObject("allReportSeasons", allReportSeasons);
+		RiskControlReport report = new RiskControlReport();
+		int defaultQuater = getCurrentMonth() / 3 + (getCurrentMonth() % 3);
+		report.setReportSeason(getCurrentYear() + "Q" + defaultQuater);
+		mav.addObject("riskControlReport", report);
+		return mav;
+	}
+	
+	@RequestMapping(value = "/reports/addReport*", method = RequestMethod.POST)
+	public ModelAndView addReport(final HttpServletRequest request) {
+		ModelAndView mav =  addReport();
+		String projectName = request.getParameter("projectInfo.projectName");
+		String reportSeason = request.getParameter("reportSeason");
+		ProjectInfo projectInfo = projectInfoManager.findByProjectName(projectName);
+		RiskControlReport report = reportManager.findRiskControlReport(projectInfo, reportSeason);
+		if(report != null)
+		{
+			saveError(request, getText("report.add.error.existd", new String[]{projectInfo.getProjectName(), reportSeason}, request.getLocale()) );
+			mav.addObject("riskControlReport", report);
+			return mav;
+		}
+		
+		report = new RiskControlReport();
+		report.setProjectInfo(projectInfo);
+		report.setReportSeason(reportSeason);
+		report.setCreateUser(getCurrentUser().getUsername());
+		report.setCreateTime(new Date());
+		reportManager.save(report);
+		saveMessage(request, getText("report.add.success", new String[]{projectInfo.getProjectName(), reportSeason}, request.getLocale()) );
+		mav.setViewName("redirect:/reports/reportSearch");
+		
+		return mav;
+				
 	}
 }

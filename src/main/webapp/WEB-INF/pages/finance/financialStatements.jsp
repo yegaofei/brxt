@@ -14,7 +14,7 @@
     <form name="financialStatements" action="/finance/financialStatements" method="post">
 	
 	<div id="actions" class="btn-group">
-        <a class="btn btn-primary" href="<c:url value='/finance/addStatements'/>">
+        <a class="btn btn-primary" href="<c:url value='${ctx}/finance/addStatements'/>">
             <i class="icon-plus icon-white"></i> <fmt:message key="button.add"/></a>
         <button type="submit" class="btn btn-primary" name="method" value="Delete" onclick="bCancel=true;return confirmMessage(msgDelConfirm)">
                 <i class="icon-remove"></i> <fmt:message key="button.delete"/>
@@ -22,7 +22,7 @@
         <button type="submit" class="btn btn-primary" name="method" value="Edit">
                 <i class="icon-ok icon-white"></i> <fmt:message key="button.edit"/>
         </button>    
-        <a class="btn btn-default" href="<c:url value='/projectInfoForm?id=${sessionScope.project_info_id}'/>">
+        <a class="btn btn-default" href="<c:url value='${ctx}/projectInfoForm?id=${sessionScope.project_info_id}'/>">
             <i class="icon-ok"></i> <fmt:message key="button.done"/></a>
     </div>
     

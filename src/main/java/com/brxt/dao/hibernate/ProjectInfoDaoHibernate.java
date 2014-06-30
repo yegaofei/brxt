@@ -1,9 +1,7 @@
 package com.brxt.dao.hibernate;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Criteria;
@@ -25,9 +23,15 @@ public class ProjectInfoDaoHibernate extends
 	}
 
 	@Override
-	public List<ProjectInfo> findByProjectName(String projectName) {
-		return getSession().createCriteria(ProjectInfo.class)
+	public ProjectInfo findByProjectName(String projectName) {
+		List<ProjectInfo> projectInfoList =  getSession().createCriteria(ProjectInfo.class)
 				.add(Restrictions.eq("projectName", projectName)).list();
+		
+		if(projectInfoList != null && !projectInfoList.isEmpty())
+		{
+			return projectInfoList.get(0);
+		}
+		return null;
 	}
 
 	public List<ProjectInfo> getAll() {
@@ -66,6 +70,12 @@ public class ProjectInfoDaoHibernate extends
 			Date startDate = projectInfo.getSearchTimeStart();
 			Date endDate = projectInfo.getSearchTimeEnd();
 			criteria.add(Restrictions.ge("createTime", startDate));
+			criteria.add(Restrictions.le("createTime", endDate));
+		} else if (projectInfo.getSearchTimeStart() != null ) {
+			Date startDate = projectInfo.getSearchTimeStart();
+			criteria.add(Restrictions.ge("createTime", startDate));
+		} else if (projectInfo.getSearchTimeEnd() != null) {
+			Date endDate = projectInfo.getSearchTimeEnd();
 			criteria.add(Restrictions.le("createTime", endDate));
 		}
 

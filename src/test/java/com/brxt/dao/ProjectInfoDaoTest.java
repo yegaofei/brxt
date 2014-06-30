@@ -63,8 +63,8 @@ public class ProjectInfoDaoTest extends BaseDaoTestCase {
 		user.setEmail("yegaofei@gmail.com");
 		user.setPassword("123");
 		userDao.save(user);
-		projectInfo.setCreateUser(user);
-		projectInfo.setUpdateUser(user);
+		projectInfo.setCreateUser(user.getUsername());
+		projectInfo.setUpdateUser(user.getUsername());
 		projectInfo.setCreateTime(new Date());
 		
 		projectInfo = projectInfoDao.save(projectInfo);

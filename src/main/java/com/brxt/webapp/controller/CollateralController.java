@@ -318,23 +318,13 @@ public class CollateralController extends BaseFormController{
 	
 	private ProjectInfo getProjectInfo(String projectName, final HttpServletRequest request)
 	{
-		List<ProjectInfo> projectInfoList = projectInfoManager.findByProjectName(projectName);
-		if(projectInfoList == null || projectInfoList.isEmpty())
+		ProjectInfo projectInfo = projectInfoManager.findByProjectName(projectName);
+		if(projectInfo == null)
 		{
 			//Error
 			saveError(request, getText("projectInfo.not.existed", projectName, request.getLocale()));
-			
 			return null;
 		}
-		
-		if(projectInfoList.size() > 1)
-		{
-			//Error
-			saveError(request, getText("projectInfo.error.more", projectName, request.getLocale()));
-			
-			return null;
-		}
-		
-		return projectInfoList.get(0);
+		return projectInfo;
 	}
 }

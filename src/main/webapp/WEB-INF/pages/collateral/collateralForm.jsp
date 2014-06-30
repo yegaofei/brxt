@@ -13,9 +13,7 @@
     	id="collateralForm" cssClass="well"  onsubmit="return validateCollateral(this)">
     <form:hidden path="id"/>
     
-    <spring:bind path="collateralDataModel.projectName">
-    <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
-    </spring:bind>
+    <div class="form-group">
         <appfuse:label styleClass="control-label" key="collateral.projectName"/>
         <form:select path="projectName" id="projectName" cssClass="form-control" >    		
 			<form:options items="${allProjectNames}" />

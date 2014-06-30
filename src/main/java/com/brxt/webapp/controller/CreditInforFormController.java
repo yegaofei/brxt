@@ -153,7 +153,7 @@ public class CreditInforFormController extends BaseFormController {
 					creditInformation.setUpdateUser(currentUser);
 				} else {
 					// Update Existed
-					User createUser = getUserManager().getUserByUsername(projectInfo.getCreateUser().getUsername());
+					User createUser = getUserManager().getUserByUsername(projectInfo.getCreateUser());
 					creditInformation.setCreateUser(createUser);
 					creditInformation.setUpdateTime(new Date());
 					creditInformation.setUpdateUser(currentUser);

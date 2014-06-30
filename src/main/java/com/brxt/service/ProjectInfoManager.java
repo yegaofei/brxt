@@ -10,7 +10,7 @@ import com.brxt.model.ProjectSize;
 
 public interface ProjectInfoManager extends GenericManager<ProjectInfo, Long> {
 
-	List<ProjectInfo> findByProjectName(String projectName);
+	ProjectInfo findByProjectName(String projectName);
 	
 	List<ProjectInfo> findByProjectInfo(ProjectInfo projectInfo);
 	
