@@ -10,9 +10,9 @@
     <h2><fmt:message key='projectInfoList.heading'/></h2>
  
     <div id="actions" class="btn-group">
-        <a class="btn btn-primary" href="<c:url value='/projectInfoForm'/>">
+        <a class="btn btn-primary" href="<c:url value='${ctx}/projectInfoForm'/>">
             <i class="icon-plus icon-white"></i> <fmt:message key="button.add"/></a>
-        <a class="btn btn-default" href="<c:url value='/mainMenu'/>">
+        <a class="btn btn-default" href="<c:url value='${ctx}/home'/>">
             <i class="icon-ok"></i> <fmt:message key="button.done"/></a>
     </div>
     	
@@ -21,7 +21,7 @@
     <display:table name="projectInfoList" class="table table-condensed table-striped table-hover" requestURI=""
                    id="projectInfo" export="false" pagesize="20">
         <display:column property="id" media="csv excel xml pdf" titleKey="projectInfo.id"/>
-        <display:column property="projectName" sortable="true" href="/projectInfoForm" media="html"
+        <display:column property="projectName" sortable="true" href="${ctx}/projectInfoForm" media="html"
             paramId="id" paramProperty="id"  titleKey="projectInfo.projectName"/>
         <display:column titleKey="subjectCapacity.title">
         	<c:if test="${projectInfo.projectInfoStatus.subjectCapacity}">

@@ -281,12 +281,13 @@ public class ProjectInfoFormController extends BaseFormController {
 
 		boolean isNew = (projectInfo.getId() == null);
 		User currentUser = getCurrentUser();
+		String currentUserName = currentUser == null ? "" : currentUser.getUsername();
 		if (isNew) {
 			// Add
-			projectInfo.setCreateUser(currentUser.getUsername());
+			projectInfo.setCreateUser(currentUserName);
 			projectInfo.setCreateTime(new Date());
 		} else {
-			projectInfo.setUpdateUser(currentUser.getUsername());
+			projectInfo.setUpdateUser(currentUserName);
 			projectInfo.setUpdateTime(new Date());
 		}
 		projectInfo = projectInfoManager.save(projectInfo);

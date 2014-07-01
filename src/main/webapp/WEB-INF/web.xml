@@ -172,7 +172,7 @@
     <servlet>
         <servlet-name>dispatcher</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
+        <load-on-startup>2</load-on-startup>
     </servlet>
 
     <servlet>
@@ -183,6 +183,16 @@
             <param-value>true</param-value>
         </init-param>
     </servlet>
+    
+    <servlet>
+		<servlet-name>log4j config file</servlet-name>
+		<servlet-class>com.brxt.webapp.servlet.Log4jInitServlet</servlet-class>
+		<init-param>
+			<param-name>configfile</param-name>
+			<param-value>/WEB-INF/classes/log4j.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
 
     <servlet>
         <servlet-name>CXFServlet</servlet-name>

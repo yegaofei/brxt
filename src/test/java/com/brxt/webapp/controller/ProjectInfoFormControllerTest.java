@@ -26,8 +26,9 @@ public class ProjectInfoFormControllerTest extends BaseControllerTestCase {
         request = newGet("/projectInfoform");
         request.addParameter("id", "1");
         ModelAndView mav = form.showForm(request);
+        ProjectInfo projectInfo = form.getProjectInfo(request);
         assertNotNull(mav);
-        assertNotNull(mav.getModelMap().get("projectInfo"));
+        assertNotNull(projectInfo);
         assertNotNull(mav.getModelMap().get("capitalInvestmentTypes"));
     }
  
@@ -37,7 +38,7 @@ public class ProjectInfoFormControllerTest extends BaseControllerTestCase {
         request.addParameter("id", "1");
         ModelAndView mav = form.showForm(request);
         assertNotNull(mav);        
-        projectInfo = (ProjectInfo) mav.getModelMap().get("projectInfo");
+        projectInfo = form.getProjectInfo(request);
         
         request = newPost("/projectInfoform");
         request.addParameter("method", "SaveProjectInfo");
@@ -54,7 +55,7 @@ public class ProjectInfoFormControllerTest extends BaseControllerTestCase {
         request.addParameter("id", "1");
         mav = form.showForm(request);
         assertNotNull(mav);        
-        projectInfo = (ProjectInfo) mav.getModelMap().get("projectInfo");
+        projectInfo = form.getProjectInfo(request);
         assertTrue(projectInfo.getExpectedReturn() == 88d);
     }
  
@@ -77,7 +78,7 @@ public class ProjectInfoFormControllerTest extends BaseControllerTestCase {
         request.addParameter("id", "1");
         ModelAndView mav = form.showForm(request);
         assertNotNull(mav);        
-        projectInfo = (ProjectInfo) mav.getModelMap().get("projectInfo");
+        projectInfo = form.getProjectInfo(request);
         int oldProjectSizeListSize = projectInfo.getProjectSizes().size();
         
     	request = newPost("/projectInfoform");
@@ -87,7 +88,7 @@ public class ProjectInfoFormControllerTest extends BaseControllerTestCase {
         BindingResult errors = new DataBinder(projectInfo).getBindingResult();
         mav = form.onSubmit(projectInfo, errors, request, new MockHttpServletResponse());
         assertNotNull(mav);       
-        projectInfo = (ProjectInfo) mav.getModelMap().get("projectInfo");
+        projectInfo = form.getProjectInfo(request);
         int newProjectSizeListSize = projectInfo.getProjectSizes().size();
         assertTrue(newProjectSizeListSize -  oldProjectSizeListSize == 1);
     }

@@ -11,10 +11,9 @@
     </appender>
     
     <appender name="FILE" class="org.apache.log4j.RollingFileAppender">
-        <param name="Append" value="true"/>
-		<param name="MaxFileSize" value="5MB"/>
-		<param name="File" value="riskController.log"/>
-		<param name="MaxBackupIndex" value="30"/> 
+		<param name="MaxFileSize" value="200KB"/>
+		<param name="File" value="../logs/riskController.log"/>
+		<param name="MaxBackupIndex" value="1"/> 
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d{ISO8601} %-5p [%c{1}] - %m%n" />
         </layout>
@@ -84,7 +83,7 @@
     </logger>
 
     <root>
-        <level value="WARN"/>
+        <level value="DEBUG"/>
         <appender-ref ref="FILE"/>
     </root>
 
