@@ -4,14 +4,11 @@ import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedNativeQueries;
-import javax.persistence.NamedNativeQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
@@ -19,30 +16,17 @@ import javax.persistence.Version;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.appfuse.model.BaseObject;
-import org.appfuse.model.User;
 
-import com.brxt.model.ProjectInfo;
+import com.brxt.model.InvestmentStatus;
 import com.brxt.model.enums.CapitalInvestmentType;
-
-@NamedNativeQueries({
-	@NamedNativeQuery(
-			name = "searchRPByProjectInfoId",
-			query = "select * from repayment_project s where s.projectInfo_id = :projectInfo_id",
-		        resultClass = RepaymentProject.class
-			)
-})
 
 @Entity
 @Table(name = "repayment_project")
 public class RepaymentProject extends BaseObject  {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -1401605168965563698L;
 	private Long id;
-	private ProjectInfo projectInfo;
-	private String name;  //投资项目名称
+	private InvestmentStatus investmentStatus;
 	private Date projectEndTime; //项目进展截止时间
 	private CapitalInvestmentType type = CapitalInvestmentType.REAL_ESTATE;
 	private Double totalSize;
@@ -57,9 +41,9 @@ public class RepaymentProject extends BaseObject  {
 	
 	private String evaluation; //还款来源评价
 	
-	private User createUser; // 创建人
+	private String createUser; // 创建人
 	private Date createTime; // 创建时间
-	private User updateUser; // 最后更新人
+	private String updateUser; // 最后更新人
 	private Date updateTime; // 最后更新时间
 	private Integer version;
 	
@@ -73,18 +57,12 @@ public class RepaymentProject extends BaseObject  {
 	}
 	
 	@ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH}, optional=true)  
-	@JoinColumn(name="projectInfo_id")
-	public ProjectInfo getProjectInfo() {
-		return projectInfo;
+	@JoinColumn(name="investment_status_id")
+	public InvestmentStatus getInvestmentStatus() {
+		return investmentStatus;
 	}
-	public void setProjectInfo(ProjectInfo projectInfo) {
-		this.projectInfo = projectInfo;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
+	public void setInvestmentStatus(InvestmentStatus investmentStatus) {
+		this.investmentStatus = investmentStatus;
 	}
 	@Transient  
 	public CapitalInvestmentType getType() {
@@ -154,12 +132,10 @@ public class RepaymentProject extends BaseObject  {
 	public void setEvaluation(String evaluation) {
 		this.evaluation = evaluation;
 	}
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "createUser", nullable = true)
-	public User getCreateUser() {
+	public String getCreateUser() {
 		return createUser;
 	}
-	public void setCreateUser(User createUser) {
+	public void setCreateUser(String createUser) {
 		this.createUser = createUser;
 	}
 	public Date getCreateTime() {
@@ -168,13 +144,10 @@ public class RepaymentProject extends BaseObject  {
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "updateUser", nullable = true)
-	public User getUpdateUser() {
+	public String getUpdateUser() {
 		return updateUser;
 	}
-	public void setUpdateUser(User updateUser) {
+	public void setUpdateUser(String updateUser) {
 		this.updateUser = updateUser;
 	}
 	public Date getUpdateTime() {
@@ -198,10 +171,11 @@ public class RepaymentProject extends BaseObject  {
 	public void setProjectEndTime(Date projectEndTime) {
 		this.projectEndTime = projectEndTime;
 	}
+	
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
-		.append(this.name).toString();
+		.append(this.investmentStatus).append(this.projectEndTime).toString();
 	}
 
 	@Override
@@ -215,19 +189,19 @@ public class RepaymentProject extends BaseObject  {
 
 		final RepaymentProject investmentProject = (RepaymentProject) o;
 
-		return !(name != null ? !name
-				.equals(investmentProject.name)
-				: investmentProject.name != null)
-				&& !(projectInfo != null ? !projectInfo
-						.equals(investmentProject.projectInfo)
-						: investmentProject.projectInfo != null);
+		return !(investmentStatus != null ? !investmentStatus
+				.equals(investmentProject.investmentStatus)
+				: investmentProject.investmentStatus != null)
+				&& !(projectEndTime != null ? !projectEndTime
+						.equals(investmentProject.projectEndTime)
+						: investmentProject.projectEndTime != null);
 	}
 
 	@Override
 	public int hashCode() {
 		int result;
-        result = (name != null ? name.hashCode() : 0);
-        result = 29 * result + (projectInfo != null ? projectInfo.hashCode() : 0);
+        result = (investmentStatus != null ? investmentStatus.hashCode() : 0);
+        result = 29 * result + (projectEndTime != null ? projectEndTime.hashCode() : 0);
         return result;
 	}
 	

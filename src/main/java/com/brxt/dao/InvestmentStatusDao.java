@@ -9,5 +9,7 @@ import com.brxt.model.InvestmentStatus;
 public interface InvestmentStatusDao extends GenericDao<InvestmentStatus, Long>{
 	
 	public List<InvestmentStatus> findByName(String projectName);
+	
+	public List<InvestmentStatus> findByInvestmentStatus(InvestmentStatus investmentStatus);
 
 }

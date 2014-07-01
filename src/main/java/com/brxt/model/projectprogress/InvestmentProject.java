@@ -11,8 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedNativeQueries;
-import javax.persistence.NamedNativeQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
@@ -22,16 +20,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.appfuse.model.BaseObject;
 import org.hibernate.annotations.Type;
 
-import com.brxt.model.ProjectInfo;
-import com.brxt.model.enums.CapitalInvestmentType;
-
-@NamedNativeQueries({
-	@NamedNativeQuery(
-			name = "searchIPByProjectInfoId",
-			query = "select * from investment_project s where s.projectInfo_id = :projectInfo_id",
-		        resultClass = InvestmentProject.class
-			)
-})
+import com.brxt.model.InvestmentStatus;
 
 @Entity
 @Table(name = "investment_project")
@@ -39,10 +28,8 @@ public class InvestmentProject extends BaseObject  {
 
 	private static final long serialVersionUID = -1948840623486569978L;
 	private Long id;
-	private ProjectInfo projectInfo;
-	private String name;  //投资项目名称
+	private InvestmentStatus investmentStatus;
 	private Date projectEndTime; //项目进展截止时间
-	private CapitalInvestmentType type;
 	private String investmentProjectType;
 	private Date startTime;
 	private Date endTime; //预计何时竣工
@@ -75,30 +62,13 @@ public class InvestmentProject extends BaseObject  {
 	}
 
 	@ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH}, optional=true)  
-	@JoinColumn(name="projectInfo_id")
-	public ProjectInfo getProjectInfo() {
-		return projectInfo;
+	@JoinColumn(name="investment_status_id")
+	public InvestmentStatus getInvestmentStatus() {
+		return investmentStatus;
 	}
 
-	public void setProjectInfo(ProjectInfo projectInfo) {
-		this.projectInfo = projectInfo;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	@Transient  
-	public CapitalInvestmentType getType() {
-		return type;
-	}
-
-	public void setType(CapitalInvestmentType type) {
-		this.type = type;
+	public void setInvestmentStatus(InvestmentStatus investmentStatus) {
+		this.investmentStatus = investmentStatus;
 	}
 
 	public String getInvestmentProjectType() {
@@ -252,7 +222,7 @@ public class InvestmentProject extends BaseObject  {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
-		.append(this.name).toString();
+		.append(this.investmentStatus).append(this.projectEndTime).toString();
 	}
 
 	@Override
@@ -266,19 +236,19 @@ public class InvestmentProject extends BaseObject  {
 
 		final InvestmentProject investmentProject = (InvestmentProject) o;
 
-		return !(name != null ? !name
-				.equals(investmentProject.name)
-				: investmentProject.name != null)
-				&& !(projectInfo != null ? !projectInfo
-						.equals(investmentProject.projectInfo)
-						: investmentProject.projectInfo != null);
+		return !(investmentStatus != null ? !investmentStatus
+				.equals(investmentProject.investmentStatus)
+				: investmentProject.investmentStatus != null)
+				&& !(projectEndTime != null ? !projectEndTime
+						.equals(investmentProject.projectEndTime)
+						: investmentProject.projectEndTime != null);
 	}
 
 	@Override
 	public int hashCode() {
 		int result;
-        result = (name != null ? name.hashCode() : 0);
-        result = 29 * result + (projectInfo != null ? projectInfo.hashCode() : 0);
+        result = (investmentStatus != null ? investmentStatus.hashCode() : 0);
+        result = 29 * result + (projectEndTime != null ? projectEndTime.hashCode() : 0);
         return result;
 	}
 	

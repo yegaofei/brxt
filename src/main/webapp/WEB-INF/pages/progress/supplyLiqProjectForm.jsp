@@ -103,12 +103,12 @@
     </div>
     
     <c:if test="${not empty supplyLiquidProject.createUser}">
-        <form:hidden path="createUser.username" id="createUser"/>      
+        <form:hidden path="createUser" id="createUser"/>      
         <form:hidden path="createTime"/>        
     </c:if>
     
     <c:if test="${not empty supplyLiquidProject.updateUser}">
-        <form:hidden path="updateUser.username" />     
+        <form:hidden path="updateUser" />     
         <form:hidden path="updateTime" />     
     </c:if>
     

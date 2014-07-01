@@ -17,18 +17,16 @@
 	<form:hidden path="version"/>
 	<form:hidden path="investmentProjectType"/>
 	<input type="hidden" name="projectInfoId" value="${projectInfoId}"/>
+	<input type="hidden" name="investmentStatusId" value="${param.investmentStatusId}"/>
 	
 	<div class="form-group">
         <appfuse:label styleClass="control-label" key="investmentProject.type"/> : 
         <fmt:message key="${investmentProject.investmentProjectType}" />
     </div>
 	
-    <spring:bind path="investmentProject.name">
-    <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
-    </spring:bind>
+    <div class="form-group">
         <appfuse:label styleClass="control-label" key="investmentProject.name"/>
-        <form:input path="name" id="name" maxlength="20" cssClass="form-control" readonly="true"/>
-        <form:errors path="name" cssClass="help-block"/>
+        <form:input path="investmentStatus.projectName" id="projectName" maxlength="20" cssClass="form-control" readonly="true"/>
     </div>
 
     <spring:bind path="investmentProject.projectEndTime">

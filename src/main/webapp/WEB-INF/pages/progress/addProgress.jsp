@@ -11,10 +11,10 @@
 		<display:table name="investments" id="investment" class="table table-bordered table-condensed table-striped table-hover">  			
   			<display:column titleKey="projectProgress.projectName">
   				<c:url value="${ctx}/progress/investmentProjectForm" var="investmentProjectUrl">
-        			<c:param name="id" value="${investment.id}"/>
+        			<c:param name="investmentStatusId" value="${investment.id}"/>
     			</c:url>
     			<c:url value="${ctx}/progress/supplyLiqProjectForm" var="supplyLiqProjectUrl">
-        			<c:param name="id" value="${investment.id}"/>
+        			<c:param name="investmentStatusId" value="${investment.id}"/>
     			</c:url>
     			<c:if test="${investment.capitalInvestmentType.title != 'supplemental_liquidity'}">
     				<a href="<c:out value="${investmentProjectUrl}" escapeXml="false" />"><c:out value="${investment.projectName}"/> </a>
@@ -34,7 +34,7 @@
 		<display:table name="repayments" id="repayment" class="table table-bordered table-condensed table-striped table-hover">  			
   			<display:column titleKey="projectProgress.projectName">   
   				<c:url value="${ctx}/progress/repaymentProjectForm" var="repaymentProjectUrl">
-        			<c:param name="id" value="${repayment.id}"/>
+        			<c:param name="investmentStatusId" value="${repayment.id}"/>
     			</c:url>
     			<a href="<c:out value="${repaymentProjectUrl}" escapeXml="false" />"><c:out value="${repayment.projectName}"/></a>
   			</display:column>

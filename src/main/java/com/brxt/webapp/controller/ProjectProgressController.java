@@ -2,8 +2,10 @@ package com.brxt.webapp.controller;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,12 +22,14 @@ import org.springframework.web.servlet.ModelAndView;
 import org.tuckey.web.filters.urlrewrite.utils.StringUtils;
 
 import com.brxt.constant.SessionAttributes;
+import com.brxt.model.InvestmentStatus;
 import com.brxt.model.ProjectInfo;
 import com.brxt.model.ProjectProgress;
 import com.brxt.model.enums.CapitalInvestmentType;
 import com.brxt.model.projectprogress.InvestmentProject;
 import com.brxt.model.projectprogress.RepaymentProject;
 import com.brxt.model.projectprogress.SupplyLiquidProject;
+import com.brxt.service.InvestmentProjectsManager;
 import com.brxt.service.ProjProgressManager;
 import com.brxt.service.ProjectInfoManager;
 
@@ -34,6 +38,7 @@ public class ProjectProgressController extends BaseFormController {
 
 	private ProjectInfoManager projectInfoManager;
 	private ProjProgressManager projectProgressManager;
+	private InvestmentProjectsManager investmentProjectsManager;
 
 	@Autowired
 	public void setProjectInfoManager(
@@ -47,12 +52,18 @@ public class ProjectProgressController extends BaseFormController {
 		this.projectProgressManager = projectProgressManager;
 	}
 
+	@Autowired
+	public void setInvestmentProjectsManager(
+			@Qualifier("investmentProjectsManager") InvestmentProjectsManager investmentProjectsManager) {
+		this.investmentProjectsManager = investmentProjectsManager;
+	}
+
 	@ModelAttribute("projectInfoId")
 	protected Long getProjectInfoId(final HttpServletRequest request) {
 		String projectInfoId = (String) request.getSession().getAttribute(
 				SessionAttributes.PROJECT_INFO_ID);
-		final Locale locale = request.getLocale();
 		if (StringUtils.isBlank(projectInfoId)) {
+			final Locale locale = request.getLocale();
 			saveError(request, getText("errors.projectInfoId.required", locale));
 		} else {
 			return Long.valueOf(projectInfoId);
@@ -79,24 +90,44 @@ public class ProjectProgressController extends BaseFormController {
 	public ModelAndView addProgress(final HttpServletRequest request)
 	{
 		ModelAndView mav = new ModelAndView("/progress/addProgress");
-		List<ProjectProgress> allProgress = getProjectProgressList(request);
+		String projectInfoId = (String) request.getSession().getAttribute(SessionAttributes.PROJECT_INFO_ID);
+		ProjectInfo projectInfo = projectInfoManager.get(Long.valueOf(projectInfoId));
+		Set<InvestmentStatus> investmentStatusSet = projectInfo.getInvestments();
 		List<ProjectProgress> investments = new ArrayList<ProjectProgress>();
 		List<ProjectProgress> repayments = new ArrayList<ProjectProgress>();
-		if(allProgress != null) 
+		if(investmentStatusSet != null) 
 		{
-			for(ProjectProgress pp : allProgress)
+			Iterator<InvestmentStatus> itS = investmentStatusSet.iterator();
+			while(itS.hasNext())
 			{
-				Long id = projectProgressManager.getRealId(pp.getId());
-				pp.setId(id);
-				switch (pp.getCapitalInvestmentType())
+				InvestmentStatus is = itS.next();
+				String projectType = is.getProjectType();
+				CapitalInvestmentType type = CapitalInvestmentType.valueOf(projectType.toUpperCase());
+				ProjectProgress pp = new ProjectProgress();
+				pp.setProjectName(is.getProjectName());
+				pp.setId(is.getId());
+				switch (type)
 				{
 				case REPAYMENT_PROJECT:
+					pp.setCapitalInvestmentType(CapitalInvestmentType.REPAYMENT_PROJECT);
+					pp.setInvestment(false);
+					pp.setSupplyLiquid(false);
 					repayments.add(pp);
 					break;
+				case SUPPLEMENTAL_LIQUIDITY:
+					pp.setCapitalInvestmentType(CapitalInvestmentType.SUPPLEMENTAL_LIQUIDITY);
+					pp.setInvestment(false);
+					pp.setSupplyLiquid(true);
+					investments.add(pp);
+					break;
 					default:
+						pp.setCapitalInvestmentType(type);
+						pp.setInvestment(true);
+						pp.setSupplyLiquid(false);
 						investments.add(pp);
 				}
 			}
+			
 			
 			if(!investments.isEmpty())
 			{
@@ -148,20 +179,19 @@ public class ProjectProgressController extends BaseFormController {
 	public ModelAndView handleRequest(final HttpServletRequest request)
 			throws Exception {
 		ModelAndView mav = new ModelAndView();
+		String investmentStatusId = request.getParameter("investmentStatusId");
 		String projectProgresstId = request.getParameter("id");
 		String type = request.getParameter("type");
 		if (StringUtils.isBlank(projectProgresstId)) {
 			// Add
+			InvestmentStatus investmentStatus = investmentProjectsManager.get(Long.valueOf(investmentStatusId));
 			InvestmentProject investmentProject = new InvestmentProject();
+			investmentProject.setInvestmentStatus(investmentStatus);
+			
 			if (!StringUtils.isBlank(type)) {
 				investmentProject.setInvestmentProjectType(type);
-				investmentProject.setType(CapitalInvestmentType.valueOf(type
-						.toUpperCase()));
 			} else {
-				investmentProject.setType(CapitalInvestmentType.REAL_ESTATE);
-				investmentProject
-						.setInvestmentProjectType(CapitalInvestmentType.REAL_ESTATE
-								.getTitle());
+				investmentProject.setInvestmentProjectType(CapitalInvestmentType.REAL_ESTATE.getTitle());
 			}
 			mav.addObject("investmentProject", investmentProject);
 		} else {
@@ -171,7 +201,6 @@ public class ProjectProgressController extends BaseFormController {
 					.get(id);
 			mav.addObject("investmentProject", investmentProject);
 		}
-
 		mav.setViewName("/progress/investmentProjectForm");
 		return mav;
 	}
@@ -199,9 +228,10 @@ public class ProjectProgressController extends BaseFormController {
 
 			switch (method) {
 			case "SaveprojectProgress":
-				ProjectInfo projectInfo = projectInfoManager.get(projectInfoId);
-				investmentProject.setProjectInfo(projectInfo);
-				RepaymentProject repaymentProject = null;
+				String investmentStatusId = request.getParameter("investmentStatusId");
+				InvestmentStatus investmentStatus = investmentProjectsManager.get(Long.valueOf(investmentStatusId));
+				
+			//	RepaymentProject repaymentProject = null;
 				
 				User currentUser = getCurrentUser();
 				Long projectProgressId = investmentProject.getId();
@@ -209,20 +239,20 @@ public class ProjectProgressController extends BaseFormController {
 				{
 					// Save new  
 					Date now = new Date();
+					investmentProject.setInvestmentStatus(investmentStatus);
 					investmentProject.setCreateTime(now);
 					investmentProject.setUpdateTime(now);
 					investmentProject.setCreateUser(currentUser.getUsername());
 					investmentProject.setUpdateUser(currentUser.getUsername());
-					
+					investmentStatus.getInvestmentProjects().add(investmentProject);
+					investmentProjectsManager.save(investmentStatus);
 					if(investmentProject.getSameAsRepayment())
 					{
-						repaymentProject = new RepaymentProject();
-						repaymentProject.setProjectInfo(projectInfo);
-						repaymentProject.setName(investmentProject.getName());
-						repaymentProject.setCreateTime(now);
-						repaymentProject.setUpdateTime(now);
-						repaymentProject.setCreateUser(currentUser);
-						repaymentProject.setUpdateUser(currentUser);
+//						repaymentProject = new RepaymentProject();
+//						repaymentProject.setCreateTime(now);
+//						repaymentProject.setUpdateTime(now);
+//						repaymentProject.setCreateUser(currentUser.getUsername());
+//						repaymentProject.setUpdateUser(currentUser.getUsername());
 					}
 				}
 				else
@@ -230,12 +260,14 @@ public class ProjectProgressController extends BaseFormController {
 					// Update Existed
 					investmentProject.setUpdateTime(new Date());
 					investmentProject.setUpdateUser(currentUser.getUsername());
+					projectProgressManager.save(investmentProject);
 				}
-				projectProgressManager.save(investmentProject);
-				if(repaymentProject != null)
-				{
-					projectProgressManager.saveRepaymentProject(repaymentProject);
-				}
+//				if(repaymentProject != null)
+//				{
+//					projectProgressManager.saveRepaymentProject(repaymentProject);
+//				}
+				
+				ProjectInfo projectInfo = projectInfoManager.get(Long.valueOf(projectInfoId));
 				updateProjectInfoStatus(projectInfo, true);
 				saveMessage(request,
 						getText("investmentProject.save.successful", locale));
@@ -290,7 +322,7 @@ public class ProjectProgressController extends BaseFormController {
 			switch (method) {
 			case "SaveprojectProgress":
 				ProjectInfo projectInfo = projectInfoManager.get(projectInfoId);
-				repaymentProject.setProjectInfo(projectInfo);
+				//repaymentProject.setProjectInfo(projectInfo);
 				User currentUser = getCurrentUser();
 				Long projectProgressId = repaymentProject.getId();
 				if(projectProgressId == null)
@@ -298,16 +330,14 @@ public class ProjectProgressController extends BaseFormController {
 					// Save new  
 					repaymentProject.setCreateTime(new Date());
 					repaymentProject.setUpdateTime(new Date());
-					repaymentProject.setCreateUser(currentUser);
-					repaymentProject.setUpdateUser(currentUser);
+					repaymentProject.setCreateUser(currentUser.getUsername());
+					repaymentProject.setUpdateUser(currentUser.getUsername());
 				}
 				else
 				{
 					// Update Existed
-					User createUser = getUserManager().getUserByUsername(repaymentProject.getCreateUser().getUsername());
-					repaymentProject.setCreateUser(createUser);
 					repaymentProject.setUpdateTime(new Date());
-					repaymentProject.setUpdateUser(currentUser);
+					repaymentProject.setUpdateUser(currentUser.getUsername());
 				}
 				projectProgressManager.saveRepaymentProject(repaymentProject);
 				updateProjectInfoStatus(projectInfo, true);
@@ -364,7 +394,7 @@ public class ProjectProgressController extends BaseFormController {
 			switch (method) {
 			case "SaveprojectProgress":
 				ProjectInfo projectInfo = projectInfoManager.get(projectInfoId);
-				supplyLiquidProject.setProjectInfo(projectInfo);
+				//supplyLiquidProject.setProjectInfo(projectInfo);
 				User currentUser = getCurrentUser();
 				Long projectProgressId = supplyLiquidProject.getId();
 				if(projectProgressId == null)
@@ -372,16 +402,14 @@ public class ProjectProgressController extends BaseFormController {
 					// Save new  
 					supplyLiquidProject.setCreateTime(new Date());
 					supplyLiquidProject.setUpdateTime(new Date());
-					supplyLiquidProject.setCreateUser(currentUser);
-					supplyLiquidProject.setUpdateUser(currentUser);
+					supplyLiquidProject.setCreateUser(currentUser.getUsername());
+					supplyLiquidProject.setUpdateUser(currentUser.getUsername());
 				}
 				else
 				{
 					// Update Existed
-					User createUser = getUserManager().getUserByUsername(supplyLiquidProject.getCreateUser().getUsername());
-					supplyLiquidProject.setCreateUser(createUser);
 					supplyLiquidProject.setUpdateTime(new Date());
-					supplyLiquidProject.setUpdateUser(currentUser);
+					supplyLiquidProject.setUpdateUser(currentUser.getUsername());
 				}
 				projectProgressManager.saveSupplyLiqidProject(supplyLiquidProject);
 				updateProjectInfoStatus(projectInfo, true);

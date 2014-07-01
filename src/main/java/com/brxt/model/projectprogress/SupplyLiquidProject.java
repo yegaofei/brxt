@@ -5,44 +5,27 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedNativeQueries;
-import javax.persistence.NamedNativeQuery;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.appfuse.model.BaseObject;
-import org.appfuse.model.User;
 import org.hibernate.annotations.Type;
 
-import com.brxt.model.ProjectInfo;
-
-@NamedNativeQueries({
-	@NamedNativeQuery(
-			name = "searchSLPByProjectInfoId",
-			query = "select * from supply_liquid_project s where s.projectInfo_id = :projectInfo_id",
-		        resultClass = SupplyLiquidProject.class
-			)
-})
+import com.brxt.model.InvestmentStatus;
 
 @Entity
 @Table(name = "supply_liquid_project")
 public class SupplyLiquidProject extends BaseObject {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 6426397213432166534L;
 	private Long id;
-	private ProjectInfo projectInfo;
-	private String name;
+	private InvestmentStatus investmentStatus;
 	private Date projectEndTime; //项目进展截止时间
 	private String industryVista;
 	private String firmSize;
@@ -53,9 +36,9 @@ public class SupplyLiquidProject extends BaseObject {
 	private String comments;
 	private String evaluation;
 	
-	private User createUser; // 创建人
+	private String createUser; // 创建人
 	private Date createTime; // 创建时间
-	private User updateUser; // 最后更新人
+	private String updateUser; // 最后更新人
 	private Date updateTime; // 最后更新时间
 	private Integer version;
 	
@@ -67,22 +50,15 @@ public class SupplyLiquidProject extends BaseObject {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	
 	@ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH}, optional=true)  
-	@JoinColumn(name="projectInfo_id")
-	public ProjectInfo getProjectInfo() {
-		return projectInfo;
+	@JoinColumn(name="investment_status_id")
+	public InvestmentStatus getInvestmentStatus() {
+		return investmentStatus;
 	}
-	public void setProjectInfo(ProjectInfo projectInfo) {
-		this.projectInfo = projectInfo;
+	public void setInvestmentStatus(InvestmentStatus investmentStatus) {
+		this.investmentStatus = investmentStatus;
 	}
+	
 	public String getIndustryVista() {
 		return industryVista;
 	}
@@ -135,12 +111,10 @@ public class SupplyLiquidProject extends BaseObject {
 		this.evaluation = evaluation;
 	}
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "createUser", nullable = true)
-	public User getCreateUser() {
+	public String getCreateUser() {
 		return createUser;
 	}
-	public void setCreateUser(User createUser) {
+	public void setCreateUser(String createUser) {
 		this.createUser = createUser;
 	}
 	public Date getCreateTime() {
@@ -150,12 +124,10 @@ public class SupplyLiquidProject extends BaseObject {
 		this.createTime = createTime;
 	}
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "updateUser", nullable = true)
-	public User getUpdateUser() {
+	public String getUpdateUser() {
 		return updateUser;
 	}
-	public void setUpdateUser(User updateUser) {
+	public void setUpdateUser(String updateUser) {
 		this.updateUser = updateUser;
 	}
 	public Date getUpdateTime() {
@@ -182,7 +154,7 @@ public class SupplyLiquidProject extends BaseObject {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
-		.append(this.name).append(this.projectEndTime).toString();
+		.append(this.investmentStatus).append(this.projectEndTime).toString();
 	}
 
 	@Override
@@ -194,26 +166,23 @@ public class SupplyLiquidProject extends BaseObject {
 			return false;
 		}
 
-		final SupplyLiquidProject supplyLiquidProject = (SupplyLiquidProject) o;
+		final SupplyLiquidProject investmentProject = (SupplyLiquidProject) o;
 
-		return !(name != null ? !name
-				.equals(supplyLiquidProject.name)
-				: supplyLiquidProject.name != null)
-				&& !(projectInfo != null ? !projectInfo
-						.equals(supplyLiquidProject.projectInfo)
-						: supplyLiquidProject.projectInfo != null)
+		return !(investmentStatus != null ? !investmentStatus
+				.equals(investmentProject.investmentStatus)
+				: investmentProject.investmentStatus != null)
 				&& !(projectEndTime != null ? !projectEndTime
-						.equals(supplyLiquidProject.projectEndTime)
-						: supplyLiquidProject.projectEndTime != null);
+						.equals(investmentProject.projectEndTime)
+						: investmentProject.projectEndTime != null);
 	}
 
 	@Override
 	public int hashCode() {
 		int result;
-        result = (name != null ? name.hashCode() : 0);
-        result = 29 * result + (projectInfo != null ? projectInfo.hashCode() : 0);
+        result = (investmentStatus != null ? investmentStatus.hashCode() : 0);
         result = 29 * result + (projectEndTime != null ? projectEndTime.hashCode() : 0);
         return result;
 	}
+	
 	
 }

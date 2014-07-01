@@ -1,26 +1,43 @@
 package com.brxt.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.appfuse.model.BaseObject;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import com.brxt.model.enums.CapitalInvestmentType;
+import com.brxt.model.projectprogress.InvestmentProject;
+import com.brxt.model.projectprogress.RepaymentProject;
+import com.brxt.model.projectprogress.SupplyLiquidProject;
 
 @Entity
 @Table(name = "investment_status")
 public class InvestmentStatus extends BaseObject{
 
+	private static final long serialVersionUID = 2315172272788889932L;
 	private Long id;
 	private String projectName;
 	private CapitalInvestmentType capitalInvestmentType;
 	private String projectType;
+	
+	private List<InvestmentProject> investmentProjects = new  ArrayList<InvestmentProject>();
+	private List<RepaymentProject> repaymentProjects = new  ArrayList<RepaymentProject>();
+	private List<SupplyLiquidProject> supplyLiquidProjects = new  ArrayList<SupplyLiquidProject>();
+	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -54,6 +71,37 @@ public class InvestmentStatus extends BaseObject{
 
 	public void setCapitalInvestmentType(CapitalInvestmentType capitalInvestmentType) {
 		this.capitalInvestmentType = capitalInvestmentType;
+	}
+
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "investmentStatus", cascade = { CascadeType.ALL })
+	@Fetch(FetchMode.SELECT)
+	public List<InvestmentProject> getInvestmentProjects() {
+		return investmentProjects;
+	}
+
+	public void setInvestmentProjects(List<InvestmentProject> investmentProjects) {
+		this.investmentProjects = investmentProjects;
+	}
+
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "investmentStatus", cascade = { CascadeType.ALL })
+	@Fetch(FetchMode.SELECT)
+	public List<RepaymentProject> getRepaymentProjects() {
+		return repaymentProjects;
+	}
+
+	public void setRepaymentProjects(List<RepaymentProject> repaymentProjects) {
+		this.repaymentProjects = repaymentProjects;
+	}
+
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "investmentStatus", cascade = { CascadeType.ALL })
+	@Fetch(FetchMode.SELECT)
+	public List<SupplyLiquidProject> getSupplyLiquidProjects() {
+		return supplyLiquidProjects;
+	}
+
+	public void setSupplyLiquidProjects(
+			List<SupplyLiquidProject> supplyLiquidProjects) {
+		this.supplyLiquidProjects = supplyLiquidProjects;
 	}
 
 	@Override

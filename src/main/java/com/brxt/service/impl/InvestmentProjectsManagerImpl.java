@@ -31,4 +31,15 @@ public class InvestmentProjectsManagerImpl extends GenericManagerImpl<Investment
 		return null;
 	}
 
+	@Override
+	public InvestmentStatus findByInvestmentStatus(
+			InvestmentStatus investmentStatus) {
+		List<InvestmentStatus> isList = investmentStatusDao.findByInvestmentStatus(investmentStatus);
+		if(isList != null && !isList.isEmpty())
+		{
+			return isList.get(0);
+		}
+		return null;
+	}
+
 }

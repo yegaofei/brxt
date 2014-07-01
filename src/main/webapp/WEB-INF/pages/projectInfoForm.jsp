@@ -182,7 +182,7 @@
                 			</c:forEach>
                 			<input type="hidden" name="oldInvestmentType" value="${investment.capitalInvestmentType.title}" >
         			</c:when>
-        			<c:otherwise><fmt:message key="${investment.capitalInvestmentType.title}"/></c:otherwise>
+        			<c:otherwise><fmt:message key="${investment.projectType}"/></c:otherwise>
     			</c:choose>
   			</display:column>  			
 		</display:table>

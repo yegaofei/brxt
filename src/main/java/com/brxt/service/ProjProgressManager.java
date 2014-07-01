@@ -35,5 +35,4 @@ public interface ProjProgressManager extends
 	
 	public SupplyLiquidProject saveSupplyLiqidProject(SupplyLiquidProject o);
 	
-	public List<ProjectProgress> getUniqueProjects(Long projectInfoId);
 }

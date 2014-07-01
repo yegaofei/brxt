@@ -33,9 +33,6 @@ import com.brxt.model.ProjectSize;
 import com.brxt.model.enums.CapitalInvestmentType;
 import com.brxt.model.enums.CounterpartyType;
 import com.brxt.model.enums.ProjectType;
-import com.brxt.model.projectprogress.InvestmentProject;
-import com.brxt.model.projectprogress.RepaymentProject;
-import com.brxt.model.projectprogress.SupplyLiquidProject;
 import com.brxt.service.InvestmentProjectsManager;
 import com.brxt.service.ProjProgressManager;
 import com.brxt.service.ProjectInfoManager;
@@ -389,39 +386,30 @@ public class ProjectInfoFormController extends BaseFormController {
 					InvestmentStatus is = new InvestmentStatus();
 					is.setProjectName(name);
 					is.setProjectType(type);
-					
 					if (projectInfo.getInvestments().contains(is)) {
 						saveError(request, getText("duplicate.investment.error", request.getLocale()));
 					} else {
-						is = investmentProjectsManager.save(is);
-						projectInfo.getInvestments().add(is);
+						addInvestmentStatus(projectInfo, is);
 					}
-					
 					break;
-					
 				case REAL_ESTATE_REPAYMENT_PROJECT:
 					is = new InvestmentStatus();
 					is.setProjectName(name);
 					is.setProjectType(CapitalInvestmentType.REAL_ESTATE.getTitle());
-					
 					if (projectInfo.getInvestments().contains(is)) {
 						saveError(request, getText("duplicate.investment.error", request.getLocale()));
 					} else {
-						is = investmentProjectsManager.save(is);
-						projectInfo.getInvestments().add(is);
+						addInvestmentStatus(projectInfo, is);
 					}
 					
 					is = new InvestmentStatus();
 					is.setProjectName(name);
 					is.setProjectType(CapitalInvestmentType.REPAYMENT_PROJECT.getTitle());
-					
 					if (projectInfo.getInvestments().contains(is)) {
 						saveError(request, getText("duplicate.counterparty.error", request.getLocale()));
 					} else {
-						is = investmentProjectsManager.save(is);
-						projectInfo.getInvestments().add(is);
+						addInvestmentStatus(projectInfo, is);
 					}
-					
 					break;
 				default:
 				}
@@ -433,6 +421,20 @@ public class ProjectInfoFormController extends BaseFormController {
 		projectInfo = loadProjectInfo(projectInfo.getId());
 		mav.addObject("projectInfo", projectInfo);
 		return mav;
+	}
+	
+	private void addInvestmentStatus(ProjectInfo projectInfo, InvestmentStatus is)
+	{
+		InvestmentStatus investmentStatus = investmentProjectsManager.findByInvestmentStatus(is);
+		if(investmentStatus != null)
+		{
+			projectInfo.getInvestments().add(investmentStatus);
+		}
+		else
+		{
+			is = investmentProjectsManager.save(is);
+			projectInfo.getInvestments().add(is);
+		}
 	}
 
 	private ModelAndView saveGuarantor(ProjectInfo projectInfo, BindingResult errors, HttpServletRequest request, final ModelAndView mav)

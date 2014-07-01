@@ -474,42 +474,7 @@
             <value>1</value>
         </row>
 	</table>
-	<table name="investment_project">
-    	<column>id</column>
-        <column>projectInfo_id</column>
-        <column>name</column>   
-        <column>projectEndTime</column>
-        <column>investmentProjectType</column>
-        <column>startTime</column>
-        <column>endTime</column>
-        <column>investmentAmount</column>
-        <column>description</column>
-        <column>project_delayed</column>
-        <column>comments</column>
-        <column>createUser</column>
-        <column>createTime</column>
-        <column>updateUser</column>
-        <column>updateTime</column>
-        <column>version</column>
-        <row>
-        	<value>1</value>
-            <value description="project_info_id">1</value>
-            <value>名仕家园</value>
-            <value>2014-04-05</value>
-            <value>real_estate</value>
-            <value>2014-04-05</value>
-            <value>2014-04-05</value>
-            <value>888888888766655</value>
-            <value>1</value>
-            <value>N</value>
-            <value>1</value>
-            <value>-1</value>
-            <value>2014-05-14 06:06:06</value>
-            <value>-1</value>
-            <value>2014-05-14 06:06:06</value>
-            <value>1</value>
-        </row>
-	</table>
+	
 	
 	<table name="budget_statement">
     	<column>id</column>

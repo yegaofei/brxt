@@ -7,4 +7,6 @@ import com.brxt.model.InvestmentStatus;
 public interface InvestmentProjectsManager extends GenericManager<InvestmentStatus, Long> {
 
 	public InvestmentStatus findByProjectName(String projectName);
+	
+	public InvestmentStatus findByInvestmentStatus(InvestmentStatus investmentStatus);
 }

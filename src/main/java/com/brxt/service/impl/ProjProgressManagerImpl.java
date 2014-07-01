@@ -1,15 +1,20 @@
 package com.brxt.service.impl;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.service.impl.GenericManagerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.brxt.dao.InvestmentProjectDao;
+import com.brxt.dao.ProjectInfoDao;
 import com.brxt.dao.RepaymentProjectDao;
 import com.brxt.dao.SupplyLiquidProjectDao;
+import com.brxt.model.InvestmentStatus;
+import com.brxt.model.ProjectInfo;
 import com.brxt.model.ProjectProgress;
 import com.brxt.model.enums.CapitalInvestmentType;
 import com.brxt.model.projectprogress.InvestmentProject;
@@ -24,6 +29,7 @@ implements ProjProgressManager {
 	private InvestmentProjectDao investmentProjectDao;
 	private SupplyLiquidProjectDao supplyLiquidProjectDao;
 	private RepaymentProjectDao repaymentProjectDao;
+	private ProjectInfoDao projectInfoDao;
 	
 	private static final Long BASE_INVESTMENT_PROJECT_ID = 100000L;
 	private static final Long BASE_SUPPLY_LIQUIDPROJECT_ID = 300000L;
@@ -46,6 +52,11 @@ implements ProjProgressManager {
 		this.repaymentProjectDao = repaymentProjectDao;
 	}
 
+	@Autowired
+	public void setProjectInfoDao(ProjectInfoDao projectInfoDao) {
+		this.projectInfoDao = projectInfoDao;
+	}
+
 	public RepaymentProject getRepaymentProject(Long id){
 		return repaymentProjectDao.get(id);
 	}
@@ -55,82 +66,119 @@ implements ProjProgressManager {
 	}
 	
 	public List<InvestmentProject> getInvestmentProjects(Long projectInfoId) {
-		List<InvestmentProject> investmentProjects = investmentProjectDao.findByProjId(projectInfoId);
+		ProjectInfo projectInfo = projectInfoDao.get(projectInfoId);
+		Set<InvestmentStatus> investmentStatusSet = projectInfo.getInvestments();
+		List<InvestmentProject> investmentProjects = new ArrayList<InvestmentProject>();
+		
+		if(investmentStatusSet != null)
+		{
+			Iterator<InvestmentStatus> itStatus = investmentStatusSet.iterator();
+			while(itStatus.hasNext())
+			{
+				InvestmentStatus status = itStatus.next();
+				investmentProjects.addAll(status.getInvestmentProjects());
+			}
+		}
 		return investmentProjects;
 	}
 	
 	public List<RepaymentProject> getRepaymentProjects(Long projectInfoId) {
-		return repaymentProjectDao.findByProjId(projectInfoId);
+		ProjectInfo projectInfo = projectInfoDao.get(projectInfoId);
+		Set<InvestmentStatus> investmentStatusSet = projectInfo.getInvestments();
+		List<RepaymentProject> repaymentProjects = new ArrayList<RepaymentProject>();
+		
+		if(investmentStatusSet != null)
+		{
+			Iterator<InvestmentStatus> itStatus = investmentStatusSet.iterator();
+			while(itStatus.hasNext())
+			{
+				InvestmentStatus status = itStatus.next();
+				repaymentProjects.addAll(status.getRepaymentProjects());
+			}
+		}
+		return repaymentProjects;
 	}
 	
 	public List<SupplyLiquidProject> getSupplyLiquidProjects(Long projectInfoId) {
-		return supplyLiquidProjectDao.findByProjId(projectInfoId);
+		ProjectInfo projectInfo = projectInfoDao.get(projectInfoId);
+		Set<InvestmentStatus> investmentStatusSet = projectInfo.getInvestments();
+		List<SupplyLiquidProject> supplyLiquidProjects = new ArrayList<SupplyLiquidProject>();
+		
+		if(investmentStatusSet != null)
+		{
+			Iterator<InvestmentStatus> itStatus = investmentStatusSet.iterator();
+			while(itStatus.hasNext())
+			{
+				InvestmentStatus status = itStatus.next();
+				supplyLiquidProjects.addAll(status.getSupplyLiquidProjects());
+			}
+		}
+		return supplyLiquidProjects;
 	}
 	
 	@Override
 	public List<ProjectProgress> getProjectProgressList(Long projectInfoId) {
-		List<InvestmentProject> investmentProjects = investmentProjectDao.findByProjId(projectInfoId);
-		List<SupplyLiquidProject> supplyLiquidProjects = supplyLiquidProjectDao.findByProjId(projectInfoId);
-		List<RepaymentProject> repaymentProjecs = repaymentProjectDao.findByProjId(projectInfoId);
-		
+		ProjectInfo projectInfo = projectInfoDao.get(projectInfoId);
+		Set<InvestmentStatus> investmentStatusSet = projectInfo.getInvestments();
 		List<ProjectProgress> projectProgessList = new ArrayList<ProjectProgress>();
-		if(investmentProjects != null)
+		
+		if(investmentStatusSet != null)
 		{
-			for(InvestmentProject ip : investmentProjects)
+			Iterator<InvestmentStatus> itStatus = investmentStatusSet.iterator();
+			while(itStatus.hasNext())
 			{
-				if(ip.getProjectEndTime() == null)
+				InvestmentStatus status = itStatus.next();
+				List<InvestmentProject> investmentProjects = status.getInvestmentProjects();
+				List<SupplyLiquidProject> supplyLiquidProjects = status.getSupplyLiquidProjects();
+				List<RepaymentProject> repaymentProjecs = status.getRepaymentProjects();
+				
+				if(investmentProjects != null && !investmentProjects.isEmpty())
 				{
-					continue;
+					for(InvestmentProject ip : investmentProjects)
+					{
+						ProjectProgress pp = new ProjectProgress();
+						pp.setId(wrapId(ip.getId(), CapitalInvestmentType.REAL_ESTATE));
+						pp.setDeadline(ip.getProjectEndTime());
+						CapitalInvestmentType type = CapitalInvestmentType.valueOf(ip.getInvestmentProjectType().toUpperCase());
+						pp.setCapitalInvestmentType(type);
+						pp.setProjectName(status.getProjectName());
+						pp.setInvestment(true);
+						pp.setSupplyLiquid(false);
+						projectProgessList.add(pp);
+					}
 				}
-				ProjectProgress pp = new ProjectProgress();
-				pp.setId(wrapId(ip.getId(), CapitalInvestmentType.REAL_ESTATE));
-				pp.setDeadline(ip.getProjectEndTime());
-				pp.setCapitalInvestmentType(ip.getType());
-				pp.setProjectName(ip.getName());
-				pp.setInvestment(true);
-				pp.setSupplyLiquid(false);
-				projectProgessList.add(pp);
+				
+				if(supplyLiquidProjects != null && !supplyLiquidProjects.isEmpty())
+				{
+					for(SupplyLiquidProject sp : supplyLiquidProjects)
+					{
+						ProjectProgress pp = new ProjectProgress();
+						pp.setId(wrapId(sp.getId(), CapitalInvestmentType.SUPPLEMENTAL_LIQUIDITY));
+						pp.setDeadline(sp.getProjectEndTime());
+						pp.setProjectName(status.getProjectName());
+						pp.setCapitalInvestmentType(CapitalInvestmentType.SUPPLEMENTAL_LIQUIDITY);
+						pp.setInvestment(true);
+						pp.setSupplyLiquid(true);
+						projectProgessList.add(pp);
+					}
+				}
+				
+				if(repaymentProjecs != null && !repaymentProjecs.isEmpty())
+				{
+					for(RepaymentProject rp : repaymentProjecs)
+					{
+						ProjectProgress pp = new ProjectProgress();
+						pp.setId(wrapId(rp.getId(), CapitalInvestmentType.REPAYMENT_PROJECT));
+						pp.setDeadline(rp.getProjectEndTime());
+						pp.setProjectName(status.getProjectName());
+						pp.setCapitalInvestmentType(CapitalInvestmentType.REPAYMENT_PROJECT);
+						pp.setInvestment(false);
+						pp.setSupplyLiquid(false);
+						projectProgessList.add(pp);
+					}
+				}
 			}
 		}
-		
-		if(supplyLiquidProjects != null)
-		{
-			for(SupplyLiquidProject sp : supplyLiquidProjects)
-			{
-				if(sp.getProjectEndTime() == null)
-				{
-					continue;
-				}
-				ProjectProgress pp = new ProjectProgress();
-				pp.setId(wrapId(sp.getId(), CapitalInvestmentType.SUPPLEMENTAL_LIQUIDITY));
-				pp.setDeadline(sp.getProjectEndTime());
-				pp.setProjectName(sp.getName());
-				pp.setCapitalInvestmentType(CapitalInvestmentType.SUPPLEMENTAL_LIQUIDITY);
-				pp.setInvestment(true);
-				pp.setSupplyLiquid(true);
-				projectProgessList.add(pp);
-			}
-		}
-		
-		if(repaymentProjecs != null)
-		{
-			for(RepaymentProject rp : repaymentProjecs)
-			{
-				if(rp.getProjectEndTime() == null)
-				{
-					continue;
-				}
-				ProjectProgress pp = new ProjectProgress();
-				pp.setId(wrapId(rp.getId(), CapitalInvestmentType.REPAYMENT_PROJECT));
-				pp.setDeadline(rp.getProjectEndTime());
-				pp.setProjectName(rp.getName());
-				pp.setCapitalInvestmentType(CapitalInvestmentType.REPAYMENT_PROJECT);
-				pp.setInvestment(false);
-				pp.setSupplyLiquid(false);
-				projectProgessList.add(pp);
-			}
-		}
-		
 		return projectProgessList;
 	}
 
@@ -219,58 +267,4 @@ implements ProjProgressManager {
 		return supplyLiquidProjectDao.save(o);
 	}
 
-	//For addProgress.jsp ONLY!
-	@Override
-	public List<ProjectProgress> getUniqueProjects(Long projectInfoId) {
-		List<InvestmentProject> investmentProjects = investmentProjectDao.findUniqueProjects(projectInfoId);
-		List<SupplyLiquidProject> supplyLiquidProjects = supplyLiquidProjectDao.findUniqueProjects(projectInfoId);
-		List<RepaymentProject> repaymentProjecs = repaymentProjectDao.findUniqueProjects(projectInfoId);
-		List<ProjectProgress> projectProgessList = new ArrayList<ProjectProgress>();
-		if(investmentProjects != null)
-		{
-			for(InvestmentProject ip : investmentProjects)
-			{
-				ProjectProgress pp = new ProjectProgress();
-				//pp.setId(wrapId(ip.getId(), CapitalInvestmentType.REAL_ESTATE));
-				//pp.setDeadline(ip.getProjectEndTime());
-				pp.setCapitalInvestmentType(ip.getType());
-				pp.setProjectName(ip.getName());
-				pp.setInvestment(true);
-				pp.setSupplyLiquid(false);
-				projectProgessList.add(pp);
-			}
-		}
-		
-		if(supplyLiquidProjects != null)
-		{
-			for(SupplyLiquidProject sp : supplyLiquidProjects)
-			{
-				ProjectProgress pp = new ProjectProgress();
-				//pp.setId(wrapId(sp.getId(), CapitalInvestmentType.SUPPLEMENTAL_LIQUIDITY));
-				//pp.setDeadline(sp.getProjectEndTime());
-				pp.setProjectName(sp.getName());
-				pp.setCapitalInvestmentType(CapitalInvestmentType.SUPPLEMENTAL_LIQUIDITY);
-				pp.setInvestment(true);
-				pp.setSupplyLiquid(true);
-				projectProgessList.add(pp);
-			}
-		}
-		
-		if(repaymentProjecs != null)
-		{
-			for(RepaymentProject rp : repaymentProjecs)
-			{
-				ProjectProgress pp = new ProjectProgress();
-				//pp.setId(wrapId(rp.getId(), CapitalInvestmentType.REPAYMENT_PROJECT));
-				//pp.setDeadline(rp.getProjectEndTime());
-				pp.setProjectName(rp.getName());
-				pp.setCapitalInvestmentType(CapitalInvestmentType.REPAYMENT_PROJECT);
-				pp.setInvestment(false);
-				pp.setSupplyLiquid(false);
-				projectProgessList.add(pp);
-			}
-		}
-		
-		return projectProgessList;
-	}
 }
