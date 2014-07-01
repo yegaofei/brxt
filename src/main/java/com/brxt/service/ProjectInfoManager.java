@@ -29,4 +29,5 @@ public interface ProjectInfoManager extends GenericManager<ProjectInfo, Long> {
 	public ProjectInfo loadProjectInfo(Long id);
 	
 	List<String> getAllProjectNames();
+	
 }

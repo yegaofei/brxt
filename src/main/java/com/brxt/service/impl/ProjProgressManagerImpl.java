@@ -78,6 +78,10 @@ implements ProjProgressManager {
 		{
 			for(InvestmentProject ip : investmentProjects)
 			{
+				if(ip.getProjectEndTime() == null)
+				{
+					continue;
+				}
 				ProjectProgress pp = new ProjectProgress();
 				pp.setId(wrapId(ip.getId(), CapitalInvestmentType.REAL_ESTATE));
 				pp.setDeadline(ip.getProjectEndTime());
@@ -93,6 +97,10 @@ implements ProjProgressManager {
 		{
 			for(SupplyLiquidProject sp : supplyLiquidProjects)
 			{
+				if(sp.getProjectEndTime() == null)
+				{
+					continue;
+				}
 				ProjectProgress pp = new ProjectProgress();
 				pp.setId(wrapId(sp.getId(), CapitalInvestmentType.SUPPLEMENTAL_LIQUIDITY));
 				pp.setDeadline(sp.getProjectEndTime());
@@ -108,6 +116,10 @@ implements ProjProgressManager {
 		{
 			for(RepaymentProject rp : repaymentProjecs)
 			{
+				if(rp.getProjectEndTime() == null)
+				{
+					continue;
+				}
 				ProjectProgress pp = new ProjectProgress();
 				pp.setId(wrapId(rp.getId(), CapitalInvestmentType.REPAYMENT_PROJECT));
 				pp.setDeadline(rp.getProjectEndTime());
@@ -205,5 +217,60 @@ implements ProjProgressManager {
 	@Override
 	public SupplyLiquidProject saveSupplyLiqidProject(SupplyLiquidProject o) {
 		return supplyLiquidProjectDao.save(o);
+	}
+
+	//For addProgress.jsp ONLY!
+	@Override
+	public List<ProjectProgress> getUniqueProjects(Long projectInfoId) {
+		List<InvestmentProject> investmentProjects = investmentProjectDao.findUniqueProjects(projectInfoId);
+		List<SupplyLiquidProject> supplyLiquidProjects = supplyLiquidProjectDao.findUniqueProjects(projectInfoId);
+		List<RepaymentProject> repaymentProjecs = repaymentProjectDao.findUniqueProjects(projectInfoId);
+		List<ProjectProgress> projectProgessList = new ArrayList<ProjectProgress>();
+		if(investmentProjects != null)
+		{
+			for(InvestmentProject ip : investmentProjects)
+			{
+				ProjectProgress pp = new ProjectProgress();
+				//pp.setId(wrapId(ip.getId(), CapitalInvestmentType.REAL_ESTATE));
+				//pp.setDeadline(ip.getProjectEndTime());
+				pp.setCapitalInvestmentType(ip.getType());
+				pp.setProjectName(ip.getName());
+				pp.setInvestment(true);
+				pp.setSupplyLiquid(false);
+				projectProgessList.add(pp);
+			}
+		}
+		
+		if(supplyLiquidProjects != null)
+		{
+			for(SupplyLiquidProject sp : supplyLiquidProjects)
+			{
+				ProjectProgress pp = new ProjectProgress();
+				//pp.setId(wrapId(sp.getId(), CapitalInvestmentType.SUPPLEMENTAL_LIQUIDITY));
+				//pp.setDeadline(sp.getProjectEndTime());
+				pp.setProjectName(sp.getName());
+				pp.setCapitalInvestmentType(CapitalInvestmentType.SUPPLEMENTAL_LIQUIDITY);
+				pp.setInvestment(true);
+				pp.setSupplyLiquid(true);
+				projectProgessList.add(pp);
+			}
+		}
+		
+		if(repaymentProjecs != null)
+		{
+			for(RepaymentProject rp : repaymentProjecs)
+			{
+				ProjectProgress pp = new ProjectProgress();
+				//pp.setId(wrapId(rp.getId(), CapitalInvestmentType.REPAYMENT_PROJECT));
+				//pp.setDeadline(rp.getProjectEndTime());
+				pp.setProjectName(rp.getName());
+				pp.setCapitalInvestmentType(CapitalInvestmentType.REPAYMENT_PROJECT);
+				pp.setInvestment(false);
+				pp.setSupplyLiquid(false);
+				projectProgessList.add(pp);
+			}
+		}
+		
+		return projectProgessList;
 	}
 }

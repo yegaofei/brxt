@@ -6,7 +6,6 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,7 +20,6 @@ import javax.persistence.Version;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.appfuse.model.BaseObject;
-import org.appfuse.model.User;
 import org.hibernate.annotations.Type;
 
 import com.brxt.model.ProjectInfo;
@@ -39,9 +37,6 @@ import com.brxt.model.enums.CapitalInvestmentType;
 @Table(name = "investment_project")
 public class InvestmentProject extends BaseObject  {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -1948840623486569978L;
 	private Long id;
 	private ProjectInfo projectInfo;

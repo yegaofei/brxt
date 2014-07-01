@@ -34,4 +34,6 @@ public interface ProjProgressManager extends
 	public RepaymentProject saveRepaymentProject(RepaymentProject o);
 	
 	public SupplyLiquidProject saveSupplyLiqidProject(SupplyLiquidProject o);
+	
+	public List<ProjectProgress> getUniqueProjects(Long projectInfoId);
 }

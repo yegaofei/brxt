@@ -2,7 +2,7 @@ package com.brxt.dao;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.text.SimpleDateFormat;
+import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
 import org.junit.Test;
@@ -18,8 +18,6 @@ public class InvestmentProjectDaoTest extends BaseDaoTestCase {
 	@Autowired
 	private ProjectInfoDao projectInfoDao;
 
-	private SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
-
 	@Test
 	public void testGet() throws Exception {
 		InvestmentProject investment = investmentProjectDao.get(1L);
@@ -28,8 +26,9 @@ public class InvestmentProjectDaoTest extends BaseDaoTestCase {
 	}
 	
 	@Test 
-	public void testSave() {
-		
+	public void testFindUniqueProjects() {
+		List<InvestmentProject> investments = investmentProjectDao.findUniqueProjects(1L);
+		assertNotNull(investments);
 	}
 
 }

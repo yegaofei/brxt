@@ -17,6 +17,7 @@
         <mapping class="com.brxt.model.SubjectCapacity"/>
         <mapping class="com.brxt.model.CreditInformation"/>
         <mapping class="com.brxt.model.Repayment"/>
+        <mapping class="com.brxt.model.InvestmentStatus"/>
         <mapping class="com.brxt.model.projectprogress.InvestmentProject"/>
         <mapping class="com.brxt.model.projectprogress.RepaymentProject"/>
         <mapping class="com.brxt.model.projectprogress.SupplyLiquidProject"/>

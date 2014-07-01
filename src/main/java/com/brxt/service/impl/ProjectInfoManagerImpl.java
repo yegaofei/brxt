@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.brxt.dao.CounterpartyDao;
 import com.brxt.dao.InvestmentProjectDao;
+import com.brxt.dao.InvestmentStatusDao;
 import com.brxt.dao.ProjectInfoDao;
 import com.brxt.dao.ProjectSizeDao;
 import com.brxt.dao.RepaymentProjectDao;
@@ -18,10 +19,6 @@ import com.brxt.model.Counterparty;
 import com.brxt.model.InvestmentStatus;
 import com.brxt.model.ProjectInfo;
 import com.brxt.model.ProjectSize;
-import com.brxt.model.enums.CapitalInvestmentType;
-import com.brxt.model.projectprogress.InvestmentProject;
-import com.brxt.model.projectprogress.RepaymentProject;
-import com.brxt.model.projectprogress.SupplyLiquidProject;
 import com.brxt.service.ProjProgressManager;
 import com.brxt.service.ProjectInfoManager;
 
@@ -34,20 +31,12 @@ public class ProjectInfoManagerImpl extends
 	ProjectSizeDao projectSizeDao;
 	
 	CounterpartyDao counterpartyDao;
-
+	
 	InvestmentProjectDao investmentProjectDao;
 	
 	RepaymentProjectDao repaymentProjectDao;
 	
 	SupplyLiquidProjectDao supplyLiquidProjectDao;
-	
-	private ProjProgressManager projectProgressManager;
-
-	@Autowired
-	public void setProjectProgressManager(
-			@Qualifier("projectProgressManager") ProjProgressManager projectProgressManager) {
-		this.projectProgressManager = projectProgressManager;
-	}
 	
 	@Autowired
 	public void setInvestmentProjectDao(InvestmentProjectDao investmentProjectDao) {
@@ -128,32 +117,32 @@ public class ProjectInfoManagerImpl extends
 	@Override
 	public ProjectInfo loadProjectInfo(Long id) {
 		ProjectInfo pi = get(new Long(id));
-		if(pi != null)
-		{
-			List<InvestmentProject> investmentProjs = investmentProjectDao.findByProjId(pi.getId());
-			if (investmentProjs != null && !investmentProjs.isEmpty()) {
-				for(InvestmentProject ip : investmentProjs)
-				{
-					pi.getInvestments().add(new InvestmentStatus(projectProgressManager.wrapId(ip.getId(), CapitalInvestmentType.REAL_ESTATE), ip.getName(), ip.getType()));
-				}
-			}
-			
-			List<RepaymentProject> repaymentProjs = repaymentProjectDao.findByProjId(pi.getId());
-			if (repaymentProjs != null && !repaymentProjs.isEmpty()) {
-				for(RepaymentProject rp : repaymentProjs)
-				{
-					pi.getInvestments().add(new InvestmentStatus(projectProgressManager.wrapId(rp.getId(), CapitalInvestmentType.REPAYMENT_PROJECT), rp.getName(), CapitalInvestmentType.REPAYMENT_PROJECT));
-				}
-			}
-			
-			List<SupplyLiquidProject> supplyLiquidProjects = supplyLiquidProjectDao.findByProjId(pi.getId());
-			if(supplyLiquidProjects != null && !supplyLiquidProjects.isEmpty())
-			{
-				for(SupplyLiquidProject sp  : supplyLiquidProjects) {
-					pi.getInvestments().add(new InvestmentStatus(projectProgressManager.wrapId(sp.getId(), CapitalInvestmentType.SUPPLEMENTAL_LIQUIDITY), sp.getName(), CapitalInvestmentType.SUPPLEMENTAL_LIQUIDITY));
-				}
-			}
-		}
+//		if(pi != null)
+//		{
+//			List<InvestmentProject> investmentProjs = investmentProjectDao.findByProjId(pi.getId());
+//			if (investmentProjs != null && !investmentProjs.isEmpty()) {
+//				for(InvestmentProject ip : investmentProjs)
+//				{
+//					pi.getInvestments().add(new InvestmentStatus(projectProgressManager.wrapId(ip.getId(), CapitalInvestmentType.REAL_ESTATE), ip.getName(), ip.getType()));
+//				}
+//			}
+//			
+//			List<RepaymentProject> repaymentProjs = repaymentProjectDao.findByProjId(pi.getId());
+//			if (repaymentProjs != null && !repaymentProjs.isEmpty()) {
+//				for(RepaymentProject rp : repaymentProjs)
+//				{
+//					pi.getInvestments().add(new InvestmentStatus(projectProgressManager.wrapId(rp.getId(), CapitalInvestmentType.REPAYMENT_PROJECT), rp.getName(), CapitalInvestmentType.REPAYMENT_PROJECT));
+//				}
+//			}
+//			
+//			List<SupplyLiquidProject> supplyLiquidProjects = supplyLiquidProjectDao.findByProjId(pi.getId());
+//			if(supplyLiquidProjects != null && !supplyLiquidProjects.isEmpty())
+//			{
+//				for(SupplyLiquidProject sp  : supplyLiquidProjects) {
+//					pi.getInvestments().add(new InvestmentStatus(projectProgressManager.wrapId(sp.getId(), CapitalInvestmentType.SUPPLEMENTAL_LIQUIDITY), sp.getName(), CapitalInvestmentType.SUPPLEMENTAL_LIQUIDITY));
+//				}
+//			}
+//		}
 		return pi;	
 	}
 	

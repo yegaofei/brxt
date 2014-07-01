@@ -1,6 +1,5 @@
 package com.brxt.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -33,17 +32,13 @@ import com.brxt.model.report.RiskControlReport;
 
 @Entity
 @Table(name = "project_info")
-public class ProjectInfo extends BaseObject implements Serializable {
+public class ProjectInfo extends BaseObject {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -217461395372350336L;
 	private Long id; //项目id
 	private String projectName; //项目名称
 	private Double expectedReturn; //预期收益率
 	private String fundUsage; //资金运用方式
-	private List<InvestmentStatus> investments = new ArrayList<InvestmentStatus>();
 	private String riskManager; //风险经理
 	private String delegateManager; //托管经理
 	private String trustManager; //信托经理
@@ -55,6 +50,7 @@ public class ProjectInfo extends BaseObject implements Serializable {
 	private String updateUser; //最后更新人
 	private Date updateTime; //最后更新时间
 	private Integer version;
+	private Set<InvestmentStatus> investments = new HashSet<InvestmentStatus>(); //投资项目
 	private Set<Counterparty> counterparties = new HashSet<Counterparty>(); //交易对手
 	private Set<Counterparty> guarantors = new HashSet<Counterparty>(); //担保人
 	private ProjectInfoStatus projectInfoStatus = new ProjectInfoStatus();
@@ -148,12 +144,18 @@ public class ProjectInfo extends BaseObject implements Serializable {
 		this.trustManager = trustManager;
 	}
 
-	@Transient
-	public List<InvestmentStatus> getInvestments() {
+	@ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)    
+    @JoinTable(
+            name = "project_info_investments",
+            joinColumns = { @JoinColumn(name = "project_info_id") },
+            inverseJoinColumns = @JoinColumn(name = "investment_status_id")
+    )
+	public Set<InvestmentStatus> getInvestments() {
 		return investments;
 	}
 
-	public void setInvestments(List<InvestmentStatus> investments) {
+	public void setInvestments(Set<InvestmentStatus> investments) {
 		this.investments = investments;
 	}
 

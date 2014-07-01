@@ -11,4 +11,6 @@ public interface InvestmentProjectDao extends GenericDao<InvestmentProject, Long
 	
 	public List<InvestmentProject> findByProjId(Long projectInfoId);
 	
+	public List<InvestmentProject> findUniqueProjects(Long projectInfoId) ;
+	
 }

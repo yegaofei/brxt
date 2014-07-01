@@ -36,6 +36,7 @@ import com.brxt.model.enums.ProjectType;
 import com.brxt.model.projectprogress.InvestmentProject;
 import com.brxt.model.projectprogress.RepaymentProject;
 import com.brxt.model.projectprogress.SupplyLiquidProject;
+import com.brxt.service.InvestmentProjectsManager;
 import com.brxt.service.ProjProgressManager;
 import com.brxt.service.ProjectInfoManager;
 
@@ -45,78 +46,74 @@ public class ProjectInfoFormController extends BaseFormController {
 
 	private ProjectInfoManager projectInfoManager = null;
 	private static final List<CapitalInvestmentType> CapitalInvestmentTypes = new ArrayList<CapitalInvestmentType>();
-	private static final Map<String,String> ProjectTypes = new HashMap<String,String>();
+	private static final Map<String, String> ProjectTypes = new HashMap<String, String>();
 	private static final List<CounterpartyType> CounterpartyTypes = new ArrayList<CounterpartyType>();
 	private ProjProgressManager projectProgressManager;
+	private InvestmentProjectsManager investmentProjectsManager;
 
 	@Autowired
-	public void setProjectProgressManager(
-			@Qualifier("projectProgressManager") ProjProgressManager projectProgressManager) {
+	public void setProjectProgressManager(@Qualifier("projectProgressManager") ProjProgressManager projectProgressManager) {
 		this.projectProgressManager = projectProgressManager;
 	}
+
 	@Autowired
-	public void setProjectInfoManager(
-			@Qualifier("projectInfoManager") ProjectInfoManager projectInfoManager) {
+	public void setProjectInfoManager(@Qualifier("projectInfoManager") ProjectInfoManager projectInfoManager) {
 		this.projectInfoManager = projectInfoManager;
 	}
 	
+	@Autowired
+	public void setInvestmentProjectsManager(@Qualifier("investmentProjectsManager") InvestmentProjectsManager investmentProjectsManager) {
+		this.investmentProjectsManager = investmentProjectsManager;
+	}
+
 	public ProjectInfoFormController() {
 		setCancelView("redirect:projectInfo");
 		setSuccessView("redirect:projectInfo");
 	}
-	
-	private synchronized void loadDropDownList(final Locale locale)
-	{
-		if(CapitalInvestmentTypes.isEmpty())
-		{
+
+	private synchronized void loadDropDownList(final Locale locale) {
+		if (CapitalInvestmentTypes.isEmpty()) {
 			CapitalInvestmentType[] cits = CapitalInvestmentType.values();
-			for(CapitalInvestmentType cit : cits)
-			{
-//				if(cit == CapitalInvestmentType.SUPPLEMENTAL_LIQUIDITY){
-//					continue;
-//				}
+			for (CapitalInvestmentType cit : cits) {
+				// if(cit == CapitalInvestmentType.SUPPLEMENTAL_LIQUIDITY){
+				// continue;
+				// }
 				CapitalInvestmentTypes.add(cit);
 			}
 		}
-		
-		if(ProjectTypes.isEmpty())
-		{
+
+		if (ProjectTypes.isEmpty()) {
 			ProjectType[] pts = ProjectType.values();
-			for(ProjectType pt : pts)
-			{
+			for (ProjectType pt : pts) {
 				ProjectTypes.put(pt.toString(), getText(pt.toString(), locale));
 			}
 		}
-		
-		if(CounterpartyTypes.isEmpty())
-		{
+
+		if (CounterpartyTypes.isEmpty()) {
 			CounterpartyType[] cts = CounterpartyType.values();
-			for(CounterpartyType ct : cts)
-			{
+			for (CounterpartyType ct : cts) {
 				CounterpartyTypes.add(ct);
 			}
 		}
 	}
-	
+
 	@ModelAttribute
-	public ProjectInfo getProjectInfo(final HttpServletRequest request){
+	public ProjectInfo getProjectInfo(final HttpServletRequest request) {
 		String id = request.getParameter("id");
 		if (!StringUtils.isBlank(id)) {
 			return loadProjectInfo(new Long(id));
 		}
 		return new ProjectInfo();
 	}
-	
-	private ProjectInfo loadProjectInfo(Long id)
-	{
+
+	private ProjectInfo loadProjectInfo(Long id) {
 		return projectInfoManager.loadProjectInfo(new Long(id));
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET)
 	protected ModelAndView showForm(HttpServletRequest request) throws Exception {
 		ModelAndView mav = new ModelAndView();
-		if(CapitalInvestmentTypes.isEmpty() || ProjectTypes.isEmpty())
-		{
+		if (CapitalInvestmentTypes.isEmpty() || ProjectTypes.isEmpty()) {
 			loadDropDownList(request.getLocale());
 		}
 		mav.addObject("capitalInvestmentTypes", CapitalInvestmentTypes);
@@ -127,8 +124,7 @@ public class ProjectInfoFormController extends BaseFormController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView onSubmit(ProjectInfo projectInfo, BindingResult errors,
-			HttpServletRequest request, HttpServletResponse response)
+	public ModelAndView onSubmit(ProjectInfo projectInfo, BindingResult errors, HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		String method = request.getParameter("method");
 		final Locale locale = request.getLocale();
@@ -150,7 +146,7 @@ public class ProjectInfoFormController extends BaseFormController {
 				mav = saveProjectInfo(projectInfo, errors, request, mav);
 				break;
 			case "AddProjectSize":
-				projectInfo = getProjectInfo(request);					
+				projectInfo = getProjectInfo(request);
 				projectInfo.getProjectSizes().add(new ProjectSize());
 				mav.addObject("projectInfo", projectInfo);
 				mav.addObject("method", "EditProjectSize");
@@ -174,7 +170,7 @@ public class ProjectInfoFormController extends BaseFormController {
 				mav.addObject("method", "SaveProjectSize");
 				mav.addObject("projectInfo", projectInfo);
 				break;
-			case "EditCounterparty":	
+			case "EditCounterparty":
 				mav.addObject("projectInfo", getProjectInfo(request));
 				mav.addObject("method", "EditCounterparty");
 				mav.setViewName("projectInfoForm");
@@ -200,7 +196,7 @@ public class ProjectInfoFormController extends BaseFormController {
 				mav = saveCounterparty(projectInfo, errors, request, mav);
 				mav.addObject("method", "SaveCounterparty");
 				break;
-			case "EditGuarantor":	
+			case "EditGuarantor":
 				mav.addObject("projectInfo", getProjectInfo(request));
 				mav.addObject("method", "EditGuarantor");
 				mav.setViewName("projectInfoForm");
@@ -235,10 +231,9 @@ public class ProjectInfoFormController extends BaseFormController {
 				break;
 			case "AddInvestment":
 				String investmentId = request.getParameter("investmentId");
-				if(StringUtils.isBlank(investmentId))
-				{
+				if (StringUtils.isBlank(investmentId)) {
 					projectInfo = getProjectInfo(request);
-					projectInfo.getInvestments().add(new InvestmentStatus());					
+					projectInfo.getInvestments().add(new InvestmentStatus());
 					mav.addObject("projectInfo", projectInfo);
 					mav.addObject("method", "EditInvestment");
 				}
@@ -249,13 +244,13 @@ public class ProjectInfoFormController extends BaseFormController {
 				mav = saveInvestment(projectInfo, errors, request, mav);
 				mav.addObject("method", "SaveInvestment");
 				break;
-			case "EditInvestment":	
+			case "EditInvestment":
 				mav.addObject("projectInfo", getProjectInfo(request));
 				mav.addObject("method", "EditInvestment");
 				mav.setViewName("projectInfoForm");
 				break;
 			default:
-				//Error
+				// Error
 			}
 			return mav;
 		} else {
@@ -263,16 +258,14 @@ public class ProjectInfoFormController extends BaseFormController {
 		}
 		return new ModelAndView("projectInfoForm");
 	}
-	
-	private ModelAndView saveProjectInfo(ProjectInfo projectInfo,
-			BindingResult errors, HttpServletRequest request, ModelAndView mav)
+
+	private ModelAndView saveProjectInfo(ProjectInfo projectInfo, BindingResult errors, HttpServletRequest request, ModelAndView mav)
 			throws Exception {
 		final Locale locale = request.getLocale();
 		if (validator != null) { // validator is null during testing
 			validator.validate(projectInfo, errors);
 			if (errors.hasErrors()) {
-				log.debug("error happens 'onSubmit' method..."
-						+ errors.toString());
+				log.debug("error happens 'onSubmit' method..." + errors.toString());
 				saveMessage(request, errors.toString());
 				mav.setViewName("projectInfoForm");
 				return mav;
@@ -295,13 +288,12 @@ public class ProjectInfoFormController extends BaseFormController {
 		String key = (isNew) ? "projectInfo.added" : "projectInfo.updated";
 		saveMessage(request, getText(key, locale));
 		mav.setViewName("redirect:/projectInfoForm");
-		mav.addObject("id", projectInfo.getId());		
+		mav.addObject("id", projectInfo.getId());
 		return mav;
 	}
-	
-	private ModelAndView saveCounterparty(ProjectInfo projectInfo,
-			BindingResult errors, HttpServletRequest request,
-			final ModelAndView mav) throws Exception {
+
+	private ModelAndView saveCounterparty(ProjectInfo projectInfo, BindingResult errors, HttpServletRequest request, final ModelAndView mav)
+			throws Exception {
 		String id = request.getParameter("counterpartyId");
 		String[] idArray = request.getParameterValues("counterpartyId");
 		if (idArray != null && idArray.length > 0 && !"".equals(idArray[0])) {
@@ -311,30 +303,28 @@ public class ProjectInfoFormController extends BaseFormController {
 			}
 			log.debug(sb);
 		}
-		
+
 		String name = request.getParameter("counterpartyName");
 		String type = request.getParameter("counterpartyType");
-		
+
 		if (!StringUtils.isBlank(id)) {
 			Iterator<Counterparty> cpIt = projectInfo.getCounterparties().iterator();
-			while(cpIt.hasNext())
-			{
+			while (cpIt.hasNext()) {
 				Counterparty cp = cpIt.next();
-				if(cp.getId() == Long.valueOf(id)){
-					if(name != null) {
+				if (cp.getId() == Long.valueOf(id)) {
+					if (name != null) {
 						cp.setName(name);
 					}
-					
-					if(type != null) {
+
+					if (type != null) {
 						cp.setCounterpartyType(type);
 					}
 					projectInfoManager.saveCounterparty(cp);
-				}				
-			}			
+				}
+			}
 		} else {
 			// Add
-			if (!StringUtils.isBlank(name)
-					|| !StringUtils.isBlank(type)) {
+			if (!StringUtils.isBlank(name) || !StringUtils.isBlank(type)) {
 				Counterparty cpObj = new Counterparty();
 				if (!StringUtils.isBlank(name)) {
 					cpObj.setName(name);
@@ -343,17 +333,14 @@ public class ProjectInfoFormController extends BaseFormController {
 				if (!StringUtils.isBlank(type)) {
 					cpObj.setCounterpartyType(type);
 				}
-				
-				if(projectInfo.getCounterparties().contains(cpObj))
-				{
+
+				if (projectInfo.getCounterparties().contains(cpObj)) {
 					saveError(request, getText("duplicate.counterparty.error", request.getLocale()));
-				} 
-				else
-				{
+				} else {
 					cpObj = projectInfoManager.saveCounterparty(cpObj);
 					projectInfo.getCounterparties().add(cpObj);
 				}
-				
+
 			} else {
 				// Error
 			}
@@ -363,150 +350,93 @@ public class ProjectInfoFormController extends BaseFormController {
 		mav.addObject("projectInfo", projectInfo);
 		return mav;
 	}
-	
-	private ModelAndView saveInvestment(ProjectInfo projectInfo,
-			BindingResult errors, HttpServletRequest request,
-			final ModelAndView mav) throws Exception{
+
+	private ModelAndView saveInvestment(ProjectInfo projectInfo, BindingResult errors, HttpServletRequest request, final ModelAndView mav)
+			throws Exception {
 		String id = request.getParameter("investmentId");
 		String name = request.getParameter("investmentProjectName");
 		String type = request.getParameter("investmentType");
-		String oldInvestmentType = request.getParameter("oldInvestmentType");
-		Date now = new Date();
-		if(StringUtils.isBlank(name))
-		{
+		String oldInvestmentType = request.getParameter("oldInvestmentType");		
+		if (StringUtils.isBlank(name)) {
 			saveError(request, getText("projectInfo.investmentName.error.empty", request.getLocale()));
 			return mav;
 		}
 		if (!StringUtils.isBlank(id)) {
-			//Edit
-			Long wrappedId = Long.valueOf(id);
-			Long realId = projectProgressManager.getRealId(wrappedId);
-			CapitalInvestmentType oldCapitalInvestmentType = CapitalInvestmentType.valueOf(oldInvestmentType.toUpperCase());
-			CapitalInvestmentType capitalInvestmentType = CapitalInvestmentType.valueOf(type.toUpperCase());
-			InvestmentProject ip = null;
-			RepaymentProject rp = null;
-			SupplyLiquidProject sp = null;
-			if(capitalInvestmentType == oldCapitalInvestmentType)
-			{
-				switch (oldCapitalInvestmentType)
-				{
-				case REAL_ESTATE:
-					ip = projectProgressManager.get(realId);
-					ip.setName(name);
-					ip.setProjectInfo(projectInfo);
-					ip.setInvestmentProjectType(CapitalInvestmentType.REAL_ESTATE.getTitle());
-					ip.setUpdateUser(getCurrentUser().getUsername());
-					ip.setUpdateTime(now);
-					ip = projectProgressManager.save(ip);
-					break;
-				case INFRASTRUCTURE:
-					ip = projectProgressManager.get(realId);
-					ip.setName(name);
-					ip.setProjectInfo(projectInfo);
-					ip.setInvestmentProjectType(CapitalInvestmentType.INFRASTRUCTURE.getTitle());
-					ip.setUpdateUser(getCurrentUser().getUsername());
-					ip.setUpdateTime(now);
-					ip = projectProgressManager.save(ip);
-					break;
-				case REPAYMENT_PROJECT:
-					rp = projectProgressManager.getRepaymentProject(realId);
-					rp.setName(name);
-					rp.setProjectInfo(projectInfo);
-					rp.setUpdateUser(getCurrentUser());
-					projectProgressManager.saveRepaymentProject(rp);
-					break;
-				case SUPPLEMENTAL_LIQUIDITY:
-					sp = projectProgressManager.getSupplyLiquidProject(realId);
-					sp.setName(name);
-					sp.setProjectInfo(projectInfo);
-					sp.setUpdateUser(getCurrentUser());
-					sp.setUpdateTime(now);
-					projectProgressManager.saveSupplyLiqidProject(sp);
-					break;
-					default:
+			// Edit
+			Iterator<InvestmentStatus> isIt = projectInfo.getInvestments().iterator();
+			while (isIt.hasNext()) {
+				InvestmentStatus is = isIt.next();
+				if (is.getId() == Long.valueOf(id)) {
+					if (name != null) {
+						is.setProjectName(name);
+					}
+
+					if (type != null) {
+						is.setProjectType(type);
+					}
+					investmentProjectsManager.save(is);
 				}
 			}
-			else
-			{
-				log.error("Not allow to modify the invetsment project data");
-			}
-			projectInfo = projectInfoManager.loadProjectInfo(projectInfo.getId());
-		} else if(StringUtils.isBlank(oldInvestmentType)){
+		} else if (StringUtils.isBlank(oldInvestmentType)) {
 			// Add
-			if (!StringUtils.isBlank(name)
-					|| !StringUtils.isBlank(type)) {
+			if (!StringUtils.isBlank(name) || !StringUtils.isBlank(type)) {
 				CapitalInvestmentType capitalInvestmentType = CapitalInvestmentType.valueOf(type.toUpperCase());
-				switch (capitalInvestmentType)
-				{
+				switch (capitalInvestmentType) {
 				case REAL_ESTATE:
-					InvestmentProject ip = new InvestmentProject();
-					ip.setName(name);
-					ip.setProjectInfo(projectInfo);
-					ip.setInvestmentProjectType(CapitalInvestmentType.REAL_ESTATE.getTitle());
-					ip.setCreateUser(getCurrentUser().getUsername());
-					ip.setCreateTime(now);
-					ip = projectProgressManager.save(ip);
-					projectInfo.getInvestments().add(new InvestmentStatus(projectProgressManager.wrapId(ip.getId(), CapitalInvestmentType.REAL_ESTATE), ip.getName(), CapitalInvestmentType.REAL_ESTATE));
-					break;
 				case INFRASTRUCTURE:
-					ip = new InvestmentProject();
-					ip.setName(name);
-					ip.setProjectInfo(projectInfo);
-					ip.setInvestmentProjectType(CapitalInvestmentType.INFRASTRUCTURE.getTitle());
-					ip.setCreateUser(getCurrentUser().getUsername());
-					ip.setCreateTime(now);
-					ip = projectProgressManager.save(ip);
-					projectInfo.getInvestments().add(new InvestmentStatus(projectProgressManager.wrapId(ip.getId(), CapitalInvestmentType.INFRASTRUCTURE), ip.getName(), CapitalInvestmentType.INFRASTRUCTURE));
-					break;
 				case REPAYMENT_PROJECT:
-					RepaymentProject rp = new RepaymentProject();
-					rp.setName(name);
-					rp.setProjectInfo(projectInfo);
-					rp.setCreateUser(getCurrentUser());
-					rp.setCreateTime(now);
-					rp = projectProgressManager.saveRepaymentProject(rp);
-					projectInfo.getInvestments().add(new InvestmentStatus(projectProgressManager.wrapId(rp.getId(), CapitalInvestmentType.REPAYMENT_PROJECT), rp.getName(), CapitalInvestmentType.REPAYMENT_PROJECT));
-					break;	
 				case SUPPLEMENTAL_LIQUIDITY:
-					SupplyLiquidProject sp = new SupplyLiquidProject();
-					sp.setName(name);
-					sp.setProjectInfo(projectInfo);
-					sp.setCreateUser(getCurrentUser());
-					sp.setCreateTime(now);
-					sp = projectProgressManager.saveSupplyLiqidProject(sp);
-					projectInfo.getInvestments().add(new InvestmentStatus(projectProgressManager.wrapId(sp.getId(), CapitalInvestmentType.SUPPLEMENTAL_LIQUIDITY),sp.getName(), CapitalInvestmentType.SUPPLEMENTAL_LIQUIDITY));
-					break;
-				case REAL_ESTATE_REPAYMENT_PROJECT:
-					ip = new InvestmentProject();
-					ip.setName(name);
-					ip.setProjectInfo(projectInfo);
-					ip.setInvestmentProjectType(CapitalInvestmentType.REAL_ESTATE.getTitle());
-					ip.setCreateUser(getCurrentUser().getUsername());
-					ip.setCreateTime(now);
-					ip = projectProgressManager.save(ip);
-					projectInfo.getInvestments().add(new InvestmentStatus(projectProgressManager.wrapId(ip.getId(), CapitalInvestmentType.REAL_ESTATE), ip.getName(), CapitalInvestmentType.REAL_ESTATE));
+					InvestmentStatus is = new InvestmentStatus();
+					is.setProjectName(name);
+					is.setProjectType(type);
 					
-					rp = new RepaymentProject();
-					rp.setName(name);
-					rp.setProjectInfo(projectInfo);
-					rp.setCreateUser(getCurrentUser());
-					rp.setCreateTime(now);
-					rp = projectProgressManager.saveRepaymentProject(rp);
-					projectInfo.getInvestments().add(new InvestmentStatus(projectProgressManager.wrapId(rp.getId(), CapitalInvestmentType.REPAYMENT_PROJECT), rp.getName(), CapitalInvestmentType.REPAYMENT_PROJECT));
-					break;	
-					default:
+					if (projectInfo.getInvestments().contains(is)) {
+						saveError(request, getText("duplicate.investment.error", request.getLocale()));
+					} else {
+						is = investmentProjectsManager.save(is);
+						projectInfo.getInvestments().add(is);
+					}
+					
+					break;
+					
+				case REAL_ESTATE_REPAYMENT_PROJECT:
+					is = new InvestmentStatus();
+					is.setProjectName(name);
+					is.setProjectType(CapitalInvestmentType.REAL_ESTATE.getTitle());
+					
+					if (projectInfo.getInvestments().contains(is)) {
+						saveError(request, getText("duplicate.investment.error", request.getLocale()));
+					} else {
+						is = investmentProjectsManager.save(is);
+						projectInfo.getInvestments().add(is);
+					}
+					
+					is = new InvestmentStatus();
+					is.setProjectName(name);
+					is.setProjectType(CapitalInvestmentType.REPAYMENT_PROJECT.getTitle());
+					
+					if (projectInfo.getInvestments().contains(is)) {
+						saveError(request, getText("duplicate.counterparty.error", request.getLocale()));
+					} else {
+						is = investmentProjectsManager.save(is);
+						projectInfo.getInvestments().add(is);
+					}
+					
+					break;
+				default:
 				}
 			} else {
 				// Error
 			}
 		}
+		projectInfo = projectInfoManager.save(projectInfo);
+		projectInfo = loadProjectInfo(projectInfo.getId());
 		mav.addObject("projectInfo", projectInfo);
 		return mav;
 	}
-	
-	private ModelAndView saveGuarantor(ProjectInfo projectInfo,
-			BindingResult errors, HttpServletRequest request,
-			final ModelAndView mav) throws Exception {
+
+	private ModelAndView saveGuarantor(ProjectInfo projectInfo, BindingResult errors, HttpServletRequest request, final ModelAndView mav)
+			throws Exception {
 		String id = request.getParameter("guarantorId");
 		String[] idArray = request.getParameterValues("guarantorId");
 		if (idArray != null && idArray.length > 0 && !"".equals(idArray[0])) {
@@ -516,30 +446,28 @@ public class ProjectInfoFormController extends BaseFormController {
 			}
 			log.debug(sb);
 		}
-		
+
 		String name = request.getParameter("guarantorName");
 		String type = request.getParameter("guarantorType");
-		
+
 		if (!StringUtils.isBlank(id)) {
 			Iterator<Counterparty> cpIt = projectInfo.getGuarantors().iterator();
-			while(cpIt.hasNext())
-			{
+			while (cpIt.hasNext()) {
 				Counterparty cp = cpIt.next();
-				if(cp.getId() == Long.valueOf(id)){
-					if(name != null) {
+				if (cp.getId() == Long.valueOf(id)) {
+					if (name != null) {
 						cp.setName(name);
 					}
-					
-					if(type != null) {
+
+					if (type != null) {
 						cp.setCounterpartyType(type);
 					}
 					projectInfoManager.saveCounterparty(cp);
-				}				
-			}			
+				}
+			}
 		} else {
 			// Add
-			if (!StringUtils.isBlank(name)
-					|| !StringUtils.isBlank(type)) {
+			if (!StringUtils.isBlank(name) || !StringUtils.isBlank(type)) {
 				Counterparty cpObj = new Counterparty();
 				if (!StringUtils.isBlank(name)) {
 					cpObj.setName(name);
@@ -548,17 +476,14 @@ public class ProjectInfoFormController extends BaseFormController {
 				if (!StringUtils.isBlank(type)) {
 					cpObj.setCounterpartyType(type);
 				}
-				
-				if(projectInfo.getGuarantors().contains(cpObj))
-				{
+
+				if (projectInfo.getGuarantors().contains(cpObj)) {
 					saveError(request, getText("duplicate.counterparty.error", request.getLocale()));
-				} 
-				else
-				{
+				} else {
 					cpObj = projectInfoManager.saveCounterparty(cpObj);
 					projectInfo.getGuarantors().add(cpObj);
 				}
-				
+
 			} else {
 				// Error
 			}
@@ -569,9 +494,8 @@ public class ProjectInfoFormController extends BaseFormController {
 		return mav;
 	}
 
-	private ModelAndView saveProjectSize(ProjectInfo projectInfo,
-			BindingResult errors, HttpServletRequest request,
-			final ModelAndView mav) throws Exception {
+	private ModelAndView saveProjectSize(ProjectInfo projectInfo, BindingResult errors, HttpServletRequest request, final ModelAndView mav)
+			throws Exception {
 		String id = request.getParameter("projectSizeid");
 		SimpleDateFormat sdf = new SimpleDateFormat(getText("date.format", request.getLocale()));
 		log.debug("submit project size id: " + id);
@@ -586,8 +510,7 @@ public class ProjectInfoFormController extends BaseFormController {
 		String projectSize = request.getParameter("projectSize");
 		String startTime = request.getParameter("startTime");
 		String endTime = request.getParameter("endTime");
-		log.debug("projectSize=" + projectSize + ", startTime=" + startTime
-				+ ", endTime=" + endTime);
+		log.debug("projectSize=" + projectSize + ", startTime=" + startTime + ", endTime=" + endTime);
 
 		if (!StringUtils.isBlank(id)) {
 			for (int i = 0; i < projectInfo.getProjectSizes().size(); i++) {
@@ -609,9 +532,7 @@ public class ProjectInfoFormController extends BaseFormController {
 			}
 		} else {
 			// Add
-			if (!StringUtils.isBlank(startTime)
-					|| !StringUtils.isBlank(projectSize)
-					|| !StringUtils.isBlank(endTime)) {
+			if (!StringUtils.isBlank(startTime) || !StringUtils.isBlank(projectSize) || !StringUtils.isBlank(endTime)) {
 				ProjectSize projectSizeObj = new ProjectSize();
 				if (!StringUtils.isBlank(startTime)) {
 					projectSizeObj.setStartTime(sdf.parse(startTime));
@@ -634,8 +555,7 @@ public class ProjectInfoFormController extends BaseFormController {
 		return mav;
 	}
 
-	private List<ProjectSize> deleteProjectSize(String id,
-			ProjectInfo projectInfo) {
+	private List<ProjectSize> deleteProjectSize(String id, ProjectInfo projectInfo) {
 		List<ProjectSize> list = projectInfo.getProjectSizes();
 		if (StringUtils.isBlank(id) || list == null || list.size() == 0) {
 			return null;
@@ -653,39 +573,33 @@ public class ProjectInfoFormController extends BaseFormController {
 		}
 		return list;
 	}
-	
-	private void deleteCounterparty(String counterpartyId, ProjectInfo projectInfo)
-	{
+
+	private void deleteCounterparty(String counterpartyId, ProjectInfo projectInfo) {
 		Set<Counterparty> counterparties = projectInfo.getCounterparties();
 		if (StringUtils.isBlank(counterpartyId) || counterparties == null || counterparties.size() == 0) {
 			return;
 		}
-		
+
 		Iterator<Counterparty> it = counterparties.iterator();
-		while(it.hasNext())
-		{
+		while (it.hasNext()) {
 			Counterparty cp = it.next();
-			if(cp.getId() == Long.valueOf(counterpartyId))
-			{
+			if (cp.getId() == Long.valueOf(counterpartyId)) {
 				it.remove();
 				break;
 			}
 		}
 	}
-	
-	private void deleteGuarantor(String counterpartyId, ProjectInfo projectInfo)
-	{
+
+	private void deleteGuarantor(String counterpartyId, ProjectInfo projectInfo) {
 		Set<Counterparty> counterparties = projectInfo.getGuarantors();
 		if (StringUtils.isBlank(counterpartyId) || counterparties == null || counterparties.size() == 0) {
 			return;
 		}
-		
+
 		Iterator<Counterparty> it = counterparties.iterator();
-		while(it.hasNext())
-		{
+		while (it.hasNext()) {
 			Counterparty cp = it.next();
-			if(cp.getId() == Long.valueOf(counterpartyId))
-			{
+			if (cp.getId() == Long.valueOf(counterpartyId)) {
 				it.remove();
 				break;
 			}
