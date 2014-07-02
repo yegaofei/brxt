@@ -8,10 +8,11 @@
 </head>
 
 <c:set var="delObject" scope="request"><fmt:message key="projectInfoList.heading"/></c:set>
-<script type="text/javascript">var msgDelConfirm =
-   "<fmt:message key="delete.confirm"><fmt:param value="${delObject}"/></fmt:message>";
-   var msgCommit = 
-   "<fmt:message key="commit.confirm"><fmt:param value="${delObject}"/></fmt:message>";
+<c:set var="delInvestment" scope="request"><fmt:message key="projectInfo.investment.projects"/></c:set>
+<script type="text/javascript">
+	var msgDelConfirm = "<fmt:message key="delete.confirm"><fmt:param value="${delObject}"/></fmt:message>";
+	var msgCommit = "<fmt:message key="commit.confirm"><fmt:param value="${delObject}"/></fmt:message>";
+	var msgDelInvesmentConfirm = "<fmt:message key="delete.confirm"><fmt:param value="${delInvestment}"/></fmt:message>";
 </script>
 
 <div class="col-sm-2">
@@ -132,7 +133,7 @@
         <form:errors path="fundUsage" cssClass="help-inline"/>
     </div>
     
-    <c:if test="${not empty param.id}">
+    <c:if test="${not empty param.id and not empty projectInfo.investments}">
     <div class="col-sm-6 form-group">
     	<appfuse:label styleClass="control-label" key="projectInfo.investment.projects"/>
     	<div id="actions" class="btn-group">
@@ -148,14 +149,23 @@
         	</button>    
         	</c:otherwise>
         	</c:choose>
-        	<button type="submit" name="method" value="EditInvestment" class="btn btn-default btn-xs">
-                <fmt:message key="button.edit"/>
-        	</button>
-        	<!--
-        	<button type="submit" name="method" value="DeleteInvestment" class="btn btn-default btn-xs">
-                <fmt:message key="button.delete"/>
-        	</button>
-        	-->    
+        	<c:choose>
+        	<c:when test="${method == 'EditInvestment'}">
+        		<button type="submit" name="method" value="CancelInvestment" class="btn btn-default btn-xs">
+                	<fmt:message key="button.cancel"/>
+        		</button>
+        	</c:when>
+        	<c:otherwise>
+        		<button type="submit" name="method" value="EditInvestment" class="btn btn-default btn-xs">
+                	<fmt:message key="button.edit"/>
+        		</button>
+        	</c:otherwise>
+        	</c:choose>
+        	<c:if test="${method != 'EditInvestment'}">
+        		<button type="submit" name="method" value="DeleteInvestment" class="btn btn-default btn-xs" onclick="return confirmMessage(msgDelInvesmentConfirm)">
+    	            <fmt:message key="button.delete"/>
+	        	</button>
+        	</c:if>
 		</div>
 		<display:table name="projectInfo.investments" id="investment" class="table table-bordered table-condensed table-striped table-hover">
 			<display:column style="width: 5%">
@@ -177,7 +187,7 @@
         			<c:when test="${method == 'EditInvestment' and param.investmentId == investment.id}">
                 			<c:forEach var="investmentType" items="${capitalInvestmentTypes}" varStatus="status">
                     			<c:if test="${status.first}"><select id="investmentType" name="investmentType" class="form-control input-sm"></c:if>
-                    			<option value="${investmentType.title}" <c:if test = "${investmentType.title == investment.capitalInvestmentType.title}" > selected </c:if>><fmt:message key="${investmentType.title}"/></option>
+                    			<option value="${investmentType.title}" <c:if test = "${investmentType.title == investment.projectType}" > selected </c:if>><fmt:message key="${investmentType.title}"/></option>
           						<c:if test="${status.last}"></select></c:if>
                 			</c:forEach>
                 			<input type="hidden" name="oldInvestmentType" value="${investment.capitalInvestmentType.title}" >
@@ -187,6 +197,23 @@
   			</display:column>  			
 		</display:table>
      </div>
+     </c:if>
+     <c:if test="${not empty param.id and empty projectInfo.investments}">
+     	<appfuse:label styleClass="control-label" key="projectInfo.investment.projects"/>
+     	<div id="actions" class="btn-group">
+			<c:choose>
+			<c:when test="${method == 'EditInvestment'}">
+    		<button type="submit" name="method" value="SaveInvestment" class="btn btn-default btn-xs">
+                <fmt:message key="button.save"/>
+            </button>
+			</c:when>
+			<c:otherwise>
+        	<button type="submit" name="method" value="AddInvestment" class="btn btn-default btn-xs">
+                <fmt:message key="button.add"/>
+        	</button>    
+        	</c:otherwise>
+        	</c:choose>
+		</div>
      </c:if>
     </div>
     

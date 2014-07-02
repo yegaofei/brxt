@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -49,6 +50,7 @@ public class InvestmentStatus extends BaseObject{
 		this.id = id;
 	}
 
+	@Column(nullable = false)
 	public String getProjectName() {
 		return projectName;
 	}
@@ -56,6 +58,7 @@ public class InvestmentStatus extends BaseObject{
 		this.projectName = projectName;
 	}
 
+	@Column(nullable = false)
 	public String getProjectType() {
 		return projectType;
 	}

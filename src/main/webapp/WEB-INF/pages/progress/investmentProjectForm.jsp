@@ -15,6 +15,7 @@
     <form:form commandName="investmentProject" method="post" action="${ctx}/progress/investmentProjectForm" id="investmentProjectForm" cssClass="well"  onsubmit="return validateInvestmentProject(this)">
     <form:hidden path="id"/>
 	<form:hidden path="version"/>
+	<form:hidden path="investmentStatus.id"/>
 	<form:hidden path="investmentProjectType"/>
 	<input type="hidden" name="projectInfoId" value="${projectInfoId}"/>
 	<input type="hidden" name="investmentStatusId" value="${param.investmentStatusId}"/>
@@ -97,6 +98,7 @@
         <form:errors path="comments" cssClass="help-inline"/>
     </div>
     
+    <!--
     <c:if test="${empty investmentProject.id}">
     	<c:if test="${param.type != 'infrastructure'}">
     	<div class="form-group">
@@ -108,8 +110,7 @@
     		<input type="hidden" name="sameAsRepayment" value="false">
     	</c:if>
     </c:if>
-    
-    
+    -->
     
     <c:if test="${not empty investmentProject.createUser}">
         <form:hidden path="createUser" id="createUser"/>      

@@ -16,14 +16,13 @@
     		id="repaymentProjectForm" cssClass="well" onsubmit="return validateRepaymentProject(this)">
     <form:hidden path="id"/>
 	<form:hidden path="version"/>
+	<form:hidden path="investmentStatus.id"/>
 	<input type="hidden" name="projectInfoId" value="${projectInfoId}"/>
+	<input type="hidden" name="investmentStatusId" value="${param.investmentStatusId}"/>
 	
-    <spring:bind path="repaymentProject.name">
-    <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
-    </spring:bind>
+    <div class="form-group">
         <appfuse:label styleClass="control-label" key="repaymentProject.name"/>
-        <form:input path="name" id="name" maxlength="20" cssClass="form-control" readonly="true"/>
-        <form:errors path="name" cssClass="help-block"/>
+        <form:input path="investmentStatus.projectName" id="projectName" maxlength="20" cssClass="form-control" readonly="true"/>
     </div>
 
     <spring:bind path="repaymentProject.projectEndTime">

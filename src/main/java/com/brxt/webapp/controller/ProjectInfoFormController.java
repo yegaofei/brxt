@@ -34,7 +34,6 @@ import com.brxt.model.enums.CapitalInvestmentType;
 import com.brxt.model.enums.CounterpartyType;
 import com.brxt.model.enums.ProjectType;
 import com.brxt.service.InvestmentProjectsManager;
-import com.brxt.service.ProjProgressManager;
 import com.brxt.service.ProjectInfoManager;
 
 @Controller
@@ -45,19 +44,13 @@ public class ProjectInfoFormController extends BaseFormController {
 	private static final List<CapitalInvestmentType> CapitalInvestmentTypes = new ArrayList<CapitalInvestmentType>();
 	private static final Map<String, String> ProjectTypes = new HashMap<String, String>();
 	private static final List<CounterpartyType> CounterpartyTypes = new ArrayList<CounterpartyType>();
-	private ProjProgressManager projectProgressManager;
 	private InvestmentProjectsManager investmentProjectsManager;
-
-	@Autowired
-	public void setProjectProgressManager(@Qualifier("projectProgressManager") ProjProgressManager projectProgressManager) {
-		this.projectProgressManager = projectProgressManager;
-	}
 
 	@Autowired
 	public void setProjectInfoManager(@Qualifier("projectInfoManager") ProjectInfoManager projectInfoManager) {
 		this.projectInfoManager = projectInfoManager;
 	}
-	
+
 	@Autowired
 	public void setInvestmentProjectsManager(@Qualifier("investmentProjectsManager") InvestmentProjectsManager investmentProjectsManager) {
 		this.investmentProjectsManager = investmentProjectsManager;
@@ -246,6 +239,15 @@ public class ProjectInfoFormController extends BaseFormController {
 				mav.addObject("method", "EditInvestment");
 				mav.setViewName("projectInfoForm");
 				break;
+			case "DeleteInvestment":
+				projectInfo = getProjectInfo(request);
+				mav = deleteInvestment(projectInfo, errors, request, mav);
+				mav.addObject("method", "SaveInvestment");
+				break;
+			case "CancelInvestment":
+				mav.addObject("projectInfo", getProjectInfo(request));
+				mav.addObject("method", "SaveInvestment");
+				break;
 			default:
 				// Error
 			}
@@ -348,12 +350,39 @@ public class ProjectInfoFormController extends BaseFormController {
 		return mav;
 	}
 
+	private ModelAndView deleteInvestment(ProjectInfo projectInfo, BindingResult errors, HttpServletRequest request, final ModelAndView mav)
+			throws Exception {
+		String id = request.getParameter("investmentId");
+		String[] idArray = request.getParameterValues("investmentId");
+		if (idArray == null || idArray.length == 0 || "".equals(idArray[0])) {
+			if (!StringUtils.isBlank(id)) {
+				idArray = new String[] { id };
+			}
+		}
+		if (idArray != null) {
+			Set<InvestmentStatus> investmentSet = projectInfo.getInvestments();
+			for (String investmentId : idArray) {
+				Iterator<InvestmentStatus> itIs = investmentSet.iterator();
+				while (itIs.hasNext()) {
+					InvestmentStatus investmentStatus = itIs.next();
+					if (investmentStatus.getId().equals(Long.valueOf(investmentId))) {
+						itIs.remove();
+					}
+				}
+			}
+			projectInfoManager.save(projectInfo);
+			projectInfo = loadProjectInfo(projectInfo.getId());
+		}
+		mav.addObject("projectInfo", projectInfo);
+		return mav;
+	}
+
 	private ModelAndView saveInvestment(ProjectInfo projectInfo, BindingResult errors, HttpServletRequest request, final ModelAndView mav)
 			throws Exception {
 		String id = request.getParameter("investmentId");
 		String name = request.getParameter("investmentProjectName");
 		String type = request.getParameter("investmentType");
-		String oldInvestmentType = request.getParameter("oldInvestmentType");		
+		String oldInvestmentType = request.getParameter("oldInvestmentType");
 		if (StringUtils.isBlank(name)) {
 			saveError(request, getText("projectInfo.investmentName.error.empty", request.getLocale()));
 			return mav;
@@ -364,14 +393,59 @@ public class ProjectInfoFormController extends BaseFormController {
 			while (isIt.hasNext()) {
 				InvestmentStatus is = isIt.next();
 				if (is.getId() == Long.valueOf(id)) {
-					if (name != null) {
-						is.setProjectName(name);
+					InvestmentStatus tempIs = new InvestmentStatus();
+					tempIs.setProjectName(name);
+					tempIs.setProjectType(type);
+					InvestmentStatus investmentStatus = investmentProjectsManager.findByInvestmentStatus(tempIs);
+					if (investmentStatus != null) {
+						// if existed in database
+						if (projectInfo.getInvestments().contains(tempIs)) {
+							saveError(request, getText("projectInfo.investment.update.duplicate", new String[] { name }, request.getLocale()));
+						} else {
+							isIt.remove();
+							projectInfo.getInvestments().add(investmentStatus);
+							saveMessage(request, getText("projectInfo.investment.update.sccess", request.getLocale()));
+						}
+					} else {
+						// if doesn't exist in database
+						if (type.equals(CapitalInvestmentType.REAL_ESTATE_REPAYMENT_PROJECT.getTitle())) {
+							isIt.remove();							
+							tempIs.setProjectName(name);
+							tempIs.setProjectType(CapitalInvestmentType.REAL_ESTATE.getTitle());
+							investmentStatus = investmentProjectsManager.findByInvestmentStatus(tempIs);
+							if (investmentStatus != null) {
+								if (!projectInfo.getInvestments().contains(tempIs)) {
+									projectInfo.getInvestments().add(investmentStatus);
+								}
+							} 
+							else
+							{
+								tempIs = investmentProjectsManager.save(tempIs);
+								projectInfo.getInvestments().add(tempIs);
+							}
+							
+							tempIs = new InvestmentStatus();
+							tempIs.setProjectName(name);
+							tempIs.setProjectType(CapitalInvestmentType.REPAYMENT_PROJECT.getTitle());
+							investmentStatus = investmentProjectsManager.findByInvestmentStatus(tempIs);
+							if (investmentStatus != null) {
+								if (!projectInfo.getInvestments().contains(tempIs)) {
+									projectInfo.getInvestments().add(investmentStatus);
+								}
+							}
+							else
+							{
+								tempIs = investmentProjectsManager.save(tempIs);
+								projectInfo.getInvestments().add(tempIs);
+							}
+						} else {
+							is.setProjectName(name);
+							is.setProjectType(type);
+							investmentProjectsManager.save(is);
+						}
+						saveMessage(request, getText("projectInfo.investment.update.sccess", request.getLocale()));
 					}
-
-					if (type != null) {
-						is.setProjectType(type);
-					}
-					investmentProjectsManager.save(is);
+					break;
 				}
 			}
 		} else if (StringUtils.isBlank(oldInvestmentType)) {
@@ -401,7 +475,7 @@ public class ProjectInfoFormController extends BaseFormController {
 					} else {
 						addInvestmentStatus(projectInfo, is);
 					}
-					
+
 					is = new InvestmentStatus();
 					is.setProjectName(name);
 					is.setProjectType(CapitalInvestmentType.REPAYMENT_PROJECT.getTitle());
@@ -422,16 +496,12 @@ public class ProjectInfoFormController extends BaseFormController {
 		mav.addObject("projectInfo", projectInfo);
 		return mav;
 	}
-	
-	private void addInvestmentStatus(ProjectInfo projectInfo, InvestmentStatus is)
-	{
+
+	private void addInvestmentStatus(ProjectInfo projectInfo, InvestmentStatus is) {
 		InvestmentStatus investmentStatus = investmentProjectsManager.findByInvestmentStatus(is);
-		if(investmentStatus != null)
-		{
+		if (investmentStatus != null) {
 			projectInfo.getInvestments().add(investmentStatus);
-		}
-		else
-		{
+		} else {
 			is = investmentProjectsManager.save(is);
 			projectInfo.getInvestments().add(is);
 		}

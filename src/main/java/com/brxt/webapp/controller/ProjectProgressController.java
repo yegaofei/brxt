@@ -41,27 +41,23 @@ public class ProjectProgressController extends BaseFormController {
 	private InvestmentProjectsManager investmentProjectsManager;
 
 	@Autowired
-	public void setProjectInfoManager(
-			@Qualifier("projectInfoManager") ProjectInfoManager projectInfoManager) {
+	public void setProjectInfoManager(@Qualifier("projectInfoManager") ProjectInfoManager projectInfoManager) {
 		this.projectInfoManager = projectInfoManager;
 	}
 
 	@Autowired
-	public void setProjectProgressManager(
-			@Qualifier("projectProgressManager") ProjProgressManager projectProgressManager) {
+	public void setProjectProgressManager(@Qualifier("projectProgressManager") ProjProgressManager projectProgressManager) {
 		this.projectProgressManager = projectProgressManager;
 	}
 
 	@Autowired
-	public void setInvestmentProjectsManager(
-			@Qualifier("investmentProjectsManager") InvestmentProjectsManager investmentProjectsManager) {
+	public void setInvestmentProjectsManager(@Qualifier("investmentProjectsManager") InvestmentProjectsManager investmentProjectsManager) {
 		this.investmentProjectsManager = investmentProjectsManager;
 	}
 
 	@ModelAttribute("projectInfoId")
 	protected Long getProjectInfoId(final HttpServletRequest request) {
-		String projectInfoId = (String) request.getSession().getAttribute(
-				SessionAttributes.PROJECT_INFO_ID);
+		String projectInfoId = (String) request.getSession().getAttribute(SessionAttributes.PROJECT_INFO_ID);
 		if (StringUtils.isBlank(projectInfoId)) {
 			final Locale locale = request.getLocale();
 			saveError(request, getText("errors.projectInfoId.required", locale));
@@ -72,42 +68,35 @@ public class ProjectProgressController extends BaseFormController {
 	}
 
 	@ModelAttribute("progressList")
-	public List<ProjectProgress> getProjectProgressList(
-			final HttpServletRequest request) {
-		String projectInfoId = (String) request.getSession().getAttribute(
-				SessionAttributes.PROJECT_INFO_ID);
+	public List<ProjectProgress> getProjectProgressList(final HttpServletRequest request) {
+		String projectInfoId = (String) request.getSession().getAttribute(SessionAttributes.PROJECT_INFO_ID);
 		final Locale locale = request.getLocale();
 		if (StringUtils.isBlank(projectInfoId)) {
 			saveError(request, getText("errors.projectInfoId.required", locale));
 		} else {
-			return projectProgressManager.getProjectProgressList(Long
-					.valueOf(projectInfoId));
+			return projectProgressManager.getProjectProgressList(Long.valueOf(projectInfoId));
 		}
 		return null;
 	}
-	
-	@RequestMapping(value="/progress/addProgress*", method = RequestMethod.GET)
-	public ModelAndView addProgress(final HttpServletRequest request)
-	{
+
+	@RequestMapping(value = "/progress/addProgress*", method = RequestMethod.GET)
+	public ModelAndView addProgress(final HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("/progress/addProgress");
 		String projectInfoId = (String) request.getSession().getAttribute(SessionAttributes.PROJECT_INFO_ID);
 		ProjectInfo projectInfo = projectInfoManager.get(Long.valueOf(projectInfoId));
 		Set<InvestmentStatus> investmentStatusSet = projectInfo.getInvestments();
 		List<ProjectProgress> investments = new ArrayList<ProjectProgress>();
 		List<ProjectProgress> repayments = new ArrayList<ProjectProgress>();
-		if(investmentStatusSet != null) 
-		{
+		if (investmentStatusSet != null) {
 			Iterator<InvestmentStatus> itS = investmentStatusSet.iterator();
-			while(itS.hasNext())
-			{
+			while (itS.hasNext()) {
 				InvestmentStatus is = itS.next();
 				String projectType = is.getProjectType();
 				CapitalInvestmentType type = CapitalInvestmentType.valueOf(projectType.toUpperCase());
 				ProjectProgress pp = new ProjectProgress();
 				pp.setProjectName(is.getProjectName());
 				pp.setId(is.getId());
-				switch (type)
-				{
+				switch (type) {
 				case REPAYMENT_PROJECT:
 					pp.setCapitalInvestmentType(CapitalInvestmentType.REPAYMENT_PROJECT);
 					pp.setInvestment(false);
@@ -120,22 +109,19 @@ public class ProjectProgressController extends BaseFormController {
 					pp.setSupplyLiquid(true);
 					investments.add(pp);
 					break;
-					default:
-						pp.setCapitalInvestmentType(type);
-						pp.setInvestment(true);
-						pp.setSupplyLiquid(false);
-						investments.add(pp);
+				default:
+					pp.setCapitalInvestmentType(type);
+					pp.setInvestment(true);
+					pp.setSupplyLiquid(false);
+					investments.add(pp);
 				}
 			}
-			
-			
-			if(!investments.isEmpty())
-			{
+
+			if (!investments.isEmpty()) {
 				mav.addObject("investments", investments);
 			}
-			
-			if(!repayments.isEmpty())
-			{
+
+			if (!repayments.isEmpty()) {
 				mav.addObject("repayments", repayments);
 			}
 		}
@@ -148,26 +134,22 @@ public class ProjectProgressController extends BaseFormController {
 	}
 
 	@RequestMapping(value = "/projectProgress*", method = RequestMethod.POST)
-	public String onSubmit(final HttpServletRequest request,
-			final HttpServletResponse response) {
+	public String onSubmit(final HttpServletRequest request, final HttpServletResponse response) {
 		String method = request.getParameter("method");
 		String projectProgresstId = request.getParameter("id");
 		final Locale locale = request.getLocale();
-		if (StringUtils.isBlank(method)
-				|| StringUtils.isBlank(projectProgresstId)) {
+		if (StringUtils.isBlank(method) || StringUtils.isBlank(projectProgresstId)) {
 			saveError(request, getText("errors.repaymentId.required", locale));
 		} else {
 			final Long projectProgresstID = Long.valueOf(projectProgresstId);
 			switch (method) {
 			case "Edit":
-				String editForm = projectProgressManager
-						.getProgressForm(projectProgresstID);
+				String editForm = projectProgressManager.getProgressForm(projectProgresstID);
 				Long id = projectProgressManager.getRealId(projectProgresstID);
 				return "redirect:/progress/" + editForm + "?id=" + id;
 			case "Delete":
 				projectProgressManager.remove(projectProgresstID);
-				saveMessage(request,
-						getText("projectProgress.delete.successful", locale));
+				saveMessage(request, getText("projectProgress.delete.successful", locale));
 				return "redirect:/projectProgress";
 			default:
 			}
@@ -176,29 +158,21 @@ public class ProjectProgressController extends BaseFormController {
 	}
 
 	@RequestMapping(value = "/progress/investmentProjectForm*", method = RequestMethod.GET)
-	public ModelAndView handleRequest(final HttpServletRequest request)
-			throws Exception {
+	public ModelAndView handleRequest(final HttpServletRequest request) throws Exception {
 		ModelAndView mav = new ModelAndView();
 		String investmentStatusId = request.getParameter("investmentStatusId");
 		String projectProgresstId = request.getParameter("id");
-		String type = request.getParameter("type");
 		if (StringUtils.isBlank(projectProgresstId)) {
 			// Add
 			InvestmentStatus investmentStatus = investmentProjectsManager.get(Long.valueOf(investmentStatusId));
 			InvestmentProject investmentProject = new InvestmentProject();
 			investmentProject.setInvestmentStatus(investmentStatus);
-			
-			if (!StringUtils.isBlank(type)) {
-				investmentProject.setInvestmentProjectType(type);
-			} else {
-				investmentProject.setInvestmentProjectType(CapitalInvestmentType.REAL_ESTATE.getTitle());
-			}
+			investmentProject.setInvestmentProjectType(investmentStatus.getProjectType());
 			mav.addObject("investmentProject", investmentProject);
 		} else {
 			// Edit
 			Long id = Long.valueOf(projectProgresstId);
-			InvestmentProject investmentProject = projectProgressManager
-					.get(id);
+			InvestmentProject investmentProject = projectProgressManager.get(id);
 			mav.addObject("investmentProject", investmentProject);
 		}
 		mav.setViewName("/progress/investmentProjectForm");
@@ -206,10 +180,8 @@ public class ProjectProgressController extends BaseFormController {
 	}
 
 	@RequestMapping(value = "/progress/investmentProjectForm*", method = RequestMethod.POST)
-	public String onSubmit(
-			@ModelAttribute("investmentProject") final InvestmentProject investmentProject,
-			@ModelAttribute("projectInfoId") final Long projectInfoId,
-			final BindingResult errors, final HttpServletRequest request) {
+	public String onSubmit(@ModelAttribute("investmentProject") final InvestmentProject investmentProject,
+			@ModelAttribute("projectInfoId") final Long projectInfoId, final BindingResult errors, final HttpServletRequest request) {
 		String method = request.getParameter("method");
 		final Locale locale = request.getLocale();
 		if (StringUtils.isBlank(method)) {
@@ -219,8 +191,7 @@ public class ProjectProgressController extends BaseFormController {
 			if (validator != null) { // validator is null during testing
 				validator.validate(investmentProject, errors);
 				if (errors.hasErrors()) {
-					log.debug("error happens 'onSubmit' method..."
-							+ errors.toString());
+					log.debug("error happens 'onSubmit' method..." + errors.toString());
 					saveMessage(request, errors.toString());
 					return "";
 				}
@@ -228,49 +199,39 @@ public class ProjectProgressController extends BaseFormController {
 
 			switch (method) {
 			case "SaveprojectProgress":
-				String investmentStatusId = request.getParameter("investmentStatusId");
-				InvestmentStatus investmentStatus = investmentProjectsManager.get(Long.valueOf(investmentStatusId));
-				
-			//	RepaymentProject repaymentProject = null;
-				
+				Date now = new Date();
 				User currentUser = getCurrentUser();
 				Long projectProgressId = investmentProject.getId();
-				if(projectProgressId == null)
-				{
-					// Save new  
-					Date now = new Date();
+				if (projectProgressId == null) {
+					// Save new
+					String investmentStatusId = request.getParameter("investmentStatusId");
+					InvestmentStatus investmentStatus = investmentProjectsManager.get(Long.valueOf(investmentStatusId));
 					investmentProject.setInvestmentStatus(investmentStatus);
 					investmentProject.setCreateTime(now);
-					investmentProject.setUpdateTime(now);
 					investmentProject.setCreateUser(currentUser.getUsername());
-					investmentProject.setUpdateUser(currentUser.getUsername());
 					investmentStatus.getInvestmentProjects().add(investmentProject);
 					investmentProjectsManager.save(investmentStatus);
-					if(investmentProject.getSameAsRepayment())
-					{
-//						repaymentProject = new RepaymentProject();
-//						repaymentProject.setCreateTime(now);
-//						repaymentProject.setUpdateTime(now);
-//						repaymentProject.setCreateUser(currentUser.getUsername());
-//						repaymentProject.setUpdateUser(currentUser.getUsername());
+					if (investmentProject.getSameAsRepayment()) {
+						// repaymentProject = new RepaymentProject();
+						// repaymentProject.setCreateTime(now);
+						// repaymentProject.setUpdateTime(now);
+						// repaymentProject.setCreateUser(currentUser.getUsername());
+						// repaymentProject.setUpdateUser(currentUser.getUsername());
 					}
-				}
-				else
-				{
+				} else {
 					// Update Existed
-					investmentProject.setUpdateTime(new Date());
+					investmentProject.setUpdateTime(now);
 					investmentProject.setUpdateUser(currentUser.getUsername());
 					projectProgressManager.save(investmentProject);
 				}
-//				if(repaymentProject != null)
-//				{
-//					projectProgressManager.saveRepaymentProject(repaymentProject);
-//				}
-				
+				// if(repaymentProject != null)
+				// {
+				// projectProgressManager.saveRepaymentProject(repaymentProject);
+				// }
+
 				ProjectInfo projectInfo = projectInfoManager.get(Long.valueOf(projectInfoId));
 				updateProjectInfoStatus(projectInfo, true);
-				saveMessage(request,
-						getText("investmentProject.save.successful", locale));
+				saveMessage(request, getText("investmentProject.save.successful", locale));
 				break;
 			default:
 			}
@@ -279,30 +240,30 @@ public class ProjectProgressController extends BaseFormController {
 	}
 
 	@RequestMapping(value = "/progress/repaymentProjectForm*", method = RequestMethod.GET)
-	public ModelAndView handleRequestRepaymentProjectForm(
-			final HttpServletRequest request) throws Exception {
+	public ModelAndView handleRequestRepaymentProjectForm(final HttpServletRequest request) throws Exception {
 		ModelAndView mav = new ModelAndView();
 		String projectProgresstId = request.getParameter("id");
+		String investmentStatusId = request.getParameter("investmentStatusId");
 		if (StringUtils.isBlank(projectProgresstId)) {
 			// Add
-			mav.addObject("repaymentProject", new RepaymentProject());
+			InvestmentStatus investmentStatus = investmentProjectsManager.get(Long.valueOf(investmentStatusId));
+			RepaymentProject repaymentProject = new RepaymentProject();
+			repaymentProject.setInvestmentStatus(investmentStatus);
+			mav.addObject("repaymentProject", repaymentProject);
 		} else {
 			// Edit
 			Long id = Long.valueOf(projectProgresstId);
-			RepaymentProject repaymentProject = projectProgressManager
-					.getRepaymentProject(id);
+			RepaymentProject repaymentProject = projectProgressManager.getRepaymentProject(id);
 			mav.addObject("repaymentProject", repaymentProject);
 		}
 
 		mav.setViewName("/progress/repaymentProjectForm");
 		return mav;
 	}
-	
+
 	@RequestMapping(value = "/progress/repaymentProjectForm*", method = RequestMethod.POST)
-	public String onSubmit(
-			@ModelAttribute("repaymentProject") final RepaymentProject repaymentProject,
-			@ModelAttribute("projectInfoId") final Long projectInfoId,
-			final BindingResult errors, final HttpServletRequest request) {
+	public String onSubmit(@ModelAttribute("repaymentProject") final RepaymentProject repaymentProject,
+			@ModelAttribute("projectInfoId") final Long projectInfoId, final BindingResult errors, final HttpServletRequest request) {
 		String method = request.getParameter("method");
 		final Locale locale = request.getLocale();
 		if (StringUtils.isBlank(method)) {
@@ -312,37 +273,35 @@ public class ProjectProgressController extends BaseFormController {
 			if (validator != null) { // validator is null during testing
 				validator.validate(repaymentProject, errors);
 				if (errors.hasErrors()) {
-					log.debug("error happens 'onSubmit' method..."
-							+ errors.toString());
+					log.debug("error happens 'onSubmit' method..." + errors.toString());
 					saveMessage(request, errors.toString());
 					return "";
 				}
 			}
 
 			switch (method) {
-			case "SaveprojectProgress":
-				ProjectInfo projectInfo = projectInfoManager.get(projectInfoId);
-				//repaymentProject.setProjectInfo(projectInfo);
+			case "SaveprojectProgress":				
 				User currentUser = getCurrentUser();
 				Long projectProgressId = repaymentProject.getId();
-				if(projectProgressId == null)
-				{
-					// Save new  
+				if (projectProgressId == null) {
+					// Save new
+					String investmentStatusId = request.getParameter("investmentStatusId");
+					InvestmentStatus investmentStatus = investmentProjectsManager.get(Long.valueOf(investmentStatusId));
 					repaymentProject.setCreateTime(new Date());
-					repaymentProject.setUpdateTime(new Date());
 					repaymentProject.setCreateUser(currentUser.getUsername());
-					repaymentProject.setUpdateUser(currentUser.getUsername());
-				}
-				else
-				{
+					repaymentProject.setInvestmentStatus(investmentStatus);
+					investmentStatus.getRepaymentProjects().add(repaymentProject);
+					investmentProjectsManager.save(investmentStatus);
+				} else {
 					// Update Existed
 					repaymentProject.setUpdateTime(new Date());
 					repaymentProject.setUpdateUser(currentUser.getUsername());
+					projectProgressManager.saveRepaymentProject(repaymentProject);
 				}
-				projectProgressManager.saveRepaymentProject(repaymentProject);
+				
+				ProjectInfo projectInfo = projectInfoManager.get(projectInfoId);
 				updateProjectInfoStatus(projectInfo, true);
-				saveMessage(request,
-						getText("repaymentProject.save.successful", locale));
+				saveMessage(request, getText("repaymentProject.save.successful", locale));
 				break;
 			default:
 			}
@@ -351,30 +310,30 @@ public class ProjectProgressController extends BaseFormController {
 	}
 
 	@RequestMapping(value = "/progress/supplyLiqProjectForm*", method = RequestMethod.GET)
-	public ModelAndView handleRequestSupplyLiqProjectForm(
-			final HttpServletRequest request) throws Exception {
+	public ModelAndView handleRequestSupplyLiqProjectForm(final HttpServletRequest request) throws Exception {
 		ModelAndView mav = new ModelAndView();
 		String projectProgresstId = request.getParameter("id");
+		String investmentStatusId = request.getParameter("investmentStatusId");
 		if (StringUtils.isBlank(projectProgresstId)) {
 			// Add
-			mav.addObject("supplyLiquidProject", new SupplyLiquidProject());
+			InvestmentStatus investmentStatus = investmentProjectsManager.get(Long.valueOf(investmentStatusId));
+			SupplyLiquidProject supplyLiquidProject = new SupplyLiquidProject();
+			supplyLiquidProject.setInvestmentStatus(investmentStatus);
+			mav.addObject("supplyLiquidProject", supplyLiquidProject);
 		} else {
 			// Edit
 			Long id = Long.valueOf(projectProgresstId);
-			SupplyLiquidProject supplyLiquidProject = projectProgressManager
-					.getSupplyLiquidProject(id);
+			SupplyLiquidProject supplyLiquidProject = projectProgressManager.getSupplyLiquidProject(id);
 			mav.addObject("supplyLiquidProject", supplyLiquidProject);
 		}
 
 		mav.setViewName("/progress/supplyLiqProjectForm");
 		return mav;
 	}
-	
+
 	@RequestMapping(value = "/progress/supplyLiqProjectForm*", method = RequestMethod.POST)
-	public String onSubmit(
-			@ModelAttribute("supplyLiquidProject") final SupplyLiquidProject supplyLiquidProject,
-			@ModelAttribute("projectInfoId") final Long projectInfoId,
-			final BindingResult errors, final HttpServletRequest request) {
+	public String onSubmit(@ModelAttribute("supplyLiquidProject") final SupplyLiquidProject supplyLiquidProject,
+			@ModelAttribute("projectInfoId") final Long projectInfoId, final BindingResult errors, final HttpServletRequest request) {
 		String method = request.getParameter("method");
 		final Locale locale = request.getLocale();
 		if (StringUtils.isBlank(method)) {
@@ -384,8 +343,7 @@ public class ProjectProgressController extends BaseFormController {
 			if (validator != null) { // validator is null during testing
 				validator.validate(supplyLiquidProject, errors);
 				if (errors.hasErrors()) {
-					log.debug("error happens 'onSubmit' method..."
-							+ errors.toString());
+					log.debug("error happens 'onSubmit' method..." + errors.toString());
 					saveMessage(request, errors.toString());
 					return "";
 				}
@@ -393,41 +351,38 @@ public class ProjectProgressController extends BaseFormController {
 
 			switch (method) {
 			case "SaveprojectProgress":
-				ProjectInfo projectInfo = projectInfoManager.get(projectInfoId);
-				//supplyLiquidProject.setProjectInfo(projectInfo);
 				User currentUser = getCurrentUser();
 				Long projectProgressId = supplyLiquidProject.getId();
-				if(projectProgressId == null)
-				{
-					// Save new  
+				
+				if (projectProgressId == null) {
+					// Save new
+					String investmentStatusId = request.getParameter("investmentStatusId");
+					InvestmentStatus investmentStatus = investmentProjectsManager.get(Long.valueOf(investmentStatusId));
 					supplyLiquidProject.setCreateTime(new Date());
-					supplyLiquidProject.setUpdateTime(new Date());
 					supplyLiquidProject.setCreateUser(currentUser.getUsername());
-					supplyLiquidProject.setUpdateUser(currentUser.getUsername());
-				}
-				else
-				{
+					supplyLiquidProject.setInvestmentStatus(investmentStatus);
+					investmentStatus.getSupplyLiquidProjects().add(supplyLiquidProject);
+					investmentProjectsManager.save(investmentStatus);
+				} else {
 					// Update Existed
 					supplyLiquidProject.setUpdateTime(new Date());
 					supplyLiquidProject.setUpdateUser(currentUser.getUsername());
+					projectProgressManager.saveSupplyLiqidProject(supplyLiquidProject);
 				}
-				projectProgressManager.saveSupplyLiqidProject(supplyLiquidProject);
+				ProjectInfo projectInfo = projectInfoManager.get(projectInfoId);
 				updateProjectInfoStatus(projectInfo, true);
-				saveMessage(request,
-						getText("supplyLiquidProject.save.successful", locale));
+				saveMessage(request, getText("supplyLiquidProject.save.successful", locale));
 				break;
 			default:
 			}
 		}
 		return "redirect:/projectProgress";
 	}
-	
-	private void updateProjectInfoStatus(ProjectInfo projectInfo, boolean newStatus)
-	{
-		
-		if(projectInfo.getProjectInfoStatus().getProjectProgress() != newStatus)
-		{
-			projectInfo.getProjectInfoStatus().setProjectProgress(newStatus);	
+
+	private void updateProjectInfoStatus(ProjectInfo projectInfo, boolean newStatus) {
+
+		if (projectInfo.getProjectInfoStatus().getProjectProgress() != newStatus) {
+			projectInfo.getProjectInfoStatus().setProjectProgress(newStatus);
 			projectInfoManager.save(projectInfo);
 		}
 	}

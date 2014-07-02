@@ -50,7 +50,7 @@ public class SupplyLiquidProject extends BaseObject {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	@ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH}, optional=true)  
+	@ManyToOne(cascade={CascadeType.REFRESH}, optional=true)  
 	@JoinColumn(name="investment_status_id")
 	public InvestmentStatus getInvestmentStatus() {
 		return investmentStatus;

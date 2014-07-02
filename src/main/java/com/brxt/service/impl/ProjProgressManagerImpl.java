@@ -205,17 +205,58 @@ implements ProjProgressManager {
 	@Override
 	public void remove(Long id)
 	{
+		Long realId = null;
+		InvestmentStatus investmentStatus = null;
 		if(id > BASE_REPAYMENT_PROJECT_ID)
 		{
-			repaymentProjectDao.remove(id - BASE_REPAYMENT_PROJECT_ID);
+			realId = id - BASE_REPAYMENT_PROJECT_ID;
+			RepaymentProject repaymentProject = repaymentProjectDao.get(realId);
+			investmentStatus = repaymentProject.getInvestmentStatus();
+			List<RepaymentProject> repaymentProjectList  = investmentStatus.getRepaymentProjects();
+			Iterator<RepaymentProject> it = repaymentProjectList.iterator();
+			while(it.hasNext())
+			{
+				RepaymentProject itObj = it.next();
+				if(itObj.getId().equals(realId))
+				{
+					it.remove();
+				}
+			}
+			repaymentProjectDao.remove(realId);
 		}
 		else if (id > BASE_SUPPLY_LIQUIDPROJECT_ID)
 		{
-			supplyLiquidProjectDao.remove(id - BASE_SUPPLY_LIQUIDPROJECT_ID);
+			realId = id - BASE_SUPPLY_LIQUIDPROJECT_ID;
+			SupplyLiquidProject supplyLiquidProject = supplyLiquidProjectDao.get(realId);
+			investmentStatus = supplyLiquidProject.getInvestmentStatus();
+			List<SupplyLiquidProject> supplyLiquidProjectList = investmentStatus.getSupplyLiquidProjects();
+			Iterator<SupplyLiquidProject> it = supplyLiquidProjectList.iterator();
+			while(it.hasNext())
+			{
+				SupplyLiquidProject itObj = it.next();
+				if(itObj.getId().equals(realId))
+				{
+					it.remove();
+				}
+			}
+			supplyLiquidProjectDao.remove(realId);
 		} 
 		else if (id > BASE_INVESTMENT_PROJECT_ID)
 		{
-			investmentProjectDao.remove(id - BASE_INVESTMENT_PROJECT_ID);
+			realId = id - BASE_INVESTMENT_PROJECT_ID;
+			InvestmentProject investmentProject = investmentProjectDao.get(realId);
+			investmentStatus = investmentProject.getInvestmentStatus();
+			List<InvestmentProject> investmentProjectList = investmentStatus.getInvestmentProjects();
+			Iterator<InvestmentProject> it = investmentProjectList.iterator();
+			while(it.hasNext())
+			{
+				InvestmentProject itObj = it.next();
+				if(itObj.getId().equals(realId))
+				{
+					it.remove();
+				}
+			}
+			investmentProjectDao.remove(realId);
 		}
 	}
 	

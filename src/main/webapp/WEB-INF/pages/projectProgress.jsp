@@ -10,7 +10,7 @@
 
 <div class="col-sm-10">
     <h2><fmt:message key='projectProgress.heading'/></h2>
-    <form name="projectProgress" action="/projectProgress" method="post">
+    <form name="projectProgress" action="${ctx}/projectProgress" method="post">
  	<div id="actions" class="btn-group">
         <a class="btn btn-primary" href="<c:url value='${ctx}/progress/addProgress'/>">
             <i class="icon-plus icon-white"></i> <fmt:message key="button.add"/></a>  
