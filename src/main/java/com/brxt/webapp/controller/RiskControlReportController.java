@@ -99,6 +99,7 @@ public class RiskControlReportController extends BaseSheetController {
 		return new ProjectInfo();
 	}
 	
+	@ModelAttribute
 	public RiskControlReport getRiskControlReport(final HttpServletRequest request) {
 		String reportId = request.getParameter("reportId");
 		if (!StringUtils.isBlank(reportId)) {
@@ -118,8 +119,8 @@ public class RiskControlReportController extends BaseSheetController {
 		return ciList;
 	}
 
-	@ModelAttribute("subjectCapacity")
-	public SubjectCapacity getSubjectCapacity(final HttpServletRequest request) throws ParseException {
+	@ModelAttribute("subjectCapacities")
+	public List<SubjectCapacity> getSubjectCapacity(final HttpServletRequest request) throws ParseException {
 		ReportContentKey rck = getReportContentKey(request);
 		if (rck == null) {
 			return null;
@@ -127,7 +128,7 @@ public class RiskControlReportController extends BaseSheetController {
 		List<SubjectCapacity> subjectCapacities = subjectCapacityManager.findByProjIdCpId(rck.getProjectInfo(), rck.getCounterparty(),
 				rck.getStartTime(), rck.getEndTime());
 		if (subjectCapacities != null && subjectCapacities.size() > 0) {
-			return subjectCapacities.get(0);
+			return subjectCapacities;
 		}
 
 		if (rck.getCounterparty() != null && "tab2".equals(rck.getActiveTab())) {
@@ -313,7 +314,6 @@ public class RiskControlReportController extends BaseSheetController {
 				return null;
 			}
 
-			// TODO: How to confirm the date range ??
 			RiskControlReport report = getRiskControlReport(request);
 			ReportContentKey rck = new ReportContentKey();
 			rck.setProjectInfo(projectInfo);
@@ -498,7 +498,7 @@ public class RiskControlReportController extends BaseSheetController {
 			c1.setTime(prevTerm);
 			c2.setTime(currTerm);
 			ProjectInfo projectInfo = projectInfoManager.get(Long.valueOf(projectInfoId));
-			RiskControlReport report = loadRiskControlReport(projectInfo);
+			RiskControlReport report = getRiskControlReport(request);
 			Counterparty counterparty = findCounterparty(projectInfo, Long.valueOf(counterpartyId));
 			
 			CorporateBalanceSheet prevTermCbs = financeSheetManager.findCorporateBalanceSheet(projectInfo, counterparty,
@@ -506,19 +506,34 @@ public class RiskControlReportController extends BaseSheetController {
 			CorporateBalanceSheet currTermCbs = financeSheetManager.findCorporateBalanceSheet(projectInfo, counterparty,
 					c2.get(Calendar.YEAR), c2.get(Calendar.MONTH) + 1);
 			report.getCorporateBalanceSheets().clear();
-			report.getCorporateBalanceSheets().add(prevTermCbs);
-			report.getCorporateBalanceSheets().add(currTermCbs);
+			if(prevTermCbs != null)
+			{
+				report.getCorporateBalanceSheets().add(prevTermCbs);				
+			}
+			
+			if(currTermCbs != null)
+			{
+				report.getCorporateBalanceSheets().add(currTermCbs);				
+			}
 
 			ProfitStatement prevProfitStatement = financeSheetManager.findProfitStatement(projectInfo, counterparty, c1.get(Calendar.YEAR),
 					c1.get(Calendar.MONTH) + 1);
 			ProfitStatement currProfitStatement = financeSheetManager.findProfitStatement(projectInfo, counterparty, c2.get(Calendar.YEAR),
 					c2.get(Calendar.MONTH) + 1);
 			report.getProfitStatements().clear();
-			report.getProfitStatements().add(prevProfitStatement);
-			report.getProfitStatements().add(currProfitStatement);
+			if(prevProfitStatement != null)
+			{
+				report.getProfitStatements().add(prevProfitStatement);				
+			}
 			
-			//report.setFinanceStatementSummary(comments);
-			projectInfoManager.save(projectInfo);
+			if(currProfitStatement != null)
+			{
+				report.getProfitStatements().add(currProfitStatement);
+			}
+			report.setFinanceCheckComment(comments);
+			reportManager.save(report);
+			saveMessage(request, getText("report.update.success", request.getLocale()));
+			mav.addObject("riskControlReport", report);
 		} catch (ParseException e) {
 			saveError(request, "Date format is incorrect ");
 			return mav;

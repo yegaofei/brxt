@@ -73,7 +73,7 @@ public class RiskControlReport extends BaseObject{
 		this.id = id;
 	}
 	
-	@ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH},optional=true)  
+	@ManyToOne(cascade={CascadeType.REFRESH},optional=true)  
 	@JoinColumn(name="projectInfo_id") 
 	public ProjectInfo getProjectInfo() {
 		return projectInfo;

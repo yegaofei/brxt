@@ -1,42 +1,43 @@
-
 	<div class="row">
 		<div class="col-sm-3 form-group">
 		<appfuse:label styleClass="control-label" key="projectInfo.counterparty.name"/> : 
 		<c:forEach var="counterparty" items="${counterparties}" varStatus="status">
 			<c:if test="${status.first}">
-				<select id="counterpartiesTab21" name="counterpartiesTab21" class="form-control">
+				<select id="counterpartiesTab21" name="counterpartiesTab21" class="form-control  input-sm">
 					<option value=""> ---<fmt:message key="report.select.default"/>--- </option>
 			</c:if>
 			<option value="${counterparty.id}" <c:if test = "${counterparty.id == param.counterpartiesTab21}" > selected </c:if>><c:out value="${counterparty.name}" /></option>
 			<c:if test="${status.last}"></select></c:if>
 		</c:forEach>
 		</div>
-	<input type="hidden" name="counterpartyIdTab21" value="<c:out value='${param.counterpartiesTab21}'/>" >
-	<input type="hidden" name="prevTermTimeTab21" value="<c:out value='${param.prevTermTime}'/>" >
-	<input type="hidden" name="currTermTimeTab21" value="<c:out value='${param.currTermTime}'/>" >
+		<input type="hidden" name="counterpartyIdTab21" value="<c:out value='${param.counterpartiesTab21}'/>" >
+		<input type="hidden" name="prevTermTimeTab21" value="<c:out value='${param.prevTermTime}'/>" >
+		<input type="hidden" name="currTermTimeTab21" value="<c:out value='${param.currTermTime}'/>" >
 	
-	<div class="col-sm-3 form-group">
+		<div class="col-sm-3 form-group">
 			<appfuse:label styleClass="control-label" key="report.prev.term.report"/>
-			<input type="text" id="prevTermTime" name="prevTermTime" maxlength="20" class="form-control" value="<c:out value='${param.prevTermTime}' />"/>
-	</div>	
+			<input type="text" id="prevTermTime" name="prevTermTime" maxlength="20" class="form-control input-sm" value="<c:out value='${param.prevTermTime}' />"/>
+		</div>	
 		<div class="col-sm-3 form-group">
 			<appfuse:label styleClass="control-label" key="report.curr.term.report"/>
-			<input type="text" id="currTermTime" name="currTermTime" maxlength="20" class="form-control" value="<c:out value='${param.currTermTime}' />"/>
-      </div>
+			<input type="text" id="currTermTime" name="currTermTime" maxlength="20" class="form-control input-sm" value="<c:out value='${param.currTermTime}' />"/>
+      	</div>
       	<div class="col-sm-1 form-group form-actions">
-      	<label></label>
+      		<label></label>
 			<button type="submit" class="btn btn-primary form-control" name="method" value="FinanceCheckTab21" onclick="$('#activeTab').val('tab2-1')">
             		<i class="icon-ok icon-white"></i> <fmt:message key="button.ok"/>
-			</button>
-			
+			</button>			
 		</div>
 		<div class="col-sm-1 form-group form-actions">
-      	<label></label>
+      		<label></label>
 			<button type="submit" class="btn btn-primary form-control" name="method" value="SaveFinanceCheckTab21" onclick="$('#activeTab').val('tab2-1')">
             		<i class="icon-ok icon-white"></i> <fmt:message key="button.save"/>
 			</button>
 		</div>	
-
+	</div>
+	<div class="row">
+		<appfuse:label styleClass="control-label" key="report.financeCheck.financeStatementSummary"/>
+		<input type="text" name="financeStatementSummary" class="form-control input-sm" value="${riskControlReport.financeCheckComment}">
 	</div>
 		
 	<c:if test="${not empty financeCheck}" >
@@ -186,10 +187,6 @@
 					<td><c:out value="${financeCheck.prevFinanceRatio.salesIncrementRatio}" /></td>
 					<td><c:out value="${financeCheck.currFinanceRatio.salesIncrementRatio}" /></td>
 					<td><c:out value="${financeCheck.financeRatioChanges.salesIncrementRatio}" /></td>
-				</tr>
-				<tr>
-					<td><fmt:message key="report.financeCheck.financeStatementSummary"/></td>
-					<td colspan="3"><input type="text" name="financeStatementSummary" class="form-control input-sm"></td>
 				</tr>
 			</tbody>
 		</table>

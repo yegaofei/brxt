@@ -11,11 +11,13 @@
 						</c:forEach>
 					</div>
 					<div class="form-group">
-					<div class="row>
-					<appfuse:label styleClass="control-label" key="subjectCapacity.heading"/> :
-					<c:out value="${subjectCapacity.counterparty.name}" />
-					</div>
-					<c:if test="${not empty subjectCapacity}" >
+					<c:if test="${not empty subjectCapacities}">
+						<div class="row>
+						<appfuse:label styleClass="control-label" key="subjectCapacity.heading"/> :
+						<c:out value="${subjectCapacity.counterparty.name}" />
+						</div>
+					</c:if>
+					<c:forEach var="subjectCapacity" items="${subjectCapacities}" varStatus="status">
 					<table class="table table-striped table-bordered table-hover">
 						<thead>
 						<tr>
@@ -93,7 +95,7 @@
 						</tr>
 						</tbody>
 					</table>
-					</c:if>
+					</c:forEach>
 					</div>
 			
 <script language="javascript" type="text/javascript">
