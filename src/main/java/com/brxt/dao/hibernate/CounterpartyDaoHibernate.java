@@ -31,5 +31,20 @@ GenericDaoHibernate<Counterparty, Long> implements CounterpartyDao {
 			return cpList.get(0);
 		}
 	}
+	
+	public Counterparty findByCounterparty(Counterparty counterparty) {
+		List<Counterparty> cpList  = getSession().createCriteria(Counterparty.class)
+				.add(Restrictions.eq("name", counterparty.getName()))
+				.add(Restrictions.eq("counterpartyType", counterparty.getCounterpartyType()))
+				.list();
+		if(cpList == null ||  cpList.size() == 0)
+		{
+			return null;
+		}
+		else
+		{
+			return cpList.get(0);
+		}
+	}
 
 }

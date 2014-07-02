@@ -245,8 +245,11 @@ public class ProjectInfoFormController extends BaseFormController {
 				mav.addObject("method", "SaveInvestment");
 				break;
 			case "CancelInvestment":
+			case "CancelProjectSize":
+			case "CancelCounterparty":
+			case "CancelGuarantor":
 				mav.addObject("projectInfo", getProjectInfo(request));
-				mav.addObject("method", "SaveInvestment");
+				mav.addObject("method", "");
 				break;
 			default:
 				// Error
@@ -294,54 +297,52 @@ public class ProjectInfoFormController extends BaseFormController {
 	private ModelAndView saveCounterparty(ProjectInfo projectInfo, BindingResult errors, HttpServletRequest request, final ModelAndView mav)
 			throws Exception {
 		String id = request.getParameter("counterpartyId");
-		String[] idArray = request.getParameterValues("counterpartyId");
-		if (idArray != null && idArray.length > 0 && !"".equals(idArray[0])) {
-			StringBuilder sb = new StringBuilder("submit counterparty ids: ");
-			for (String idStr : idArray) {
-				sb.append(idStr).append(",");
-			}
-			log.debug(sb);
-		}
-
 		String name = request.getParameter("counterpartyName");
 		String type = request.getParameter("counterpartyType");
+		if (StringUtils.isBlank(name)) {
+			saveError(request, getText("empty.counterparty.name.error", request.getLocale()));
+			return mav;
+		}
 
-		if (!StringUtils.isBlank(id)) {
+		if (!StringUtils.isBlank(id)) {			// Edit
 			Iterator<Counterparty> cpIt = projectInfo.getCounterparties().iterator();
 			while (cpIt.hasNext()) {
 				Counterparty cp = cpIt.next();
 				if (cp.getId() == Long.valueOf(id)) {
-					if (name != null) {
+					Counterparty tempCp = new Counterparty();
+					tempCp.setName(name);
+					tempCp.setCounterpartyType(type);
+					Counterparty cpInDb = projectInfoManager.findCounterparty(tempCp);
+					if (cpInDb != null) { // Existed in DB
+						if (projectInfo.getCounterparties().contains(tempCp)) {
+							saveError(request, getText("duplicate.counterparty.error", request.getLocale()));
+						} else {
+							cpIt.remove();
+							projectInfo.getCounterparties().add(cpInDb);
+							saveMessage(request, getText("projectInfo.counterparty.update.sccess", request.getLocale()));
+						}
+					} else { // Doesn't exist in DB
 						cp.setName(name);
-					}
-
-					if (type != null) {
 						cp.setCounterpartyType(type);
+						projectInfoManager.saveCounterparty(cp);
 					}
-					projectInfoManager.saveCounterparty(cp);
 				}
 			}
-		} else {
-			// Add
-			if (!StringUtils.isBlank(name) || !StringUtils.isBlank(type)) {
-				Counterparty cpObj = new Counterparty();
-				if (!StringUtils.isBlank(name)) {
-					cpObj.setName(name);
-				}
-
-				if (!StringUtils.isBlank(type)) {
-					cpObj.setCounterpartyType(type);
-				}
-
-				if (projectInfo.getCounterparties().contains(cpObj)) {
+		} else {			// Add
+			Counterparty cpObj = new Counterparty();
+			cpObj.setName(name);
+			cpObj.setCounterpartyType(type);
+			Counterparty cpInDb = projectInfoManager.findCounterparty(cpObj);
+			if (cpInDb != null) {
+				if (projectInfo.getCounterparties().contains(cpInDb)) {
 					saveError(request, getText("duplicate.counterparty.error", request.getLocale()));
 				} else {
-					cpObj = projectInfoManager.saveCounterparty(cpObj);
-					projectInfo.getCounterparties().add(cpObj);
+					projectInfo.getCounterparties().add(cpInDb);
+					saveMessage(request, getText("projectInfo.counterparty.update.sccess", request.getLocale()));
 				}
-
 			} else {
-				// Error
+				cpObj = projectInfoManager.saveCounterparty(cpObj);
+				projectInfo.getCounterparties().add(cpObj);
 			}
 		}
 		projectInfo = projectInfoManager.save(projectInfo);
@@ -409,7 +410,7 @@ public class ProjectInfoFormController extends BaseFormController {
 					} else {
 						// if doesn't exist in database
 						if (type.equals(CapitalInvestmentType.REAL_ESTATE_REPAYMENT_PROJECT.getTitle())) {
-							isIt.remove();							
+							isIt.remove();
 							tempIs.setProjectName(name);
 							tempIs.setProjectType(CapitalInvestmentType.REAL_ESTATE.getTitle());
 							investmentStatus = investmentProjectsManager.findByInvestmentStatus(tempIs);
@@ -417,13 +418,11 @@ public class ProjectInfoFormController extends BaseFormController {
 								if (!projectInfo.getInvestments().contains(tempIs)) {
 									projectInfo.getInvestments().add(investmentStatus);
 								}
-							} 
-							else
-							{
+							} else {
 								tempIs = investmentProjectsManager.save(tempIs);
 								projectInfo.getInvestments().add(tempIs);
 							}
-							
+
 							tempIs = new InvestmentStatus();
 							tempIs.setProjectName(name);
 							tempIs.setProjectType(CapitalInvestmentType.REPAYMENT_PROJECT.getTitle());
@@ -432,9 +431,7 @@ public class ProjectInfoFormController extends BaseFormController {
 								if (!projectInfo.getInvestments().contains(tempIs)) {
 									projectInfo.getInvestments().add(investmentStatus);
 								}
-							}
-							else
-							{
+							} else {
 								tempIs = investmentProjectsManager.save(tempIs);
 								projectInfo.getInvestments().add(tempIs);
 							}
@@ -510,54 +507,53 @@ public class ProjectInfoFormController extends BaseFormController {
 	private ModelAndView saveGuarantor(ProjectInfo projectInfo, BindingResult errors, HttpServletRequest request, final ModelAndView mav)
 			throws Exception {
 		String id = request.getParameter("guarantorId");
-		String[] idArray = request.getParameterValues("guarantorId");
-		if (idArray != null && idArray.length > 0 && !"".equals(idArray[0])) {
-			StringBuilder sb = new StringBuilder("submit guarantor ids: ");
-			for (String idStr : idArray) {
-				sb.append(idStr).append(",");
-			}
-			log.debug(sb);
-		}
-
 		String name = request.getParameter("guarantorName");
 		String type = request.getParameter("guarantorType");
+		if (StringUtils.isBlank(name)) {
+			saveError(request, getText("empty.guarantor.name.error", request.getLocale()));
+			return mav;
+		}
 
-		if (!StringUtils.isBlank(id)) {
+		if (!StringUtils.isBlank(id)) { //Edit
 			Iterator<Counterparty> cpIt = projectInfo.getGuarantors().iterator();
 			while (cpIt.hasNext()) {
 				Counterparty cp = cpIt.next();
 				if (cp.getId() == Long.valueOf(id)) {
-					if (name != null) {
+					Counterparty tempCp = new Counterparty();
+					tempCp.setName(name);
+					tempCp.setCounterpartyType(type);
+					Counterparty cpInDb = projectInfoManager.findCounterparty(tempCp);
+					if (cpInDb != null) { // Existed in DB
+						if (projectInfo.getGuarantors().contains(tempCp)) {
+							saveError(request, getText("duplicate.guarantor.error", request.getLocale()));
+						} else {
+							cpIt.remove();
+							projectInfo.getGuarantors().add(cpInDb);
+							saveMessage(request, getText("projectInfo.guarantor.update.sccess", request.getLocale()));
+						}
+					} else { // Doesn't exist in DB
 						cp.setName(name);
-					}
-
-					if (type != null) {
 						cp.setCounterpartyType(type);
-					}
-					projectInfoManager.saveCounterparty(cp);
+						projectInfoManager.saveCounterparty(cp);
+					}					
 				}
 			}
 		} else {
 			// Add
-			if (!StringUtils.isBlank(name) || !StringUtils.isBlank(type)) {
-				Counterparty cpObj = new Counterparty();
-				if (!StringUtils.isBlank(name)) {
-					cpObj.setName(name);
-				}
-
-				if (!StringUtils.isBlank(type)) {
-					cpObj.setCounterpartyType(type);
-				}
-
-				if (projectInfo.getGuarantors().contains(cpObj)) {
-					saveError(request, getText("duplicate.counterparty.error", request.getLocale()));
+			Counterparty cpObj = new Counterparty();
+			cpObj.setName(name);
+			cpObj.setCounterpartyType(type);
+			Counterparty cpInDb = projectInfoManager.findCounterparty(cpObj);
+			if (cpInDb != null) {
+				if (projectInfo.getGuarantors().contains(cpInDb)) {
+					saveError(request, getText("duplicate.guarantor.error", request.getLocale()));
 				} else {
-					cpObj = projectInfoManager.saveCounterparty(cpObj);
-					projectInfo.getGuarantors().add(cpObj);
+					projectInfo.getGuarantors().add(cpInDb);
+					saveMessage(request, getText("projectInfo.guarantor.update.sccess", request.getLocale()));
 				}
-
 			} else {
-				// Error
+				cpObj = projectInfoManager.saveCounterparty(cpObj);
+				projectInfo.getGuarantors().add(cpObj);
 			}
 		}
 		projectInfo = projectInfoManager.save(projectInfo);

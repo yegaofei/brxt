@@ -2,6 +2,7 @@ package com.brxt.model;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,9 +18,6 @@ import org.appfuse.model.BaseObject;
 // 交易对手,担保人表
 public class Counterparty extends BaseObject implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 8483145366662490418L;
 	private Long id;
 	private String name; // 交易对手名称
@@ -35,6 +33,7 @@ public class Counterparty extends BaseObject implements Serializable {
 		this.id = id;
 	}
 
+	@Column(nullable = false)
 	public String getName() {
 		return name;
 	}
@@ -43,6 +42,7 @@ public class Counterparty extends BaseObject implements Serializable {
 		this.name = name;
 	}
 
+	@Column(nullable = false)
 	public String getCounterpartyType() {
 		return counterpartyType;
 	}
@@ -54,7 +54,7 @@ public class Counterparty extends BaseObject implements Serializable {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
-        .append(this.name)
+        .append(this.name).append(this.counterpartyType)
         .toString();
 	}
 
@@ -68,12 +68,17 @@ public class Counterparty extends BaseObject implements Serializable {
         }
 
         final Counterparty counterparty = (Counterparty) o;
-        return !(name != null ? !name.equals(counterparty.name) : counterparty.name != null);
+        return !(name != null ? !name.equals(counterparty.name) : counterparty.name != null)
+        		&&
+        		!(counterpartyType != null ? !counterpartyType.equals(counterparty.counterpartyType) : counterparty.counterpartyType != null);
 	}
 
 	@Override
 	public int hashCode() {
-		return (name != null ? name.hashCode() : 0);
+		int result;
+        result = (name != null ? name.hashCode() : 0);
+        result = 29 * result + (counterpartyType != null ? counterpartyType.hashCode() : 0);
+        return result;
 	}
 
 }

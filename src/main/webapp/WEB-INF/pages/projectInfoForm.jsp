@@ -51,42 +51,24 @@
     		<button type="submit" name="method" value="SaveProjectSize" class="btn btn-default btn-xs">
                 <fmt:message key="button.save"/>
             </button>
+            <button type="submit" name="method" value="CancelProjectSize" class="btn btn-default btn-xs">
+                	<fmt:message key="button.cancel"/>
+			</button>
 		</c:when>
 		<c:otherwise>
-        <button type="submit" name="method" value="AddProjectSize" class="btn btn-default btn-xs">
+        	<button type="submit" name="method" value="AddProjectSize" class="btn btn-default btn-xs">
                 <fmt:message key="button.add"/>
-        </button>    
-        </c:otherwise>
-        </c:choose>
-        <button type="submit" name="method" value="EditProjectSize" class="btn btn-default btn-xs">
+        	</button>    
+        	<button type="submit" name="method" value="EditProjectSize" class="btn btn-default btn-xs">
                 <fmt:message key="button.edit"/>
-        </button>
-        <button type="submit" name="method" value="DeleteProjectSize" class="btn btn-default btn-xs">
+        	</button>  
+        	<button type="submit" name="method" value="DeleteProjectSize" class="btn btn-default btn-xs">
                 <fmt:message key="button.delete"/>
-        </button>    
-	</div>
-	</c:if>
-	
-	<c:if test="${empty projectInfo.projectSizes and not empty param.id}">
-    	<appfuse:label styleClass="control-label" key="projectSize.title"/>
-    	<div id="actions" class="btn-group">
-		<c:choose>
-		<c:when test="${method == 'EditProjectSize'}">
-    		<button type="submit" name="method" value="SaveProjectSize" class="btn btn-default btn-xs">
-                <fmt:message key="button.save"/>
-            </button>
-		</c:when>
-		<c:otherwise>
-        <button type="submit" name="method" value="AddProjectSize" class="btn btn-default btn-xs">
-                <fmt:message key="button.add"/>
-        </button>    
+        	</button>        
         </c:otherwise>
         </c:choose>
-		</div>
-    </c:if>
-	
-	<c:if test="${not empty param.id}">
-    <div class="form-group">
+	</div>
+	<div class="form-group">
 		<display:table name="projectInfo.projectSizes" id="projectSize" class="table table-bordered table-condensed table-striped table-hover">
   			<display:column style="width: 5%">
     			<input type="checkbox" name="projectSizeid" value="<c:out value='${projectSize.id}'/>" 
@@ -122,6 +104,15 @@
   			</display:column>
 		</display:table>
      </div>
+	</c:if>
+	
+	<c:if test="${empty projectInfo.projectSizes and not empty param.id}">
+    	<appfuse:label styleClass="control-label" key="projectSize.title"/>
+    	<div id="actions" class="btn-group">	
+        <button type="submit" name="method" value="AddProjectSize" class="btn btn-default btn-xs">
+                <fmt:message key="button.add"/>
+        </button>          
+		</div>
     </c:if>
     
     <div class="row">
@@ -139,33 +130,25 @@
     	<div id="actions" class="btn-group">
 			<c:choose>
 			<c:when test="${method == 'EditInvestment'}">
-    		<button type="submit" name="method" value="SaveInvestment" class="btn btn-default btn-xs">
-                <fmt:message key="button.save"/>
-            </button>
-			</c:when>
-			<c:otherwise>
-        	<button type="submit" name="method" value="AddInvestment" class="btn btn-default btn-xs">
-                <fmt:message key="button.add"/>
-        	</button>    
-        	</c:otherwise>
-        	</c:choose>
-        	<c:choose>
-        	<c:when test="${method == 'EditInvestment'}">
-        		<button type="submit" name="method" value="CancelInvestment" class="btn btn-default btn-xs">
+    			<button type="submit" name="method" value="SaveInvestment" class="btn btn-default btn-xs">
+                	<fmt:message key="button.save"/>
+            	</button>
+            	<button type="submit" name="method" value="CancelInvestment" class="btn btn-default btn-xs">
                 	<fmt:message key="button.cancel"/>
         		</button>
-        	</c:when>
-        	<c:otherwise>
+			</c:when>
+			<c:otherwise>
+        		<button type="submit" name="method" value="AddInvestment" class="btn btn-default btn-xs">
+                	<fmt:message key="button.add"/>
+        		</button>
         		<button type="submit" name="method" value="EditInvestment" class="btn btn-default btn-xs">
                 	<fmt:message key="button.edit"/>
-        		</button>
-        	</c:otherwise>
-        	</c:choose>
-        	<c:if test="${method != 'EditInvestment'}">
+        		</button>  
         		<button type="submit" name="method" value="DeleteInvestment" class="btn btn-default btn-xs" onclick="return confirmMessage(msgDelInvesmentConfirm)">
     	            <fmt:message key="button.delete"/>
-	        	</button>
-        	</c:if>
+	        	</button>  
+        	</c:otherwise>
+        	</c:choose>        
 		</div>
 		<display:table name="projectInfo.investments" id="investment" class="table table-bordered table-condensed table-striped table-hover">
 			<display:column style="width: 5%">
@@ -201,18 +184,9 @@
      <c:if test="${not empty param.id and empty projectInfo.investments}">
      	<appfuse:label styleClass="control-label" key="projectInfo.investment.projects"/>
      	<div id="actions" class="btn-group">
-			<c:choose>
-			<c:when test="${method == 'EditInvestment'}">
-    		<button type="submit" name="method" value="SaveInvestment" class="btn btn-default btn-xs">
-                <fmt:message key="button.save"/>
-            </button>
-			</c:when>
-			<c:otherwise>
         	<button type="submit" name="method" value="AddInvestment" class="btn btn-default btn-xs">
                 <fmt:message key="button.add"/>
         	</button>    
-        	</c:otherwise>
-        	</c:choose>
 		</div>
      </c:if>
     </div>
@@ -267,27 +241,29 @@
 	<div class="row">    
     <div class="col-sm-6 form-group">
     	<appfuse:label styleClass="control-label" key="projectInfo.counterparty.list"/>
+    	<c:if test="${not empty projectInfo.counterparties}">
     	<div id="actions" class="btn-group">
 			<c:choose>
 			<c:when test="${method == 'EditCounterparty'}">
-    		<button type="submit" name="method" value="SaveCounterparty" class="btn btn-default btn-xs">
-                <fmt:message key="button.save"/>
-            </button>
+    			<button type="submit" name="method" value="SaveCounterparty" class="btn btn-default btn-xs">
+                	<fmt:message key="button.save"/>
+            	</button>
+            	<button type="submit" name="method" value="CancelCounterparty" class="btn btn-default btn-xs">
+                	<fmt:message key="button.cancel"/>
+        		</button>
 			</c:when>
 			<c:otherwise>
-        	<button type="submit" name="method" value="AddCounterparty" class="btn btn-default btn-xs">
-                <fmt:message key="button.add"/>
-        	</button>    
+        		<button type="submit" name="method" value="AddCounterparty" class="btn btn-default btn-xs">
+                	<fmt:message key="button.add"/>
+        		</button>    
+        		<button type="submit" name="method" value="EditCounterparty" class="btn btn-default btn-xs">
+                	<fmt:message key="button.edit"/>
+        		</button>
+        		<button type="submit" name="method" value="DeleteCounterparty" class="btn btn-default btn-xs">
+                	<fmt:message key="button.delete"/>
+        		</button>
         	</c:otherwise>
-        	</c:choose>
-        	<button type="submit" name="method" value="EditCounterparty" class="btn btn-default btn-xs">
-                <fmt:message key="button.edit"/>
-        	</button>
-        	<!--
-        	<button type="submit" name="method" value="DeleteCounterparty" class="btn btn-default btn-xs">
-                <fmt:message key="button.delete"/>
-        	</button>
-        	-->    
+        	</c:choose>        	
 		</div>
 		<display:table name="projectInfo.counterparties" id="counterparty" class="table table-bordered table-condensed table-striped table-hover">
   			<display:column style="width: 5%">
@@ -319,31 +295,41 @@
     			</c:choose>
   			</display:column>
 		</display:table>
+		</c:if>
+		<c:if test="${empty projectInfo.counterparties}">
+			<div id="actions" class="btn-group">
+        		<button type="submit" name="method" value="AddCounterparty" class="btn btn-default btn-xs">
+                	<fmt:message key="button.add"/>
+        		</button>    
+			</div>
+		</c:if>
      </div>
      
      <div class="col-sm-6 form-group">
      	<appfuse:label styleClass="control-label" key="projectInfo.guarantor.list"/>
+     	<c:if test="${not empty projectInfo.guarantors}">
     	<div id="actions" class="btn-group">
 			<c:choose>
 			<c:when test="${method == 'EditGuarantor'}">
-    		<button type="submit" name="method" value="SaveGuarantor" class="btn btn-default btn-xs">
-                <fmt:message key="button.save"/>
-            </button>
+    			<button type="submit" name="method" value="SaveGuarantor" class="btn btn-default btn-xs">
+                	<fmt:message key="button.save"/>
+            	</button>
+            	<button type="submit" name="method" value="CancelGuarantor" class="btn btn-default btn-xs">
+                	<fmt:message key="button.cancel"/>
+        		</button>
 			</c:when>
 			<c:otherwise>
-        	<button type="submit" name="method" value="AddGuarantor" class="btn btn-default btn-xs">
-                <fmt:message key="button.add"/>
-        	</button>    
+        		<button type="submit" name="method" value="AddGuarantor" class="btn btn-default btn-xs">
+                	<fmt:message key="button.add"/>
+        		</button>    
+        		<button type="submit" name="method" value="EditGuarantor" class="btn btn-default btn-xs">
+                	<fmt:message key="button.edit"/>
+        		</button>
+        		<button type="submit" name="method" value="DeleteGuarantor" class="btn btn-default btn-xs">
+                	<fmt:message key="button.delete"/>
+        		</button>
         	</c:otherwise>
         	</c:choose>
-        	<button type="submit" name="method" value="EditGuarantor" class="btn btn-default btn-xs">
-                <fmt:message key="button.edit"/>
-        	</button>
-        	<!--
-        	<button type="submit" name="method" value="DeleteGuarantor" class="btn btn-default btn-xs">
-                <fmt:message key="button.delete"/>
-        	</button>
-        	-->    
 		</div>
 		<display:table name="projectInfo.guarantors" id="guarantor" class="table table-bordered table-condensed table-striped table-hover">
   			<display:column style="width: 5%">
@@ -373,6 +359,14 @@
     			</c:choose>
   			</display:column>
 		</display:table>
+		</c:if>
+		<c:if test="${empty projectInfo.guarantors}">
+			<div id="actions" class="btn-group">
+        		<button type="submit" name="method" value="AddGuarantor" class="btn btn-default btn-xs">
+                	<fmt:message key="button.add"/>
+        		</button>    
+			</div>
+		</c:if>
      </div>
 	</div>	
     </c:if>

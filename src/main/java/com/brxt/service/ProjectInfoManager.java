@@ -30,4 +30,6 @@ public interface ProjectInfoManager extends GenericManager<ProjectInfo, Long> {
 	
 	List<String> getAllProjectNames();
 	
+	public Counterparty findCounterparty(Counterparty counterparty);
+	
 }
