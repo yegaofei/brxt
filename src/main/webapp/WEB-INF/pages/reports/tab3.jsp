@@ -1,10 +1,16 @@
 <div class="form-group">
-	<input type="text" class="form-control input-sm" value="${riskControlReport.investmentEvaluation}" >
+	
+	<appfuse:label styleClass="control-label" key="investmentProject.policyChanges"/>
+	<input type="text" name="financeStatementSummary" class="form-control input-sm" value="${riskControlReport.policyChanges}">
+	<appfuse:label styleClass="control-label" key="investmentProject.priceChanges"/>						
+	<input type="text" name="financeStatementSummary" class="form-control input-sm" value="${riskControlReport.priceChanges}">
+	<appfuse:label styleClass="control-label" key="investmentProject.evaluation"/>	
+	<input type="text" class="form-control input-sm" value="${riskControlReport.investmentEvaluation}" >									
 	<c:if test="${not empty investmentProjects}">
 		<c:forEach var="investmentProject" items="${investmentProjects}" varStatus="status">
 			<div class="row">
 				<appfuse:label styleClass="control-label" key="investmentProject.name"/>
-				<c:out value="${investmentProject.investmentStatus.name}" /> (<fmt:message key="${investmentProject.investmentProjectType}" />)
+				<c:out value="${investmentProject.investmentStatus.projectName}" /> (<fmt:message key="${investmentProject.investmentProjectType}" />)
 			</div>
 			<table class="table table-striped table-bordered table-hover">
 						<thead>
@@ -12,16 +18,6 @@
 							<th><fmt:message key="subjectCapacity.checkResults"/></th>
 						</thead>
 						<tbody>
-						<c:if test="${investmentProject.investmentProjectType == 'real_estate'}" >
-						<tr>
-							<td><fmt:message key="investmentProject.policyChanges"/></td>
-							<td><input type="text" maxlength="20" class="form-control input-sm" /></td>
-						</tr>
-						<tr>
-							<td><fmt:message key="investmentProject.priceChanges"/></td>
-							<td><input type="text" maxlength="20" class="form-control input-sm" /></td>
-						</tr>
-						</c:if>
 						<tr>
 							<td><fmt:message key="investmentProject.startTime"/></td>
 							<td>
@@ -57,12 +53,6 @@
 							<td>
 								<c:if test="${investmentProject.delayed}"><fmt:message key="label.yes"/></c:if>
 								<c:if test="${not investmentProject.delayed}"><fmt:message key="label.no"/></c:if>
-							</td>
-						</tr>
-						<tr>
-							<td><fmt:message key="investmentProject.evaluation"/></td>
-							<td>
-								<input type="text" maxlength="20" class="form-control input-sm" />
 							</td>
 						</tr>
 						</tbody>
