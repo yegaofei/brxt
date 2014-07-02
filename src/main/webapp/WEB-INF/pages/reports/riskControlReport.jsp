@@ -14,8 +14,8 @@
                 <li <c:if test="${param.activeTab == 'tab1' or empty param.activeTab}"> class="active" </c:if>><a href="#tab1" data-toggle="tab"><fmt:message key="report.riskcontrol.tab1"/></a></li>
                 <li class="dropdown"> <a class="dropdown-toggle" data-toggle="dropdown" href="#"> <fmt:message key="report.riskcontrol.tab2"/> <span class="caret"></span> </a>
                   <ul class="dropdown-menu">
-                    <li <c:if test="${param.activeTab == 'tab2'}"> class="active" </c:if>><a href="#tab2" data-toggle="tab"><fmt:message key="subjectCapacity.heading"/></a></li>                    
-                    <li <c:if test="${param.activeTab == 'tab2-1'}"> class="active" </c:if>><a href="#tab2-1" data-toggle="tab"><fmt:message key="report.riskcontrol.financeOtherCheck"/></a></li>
+                    <li><a href="#tab2" data-toggle="tab"><fmt:message key="subjectCapacity.heading"/></a></li>                    
+                    <li><a href="#tab2-1" data-toggle="tab"><fmt:message key="report.riskcontrol.financeOtherCheck"/></a></li>
                   </ul>
                 </li>
                 

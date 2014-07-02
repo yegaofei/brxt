@@ -99,12 +99,12 @@ public class RiskControlReportController extends BaseSheetController {
 		return new ProjectInfo();
 	}
 	
-	private RiskControlReport getRiskControlReport(final HttpServletRequest request) {
+	public RiskControlReport getRiskControlReport(final HttpServletRequest request) {
 		String reportId = request.getParameter("reportId");
 		if (!StringUtils.isBlank(reportId)) {
 			return reportManager.get(Long.valueOf(reportId));
 		} 
-		return null;
+		return new RiskControlReport();
 	}
 
 	@ModelAttribute("repaymentList")
@@ -112,7 +112,7 @@ public class RiskControlReportController extends BaseSheetController {
 		ProjectInfo projectInfo = getProjectInfo(request);
 		RiskControlReport report = getRiskControlReport(request);
 		List<Repayment> ciList = null;
-		if (projectInfo != null && report != null) {
+		if (projectInfo.getId() != null && report != null) {
 			ciList = repaymentManager.findByProjId(projectInfo, report.getTimeRangeStart(), report.getTimeRangeEnd());
 		}
 		return ciList;

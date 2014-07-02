@@ -1,9 +1,7 @@
 package com.brxt.model.report;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -17,7 +15,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -37,10 +34,7 @@ import com.brxt.model.finance.ProfitStatement;
 @Entity
 @Table(name = "risk_control_report")
 public class RiskControlReport extends BaseObject{
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = -6533912247249058510L;
 	private Long id;
 	private ProjectInfo projectInfo;
@@ -53,9 +47,10 @@ public class RiskControlReport extends BaseObject{
 	private Set<InstituteBalanceSheet> instituteBalanceSheet = new HashSet<InstituteBalanceSheet>();
 	private Set<ProfitStatement> profitStatements = new HashSet<ProfitStatement>();
 	
-	//财务状况排查结论
-	private List<FinanceCheckComment> financeCheckComment = new ArrayList<FinanceCheckComment>();
-	
+	private String financeCheckComment;//财务状况排查结论	
+	private String investmentEvaluation; //资金投向综合评价
+	private String policyChanges; //房地产市场调控政策有无变化
+	private String priceChanges; //项目所在区域商品房价格走势情况；如难以取得上述数据，可结合周边楼盘定价及销售情况	
 	private String collateralSummary; //担保物的状况
 	private String statusBeforeMaturity; //到期前情况说明
 	private String comments; //结论和建议
@@ -159,15 +154,30 @@ public class RiskControlReport extends BaseObject{
 		this.profitStatements = profitStatements;
 	}
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "riskControlReport", cascade = { CascadeType.ALL })
-	@Fetch(FetchMode.SELECT) 
-	public List<FinanceCheckComment> getFinanceCheckComment() {
+	public String getFinanceCheckComment() {
 		return financeCheckComment;
 	}
-	public void setFinanceCheckComment(List<FinanceCheckComment> financeCheckComment) {
+	public void setFinanceCheckComment(String financeCheckComment) {
 		this.financeCheckComment = financeCheckComment;
 	}
-	
+	public String getInvestmentEvaluation() {
+		return investmentEvaluation;
+	}
+	public void setInvestmentEvaluation(String investmentEvaluation) {
+		this.investmentEvaluation = investmentEvaluation;
+	}
+	public String getPolicyChanges() {
+		return policyChanges;
+	}
+	public void setPolicyChanges(String policyChanges) {
+		this.policyChanges = policyChanges;
+	}
+	public String getPriceChanges() {
+		return priceChanges;
+	}
+	public void setPriceChanges(String priceChanges) {
+		this.priceChanges = priceChanges;
+	}
 	public String getCollateralSummary() {
 		return collateralSummary;
 	}

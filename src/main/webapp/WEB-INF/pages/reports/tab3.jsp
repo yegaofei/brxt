@@ -1,9 +1,10 @@
 <div class="form-group">
+	<input type="text" class="form-control input-sm" value="${riskControlReport.investmentEvaluation}" >
 	<c:if test="${not empty investmentProjects}">
 		<c:forEach var="investmentProject" items="${investmentProjects}" varStatus="status">
 			<div class="row">
 				<appfuse:label styleClass="control-label" key="investmentProject.name"/>
-				<c:out value="${investmentProject.name}" /> (<fmt:message key="${investmentProject.investmentProjectType}" />)
+				<c:out value="${investmentProject.investmentStatus.name}" /> (<fmt:message key="${investmentProject.investmentProjectType}" />)
 			</div>
 			<table class="table table-striped table-bordered table-hover">
 						<thead>
