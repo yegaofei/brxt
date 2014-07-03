@@ -62,12 +62,12 @@
         <form:errors path="investmentAmount" cssClass="help-inline"/>
     </div>
     
-    <spring:bind path="investmentProject.totalAmout">
+    <spring:bind path="investmentProject.totalAmount">
     <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
-        <appfuse:label styleClass="control-label" key="investmentProject.totalAmout"/>
-        <form:input path="totalAmout" id="totalAmout" maxlength="60" cssClass="form-control"/>
-        <form:errors path="totalAmout" cssClass="help-inline"/>
+        <appfuse:label styleClass="control-label" key="investmentProject.totalAmount"/>
+        <form:input path="totalAmount" id="totalAmount" maxlength="60" cssClass="form-control"/>
+        <form:errors path="totalAmount" cssClass="help-inline"/>
     </div>
     
     <spring:bind path="investmentProject.description">
@@ -139,19 +139,22 @@
 <script>
   $(function() {
     $('#projectEndTime').datepicker({
-				language: 'zh-CN'				
+				language: 'zh-CN',
+				autoclose: true				
 			});
   });
   
   $(function() {
     $('#startTime').datepicker({
-				language: 'zh-CN'				
+				language: 'zh-CN',
+				autoclose: true				
 			});
   });
   
   $(function() {
     $('#endTime').datepicker({
-				language: 'zh-CN'				
+				language: 'zh-CN',
+				autoclose: true				
 			});
   });
 </script>

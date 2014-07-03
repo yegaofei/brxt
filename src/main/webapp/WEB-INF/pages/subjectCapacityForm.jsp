@@ -180,8 +180,10 @@
 <script>
   $(function() {
     $('#checkTime').datepicker({
-				//language: 'zh-CN'
-				format: '<c:out value="${shortDatePatternJs}" />'
+				autoclose: true,
+				language: 'zh-CN',
+				format: '<c:out value="${shortDatePatternJs}" />',
+				minViewMode: 1
 			});
   });
 </script>

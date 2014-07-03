@@ -106,6 +106,7 @@
 <script>
   $(function() {
     $('#queryTime').datepicker({
+				autoclose: true,
 				language: 'zh-CN'				
 			});
   });

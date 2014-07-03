@@ -105,15 +105,15 @@
 <script>
   $(function() {
     $('#searchTimeStart').datepicker({
-				language: 'zh-CN'
-				//format: 'yyyy-mm-dd'
+				language: 'zh-CN',
+				autoclose: true
 			});	
   });
   
   $(function() {
     $('#searchTimeEnd').datepicker({
-				language: 'zh-CN'
-				//format: 'yyyy-mm-dd'
+				language: 'zh-CN',
+				autoclose: true
 			});	
   });
 </script>

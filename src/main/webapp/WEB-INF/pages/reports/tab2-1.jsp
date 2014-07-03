@@ -16,7 +16,7 @@
 	
 		<div class="col-sm-3 form-group">
 			<appfuse:label styleClass="control-label" key="report.prev.term.report"/>
-			<input type="text" id="prevTermTime" name="prevTermTime" maxlength="20" class="form-control input-sm" value="<c:out value='${param.prevTermTime}' />"/>
+      		<input type="text" id="prevTermTime" name="prevTermTime"  value="<c:out value='${param.prevTermTime}' />"  class="form-control  input-sm" >
 		</div>	
 		<div class="col-sm-3 form-group">
 			<appfuse:label styleClass="control-label" key="report.curr.term.report"/>
@@ -323,15 +323,19 @@
 <script>
   $(function() {
     $('#prevTermTime').datepicker({
-				//language: 'zh-CN'
-				format: '<c:out value="${shortDatePatternJs}" />'
+				language: 'zh-CN',
+				format: '<c:out value="${shortDatePatternJs}" />',
+				autoclose: true,
+				minViewMode: 1
 			});	
   });
   
   $(function() {
     $('#currTermTime').datepicker({
-				//language: 'zh-CN'
-				format: '<c:out value="${shortDatePatternJs}" />'
+				language: 'zh-CN',
+				format: '<c:out value="${shortDatePatternJs}" />',
+				autoclose: true,
+				minViewMode: 1
 			});	
   });  
 </script>

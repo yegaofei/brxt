@@ -422,12 +422,12 @@
 <script>
   $(function() {
     $('#endTime').datepicker({
+				autoclose: true,
 				language: 'zh-CN'
-				//format: 'yyyy-mm-dd'
 			});
 	$('#startTime').datepicker({
+				autoclose: true,
 				language: 'zh-CN'
-				//format: 'yyyy-mm-dd'
 			});		
   });
 </script>

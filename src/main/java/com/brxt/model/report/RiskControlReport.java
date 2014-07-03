@@ -51,7 +51,10 @@ public class RiskControlReport extends BaseObject{
 	private String investmentEvaluation; //资金投向综合评价
 	private String policyChanges; //房地产市场调控政策有无变化
 	private String priceChanges; //项目所在区域商品房价格走势情况；如难以取得上述数据，可结合周边楼盘定价及销售情况	
+	private String repaymentEvaluation; //还款来源综合评价
 	private String collateralSummary; //担保物的状况
+	private String guarantorCheckComment; //保证人担保能力综合评价
+	private String guarantorSummary; //项目管理人员认为需要说明的其他事项可补充填列
 	private String statusBeforeMaturity; //到期前情况说明
 	private String comments; //结论和建议
 	
@@ -178,11 +181,29 @@ public class RiskControlReport extends BaseObject{
 	public void setPriceChanges(String priceChanges) {
 		this.priceChanges = priceChanges;
 	}
+	public String getRepaymentEvaluation() {
+		return repaymentEvaluation;
+	}
+	public void setRepaymentEvaluation(String repaymentEvaluation) {
+		this.repaymentEvaluation = repaymentEvaluation;
+	}
 	public String getCollateralSummary() {
 		return collateralSummary;
 	}
 	public void setCollateralSummary(String collateralSummary) {
 		this.collateralSummary = collateralSummary;
+	}
+	public String getGuarantorCheckComment() {
+		return guarantorCheckComment;
+	}
+	public void setGuarantorCheckComment(String guarantorCheckComment) {
+		this.guarantorCheckComment = guarantorCheckComment;
+	}
+	public String getGuarantorSummary() {
+		return guarantorSummary;
+	}
+	public void setGuarantorSummary(String guarantorSummary) {
+		this.guarantorSummary = guarantorSummary;
 	}
 	public String getStatusBeforeMaturity() {
 		return statusBeforeMaturity;

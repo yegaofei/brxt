@@ -1,9 +1,19 @@
 <div class="form-group">
+	<appfuse:label styleClass="control-label" key="repaymentProject.evaluation"/>	
+	<div class="input-group">
+		<input type="text" name="repaymentEvaluation" class="form-control input-sm" value="${riskControlReport.repaymentEvaluation}" >
+		<span class="input-group-btn">
+			<button type="submit" class="btn btn-primary btn-sm" name="method" value="SaveTab4" onclick="$('#activeTab').val('tab4')">
+            		<i class="icon-ok icon-white"></i> <fmt:message key="button.save"/>
+			</button>
+		</span>
+	</div>
+					
 	<c:if test="${not empty repaymentProjects}">
 		<c:forEach var="repaymentProject" items="${repaymentProjects}" varStatus="status">
 			<div class="row">
-				<appfuse:label styleClass="control-label" key="repaymentProject.name"/>
-				<c:out value="${repaymentProject.name}" />
+				<appfuse:label styleClass="control-label" key="repaymentProject.name"/>:
+				<c:out value="${repaymentProject.investmentStatus.projectName}" />
 			</div>
 			<table class="table table-striped table-bordered table-hover">
 						<thead>
@@ -62,7 +72,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td><fmt:message key="repaymentProject.evaluation"/></td>
+							<td><fmt:message key=""/></td>
 							<td>
 								<input type="text" maxlength="20" class="form-control input-sm" />
 							</td>

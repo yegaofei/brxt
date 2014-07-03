@@ -1,15 +1,15 @@
 <div class="form-group">
 	
 	<appfuse:label styleClass="control-label" key="investmentProject.policyChanges"/>
-	<input type="text" name="financeStatementSummary" class="form-control input-sm" value="${riskControlReport.policyChanges}">
+	<input type="text" name="policyChanges" class="form-control input-sm" value="${riskControlReport.policyChanges}">
 	<appfuse:label styleClass="control-label" key="investmentProject.priceChanges"/>						
-	<input type="text" name="financeStatementSummary" class="form-control input-sm" value="${riskControlReport.priceChanges}">
+	<input type="text" name="priceChanges" class="form-control input-sm" value="${riskControlReport.priceChanges}">
 	<appfuse:label styleClass="control-label" key="investmentProject.evaluation"/>	
-	<input type="text" class="form-control input-sm" value="${riskControlReport.investmentEvaluation}" >									
+	<input type="text" name="investmentEvaluation" class="form-control input-sm" value="${riskControlReport.investmentEvaluation}" >									
 	<c:if test="${not empty investmentProjects}">
 		<c:forEach var="investmentProject" items="${investmentProjects}" varStatus="status">
 			<div class="row">
-				<appfuse:label styleClass="control-label" key="investmentProject.name"/>
+				<appfuse:label styleClass="control-label" key="investmentProject.name"/>:
 				<c:out value="${investmentProject.investmentStatus.projectName}" /> (<fmt:message key="${investmentProject.investmentProjectType}" />)
 			</div>
 			<table class="table table-striped table-bordered table-hover">
@@ -31,9 +31,9 @@
 							</td>
 						</tr>
 						<tr>
-							<td><fmt:message key="investmentProject.totalAmout"/></td>
+							<td><fmt:message key="investmentProject.totalAmount"/></td>
 							<td>
-								<c:out value="${investmentProject.totalAmout}" />
+								<c:out value="${investmentProject.totalAmount}" />
 							</td>
 						</tr>
 						<tr>
@@ -64,7 +64,7 @@
 		<c:forEach var="supplyLiquidProject" items="${supplyLiquidProjects}" varStatus="status">
 			<div class="row">
 				<appfuse:label styleClass="control-label" key="supplyLiquidProject.name"/>
-				<c:out value="${supplyLiquidProject.name}" /> (<fmt:message key='supplyLiquidProject.title' />)
+				<c:out value="${supplyLiquidProject.investmentStatus.projectName}" /> (<fmt:message key='supplyLiquidProject.title' />)
 			</div>
 			<table class="table table-striped table-bordered table-hover">
 						<thead>
@@ -115,12 +115,6 @@
 								<c:out value="${supplyLiquidProject.comments}" />
 							</td>
 						</tr>					
-						<tr>
-							<td><fmt:message key="supplyLiquidProject.evaluation"/></td>
-							<td>
-								<input type="text" maxlength="20" class="form-control input-sm" />
-							</td>
-						</tr>
 						</tbody>
 			</table>
 		</c:forEach>	

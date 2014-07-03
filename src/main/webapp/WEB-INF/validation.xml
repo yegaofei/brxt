@@ -73,26 +73,17 @@
         		<arg key="repayment.repaymentTime" />
         	</field>
         </form>	
-		<form name="investmentProject">
-        	<field property="name" depends="required">
-        		<arg key="investmentProject.name" />
-        	</field>
+		<form name="investmentProject">        	
         	<field property="projectEndTime" depends="required">
         		<arg key="investmentProject.projectEndTime" />
         	</field>
         </form>
-        <form name="repaymentProject">
-        	<field property="name" depends="required">
-        		<arg key="repaymentProject.name" />
-        	</field>
+        <form name="repaymentProject">        
         	<field property="projectEndTime" depends="required">
         		<arg key="repaymentProject.projectEndTime" />
         	</field>
         </form>
-        <form name="supplyLiquidProject">
-        	<field property="name" depends="required">
-        		<arg key="supplyLiquidProject.name" />
-        	</field>
+        <form name="supplyLiquidProject">        
         	<field property="projectEndTime" depends="required">
         		<arg key="supplyLiquidProject.projectEndTime" />
         	</field>

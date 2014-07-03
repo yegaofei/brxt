@@ -41,15 +41,15 @@
 <script>
   $(function() {
     $('#searchTimeStart').datepicker({
+				autoclose: true,
 				language: 'zh-CN'
-				//format: 'yyyy-mm-dd'
 			});	
   });
   
   $(function() {
     $('#searchTimeEnd').datepicker({
+				autoclose: true,
 				language: 'zh-CN'
-				//format: 'yyyy-mm-dd'
 			});	
   });
 </script>

@@ -34,7 +34,7 @@ public class InvestmentProject extends BaseObject  {
 	private Date startTime;
 	private Date endTime; //预计何时竣工
 	private BigDecimal investmentAmount; //截至本期已投资额
-	private BigDecimal totalAmout; //预计总投资额
+	private BigDecimal totalAmount; //预计总投资额
 	private String description; //项目进度描述
 	private Boolean delayed;
 	private String comments;
@@ -102,13 +102,13 @@ public class InvestmentProject extends BaseObject  {
 	public void setInvestmentAmount(BigDecimal investmentAmount) {
 		this.investmentAmount = investmentAmount;
 	}
-
-	public BigDecimal getTotalAmout() {
-		return totalAmout;
+	
+	public BigDecimal getTotalAmount() {
+		return totalAmount;
 	}
 
-	public void setTotalAmout(BigDecimal totalAmout) {
-		this.totalAmout = totalAmout;
+	public void setTotalAmount(BigDecimal totalAmount) {
+		this.totalAmount = totalAmount;
 	}
 
 	public String getDescription() {

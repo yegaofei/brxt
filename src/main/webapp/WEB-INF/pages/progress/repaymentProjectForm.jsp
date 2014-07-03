@@ -132,13 +132,15 @@
 <script>
   $(function() {
     $('#projectEndTime').datepicker({
-				language: 'zh-CN'				
+				language: 'zh-CN',
+				autoclose: true				
 			});
   });
   
   $(function() {
     $('#openDate').datepicker({
-				language: 'zh-CN'				
+				language: 'zh-CN',
+				autoclose: true				
 			});
   });
   

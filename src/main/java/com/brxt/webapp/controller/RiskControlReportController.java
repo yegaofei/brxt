@@ -166,9 +166,9 @@ public class RiskControlReportController extends BaseSheetController {
 			Iterator<Counterparty> gIt = guarantors.iterator();
 			while (gIt.hasNext()) {
 				Counterparty guarant = gIt.next();
-				if (guarant.getCounterpartyType().equalsIgnoreCase(CounterpartyType.INSTITUTION.getTitle())) {
-					continue;
-				}
+				//if (guarant.getCounterpartyType().equalsIgnoreCase(CounterpartyType.INSTITUTION.getTitle())) {
+				//	continue;
+				//}
 				cpList.add(guarant);
 			}
 			return cpList;
@@ -201,7 +201,6 @@ public class RiskControlReportController extends BaseSheetController {
 		return null;
 	}
 
-	@ModelAttribute("creditInformationTab6")
 	public CreditInformation getCreditInformationTab6(final HttpServletRequest request) throws ParseException {
 		ReportContentKey rck = getReportContentKey(request);
 		if (rck == null) {
@@ -334,6 +333,77 @@ public class RiskControlReportController extends BaseSheetController {
 	@RequestMapping(value = "/reports/riskControlReport*", method = RequestMethod.GET)
 	public String handleRequest(final HttpServletRequest request) {
 		return "/reports/riskControlReport";
+	}
+	
+	private ModelAndView fetchFinanceReportsTab6(final HttpServletRequest request, ModelAndView mav)
+	{
+		String prevTermTime = request.getParameter("prevTermTimeTab6");
+		String currTermTime = request.getParameter("currTermTimeTab6");
+		String projectInfoId = request.getParameter("id");
+		String guarantorId = request.getParameter("guarantorsTab6");
+		if (StringUtils.isBlank(prevTermTime) || StringUtils.isBlank(currTermTime) || StringUtils.isBlank(guarantorId)) {
+			saveError(request, getText("report.counterparty.required.error", request.getLocale()));
+			return mav;
+		}
+		SimpleDateFormat shortDate = new SimpleDateFormat(getText("date.format.short", request.getLocale()));
+		try {
+			Date prevTerm = shortDate.parse(prevTermTime);
+			Date currTerm = shortDate.parse(currTermTime);
+			Calendar c1 = Calendar.getInstance();
+			Calendar c2 = Calendar.getInstance();
+			c1.setTime(prevTerm);
+			c2.setTime(currTerm);
+			ProjectInfo projectInfo = projectInfoManager.get(Long.valueOf(projectInfoId));
+			Counterparty guarantor = findGuarantor(projectInfo, Long.valueOf(guarantorId));
+			FinanceCheck financeCheck = new FinanceCheck();
+			financeCheck.setCounterparty(guarantor);
+			//房地产企业和一般工商企业
+			if(guarantor.getCounterpartyType().equals(CounterpartyType.REAL_ESTATE_FIRM.toString()) || 
+					guarantor.getCounterpartyType().equals(CounterpartyType.COMMERCE_COMPANY.toString())){
+				CorporateBalanceSheet prevTermCbs = financeSheetManager.findCorporateBalanceSheet(projectInfo, guarantor,
+						c1.get(Calendar.YEAR), c1.get(Calendar.MONTH) + 1);
+				CorporateBalanceSheet currTermCbs = financeSheetManager.findCorporateBalanceSheet(projectInfo, guarantor,
+						c2.get(Calendar.YEAR), c2.get(Calendar.MONTH) + 1);
+				CorporateBalanceSheet corpBalanceSheetChanges = calculate(prevTermCbs, currTermCbs);
+				
+				financeCheck.setCurrCorpBalanceSheet(currTermCbs);
+				financeCheck.setPrevCorpBalanceSheet(prevTermCbs);
+				financeCheck.setCorpBalanceSheetChanges(corpBalanceSheetChanges);
+				
+				CreditInformation creditInformation = getCreditInformationTab6(request);
+				if(currTermCbs != null && creditInformation != null)
+				{
+					if(currTermCbs.getLongLoan() != null)
+					{
+						creditInformation.setDebtBalance(currTermCbs.getLongLoan().add(currTermCbs.getShortLoan()));					
+					}
+					else
+					{
+						creditInformation.setDebtBalance(currTermCbs.getShortLoan());	
+					}
+				}
+				mav.addObject("creditInformationTab6", creditInformation);
+				
+			}
+			
+			// 事业法人
+			if(guarantor.getCounterpartyType().equals(CounterpartyType.INSTITUTION.toString())) {
+				InstituteBalanceSheet prevIBS = financeSheetManager.findInstituteBalanceSheet(projectInfo, guarantor,
+						c1.get(Calendar.YEAR), c1.get(Calendar.MONTH) + 1);
+				InstituteBalanceSheet currIBS = financeSheetManager.findInstituteBalanceSheet(projectInfo, guarantor,
+						c2.get(Calendar.YEAR), c2.get(Calendar.MONTH) + 1);
+				
+				financeCheck.setCurrInstituteBalanceSheet(currIBS);
+				financeCheck.setPrevInstituteBalanceSheet(prevIBS);
+			}
+			mav.addObject("financeCheckTab6", financeCheck);
+			
+		} catch (ParseException e) {
+			saveError(request, "Date format is incorrect ");
+			return mav;
+		}
+		return mav;
+		
 	}
 	
 	private ModelAndView fetchFinanceReports(final HttpServletRequest request, ModelAndView mav)
@@ -592,6 +662,9 @@ public class RiskControlReportController extends BaseSheetController {
 				break;
 			case "SaveTab5":
 				mav = saveTab5(request, mav);
+				break;
+			case "FinanceCheckTab6":
+				mav = fetchFinanceReportsTab6(request, mav);
 				break;
 			case "SaveTab6":
 				break;

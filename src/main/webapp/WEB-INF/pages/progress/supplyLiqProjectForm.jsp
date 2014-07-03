@@ -128,6 +128,7 @@
 <script>
   $(function() {
     $('#projectEndTime').datepicker({
+				autoclose: true,
 				language: 'zh-CN'				
 			});
   });

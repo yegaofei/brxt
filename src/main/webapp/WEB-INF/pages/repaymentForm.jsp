@@ -80,6 +80,7 @@
 <script>
   $(function() {
     $('#repaymentTime').datepicker({
+				autoclose: true,
 				language: 'zh-CN'				
 			});
   });

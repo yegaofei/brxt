@@ -242,8 +242,10 @@ $(document).ready(function(){
 <script>
   $(function() {
     $('#reportTime').datepicker({
-				//language: 'zh-CN'
-				format: '<c:out value="${shortDatePatternJs}" />'
+				language: 'zh-CN',
+				format: '<c:out value="${shortDatePatternJs}" />',
+				autoclose: true,
+				minViewMode: 1
 			});
   });
 </script>
