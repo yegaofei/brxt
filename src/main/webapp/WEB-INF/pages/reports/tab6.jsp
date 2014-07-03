@@ -184,7 +184,7 @@
         				<c:out value="${financeCheckTab6.prevInstituteBalanceSheet.debtGroupTotal}" />
         			</td>
         			<td>
-        				<c:out value="${financeCheckTab6.prevInstituteBalanceSheet.debtGroupTotal}" />
+        				<c:out value="${financeCheckTab6.currInstituteBalanceSheet.debtGroupTotal}" />
         			</td>
         		</tr>
         		<tr>
@@ -193,7 +193,7 @@
         				<c:out value="${financeCheckTab6.prevInstituteBalanceSheet.debtTotal}" />
 					</td>
         			<td>
-        				<c:out value="${financeCheckTab6.prevInstituteBalanceSheet.debtTotal}" />
+        				<c:out value="${financeCheckTab6.currInstituteBalanceSheet.debtTotal}" />
         			</td>
         		</tr>
         		<tr>
@@ -202,7 +202,7 @@
         				<c:out value="${financeCheckTab6.prevInstituteBalanceSheet.netAssetTotal}" />
         			</td>
         			<td>
-        				<c:out value="${financeCheckTab6.prevInstituteBalanceSheet.netAssetTotal}" />
+        				<c:out value="${financeCheckTab6.currInstituteBalanceSheet.netAssetTotal}" />
         			</td>
         		</tr>
         		<tr>
@@ -211,7 +211,7 @@
         				<c:out value="${financeCheckTab6.prevInstituteBalanceSheet.incomeTotal}" />
         			</td>
         			<td>
-        				<c:out value="${financeCheckTab6.prevInstituteBalanceSheet.incomeTotal}" />
+        				<c:out value="${financeCheckTab6.currInstituteBalanceSheet.incomeTotal}" />
         			</td>
         		</tr>
 			</tbody>

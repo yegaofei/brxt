@@ -43,9 +43,14 @@ public class RiskControlReport extends BaseObject{
 	private Date timeRangeStart;  
 	private Date timeRangeEnd;  
 	
+	//借款人财务排查
 	private Set<CorporateBalanceSheet> corporateBalanceSheets = new HashSet<CorporateBalanceSheet>();
 	private Set<InstituteBalanceSheet> instituteBalanceSheet = new HashSet<InstituteBalanceSheet>();
 	private Set<ProfitStatement> profitStatements = new HashSet<ProfitStatement>();
+	
+	//保证人财务排查
+	private Set<CorporateBalanceSheet> guarantorCorpBalanceSheets = new HashSet<CorporateBalanceSheet>();
+	private Set<InstituteBalanceSheet> guarantorInstBalanceSheet = new HashSet<InstituteBalanceSheet>();
 	
 	private String financeCheckComment;//财务状况排查结论	
 	private String investmentEvaluation; //资金投向综合评价
@@ -157,9 +162,40 @@ public class RiskControlReport extends BaseObject{
 		this.profitStatements = profitStatements;
 	}
 	
+	@ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)    
+    @JoinTable(
+            name = "report_guarantor_corp_balancesheet",
+            joinColumns = { @JoinColumn(name = "risk_control_report_id") },
+            inverseJoinColumns = @JoinColumn(name = "corp_balancesheet_id")
+    )
+	public Set<CorporateBalanceSheet> getGuarantorCorpBalanceSheets() {
+		return guarantorCorpBalanceSheets;
+	}
+	public void setGuarantorCorpBalanceSheets(
+			Set<CorporateBalanceSheet> guarantorCorpBalanceSheets) {
+		this.guarantorCorpBalanceSheets = guarantorCorpBalanceSheets;
+	}
+	
+	@ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)    
+    @JoinTable(
+            name = "report_guarantor_inst_balancesheet",
+            joinColumns = { @JoinColumn(name = "risk_control_report_id") },
+            inverseJoinColumns = @JoinColumn(name = "inst_balancesheet_id")
+    )
+	public Set<InstituteBalanceSheet> getGuarantorInstBalanceSheet() {
+		return guarantorInstBalanceSheet;
+	}
+	public void setGuarantorInstBalanceSheet(
+			Set<InstituteBalanceSheet> guarantorInstBalanceSheet) {
+		this.guarantorInstBalanceSheet = guarantorInstBalanceSheet;
+	}
+	
 	public String getFinanceCheckComment() {
 		return financeCheckComment;
 	}
+	
 	public void setFinanceCheckComment(String financeCheckComment) {
 		this.financeCheckComment = financeCheckComment;
 	}
