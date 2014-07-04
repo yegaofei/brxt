@@ -1,19 +1,34 @@
-<div class="form-group">
-	<appfuse:label styleClass="control-label" key="repaymentProject.evaluation"/>	
-	<div class="input-group">
-		<input type="text" name="repaymentEvaluation" class="form-control input-sm" value="${riskControlReport.repaymentEvaluation}" >
-		<span class="input-group-btn">
-			<button type="submit" class="btn btn-primary btn-sm" name="method" value="SaveTab4" onclick="$('#activeTab').val('tab4')">
+<div class="col-lg-12">
+<div class="well form-horizontal">
+	<fieldset>
+	<div class="form-group">
+		<label for="repaymentEvaluation" class="col-lg-2 control-label"><fmt:message key="repaymentProject.evaluation" /></label>
+		<div class="col-lg-10">
+			<textarea class="form-control" rows="4" id="repaymentEvaluation" name="repaymentEvaluation"><c:out value="${riskControlReport.repaymentEvaluation}" /></textarea>			
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<div class="col-lg-1 col-lg-offset-11">
+			<button type="submit" class="btn btn-primary form-control" name="method" value="SaveTab4" onclick="$('#activeTab').val('tab4')">
             		<i class="icon-ok icon-white"></i> <fmt:message key="button.save"/>
 			</button>
-		</span>
+		</div>
 	</div>
-					
+	</fieldset>
+</div>
+</div>
+
+
+<div class="col-lg-12">
+<div class="form-group">		
 	<c:if test="${not empty repaymentProjects}">
 		<c:forEach var="repaymentProject" items="${repaymentProjects}" varStatus="status">
-			<div class="row">
-				<appfuse:label styleClass="control-label" key="repaymentProject.name"/>:
-				<c:out value="${repaymentProject.investmentStatus.projectName}" />
+			<div class="page-header">
+				<h4>
+					<fmt:message key="repaymentProject.name" />:
+					<c:out value="${repaymentProject.investmentStatus.projectName}" /> 
+				</h4>
 			</div>
 			<table class="table table-striped table-bordered table-hover">
 						<thead>
@@ -71,14 +86,9 @@
 								<c:out value="${repaymentProject.comments}" />
 							</td>
 						</tr>
-						<tr>
-							<td><fmt:message key=""/></td>
-							<td>
-								<input type="text" maxlength="20" class="form-control input-sm" />
-							</td>
-						</tr>
 						</tbody>
 			</table>
 		</c:forEach>	
 	</c:if>
+</div>
 </div>

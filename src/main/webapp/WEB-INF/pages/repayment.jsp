@@ -35,7 +35,7 @@
         </display:column>
         <display:column property="id" media="csv excel xml pdf" titleKey="repayment.id"/>
         <display:column sortable="false" titleKey="repayment.type">
-        		<fmt:message key="${repayment.type}"/>
+        		<c:if test="${not empty repayment.type}" > <fmt:message key="${repayment.type}"/> </c:if>
         </display:column>
         <display:column property="amount" sortable="false" titleKey="repayment.amount"/>
         <display:column property="comment" sortable="false" titleKey="repayment.comment"/>

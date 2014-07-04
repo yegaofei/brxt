@@ -634,6 +634,65 @@ public class RiskControlReportController extends BaseSheetController {
 			
 	}
 	
+	private ModelAndView saveTab3(final HttpServletRequest request, final ModelAndView mav)
+	{
+		RiskControlReport report = getRiskControlReport(request);
+		String policyChanges = request.getParameter("policyChanges");
+		String priceChanges = request.getParameter("priceChanges");
+		String investmentEvaluation = request.getParameter("investmentEvaluation");
+		report.setPolicyChanges(policyChanges);
+		report.setPriceChanges(priceChanges);
+		report.setInvestmentEvaluation(investmentEvaluation);
+		reportManager.save(report);
+		saveMessage(request, getText("report.update.success", request.getLocale()));		
+		mav.addObject("riskControlReport", report);
+		return mav;
+	}
+	
+	private ModelAndView saveTab4(final HttpServletRequest request, final ModelAndView mav)
+	{
+		RiskControlReport report = getRiskControlReport(request);
+		String repaymentEvaluation = request.getParameter("repaymentEvaluation");
+		report.setRepaymentEvaluation(repaymentEvaluation);
+		reportManager.save(report);
+		saveMessage(request, getText("report.update.success", request.getLocale()));	
+		mav.addObject("riskControlReport", report);
+		return mav;
+	}
+	
+	private ModelAndView saveTab5(final HttpServletRequest request, final ModelAndView mav)
+	{
+		RiskControlReport report = getRiskControlReport(request);
+		String collateralSummary = request.getParameter("collateralSummary");
+		report.setCollateralSummary(collateralSummary);
+		reportManager.save(report);
+		saveMessage(request, getText("report.update.success", request.getLocale()));	
+		mav.addObject("riskControlReport", report);
+		return mav;
+	}
+	
+	private ModelAndView saveTab7(final HttpServletRequest request, final ModelAndView mav)
+	{
+		RiskControlReport report = getRiskControlReport(request);
+		String statusBeforeMaturity = request.getParameter("statusBeforeMaturity");
+		report.setStatusBeforeMaturity(statusBeforeMaturity);
+		reportManager.save(report);
+		saveMessage(request, getText("report.update.success", request.getLocale()));	
+		mav.addObject("riskControlReport", report);
+		return mav;
+	}
+	
+	private ModelAndView saveTab8(final HttpServletRequest request, final ModelAndView mav)
+	{
+		RiskControlReport report = getRiskControlReport(request);
+		String comments = request.getParameter("comments");
+		report.setComments(comments);
+		reportManager.save(report);
+		saveMessage(request, getText("report.update.success", request.getLocale()));	
+		mav.addObject("riskControlReport", report);
+		return mav;
+	}
+	
 	private ModelAndView saveFinanceCheck(final HttpServletRequest request, ModelAndView mav)
 	{
 		String counterpartyId = request.getParameter("counterpartyIdTab21");
@@ -766,17 +825,7 @@ public class RiskControlReportController extends BaseSheetController {
 		return report;
 	}
 	
-	private ModelAndView saveTab5(final HttpServletRequest request, ModelAndView mav)
-	{
-		String projectInfoId = request.getParameter("id");
-		String collateralSummary = request.getParameter("collateralSummary");
-		ProjectInfo projectInfo = projectInfoManager.get(Long.valueOf(projectInfoId));
-		RiskControlReport report = loadRiskControlReport(projectInfo);
-		report.setCollateralSummary(collateralSummary);
-		projectInfoManager.save(projectInfo);
-		mav.addObject("collateralSummary", collateralSummary);
-		return mav;
-	}
+	
 
 	@RequestMapping(value = "/reports/riskControlReport*", method = RequestMethod.POST)
 	public ModelAndView onSubmit(final HttpServletRequest request) {
@@ -792,8 +841,10 @@ public class RiskControlReportController extends BaseSheetController {
 				mav = saveFinanceCheck(request, mav);
 				break;
 			case "SaveTab3":
+				mav = saveTab3(request, mav);
 				break;
 			case "SaveTab4":
+				mav = saveTab4(request, mav);
 				break;
 			case "SaveTab5":
 				mav = saveTab5(request, mav);
@@ -805,8 +856,10 @@ public class RiskControlReportController extends BaseSheetController {
 				mav = saveFinanceCheckTab6(request, mav);
 				break;
 			case "SaveTab7":
+				mav = saveTab7(request, mav);
 				break;
 			case "SaveTab8":
+				mav = saveTab8(request, mav);
 				break;
 			default:
 			}

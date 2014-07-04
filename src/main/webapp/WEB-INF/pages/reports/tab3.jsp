@@ -1,16 +1,44 @@
-<div class="form-group">
-	
-	<appfuse:label styleClass="control-label" key="investmentProject.policyChanges"/>
-	<input type="text" name="policyChanges" class="form-control input-sm" value="${riskControlReport.policyChanges}">
-	<appfuse:label styleClass="control-label" key="investmentProject.priceChanges"/>						
-	<input type="text" name="priceChanges" class="form-control input-sm" value="${riskControlReport.priceChanges}">
-	<appfuse:label styleClass="control-label" key="investmentProject.evaluation"/>	
-	<input type="text" name="investmentEvaluation" class="form-control input-sm" value="${riskControlReport.investmentEvaluation}" >									
+<div class="col-lg-12">
+<div class="well form-horizontal">
+	<fieldset>
+	<div class="form-group">
+		<label for="policyChanges" class="col-lg-3 control-label"><fmt:message key="investmentProject.policyChanges" /></label>
+		<div class="col-lg-9">
+			<input type="text" name="policyChanges" id="policyChanges" class="form-control input-sm" value="${riskControlReport.policyChanges}">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="policyChanges" class="col-lg-3 control-label"><fmt:message key="investmentProject.priceChanges" /></label>
+		<div class="col-lg-9">
+			<textarea class="form-control" rows="4" id="priceChanges" name="priceChanges"><c:out  value="${riskControlReport.priceChanges}" /></textarea>
+			<span class="help-block"><fmt:message key="investmentProject.priceChanges.help" /></span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="investmentEvaluation" class="col-lg-3 control-label"><fmt:message key="investmentProject.evaluation" /></label>
+		<div class="col-lg-9">
+			<input type="text" id="investmentEvaluation" name="investmentEvaluation" class="form-control input-sm" value="${riskControlReport.investmentEvaluation}" >	
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-lg-1 col-lg-offset-11">
+			<button type="submit" class="btn btn-primary form-control" name="method" value="SaveTab3" onclick="$('#activeTab').val('tab3')">
+            		<i class="icon-ok icon-white"></i> <fmt:message key="button.save"/>
+			</button>
+		</div>
+	</div>
+	</fieldset>
+</div>
+</div>
+
+<div class="col-lg-12">
 	<c:if test="${not empty investmentProjects}">
 		<c:forEach var="investmentProject" items="${investmentProjects}" varStatus="status">
-			<div class="row">
-				<appfuse:label styleClass="control-label" key="investmentProject.name"/>:
-				<c:out value="${investmentProject.investmentStatus.projectName}" /> (<fmt:message key="${investmentProject.investmentProjectType}" />)
+			<div class="page-header">
+				<h4>
+					<fmt:message key="investmentProject.name" />:
+					<c:out value="${investmentProject.investmentStatus.projectName}" /> (<fmt:message key="${investmentProject.investmentProjectType}" />)
+				</h4>
 			</div>
 			<table class="table table-striped table-bordered table-hover">
 						<thead>
@@ -119,5 +147,4 @@
 			</table>
 		</c:forEach>	
 	</c:if>
-
 </div>

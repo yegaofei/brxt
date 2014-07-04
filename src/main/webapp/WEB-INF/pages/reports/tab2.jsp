@@ -1,23 +1,33 @@
-				
-				<div class="form-group">
-                		<appfuse:label styleClass="control-label" key="projectInfo.counterparty.name"/> : 
-						<c:forEach var="counterparty" items="${counterparties}" varStatus="status">
-							<c:if test="${status.first}">
+<div class="col-lg-12">
+<div class="well form-horizontal well-sm">
+	<fieldset>
+		<div class="form-group">
+			<label for="counterparties" class="col-lg-2 control-label"><fmt:message key="projectInfo.counterparty.name"/></label>
+			<div class="col-lg-4">
+			<c:forEach var="counterparty" items="${counterparties}" varStatus="status">
+				<c:if test="${status.first}">
 								<select id="counterparties" name="counterparties" class="form-control">
 									<option value=""> ---<fmt:message key="report.select.default"/>--- </option>
-							</c:if>
-							<option value="${counterparty.id}" <c:if test = "${counterparty.id == param.counterpartyId}" > selected </c:if>><c:out value="${counterparty.name}" /></option>
-							<c:if test="${status.last}"></select></c:if>
-						</c:forEach>
-					</div>
+				</c:if>
+				<option value="${counterparty.id}" <c:if test = "${counterparty.id == param.counterpartyId}" > selected </c:if>><c:out value="${counterparty.name}" /></option>
+				<c:if test="${status.last}"></select></c:if>
+			</c:forEach>
+			</div>
+		</div>
+	</fieldset>
+</div>
+</div>
+
+
+<div class="col-lg-12">			
 					<div class="form-group">
-					<c:if test="${not empty subjectCapacities}">
-						<div class="row>
-						<appfuse:label styleClass="control-label" key="subjectCapacity.heading"/> :
-						<c:out value="${subjectCapacity.counterparty.name}" />
-						</div>
-					</c:if>
 					<c:forEach var="subjectCapacity" items="${subjectCapacities}" varStatus="status">
+					<div class="page-header">
+							<h4>
+								<fmt:message key="subjectCapacity.heading" />:
+								<c:out value="${subjectCapacity.counterparty.name}" />
+							</h4>
+					</div>
 					<table class="table table-striped table-bordered table-hover">
 						<thead>
 						<tr>
@@ -97,7 +107,7 @@
 					</table>
 					</c:forEach>
 					</div>
-			
+</div>			
 <script language="javascript" type="text/javascript">
 $(document).ready(function(){
 	$('#counterparties').change(function(){

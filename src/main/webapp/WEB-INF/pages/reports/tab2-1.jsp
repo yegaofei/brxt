@@ -1,51 +1,73 @@
-	<div class="row">
-		<div class="col-sm-3 form-group">
-		<appfuse:label styleClass="control-label" key="projectInfo.counterparty.name"/> : 
-		<c:forEach var="counterparty" items="${counterparties}" varStatus="status">
-			<c:if test="${status.first}">
-				<select id="counterpartiesTab21" name="counterpartiesTab21" class="form-control  input-sm">
-					<option value=""> ---<fmt:message key="report.select.default"/>--- </option>
-			</c:if>
-			<option value="${counterparty.id}" <c:if test = "${counterparty.id == param.counterpartiesTab21}" > selected </c:if>><c:out value="${counterparty.name}" /></option>
-			<c:if test="${status.last}"></select></c:if>
-		</c:forEach>
-		</div>
+<div class="col-lg-12">
+	<div class="well form-horizontal">
+		<fieldset>
+			<div class="col-lg-12">
+			<div class="form-group">
+				<label for="counterpartiesTab21" class="col-lg-3 control-label"><fmt:message key="projectInfo.counterparty.name" /></label>
+				<div class="col-lg-3">
+					<c:forEach var="counterparty" items="${counterparties}" varStatus="status">
+						<c:if test="${status.first}">
+							<select id="counterpartiesTab21" name="counterpartiesTab21" class="form-control  input-sm">
+							<option value=""> ---<fmt:message key="report.select.default"/>--- </option>
+						</c:if>
+						<option value="${counterparty.id}" <c:if test = "${counterparty.id == param.counterpartiesTab21}" > selected </c:if>><c:out value="${counterparty.name}" /></option>
+						<c:if test="${status.last}"></select></c:if>
+					</c:forEach>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label for="prevTermTime" class="col-lg-3 control-label"><fmt:message key="report.prev.term.report" /></label>
+				<div class="col-lg-3">
+					<input type="text" id="prevTermTime" name="prevTermTime"  value="<c:out value='${param.prevTermTime}' />"  class="form-control  input-sm" >
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label for="currTermTime" class="col-lg-3 control-label"><fmt:message key="report.curr.term.report" /></label>
+				<div class="col-lg-3">
+					<input type="text" id="currTermTime" name="currTermTime" maxlength="20" class="form-control input-sm" value="<c:out value='${param.currTermTime}' />"/>
+				</div>
+			</div>		
+			
+			<div class="form-group">
+				<label for="financeStatementSummary" class="col-lg-3 control-label"><fmt:message key="report.financeCheck.financeStatementSummary" /></label>
+				<div class="col-lg-9">
+					<input type="text" id="financeStatementSummary" name="financeStatementSummary" class="form-control input-sm" value="${riskControlReport.financeCheckComment}">
+				</div>
+			</div>
+			
+			</div>
+			
+			<div class="form-group">
+				<div class="col-lg-3 col-lg-offset-9">
+			 			<button type="submit" class="btn btn-primary" name="method" value="FinanceCheckTab21" onclick="$('#activeTab').val('tab2-1')">
+            				<i class="icon-ok icon-white"></i> <fmt:message key="button.ok"/>
+						</button>
+					
+						<button type="submit" class="btn btn-primary" name="method" value="SaveFinanceCheckTab21" onclick="$('#activeTab').val('tab2-1')">
+            				<i class="icon-ok icon-white"></i> <fmt:message key="button.save"/>
+						</button>	
+				</div>
+			</div>
+		</fieldset>
+	</div>
+</div>
+		
 		<input type="hidden" name="counterpartyIdTab21" value="<c:out value='${param.counterpartiesTab21}'/>" >
 		<input type="hidden" name="prevTermTimeTab21" value="<c:out value='${param.prevTermTime}'/>" >
 		<input type="hidden" name="currTermTimeTab21" value="<c:out value='${param.currTermTime}'/>" >
 	
-		<div class="col-sm-3 form-group">
-			<appfuse:label styleClass="control-label" key="report.prev.term.report"/>
-      		<input type="text" id="prevTermTime" name="prevTermTime"  value="<c:out value='${param.prevTermTime}' />"  class="form-control  input-sm" >
-		</div>	
-		<div class="col-sm-3 form-group">
-			<appfuse:label styleClass="control-label" key="report.curr.term.report"/>
-			<input type="text" id="currTermTime" name="currTermTime" maxlength="20" class="form-control input-sm" value="<c:out value='${param.currTermTime}' />"/>
-      	</div>
-      	<div class="col-sm-1 form-group form-actions">
-      		<label></label>
-			<button type="submit" class="btn btn-primary form-control" name="method" value="FinanceCheckTab21" onclick="$('#activeTab').val('tab2-1')">
-            		<i class="icon-ok icon-white"></i> <fmt:message key="button.ok"/>
-			</button>			
-		</div>
-		<div class="col-sm-1 form-group form-actions">
-      		<label></label>
-			<button type="submit" class="btn btn-primary form-control" name="method" value="SaveFinanceCheckTab21" onclick="$('#activeTab').val('tab2-1')">
-            		<i class="icon-ok icon-white"></i> <fmt:message key="button.save"/>
-			</button>
-		</div>	
-	</div>
-	<div class="row">
-		<appfuse:label styleClass="control-label" key="report.financeCheck.financeStatementSummary"/>
-		<input type="text" name="financeStatementSummary" class="form-control input-sm" value="${riskControlReport.financeCheckComment}">
-	</div>
-		
+<div class="col-lg-12">			
 	<c:if test="${not empty financeCheck}" >
 	<div class=" form-group">
-		<div class="row">
-			<appfuse:label styleClass="control-label" key="projectInfo.counterparty.name"/> : 
-			<c:out value="${financeCheck.counterparty.name}" />	
+		<div class="page-header">
+			<h4>
+				<fmt:message key="projectInfo.counterparty.name" />:
+				<c:out value="${financeCheck.counterparty.name}" />
+			</h4>
 		</div>
+					
 		<appfuse:label styleClass="control-label" key="report.riskcontrol.financeCheck"/> <br>
 		
 		<c:if test="${financeCheck.counterparty.counterpartyType != 'institution'}">
@@ -319,7 +341,7 @@
 					</table>
 					</c:if>
 				</div>
-
+</div>
 <script>
   $(function() {
     $('#prevTermTime').datepicker({

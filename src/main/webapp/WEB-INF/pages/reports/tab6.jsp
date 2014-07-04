@@ -1,55 +1,72 @@
-	<div class="row">	
-				<div class="col-sm-3 form-group">
-                		<appfuse:label styleClass="control-label" key="projectInfo.guarantor.name"/> : 
-                		<c:if test="${empty guarantors}">
-                			<fmt:message key="report.creditInfo.empty"/>
-                		</c:if>
-						<c:forEach var="guarantor" items="${guarantors}" varStatus="status">
-							<c:if test="${status.first}">
+<div class="col-lg-12">
+	<div class="well form-horizontal">
+		<fieldset>
+			<div class="col-lg-12">
+			<div class="form-group">
+				<label for="guarantorsTab6" class="col-lg-3 control-label"><fmt:message key="projectInfo.guarantor.name" /></label>
+				<div class="col-lg-3">
+					<c:forEach var="guarantor" items="${guarantors}" varStatus="status">
+						<c:if test="${status.first}">
 								<select id="guarantorsTab6" name="guarantorsTab6" class="form-control input-sm">
 									<option value=""> ---<fmt:message key="report.select.default"/>--- </option>
-							</c:if>
-							<option value="${guarantor.id}" <c:if test = "${guarantor.id == param.guarantorsTab6}" > selected </c:if>><c:out value="${guarantor.name}" /></option>
-							<c:if test="${status.last}"></select></c:if>
-						</c:forEach>
-					</div>	
-					
-					<input type="hidden" name="guarantorIdTab6" value="<c:out value='${param.guarantorsTab6}'/>" >
-					<input type="hidden" name="pttTab6" value="<c:out value='${param.prevTermTimeTab6}'/>" >
-					<input type="hidden" name="cttTab6" value="<c:out value='${param.currTermTimeTab6}'/>" >
-	
-					<div class="col-sm-3 form-group">
-						<appfuse:label styleClass="control-label" key="report.prev.term.report"/>
-						<input type="text" id="prevTermTimeTab6" name="prevTermTimeTab6" maxlength="20" class="form-control input-sm" value="<c:out value='${param.prevTermTimeTab6}' />"/>
-					</div>	
-					<div class="col-sm-3 form-group">
-						<appfuse:label styleClass="control-label" key="report.curr.term.report"/>
-						<input type="text" id="currTermTimeTab6" name="currTermTimeTab6" maxlength="20" class="form-control input-sm" value="<c:out value='${param.currTermTimeTab6}' />"/>
-      				</div>
-      				<div class="col-sm-1 form-group form-actions">
-      					<label></label>
-						<button type="submit" class="btn btn-primary form-control" name="method" value="FinanceCheckTab6" onclick="$('#activeTab').val('tab6')">
+						</c:if>
+						<option value="${guarantor.id}" <c:if test = "${guarantor.id == param.guarantorsTab6}" > selected </c:if>><c:out value="${guarantor.name}" /></option>
+						<c:if test="${status.last}"></select></c:if>
+					</c:forEach>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label for="prevTermTimeTab6" class="col-lg-3 control-label"><fmt:message key="report.prev.term.report" /></label>
+				<div class="col-lg-3">
+					<input type="text" id="prevTermTimeTab6" name="prevTermTimeTab6"  value="<c:out value='${param.prevTermTimeTab6}' />"  class="form-control  input-sm" >
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label for="currTermTimeTab6" class="col-lg-3 control-label"><fmt:message key="report.curr.term.report" /></label>
+				<div class="col-lg-3">
+					<input type="text" id="currTermTimeTab6" name="currTermTimeTab6" value="<c:out value='${param.currTermTimeTab6}' />" class="form-control input-sm" >
+				</div>
+			</div>		
+			
+			<div class="form-group">
+				<label for="guarantorCheckComment" class="col-lg-3 control-label"><fmt:message key="creditInformation.guarantor.evaluation" /></label>
+				<div class="col-lg-9">
+					<input type="text" id="guarantorCheckComment" name="guarantorCheckComment" class="form-control input-sm" value="${riskControlReport.guarantorCheckComment}">
+				</div>
+			</div>
+			
+			</div>
+			
+			<div class="form-group">
+				<div class="col-lg-3 col-lg-offset-9">
+			 			<button type="submit" class="btn btn-primary" name="method" value="FinanceCheckTab6" onclick="$('#activeTab').val('tab6')">
             				<i class="icon-ok icon-white"></i> <fmt:message key="button.ok"/>
-						</button>			
-					</div>
-					<div class="col-sm-1 form-group form-actions">
-      					<label></label>
-						<button type="submit" class="btn btn-primary form-control" name="method" value="SaveFinanceCheckTab6" onclick="$('#activeTab').val('tab6')">
+						</button>	
+					
+						<button type="submit" class="btn btn-primary" name="method" value="SaveFinanceCheckTab6" onclick="$('#activeTab').val('tab6')">
             				<i class="icon-ok icon-white"></i> <fmt:message key="button.save"/>
 						</button>
-					</div>	
+				</div>
+			</div>
+		</fieldset>
 	</div>
-	<div class="row">
-		<appfuse:label styleClass="control-label" key="creditInformation.guarantor.evaluation"/>
-		<input type="text" name="guarantorCheckComment" class="form-control input-sm" value="${riskControlReport.guarantorCheckComment}">
-	</div>	
-			
+</div>
+		<input type="hidden" name="guarantorIdTab6" value="<c:out value='${param.guarantorsTab6}'/>" >
+		<input type="hidden" name="pttTab6" value="<c:out value='${param.prevTermTimeTab6}'/>" >
+		<input type="hidden" name="cttTab6" value="<c:out value='${param.currTermTimeTab6}'/>" >
+
+<div class="col-lg-12">		
 	 <c:if test="${not empty financeCheckTab6}" >
 		<div class=" form-group">
-		<div class="row">
-			<appfuse:label styleClass="control-label" key="projectInfo.guarantor.name"/> : 
-			<c:out value="${financeCheckTab6.counterparty.name}" />	
+		<div class="page-header">
+			<h4>
+				<fmt:message key="projectInfo.guarantor.name" />:
+				<c:out value="${financeCheckTab6.counterparty.name}" />
+			</h4>
 		</div>
+		
 		<appfuse:label styleClass="control-label" key="report.riskcontrol.financeCheck"/> <br>
 		
 		<c:if test="${financeCheckTab6.counterparty.counterpartyType != 'institution'}">
@@ -261,6 +278,7 @@
 					</div>
 					</div>
 	</c:if>						
+</div>	
 <script>
   $(function() {
     $('#prevTermTimeTab6').datepicker({

@@ -1,9 +1,21 @@
-<appfuse:label styleClass="control-label" key="report.riskcontrol.tab5"/>
-<div class="input-group">
-	<input type="text" name="collateralSummary" maxlength="100" class="form-control input-sm" value="<c:out value='${collateralSummary}'/>"/>
-	<span class="input-group-btn">
-			<button type="submit" class="btn btn-primary btn-sm" name="method" value="SaveTab5" onclick="$('#activeTab').val('tab5')">
+
+<div class="col-lg-12">
+<div class="well form-horizontal">
+	<fieldset>
+	<div class="form-group">
+		<label for="collateralSummary" class="col-lg-2 control-label"><fmt:message key="report.riskcontrol.tab5" /></label>
+		<div class="col-lg-10">
+			<textarea class="form-control" rows="4" id="collateralSummary" name="collateralSummary"><c:out value="${riskControlReport.collateralSummary}" /></textarea>			
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<div class="col-lg-1 col-lg-offset-11">
+			<button type="submit" class="btn btn-primary" name="method" value="SaveTab5" onclick="$('#activeTab').val('tab5')">
             		<i class="icon-ok icon-white"></i> <fmt:message key="button.save"/>
 			</button>
-	</span>
+		</div>
+	</div>
+	</fieldset>
+</div>
 </div>
