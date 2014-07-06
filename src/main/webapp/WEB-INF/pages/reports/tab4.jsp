@@ -10,7 +10,7 @@
 	
 	<div class="form-group">
 		<div class="col-lg-1 col-lg-offset-11">
-			<button type="submit" class="btn btn-primary form-control" name="method" value="SaveTab4" onclick="$('#activeTab').val('tab4')">
+			<button type="submit" class="btn btn-primary form-control" style="width:50px;" name="method" value="SaveTab4" onclick="$('#activeTab').val('tab4')">
             		<i class="icon-ok icon-white"></i> <fmt:message key="button.save"/>
 			</button>
 		</div>
@@ -71,13 +71,13 @@
 						<tr>
 							<td><fmt:message key="repaymentProject.preAvgPrice"/></td>
 							<td>
-								<c:out value="${repaymentProject.preAvgPrice}" />
+								<fmt:formatNumber type="currency"><c:out value="${repaymentProject.preAvgPrice}" /></fmt:formatNumber>
 							</td>
 						</tr>
 						<tr>
 							<td><fmt:message key="repaymentProject.currAvgPrice"/></td>
 							<td>
-								<c:out value="${repaymentProject.currAvgPrice}" />
+								<fmt:formatNumber type="currency"><c:out value="${repaymentProject.currAvgPrice}" /></fmt:formatNumber>
 							</td>
 						</tr>
 						<tr>

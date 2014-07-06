@@ -6,11 +6,19 @@
     <script type="text/javascript" src="${base}/webjars/bootstrap-datepicker/1.2.0/js/locales/bootstrap-datepicker.zh-CN.js" charset="UTF-8"></script>
     
 </head>
-
-	<div class="col-lg-15">
-            <h2 id="nav-tabs"><fmt:message key="report.riskcontrol.heading"/></h2>
+	<div class="col-lg-12">
+			<div class="row>
+            <h2 id="nav-tabs"><fmt:message key="report.riskcontrol.heading"/></h2> 
+			<a class="btn btn-default btn-sm" href="<c:url value='${ctx}/reports/previewReport'>
+					<c:param name="reportId" value="${param.reportId}"/>
+					<c:param name="id" value="${param.id}"/>
+					<c:param name="preview" value="true"/>
+				</c:url>">
+            	<i class="icon-plus icon-white"></i> <fmt:message key="button.preview"/>
+            </a>
+			</div>		
             <div class="bs-example">
-              <ul class="nav nav-tabs" style="margin-bottom: 15px;">
+              <ul class="nav nav-tabs" style="margin-bottom: 5px;">
                 <li <c:if test="${param.activeTab == 'tab1' or empty param.activeTab}"> class="active" </c:if>><a href="#tab1" data-toggle="tab"><fmt:message key="report.riskcontrol.tab1"/></a></li>
                 <li class="dropdown"> <a class="dropdown-toggle" data-toggle="dropdown" href="#"> <fmt:message key="report.riskcontrol.tab2"/> <span class="caret"></span> </a>
                   <ul class="dropdown-menu">

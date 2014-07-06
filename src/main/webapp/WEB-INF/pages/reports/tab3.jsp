@@ -21,8 +21,8 @@
 		</div>
 	</div>
 	<div class="form-group">
-		<div class="col-lg-1 col-lg-offset-11">
-			<button type="submit" class="btn btn-primary form-control" name="method" value="SaveTab3" onclick="$('#activeTab').val('tab3')">
+		<div class="col-lg-1 col-lg-offset-9">
+			<button type="submit" class="btn btn-primary form-control" style="width:50px;"  name="method" value="SaveTab3" onclick="$('#activeTab').val('tab3')">
             		<i class="icon-ok icon-white"></i> <fmt:message key="button.save"/>
 			</button>
 		</div>
@@ -61,13 +61,13 @@
 						<tr>
 							<td><fmt:message key="investmentProject.totalAmount"/></td>
 							<td>
-								<c:out value="${investmentProject.totalAmount}" />
+								<fmt:formatNumber type="currency"><c:out value="${investmentProject.totalAmount}" /></fmt:formatNumber>
 							</td>
 						</tr>
 						<tr>
 							<td><fmt:message key="investmentProject.investmentAmount"/></td>
 							<td>
-								<c:out value="${investmentProject.investmentAmount}" />
+								<fmt:formatNumber type="currency"><c:out value="${investmentProject.investmentAmount}" /></fmt:formatNumber>
 							</td>
 						</tr>
 						<tr>

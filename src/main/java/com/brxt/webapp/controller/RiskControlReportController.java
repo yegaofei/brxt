@@ -52,13 +52,13 @@ import com.brxt.service.SubjectCapacityManager;
 @Controller
 public class RiskControlReportController extends BaseSheetController {
 	private static final MathContext mc = new MathContext(2, RoundingMode.HALF_DOWN);
-	private ProjectInfoManager projectInfoManager = null;
-	private RepaymentManager repaymentManager = null;
-	private SubjectCapacityManager subjectCapacityManager = null;
-	private SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
-	private CreditInformationManager creditInformationManager;
-	private ProjProgressManager projectProgressManager;
-	private ReportManager reportManager;
+	protected ProjectInfoManager projectInfoManager = null;
+	protected RepaymentManager repaymentManager = null;
+	protected SubjectCapacityManager subjectCapacityManager = null;
+	protected SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+	protected CreditInformationManager creditInformationManager;
+	protected ProjProgressManager projectProgressManager;
+	protected ReportManager reportManager;
 
 	@Autowired
 	public void setProjectInfoManager(@Qualifier("projectInfoManager") ProjectInfoManager projectInfoManager) {
@@ -1040,6 +1040,13 @@ public class RiskControlReportController extends BaseSheetController {
 		reportManager.save(report);
 		saveMessage(request, getText("report.add.success", new String[]{projectInfo.getProjectName(), reportSeason}, request.getLocale()) );
 		mav.setViewName("redirect:/reports/reportSearch");
+		return mav;
+	}
+	
+	@RequestMapping(value = "/reports/previewReport*", method = RequestMethod.GET)
+	public ModelAndView previewReport(final HttpServletRequest request){
+		ModelAndView mav = new ModelAndView("/reports/previewReport");
+		//RiskControlReport report = getRiskControlReport(request);
 		return mav;
 	}
 }
