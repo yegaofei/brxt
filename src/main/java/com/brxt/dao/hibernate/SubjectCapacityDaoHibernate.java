@@ -49,5 +49,19 @@ GenericDaoHibernate<SubjectCapacity, Long> implements SubjectCapacityDao{
 		criteria.add(Restrictions.le("checkTime", endDate));
 		return criteria.list();
 	}
+	
+	public SubjectCapacity find(ProjectInfo projectInfo,
+			Counterparty counterparty, Date checkTime) {
+		Criteria criteria = getSession().createCriteria(SubjectCapacity.class);
+		criteria.add(Restrictions.eq("projectInfo", projectInfo));
+		criteria.add(Restrictions.eq("counterparty", counterparty));
+		criteria.add(Restrictions.ge("checkTime", checkTime));
+		List<SubjectCapacity> results = criteria.list();
+		if(results != null && !results.isEmpty())
+		{
+			return results.get(0);
+		}
+		return null;
+	}
 
 }

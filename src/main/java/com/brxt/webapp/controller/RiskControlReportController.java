@@ -335,6 +335,72 @@ public class RiskControlReportController extends BaseSheetController {
 		return "/reports/riskControlReport";
 	}
 	
+	private ModelAndView saveTab2(final HttpServletRequest request, ModelAndView mav)
+	{
+		String checkTime = request.getParameter("checkTime");
+		String projectInfoId = request.getParameter("id");
+		String counterpartyId = request.getParameter("counterpartiesTab2");
+		if (StringUtils.isBlank(checkTime) || StringUtils.isBlank(projectInfoId) || StringUtils.isBlank(counterpartyId)) {
+			saveError(request, getText("report.counterparty.required.error", request.getLocale()));
+			return mav;
+		}
+		
+		SimpleDateFormat shortDate = new SimpleDateFormat(getText("date.format.short", request.getLocale()));
+		try{
+			Date checkTimaDate = shortDate.parse(checkTime);
+			ProjectInfo projectInfo = projectInfoManager.get(Long.valueOf(projectInfoId));
+			Counterparty counterparty = findCounterparty(projectInfo, Long.valueOf(counterpartyId));
+			SubjectCapacity subjectCapacity = subjectCapacityManager.find(projectInfo, counterparty, checkTimaDate);
+			RiskControlReport report = getRiskControlReport(request);
+			Iterator<SubjectCapacity> scIt = report.getSubjectCapacities().iterator();
+			while(scIt != null && scIt.hasNext())
+			{
+				SubjectCapacity sc = scIt.next();
+				if(sc.getCounterparty().equals(counterparty))
+				{
+					scIt.remove();
+				}
+			}
+			report.getSubjectCapacities().add(subjectCapacity);
+			reportManager.save(report); 
+			mav.addObject("subjectCapacity", subjectCapacity);
+			saveMessage(request, getText("report.update.success", request.getLocale()));
+		} 
+		catch (ParseException e)
+		{
+			saveError(request, "Date format is incorrect ");
+			return mav;
+		}
+		return mav;
+	}
+	
+	private ModelAndView subjectCapacityCheck(final HttpServletRequest request, ModelAndView mav)
+	{
+		String checkTime = request.getParameter("checkTime");
+		String projectInfoId = request.getParameter("id");
+		String counterpartyId = request.getParameter("counterpartiesTab2");
+		if (StringUtils.isBlank(checkTime) || StringUtils.isBlank(projectInfoId) || StringUtils.isBlank(counterpartyId)) {
+			saveError(request, getText("report.counterparty.required.error", request.getLocale()));
+			return mav;
+		}
+		
+		SimpleDateFormat shortDate = new SimpleDateFormat(getText("date.format.short", request.getLocale()));
+		try{
+			Date checkTimaDate = shortDate.parse(checkTime);
+			ProjectInfo projectInfo = projectInfoManager.get(Long.valueOf(projectInfoId));
+			Counterparty counterparty = findCounterparty(projectInfo, Long.valueOf(counterpartyId));
+			SubjectCapacity subjectCapacity = subjectCapacityManager.find(projectInfo, counterparty, checkTimaDate);
+			mav.addObject("subjectCapacity", subjectCapacity);
+		} 
+		catch (ParseException e)
+		{
+			saveError(request, "Date format is incorrect ");
+			return mav;
+		}
+		
+		return mav;
+	}
+	
 	private ModelAndView fetchFinanceReportsTab6(final HttpServletRequest request, ModelAndView mav)
 	{
 		String prevTermTime = request.getParameter("prevTermTimeTab6");
@@ -834,6 +900,12 @@ public class RiskControlReportController extends BaseSheetController {
 		if (!StringUtils.isBlank(method)) {
 
 			switch (method) {
+			case "SubjectCapacityCheck":
+				mav = subjectCapacityCheck(request, mav);
+				break;
+			case "SaveTab2":
+				mav = saveTab2(request, mav);
+				break;
 			case "FinanceCheckTab21":
 				mav = fetchFinanceReports(request, mav);
 				break;

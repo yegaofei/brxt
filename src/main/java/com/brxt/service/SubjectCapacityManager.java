@@ -16,4 +16,6 @@ public interface SubjectCapacityManager extends GenericManager<SubjectCapacity, 
 	public List<SubjectCapacity> findByProjIdCpId(ProjectInfo projectInfo, Counterparty counterparty, Date startTime, Date endTime);
 	
 	public List<SubjectCapacity> findByProjId(Long projectInfoId);
+	
+	public SubjectCapacity find(ProjectInfo projectInfo, Counterparty counterparty, Date checkTime); 
 }

@@ -16,5 +16,7 @@ public interface SubjectCapacityDao extends GenericDao<SubjectCapacity, Long> {
 	public List<SubjectCapacity> findByProjIdCpId(ProjectInfo projectInfo, Counterparty counterparty, Date startDate, Date endDate);
 	
 	public List<SubjectCapacity> findByProjId(Long projectInfoId);
+	
+	public SubjectCapacity find(ProjectInfo projectInfo, Counterparty counterparty, Date checkTime);
 
 }

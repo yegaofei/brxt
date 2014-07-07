@@ -27,9 +27,13 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import com.brxt.model.ProjectInfo;
+import com.brxt.model.SubjectCapacity;
 import com.brxt.model.finance.CorporateBalanceSheet;
 import com.brxt.model.finance.InstituteBalanceSheet;
 import com.brxt.model.finance.ProfitStatement;
+import com.brxt.model.projectprogress.InvestmentProject;
+import com.brxt.model.projectprogress.RepaymentProject;
+import com.brxt.model.projectprogress.SupplyLiquidProject;
 
 @Entity
 @Table(name = "risk_control_report")
@@ -43,6 +47,9 @@ public class RiskControlReport extends BaseObject{
 	private Date timeRangeStart;  
 	private Date timeRangeEnd;  
 	
+	//主体资格排查
+	private Set<SubjectCapacity> subjectCapacities = new HashSet<SubjectCapacity>();
+	
 	//借款人财务排查
 	private Set<CorporateBalanceSheet> corporateBalanceSheets = new HashSet<CorporateBalanceSheet>();
 	private Set<InstituteBalanceSheet> instituteBalanceSheet = new HashSet<InstituteBalanceSheet>();
@@ -51,6 +58,11 @@ public class RiskControlReport extends BaseObject{
 	//保证人财务排查
 	private Set<CorporateBalanceSheet> guarantorCorpBalanceSheets = new HashSet<CorporateBalanceSheet>();
 	private Set<InstituteBalanceSheet> guarantorInstBalanceSheet = new HashSet<InstituteBalanceSheet>();
+	
+	//项目进展
+	private Set<InvestmentProject> investmentProjects = new HashSet<InvestmentProject>();
+	private Set<RepaymentProject> repaymentProjects = new HashSet<RepaymentProject>();
+	private Set<SupplyLiquidProject> supplyLiquidProjects = new HashSet<SupplyLiquidProject>();
 	
 	private String financeCheckComment;//财务状况排查结论	
 	private String investmentEvaluation; //资金投向综合评价
@@ -304,6 +316,62 @@ public class RiskControlReport extends BaseObject{
 		this.searchTimeEnd = searchTimeEnd;
 	}
 	
+	@ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)    
+    @JoinTable(
+            name = "report_subject_capacity",
+            joinColumns = { @JoinColumn(name = "risk_control_report_id") },
+            inverseJoinColumns = @JoinColumn(name = "subject_capacity_id")
+    )
+	public Set<SubjectCapacity> getSubjectCapacities() {
+		return subjectCapacities;
+	}
+	public void setSubjectCapacities(Set<SubjectCapacity> subjectCapacities) {
+		this.subjectCapacities = subjectCapacities;
+	}
+	
+	@ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)    
+    @JoinTable(
+            name = "report_investment_project",
+            joinColumns = { @JoinColumn(name = "risk_control_report_id") },
+            inverseJoinColumns = @JoinColumn(name = "investment_project_id")
+    )
+	public Set<InvestmentProject> getInvestmentProjects() {
+		return investmentProjects;
+	}
+	public void setInvestmentProjects(Set<InvestmentProject> investmentProjects) {
+		this.investmentProjects = investmentProjects;
+	}
+	
+	@ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)    
+    @JoinTable(
+            name = "report_repayment_project",
+            joinColumns = { @JoinColumn(name = "risk_control_report_id") },
+            inverseJoinColumns = @JoinColumn(name = "repayment_project_id")
+    )
+	public Set<RepaymentProject> getRepaymentProjects() {
+		return repaymentProjects;
+	}
+	public void setRepaymentProjects(Set<RepaymentProject> repaymentProjects) {
+		this.repaymentProjects = repaymentProjects;
+	}
+	
+	@ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)    
+    @JoinTable(
+            name = "report_supply_liquid_project",
+            joinColumns = { @JoinColumn(name = "risk_control_report_id") },
+            inverseJoinColumns = @JoinColumn(name = "supply_liquid_project_id")
+    )
+	public Set<SupplyLiquidProject> getSupplyLiquidProjects() {
+		return supplyLiquidProjects;
+	}
+	public void setSupplyLiquidProjects(
+			Set<SupplyLiquidProject> supplyLiquidProjects) {
+		this.supplyLiquidProjects = supplyLiquidProjects;
+	}
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE).append(

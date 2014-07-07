@@ -22,7 +22,7 @@ public class SubjectCapacityManagerImpl extends GenericManagerImpl<SubjectCapaci
 	{
 		super(dao);
 		this.subjectCapacityDao = dao;
-	}
+	} 
 	
 	@Override
 	public List<SubjectCapacity> findByProjIdCpId(Long projectInfoId,
@@ -39,6 +39,12 @@ public class SubjectCapacityManagerImpl extends GenericManagerImpl<SubjectCapaci
 	public List<SubjectCapacity> findByProjIdCpId(ProjectInfo projectInfo,
 			Counterparty counterparty, Date startTime, Date endTime) {
 		return subjectCapacityDao.findByProjIdCpId(projectInfo, counterparty, startTime, endTime);
+	}
+
+	@Override
+	public SubjectCapacity find(ProjectInfo projectInfo,
+			Counterparty counterparty, Date checkTime) {
+		return subjectCapacityDao.find(projectInfo, counterparty, checkTime);
 	}
 
 }
