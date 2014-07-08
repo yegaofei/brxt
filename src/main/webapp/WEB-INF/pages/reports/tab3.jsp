@@ -2,6 +2,28 @@
 <div class="well form-horizontal">
 	<fieldset>
 	<div class="form-group">
+		<label for="policyChanges" class="col-lg-3 control-label"><fmt:message key="investmentProject.name" /></label>
+		<div class="col-lg-4">
+			<c:forEach var="investment" items="${investmentStatus}" varStatus="status">
+				<c:if test="${status.first}">
+								<select id="investmentTab3" name="investmentTab3" class="form-control  input-sm">
+									<option value=""> ---<fmt:message key="report.select.default"/>--- </option>
+				</c:if>
+				<option value="${investment.id}" <c:if test = "${investment.id == param.investmentTab3}" > selected </c:if>><c:out value="${investment.projectName}" /> -- <fmt:message key="${investment.projectType}"/></option>
+				<c:if test="${status.last}"></select></c:if>
+			</c:forEach>
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label for="policyChanges" class="col-lg-3 control-label"><fmt:message key="investmentProject.policyChanges" /></label>
+		<div class="col-lg-9">
+			<input type="text" name="policyChanges" id="policyChanges" class="form-control input-sm" value="${riskControlReport.policyChanges}">
+		</div>
+	</div>
+	
+	
+	<div class="form-group">
 		<label for="policyChanges" class="col-lg-3 control-label"><fmt:message key="investmentProject.policyChanges" /></label>
 		<div class="col-lg-9">
 			<input type="text" name="policyChanges" id="policyChanges" class="form-control input-sm" value="${riskControlReport.policyChanges}">
@@ -21,7 +43,7 @@
 		</div>
 	</div>
 	<div class="form-group">
-		<div class="col-lg-1 col-lg-offset-9">
+		<div class="col-lg-1 col-lg-offset-11">
 			<button type="submit" class="btn btn-primary form-control" style="width:50px;"  name="method" value="SaveTab3" onclick="$('#activeTab').val('tab3')">
             		<i class="icon-ok icon-white"></i> <fmt:message key="button.save"/>
 			</button>

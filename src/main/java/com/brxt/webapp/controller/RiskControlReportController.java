@@ -28,10 +28,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.brxt.model.Counterparty;
 import com.brxt.model.CreditInformation;
+import com.brxt.model.InvestmentStatus;
 import com.brxt.model.ProjectInfo;
 import com.brxt.model.Repayment;
 import com.brxt.model.ReportContentKey;
 import com.brxt.model.SubjectCapacity;
+import com.brxt.model.enums.CapitalInvestmentType;
 import com.brxt.model.enums.CounterpartyType;
 import com.brxt.model.finance.CorporateBalanceSheet;
 import com.brxt.model.finance.InstituteBalanceSheet;
@@ -119,23 +121,28 @@ public class RiskControlReportController extends BaseSheetController {
 		return ciList;
 	}
 
-	@ModelAttribute("subjectCapacities")
-	public List<SubjectCapacity> getSubjectCapacity(final HttpServletRequest request) throws ParseException {
-		ReportContentKey rck = getReportContentKey(request);
-		if (rck == null) {
-			return null;
+	@ModelAttribute("investmentStatus")
+	public List<InvestmentStatus> getInvestmentStatus(final HttpServletRequest request) {
+		ProjectInfo projectInfo = getProjectInfo(request);
+		Set<InvestmentStatus> investmentStatusSet = projectInfo.getInvestments();
+		if(investmentStatusSet != null)
+		{
+			List<InvestmentStatus> investmentList = new ArrayList<InvestmentStatus>();
+			Iterator<InvestmentStatus> itIs = investmentStatusSet.iterator();
+			while(itIs.hasNext())
+			{
+				InvestmentStatus status = itIs.next();
+				if(!status.getProjectType().equals(CapitalInvestmentType.REPAYMENT_PROJECT.getTitle()))
+				{
+					investmentList.add(status);
+				}
+			}
+			return investmentList;
 		}
-		List<SubjectCapacity> subjectCapacities = subjectCapacityManager.findByProjIdCpId(rck.getProjectInfo(), rck.getCounterparty(),
-				rck.getStartTime(), rck.getEndTime());
-		if (subjectCapacities != null && subjectCapacities.size() > 0) {
-			return subjectCapacities;
-		}
-
-		if (rck.getCounterparty() != null && "tab2".equals(rck.getActiveTab())) {
-			saveMessage(request, getText("report.subject.error", rck.getCounterparty().getName(), request.getLocale()));
-		}
+		
 		return null;
 	}
+
 
 	@ModelAttribute("counterparties")
 	public List<Counterparty> getCounterparties(final HttpServletRequest request) {
@@ -351,6 +358,12 @@ public class RiskControlReportController extends BaseSheetController {
 			ProjectInfo projectInfo = projectInfoManager.get(Long.valueOf(projectInfoId));
 			Counterparty counterparty = findCounterparty(projectInfo, Long.valueOf(counterpartyId));
 			SubjectCapacity subjectCapacity = subjectCapacityManager.find(projectInfo, counterparty, checkTimaDate);
+			if(subjectCapacity == null)
+			{
+				saveMessage(request, getText("report.subjectCapacity.notFound", new String[]{counterparty.getName(), checkTime}, request.getLocale()));
+				return mav;
+			}
+			
 			RiskControlReport report = getRiskControlReport(request);
 			Iterator<SubjectCapacity> scIt = report.getSubjectCapacities().iterator();
 			while(scIt != null && scIt.hasNext())
@@ -390,6 +403,10 @@ public class RiskControlReportController extends BaseSheetController {
 			ProjectInfo projectInfo = projectInfoManager.get(Long.valueOf(projectInfoId));
 			Counterparty counterparty = findCounterparty(projectInfo, Long.valueOf(counterpartyId));
 			SubjectCapacity subjectCapacity = subjectCapacityManager.find(projectInfo, counterparty, checkTimaDate);
+			if(subjectCapacity == null)
+			{
+				saveMessage(request, getText("report.subjectCapacity.notFound", new String[]{counterparty.getName(), checkTime}, request.getLocale()));
+			}
 			mav.addObject("subjectCapacity", subjectCapacity);
 		} 
 		catch (ParseException e)
@@ -533,6 +550,9 @@ public class RiskControlReportController extends BaseSheetController {
 								prevProfitStatement.getOperatingIncome()));
 					}
 					financeCheck.setPrevFinanceRatio(prevFinanceRatio);
+				} else 
+				{
+					saveMessage(request, getText("report.financeCheck.notFound", new String[]{counterparty.getName(), prevTermTime}, request.getLocale()));
 				}
 
 				if (currTermCbs != null) {
@@ -548,6 +568,10 @@ public class RiskControlReportController extends BaseSheetController {
 							currTermCbs.getLiquidDebt()));
 					}
 					financeCheck.setCurrFinanceRatio(currFinanceRatio);
+				}
+				else 
+				{
+					saveMessage(request, getText("report.financeCheck.notFound", new String[]{counterparty.getName(), currTermTime}, request.getLocale()));
 				}
 				
 				if(financeCheck.getCurrFinanceRatio() != null && financeCheck.getPrevFinanceRatio() != null)
@@ -599,6 +623,16 @@ public class RiskControlReportController extends BaseSheetController {
 						c1.get(Calendar.YEAR), c1.get(Calendar.MONTH) + 1);
 				InstituteBalanceSheet currIBS = financeSheetManager.findInstituteBalanceSheet(projectInfo, counterparty,
 						c2.get(Calendar.YEAR), c2.get(Calendar.MONTH) + 1);
+				
+				if(currIBS == null)
+				{
+					saveMessage(request, getText("report.financeCheck.notFound", new String[]{counterparty.getName(), currTermTime}, request.getLocale()));
+				}
+				
+				if(prevIBS == null)
+				{
+					saveMessage(request, getText("report.financeCheck.notFound", new String[]{counterparty.getName(), prevTermTime}, request.getLocale()));
+				}
 				
 				financeCheck.setCurrInstituteBalanceSheet(currIBS);
 				financeCheck.setPrevInstituteBalanceSheet(prevIBS);

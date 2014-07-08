@@ -1,31 +1,54 @@
+<c:if test="${empty param.preview}">
 <div class="col-lg-12">
 <div class="well form-horizontal well-sm">
 	<fieldset>
+		<div class="col-lg-12">
 		<div class="form-group">
-			<label for="counterparties" class="col-lg-2 control-label"><fmt:message key="projectInfo.counterparty.name"/></label>
+			<label for="counterparties" class="col-lg-3 control-label"><fmt:message key="projectInfo.counterparty.name"/></label>
 			<div class="col-lg-4">
 			<c:forEach var="counterparty" items="${counterparties}" varStatus="status">
 				<c:if test="${status.first}">
-								<select id="counterparties" name="counterparties" class="form-control">
+								<select id="counterpartiesTab2" name="counterpartiesTab2" class="form-control  input-sm">
 									<option value=""> ---<fmt:message key="report.select.default"/>--- </option>
 				</c:if>
-				<option value="${counterparty.id}" <c:if test = "${counterparty.id == param.counterpartyId}" > selected </c:if>><c:out value="${counterparty.name}" /></option>
+				<option value="${counterparty.id}" <c:if test = "${counterparty.id == param.counterpartiesTab2}" > selected </c:if>><c:out value="${counterparty.name}" /></option>
 				<c:if test="${status.last}"></select></c:if>
 			</c:forEach>
 			</div>
 		</div>
+		
+		<div class="form-group">
+				<label for="checkTime" class="col-lg-3 control-label"><fmt:message key="subjectCapacity.checkTime" /></label>
+				<div class="col-lg-3">
+					<input type="text" id="checkTime" name="checkTime"  value="<c:out value='${param.checkTime}' />"  class="form-control  input-sm" >
+				</div>
+		</div>
+		</div>
+		
+		<div class="form-group">
+				<div class="col-lg-3 col-lg-offset-9">
+			 			<button type="submit" class="btn btn-primary" name="method" value="SubjectCapacityCheck" onclick="$('#activeTab').val('tab2')">
+            				<i class="icon-ok icon-white"></i> <fmt:message key="button.ok"/>
+						</button>
+					
+						<button type="submit" class="btn btn-primary" name="method" value="SaveTab2" onclick="$('#activeTab').val('tab2')">
+            				<i class="icon-ok icon-white"></i> <fmt:message key="button.save"/>
+						</button>	
+				</div>
+		</div>
+			
 	</fieldset>
 </div>
 </div>
 
-
+<c:if test="${not empty subjectCapacity}" >
 <div class="col-lg-12">			
 					<div class="form-group">
-					<c:forEach var="subjectCapacity" items="${subjectCapacities}" varStatus="status">
 					<div class="page-header">
 							<h4>
 								<fmt:message key="subjectCapacity.heading" />:
-								<c:out value="${subjectCapacity.counterparty.name}" />
+								<c:out value="${subjectCapacity.counterparty.name}" /> 
+								<fmt:formatDate value="${subjectCapacity.checkTime}" pattern="${shortDatePattern}" />
 							</h4>
 					</div>
 					<table class="table table-striped table-bordered table-hover">
@@ -105,17 +128,121 @@
 						</tr>
 						</tbody>
 					</table>
-					</c:forEach>
 					</div>
-</div>			
-<script language="javascript" type="text/javascript">
-$(document).ready(function(){
-	$('#counterparties').change(function(){
-		var counterpartyId=$(this).children('option:selected').val(); 
-		$('#counterpartyId').val(counterpartyId);
-		$('#activeTab').val("tab2");
-		$('#riskControlReport').submit();
-	})
-})
+</div>		
+</c:if>	
+</c:if>	
+
+
+<c:if test="${not empty param.preview and param.preview}">
+	<c:if test="${empty riskControlReport.subjectCapacities}">
+		<div class="col-lg-12">
+		<div class="alert alert-dismissable alert-danger">
+			<fmt:message key="report.subjectCapacities.empty" />
+		</div>
+		</div>
+	</c:if>
+	<c:forEach var="subjectCapacity" items="${riskControlReport.subjectCapacities}">
+			<div class="col-lg-12">			
+					<div class="form-group">
+					<div class="page-header">
+							<h4>
+								<fmt:message key="subjectCapacity.heading" />:
+								<c:out value="${subjectCapacity.counterparty.name}" /> 
+								<fmt:formatDate value="${subjectCapacity.checkTime}" pattern="${shortDatePattern}" />
+							</h4>
+					</div>
+					<table class="table table-striped table-bordered table-hover">
+						<thead>
+						<tr>
+							<th><fmt:message key="subjectCapacity.checkContent"/></th>
+							<th><fmt:message key="subjectCapacity.checkResults"/></th> 
+							<th><fmt:message key="subjectCapacity.comments"/></th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr>
+							<td><fmt:message key="subjectCapacity.licenseVerificationDate"/></td>
+							<td><c:out value="${subjectCapacity.licenseVerificationDate}" /></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><fmt:message key="subjectCapacity.orgCodeVerificationDate"/></td>
+							<td><c:out value="${subjectCapacity.orgCodeVerificationDate}" /></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><fmt:message key="subjectCapacity.loanCardValid"/></td>
+							<td>
+								<c:if test="${subjectCapacity.loanCardValid}"><fmt:message key="label.yes"/></c:if>
+								<c:if test="${not subjectCapacity.loanCardValid}"><fmt:message key="label.no"/></c:if>
+							 </td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><fmt:message key="subjectCapacity.nameChanged"/></td>
+							<td>
+								<c:if test="${subjectCapacity.nameChanged}"><fmt:message key="label.yes"/></c:if>
+								<c:if test="${not subjectCapacity.nameChanged}"><fmt:message key="label.no"/></c:if>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><fmt:message key="subjectCapacity.ownerChanged"/></td>
+							<td>
+								<c:if test="${subjectCapacity.ownerChanged}"><fmt:message key="label.yes"/></c:if>
+								<c:if test="${not subjectCapacity.ownerChanged}"><fmt:message key="label.no"/></c:if>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><fmt:message key="subjectCapacity.ownershipChanged"/></td>
+							<td>
+								<c:if test="${subjectCapacity.ownershipChanged}"><fmt:message key="label.yes"/></c:if>
+								<c:if test="${not subjectCapacity.ownershipChanged}"><fmt:message key="label.no"/></c:if>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><fmt:message key="subjectCapacity.capitalChanged"/></td>
+							<td>
+								<c:if test="${subjectCapacity.capitalChanged}"><fmt:message key="label.yes"/></c:if>
+								<c:if test="${not subjectCapacity.capitalChanged}"><fmt:message key="label.no"/></c:if>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><fmt:message key="subjectCapacity.bizScopeChanged"/></td>
+							<td>
+								<c:if test="${subjectCapacity.bizScopeChanged}"><fmt:message key="label.yes"/></c:if>
+								<c:if test="${not subjectCapacity.bizScopeChanged}"><fmt:message key="label.no"/></c:if>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><fmt:message key="subjectCapacity.otherBigChanges"/></td>
+							<td>
+								<c:if test="${subjectCapacity.otherBigChanges}"><fmt:message key="label.yes"/></c:if>
+								<c:if test="${not subjectCapacity.otherBigChanges}"><fmt:message key="label.no"/></c:if>
+							</td>
+							<td></td>
+						</tr>
+						</tbody>
+					</table>
+					</div>
+				</div>		
+	</c:forEach> 
+</c:if>
+
+<script>
+  $(function() {
+    $('#checkTime').datepicker({
+				language: 'zh-CN',
+				format: '<c:out value="${shortDatePatternJs}" />',
+				autoclose: true,
+				minViewMode: 1
+			});	
+  });
+  
 </script>
 					
