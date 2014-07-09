@@ -1,3 +1,4 @@
+<c:if test="${empty param.preview}">
 <div class="col-lg-12">
 	<div class="well form-horizontal">
 		<fieldset>
@@ -342,6 +343,261 @@
 					</c:if>
 				</div>
 </div>
+</c:if>
+
+
+<c:if test="${not empty param.preview and param.preview}">
+	<c:if test="${empty financeCheckList}">
+		<div class="col-lg-12">
+		<div class="alert alert-dismissable alert-danger">
+			<fmt:message key="report.financeCheck.empty" />
+		</div>
+		</div>
+	</c:if>	
+	
+	<c:forEach var="financeCheck" items="${financeCheckList}">
+	
+		<div class=" form-group">
+		<div class="page-header">
+			<h4>
+				<fmt:message key="projectInfo.counterparty.name" />:
+				<c:out value="${financeCheck.counterparty.name}" />
+			</h4>
+		</div>
+					
+		<appfuse:label styleClass="control-label" key="report.riskcontrol.financeCheck"/> <br>
+		
+		<c:if test="${financeCheck.counterparty.counterpartyType != 'institution'}">
+		<appfuse:label styleClass="control-label" key="report.financeCheck.base"/>  
+		<table class="table table-striped table-bordered table-hover">
+			<thead>
+				<tr>
+					<th><fmt:message key="instBalanceSheet.itemName"/></th>
+					<th><fmt:message key="report.financeCheck.prevTerm"/></th>
+					<th><fmt:message key="report.financeCheck.currTerm"/></th>
+					<th><fmt:message key="report.financeCheck.changes"/></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><fmt:message key="instBalanceSheet.assetTotal"/></td>
+					<td><fmt:formatNumber type="currency"><c:out value="${financeCheck.prevCorpBalanceSheet.totalAsset}"/></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="currency"><c:out value="${financeCheck.currCorpBalanceSheet.totalAsset}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.totalAsset}" /></fmt:formatNumber></td>
+				</tr>
+				<tr>
+					<td><fmt:message key="corpBalanceSheet.cash"/></td>
+					<td><fmt:formatNumber type="currency"><c:out value="${financeCheck.prevCorpBalanceSheet.cash}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="currency"><c:out value="${financeCheck.currCorpBalanceSheet.cash}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.cash}" /></fmt:formatNumber></td>
+				</tr>
+				<tr>
+					<td><fmt:message key="corpBalanceSheet.inventory"/></td>
+					<td><fmt:formatNumber type="currency"><c:out value="${financeCheck.prevCorpBalanceSheet.inventory}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="currency"><c:out value="${financeCheck.currCorpBalanceSheet.inventory}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.inventory}" /></fmt:formatNumber></td>
+				</tr>
+				<tr>
+					<td><fmt:message key="corpBalanceSheet.nonLiquid"/></td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+				</tr>
+				<tr>
+					<td><fmt:message key="corpBalanceSheet.totalDebt"/></td>
+					<td><fmt:formatNumber type="currency"><c:out value="${financeCheck.prevCorpBalanceSheet.totalDebt}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="currency"><c:out value="${financeCheck.currCorpBalanceSheet.totalDebt}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.totalDebt}" /></fmt:formatNumber></td>
+				</tr>
+				<tr>
+					<td><fmt:message key="corpBalanceSheet.prereceive"/></td>
+					<td><fmt:formatNumber type="currency"><c:out value="${financeCheck.prevCorpBalanceSheet.prereceive}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="currency"><c:out value="${financeCheck.currCorpBalanceSheet.prereceive}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.prereceive}" /></fmt:formatNumber></td>
+				</tr>
+				<tr>
+					<td><fmt:message key="corpBalanceSheet.shortLoan"/></td>
+					<td><fmt:formatNumber type="currency"><c:out value="${financeCheck.prevCorpBalanceSheet.shortLoan}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="currency"><c:out value="${financeCheck.currCorpBalanceSheet.shortLoan}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.shortLoan}" /></fmt:formatNumber></td>
+				</tr>
+				<tr>
+					<td><fmt:message key="corpBalanceSheet.longLoan"/></td>
+					<td><fmt:formatNumber type="currency"><c:out value="${financeCheck.prevCorpBalanceSheet.longLoan}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="currency"><c:out value="${financeCheck.currCorpBalanceSheet.longLoan}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.longLoan}" /></fmt:formatNumber></td>
+				</tr>
+				<tr>
+					<td><fmt:message key="corpBalanceSheet.netAsset"/></td>
+					<td><fmt:formatNumber type="currency"><c:out value="${financeCheck.prevCorpBalanceSheet.netAsset}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="currency"><c:out value="${financeCheck.currCorpBalanceSheet.netAsset}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.netAsset}" /></fmt:formatNumber></td>
+				</tr>
+				<tr>
+					<td><fmt:message key="corpBalanceSheet.actualCapital"/></td>
+					<td><fmt:formatNumber type="currency"><c:out value="${financeCheck.prevCorpBalanceSheet.actualCapital}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="currency"><c:out value="${financeCheck.currCorpBalanceSheet.actualCapital}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.actualCapital}" /></fmt:formatNumber></td>
+				</tr>
+				<tr>
+					<td><fmt:message key="profitStatement.operatingIncome"/></td>
+					<td><fmt:formatNumber type="currency"><c:out value="${financeCheck.prevProfitStatement.operatingIncome}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="currency"><c:out value="${financeCheck.currProfitStatement.operatingIncome}" /></fmt:formatNumber></td>
+					<td>-</td>
+				</tr>
+				<tr>
+					<td><fmt:message key="profitStatement.operatingProfit"/></td>
+					<td><fmt:formatNumber type="currency"><c:out value="${financeCheck.prevProfitStatement.operatingProfit}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="currency"><c:out value="${financeCheck.currProfitStatement.operatingProfit}" /></fmt:formatNumber></td>
+					<td>-</td>
+				</tr>
+				<tr>
+					<td><fmt:message key="profitStatement.netProfit"/></td>
+					<td><fmt:formatNumber type="currency"><c:out value="${financeCheck.prevProfitStatement.netProfit}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="currency"><c:out value="${financeCheck.currProfitStatement.netProfit}" /></fmt:formatNumber></td>
+					<td>-</td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<appfuse:label styleClass="control-label" key="report.financeCheck.ratio"/>
+		<table class="table table-striped table-bordered table-hover">
+			<thead>
+				<tr>
+					<th> </th>
+					<th><fmt:message key="report.prev"/></th>
+					<th><fmt:message key="report.curr"/></th>
+					<th><fmt:message key="report.financeCheck.changes"/></th>
+				</tr>
+			</thead>			
+			<tbody>
+				<tr>
+					<td><fmt:message key="report.financeCheck.assetLiabilityRatio"/></td>
+					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.prevFinanceRatio.assetLiabilityRatio}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.currFinanceRatio.assetLiabilityRatio}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.financeRatioChanges.assetLiabilityRatio}" /></fmt:formatNumber></td>
+				</tr>
+				<tr>
+					<td><fmt:message key="report.financeCheck.liquidityRatio"/></td>
+					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.prevFinanceRatio.liquidityRatio}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.currFinanceRatio.liquidityRatio}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.financeRatioChanges.liquidityRatio}" /></fmt:formatNumber></td>
+				</tr>
+				<tr>
+					<td><fmt:message key="report.financeCheck.quickRatio"/></td>
+					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.prevFinanceRatio.quickRatio}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.currFinanceRatio.quickRatio}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.financeRatioChanges.quickRatio}" /></fmt:formatNumber></td>
+				</tr>
+				<tr>
+					<td></td>
+					<th><fmt:message key="report.lastYear"/></th>
+					<th><fmt:message key="report.thisYear"/></th>
+					<th><fmt:message key="report.years.changes"/></th>
+				</tr>
+				<tr>
+					<td><fmt:message key="report.financeCheck.assetRoR"/></td>
+					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.prevFinanceRatio.assetRoR}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.currFinanceRatio.assetRoR}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.financeRatioChanges.assetRoR}" /></fmt:formatNumber></td>
+				</tr>
+				<tr>
+					<td><fmt:message key="report.financeCheck.salesIncrementRatio"/></td>
+					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.prevFinanceRatio.salesIncrementRatio}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.currFinanceRatio.salesIncrementRatio}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.financeRatioChanges.salesIncrementRatio}" /></fmt:formatNumber></td>
+				</tr>
+			</tbody>
+		</table>
+		</c:if>
+		
+		<c:if test="${financeCheck.counterparty.counterpartyType == 'institution'}">
+			<table class="table table-striped table-bordered table-hover">
+			<thead>
+				<tr>
+					<th><fmt:message key="instBalanceSheet.itemName"/></th>
+					<th><fmt:message key="report.prev"/></th>
+					<th><fmt:message key="report.curr"/></th>
+				</tr>
+			</thead>	
+			<tbody>
+				<tr>
+        			<td><appfuse:label key="instBalanceSheet.assetGroupTotal"/> </td>
+        			<td>
+						<fmt:formatNumber type="currency"><c:out value="${financeCheck.prevInstituteBalanceSheet.assetGroupTotal}" /></fmt:formatNumber>
+		        	</td>
+        			<td>
+        				<fmt:formatNumber type="currency"><c:out value="${financeCheck.currInstituteBalanceSheet.assetGroupTotal}" /></fmt:formatNumber>
+		        	</td>
+        		</tr>
+        		<tr>
+        			<td><appfuse:label  key="instBalanceSheet.assetTotal"/></td>
+        			<td>
+        				<fmt:formatNumber type="currency"><c:out value="${financeCheck.prevInstituteBalanceSheet.assetTotal}" /></fmt:formatNumber>
+ 					</td>
+        			<td>
+        				<fmt:formatNumber type="currency"><c:out value="${financeCheck.currInstituteBalanceSheet.assetTotal}" /></fmt:formatNumber>
+        			</td>
+        		</tr>
+        		<tr>
+        			<td><appfuse:label key="instBalanceSheet.expenseTotal"/></td>
+        			<td>
+        				<fmt:formatNumber type="currency"><c:out value="${financeCheck.prevInstituteBalanceSheet.expenseTotal}" /></fmt:formatNumber>
+					</td>
+        			<td>
+        				<fmt:formatNumber type="currency"><c:out value="${financeCheck.currInstituteBalanceSheet.expenseTotal}" /></fmt:formatNumber>
+        			</td>
+        		</tr>
+        		<tr>
+        			<td> <appfuse:label  key="instBalanceSheet.debtGroupTotal"/> </td>
+        			<td>
+        				<fmt:formatNumber type="currency"><c:out value="${financeCheck.prevInstituteBalanceSheet.debtGroupTotal}" /></fmt:formatNumber>
+        			</td>
+        			<td>
+        				<fmt:formatNumber type="currency"><c:out value="${financeCheck.prevInstituteBalanceSheet.debtGroupTotal}" /></fmt:formatNumber>
+        			</td>
+        		</tr>
+        		<tr>
+        			<td><appfuse:label  key="instBalanceSheet.debtTotal"/></td>
+        			<td>
+        				<fmt:formatNumber type="currency"><c:out value="${financeCheck.prevInstituteBalanceSheet.debtTotal}" /></fmt:formatNumber>
+					</td>
+        			<td>
+        				<fmt:formatNumber type="currency"><c:out value="${financeCheck.prevInstituteBalanceSheet.debtTotal}" /></fmt:formatNumber>
+        			</td>
+        		</tr>
+        		<tr>
+        			<td><appfuse:label   key="instBalanceSheet.netAssetTotal"/></td>
+        			<td>
+        				<fmt:formatNumber type="currency"><c:out value="${financeCheck.prevInstituteBalanceSheet.netAssetTotal}" /></fmt:formatNumber>
+        			</td>
+        			<td>
+        				<fmt:formatNumber type="currency"><c:out value="${financeCheck.prevInstituteBalanceSheet.netAssetTotal}" /></fmt:formatNumber>
+        			</td>
+        		</tr>
+        		<tr>
+        			<td><appfuse:label  key="instBalanceSheet.incomeTotal"/> </td>
+        			<td>
+        				<fmt:formatNumber type="currency"><c:out value="${financeCheck.prevInstituteBalanceSheet.incomeTotal}" /></fmt:formatNumber>
+        			</td>
+        			<td>
+        				<fmt:formatNumber type="currency"><c:out value="${financeCheck.prevInstituteBalanceSheet.incomeTotal}" /></fmt:formatNumber>
+        			</td>
+        		</tr>
+        		<tr>
+					<td><appfuse:label key="report.financeCheck.financeStatementSummary"/></td>
+					<td colspan="3"><input type="text" name="financeStatementSummary" class="form-control input-sm"></td>
+				</tr>
+			</tbody>
+			</table>
+		</c:if>
+		
+</div>
+	
+	</c:forEach>
+	
+	
+</c:if>		
 <script>
   $(function() {
     $('#prevTermTime').datepicker({
