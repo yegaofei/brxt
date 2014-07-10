@@ -94,7 +94,7 @@ public class CorpBalanceSheetDaoTest  extends BaseDaoTestCase{
 			CorporateBalanceSheet cbsOld = new CorporateBalanceSheet();
 			cbsOld.setProjectInfo(project);
 			cbsOld.setCounterparty(cp);
-			cbsOld.setReportYear(2014);
+			cbsOld.setReportYear(2015);
 			cbsOld.setReportMonth((short)7);
 			cbsOld.setInventory(new BigDecimal("2004"));
 			corpBalanceSheetDao.save(cbsOld);
