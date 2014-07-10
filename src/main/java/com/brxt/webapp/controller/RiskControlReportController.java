@@ -140,7 +140,27 @@ public class RiskControlReportController extends BaseSheetController {
 			}
 			return investmentList;
 		}
-		
+		return null;
+	}
+	
+	@ModelAttribute("repaymentInvestmentStatus")
+	public List<InvestmentStatus> getRepaymentInvestmentStatus(final HttpServletRequest request) {
+		ProjectInfo projectInfo = getProjectInfo(request);
+		Set<InvestmentStatus> investmentStatusSet = projectInfo.getInvestments();
+		if(investmentStatusSet != null)
+		{
+			List<InvestmentStatus> investmentList = new ArrayList<InvestmentStatus>();
+			Iterator<InvestmentStatus> itIs = investmentStatusSet.iterator();
+			while(itIs.hasNext())
+			{
+				InvestmentStatus status = itIs.next();
+				if(status.getProjectType().equals(CapitalInvestmentType.REPAYMENT_PROJECT.getTitle()))
+				{
+					investmentList.add(status);
+				}
+			}
+			return investmentList;
+		}
 		return null;
 	}
 
@@ -232,44 +252,44 @@ public class RiskControlReportController extends BaseSheetController {
 		return null;
 	}
 
-	@ModelAttribute("investmentProjects")
-	public List<InvestmentProject> getInvestmentProjects(final HttpServletRequest request) {
-		String id = request.getParameter("id");
-		if (!StringUtils.isBlank(id)) {
-			List<InvestmentProject> investmentProjects = projectProgressManager.getInvestmentProjects(Long.valueOf(id));
-			if (investmentProjects == null | investmentProjects.isEmpty()) {
-				return null;
-			}
-			return investmentProjects;
-		}
-		return null;
-	}
+//	@ModelAttribute("investmentProjects")
+//	public List<InvestmentProject> getInvestmentProjects(final HttpServletRequest request) {
+//		String id = request.getParameter("id");
+//		if (!StringUtils.isBlank(id)) {
+//			List<InvestmentProject> investmentProjects = projectProgressManager.getInvestmentProjects(Long.valueOf(id));
+//			if (investmentProjects == null | investmentProjects.isEmpty()) {
+//				return null;
+//			}
+//			return investmentProjects;
+//		}
+//		return null;
+//	}
 
-	@ModelAttribute("supplyLiquidProjects")
-	public List<SupplyLiquidProject> getSupplyLiquidProjects(final HttpServletRequest request) {
-		String id = request.getParameter("id");
-		if (!StringUtils.isBlank(id)) {
-			List<SupplyLiquidProject> supplyLiquidProjects = projectProgressManager.getSupplyLiquidProjects(Long.valueOf(id));
-			if (supplyLiquidProjects == null | supplyLiquidProjects.isEmpty()) {
-				return null;
-			}
-			return supplyLiquidProjects;
-		}
-		return null;
-	}
-
-	@ModelAttribute("repaymentProjects")
-	public List<RepaymentProject> getRepaymentProjects(final HttpServletRequest request) {
-		String id = request.getParameter("id");
-		if (!StringUtils.isBlank(id)) {
-			List<RepaymentProject> repaymentProjects = projectProgressManager.getRepaymentProjects(Long.valueOf(id));
-			if (repaymentProjects == null | repaymentProjects.isEmpty()) {
-				return null;
-			}
-			return repaymentProjects;
-		}
-		return null;
-	}
+//	@ModelAttribute("supplyLiquidProjects")
+//	public List<SupplyLiquidProject> getSupplyLiquidProjects(final HttpServletRequest request) {
+//		String id = request.getParameter("id");
+//		if (!StringUtils.isBlank(id)) {
+//			List<SupplyLiquidProject> supplyLiquidProjects = projectProgressManager.getSupplyLiquidProjects(Long.valueOf(id));
+//			if (supplyLiquidProjects == null | supplyLiquidProjects.isEmpty()) {
+//				return null;
+//			}
+//			return supplyLiquidProjects;
+//		}
+//		return null;
+//	}
+//
+//	@ModelAttribute("repaymentProjects")
+//	public List<RepaymentProject> getRepaymentProjects(final HttpServletRequest request) {
+//		String id = request.getParameter("id");
+//		if (!StringUtils.isBlank(id)) {
+//			List<RepaymentProject> repaymentProjects = projectProgressManager.getRepaymentProjects(Long.valueOf(id));
+//			if (repaymentProjects == null | repaymentProjects.isEmpty()) {
+//				return null;
+//			}
+//			return repaymentProjects;
+//		}
+//		return null;
+//	}
 	
 	@ModelAttribute("collateralSummary")
 	public String getCollateralSummary(final HttpServletRequest request) {
@@ -490,7 +510,103 @@ public class RiskControlReportController extends BaseSheetController {
 		
 	}
 	
-	private ModelAndView fetchFinanceReports(final HttpServletRequest request, ModelAndView mav)
+	private ModelAndView projectProgressTab3(final HttpServletRequest request, final ModelAndView mav)
+	{
+		String projectEndTime = request.getParameter("projectEndTime");
+		String projectInfoId = request.getParameter("id");
+		String invesetmentStatusId = request.getParameter("investmentTab3");
+		if (StringUtils.isBlank(projectEndTime) || StringUtils.isBlank(invesetmentStatusId)) {
+			saveError(request, getText("report.investment.project.required.error", request.getLocale()));
+			return mav;
+		}
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat(getText("date.format", request.getLocale()));
+		try {
+			Date projectEndTimeDate = dateFormat.parse(projectEndTime);
+			ProjectInfo projectInfo = projectInfoManager.get(Long.valueOf(projectInfoId));
+			InvestmentStatus investmentStatus = findInvesetmentStatus(projectInfo, Long.valueOf(invesetmentStatusId));
+			String projectType = investmentStatus.getProjectType();
+			CapitalInvestmentType investmentType = CapitalInvestmentType.valueOf(projectType.toUpperCase());
+			switch (investmentType) 
+			{
+			case REAL_ESTATE:
+			case INFRASTRUCTURE:
+				InvestmentProject investmentProject = projectProgressManager.findInvestmentProject(investmentStatus, projectEndTimeDate);
+				List<InvestmentProject> investmentProjects = new ArrayList<InvestmentProject>();
+				if(investmentProject != null)
+				{
+					investmentProjects.add(investmentProject);
+				}
+				else
+				{
+					saveMessage(request, getText("report.investment.project.notFound", new String[]{investmentStatus.getProjectName(), projectEndTime}, request.getLocale()));
+				}
+				mav.addObject("investmentProjects", investmentProjects);
+				break;
+			case SUPPLEMENTAL_LIQUIDITY:
+				SupplyLiquidProject supplyLiquidProject = projectProgressManager.findSupplyLiquidProject(investmentStatus, projectEndTimeDate);
+				List<SupplyLiquidProject> supplyLiquidProjects = new ArrayList<SupplyLiquidProject>();
+				if(supplyLiquidProject != null)
+				{
+					supplyLiquidProjects.add(supplyLiquidProject);
+				}
+				else
+				{
+					saveMessage(request, getText("report.investment.project.notFound", new String[]{investmentStatus.getProjectName(), projectEndTime}, request.getLocale()));
+				}
+				mav.addObject("supplyLiquidProjects", supplyLiquidProjects);
+				break;
+				default:
+			}
+		} catch (ParseException e) {
+			saveError(request, "Date format is incorrect ");
+			return mav;
+		}
+		return mav;
+	}
+	
+	private ModelAndView projectProgressTab4(final HttpServletRequest request, final ModelAndView mav)
+	{
+		String projectEndTime = request.getParameter("projectEndTimeTab4");
+		String projectInfoId = request.getParameter("id");
+		String invesetmentStatusId = request.getParameter("investmentTab4");
+		if (StringUtils.isBlank(projectEndTime) || StringUtils.isBlank(invesetmentStatusId)) {
+			saveError(request, getText("report.investment.project.required.error", request.getLocale()));
+			return mav;
+		}
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat(getText("date.format", request.getLocale()));
+		try {
+			Date projectEndTimeDate = dateFormat.parse(projectEndTime);
+			ProjectInfo projectInfo = projectInfoManager.get(Long.valueOf(projectInfoId));
+			InvestmentStatus investmentStatus = findInvesetmentStatus(projectInfo, Long.valueOf(invesetmentStatusId));
+			String projectType = investmentStatus.getProjectType();
+			CapitalInvestmentType investmentType = CapitalInvestmentType.valueOf(projectType.toUpperCase());
+			switch (investmentType) 
+			{
+			case REPAYMENT_PROJECT:
+				RepaymentProject repaymentProject = projectProgressManager.findRepaymentProject(investmentStatus, projectEndTimeDate);
+				List<RepaymentProject> repaymentProjects = new ArrayList<RepaymentProject>();
+				if(repaymentProject != null)
+				{
+					repaymentProjects.add(repaymentProject);
+				}
+				else
+				{
+					saveMessage(request, getText("report.repayment.project.notFound", new String[]{investmentStatus.getProjectName(), projectEndTime}, request.getLocale()));
+				}
+				mav.addObject("repaymentProjects", repaymentProjects);
+				break;
+				default:
+			}
+		} catch (ParseException e) {
+			saveError(request, "Date format is incorrect ");
+			return mav;
+		}
+		return mav;
+	}
+	
+	private ModelAndView fetchFinanceReports(final HttpServletRequest request, final ModelAndView mav)
 	{
 		String prevTermTime = request.getParameter("prevTermTime");
 		String currTermTime = request.getParameter("currTermTime");
@@ -743,6 +859,14 @@ public class RiskControlReportController extends BaseSheetController {
 	
 	private ModelAndView saveTab3(final HttpServletRequest request, final ModelAndView mav)
 	{
+		String projectEndTime = request.getParameter("projectEndTimeTab3");
+		String invesetmentStatusId = request.getParameter("investmentIdTab3");
+		if(StringUtils.isBlank(projectEndTime) || StringUtils.isBlank(invesetmentStatusId) )
+		{
+			saveError(request, getText("report.investment.project.required.error", request.getLocale()));
+			return mav;
+		}
+		
 		RiskControlReport report = getRiskControlReport(request);
 		String policyChanges = request.getParameter("policyChanges");
 		String priceChanges = request.getParameter("priceChanges");
@@ -750,6 +874,71 @@ public class RiskControlReportController extends BaseSheetController {
 		report.setPolicyChanges(policyChanges);
 		report.setPriceChanges(priceChanges);
 		report.setInvestmentEvaluation(investmentEvaluation);
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat(getText("date.format", request.getLocale()));
+		try {
+			Date projectEndTimeDate = dateFormat.parse(projectEndTime);
+			String projectInfoId = request.getParameter("id");
+			ProjectInfo projectInfo = projectInfoManager.get(Long.valueOf(projectInfoId));
+			InvestmentStatus investmentStatus = findInvesetmentStatus(projectInfo, Long.valueOf(invesetmentStatusId));
+			String projectType = investmentStatus.getProjectType();
+			CapitalInvestmentType investmentType = CapitalInvestmentType.valueOf(projectType.toUpperCase());
+			switch (investmentType) 
+			{
+			case REAL_ESTATE:
+			case INFRASTRUCTURE:
+				InvestmentProject investmentProject = projectProgressManager.findInvestmentProject(investmentStatus, projectEndTimeDate);
+				Set<InvestmentProject> setIp = report.getInvestmentProjects();
+				if(setIp != null)
+				{
+					Iterator<InvestmentProject> itIp = setIp.iterator();
+					while(itIp.hasNext())
+					{
+						InvestmentProject ip = itIp.next();
+						if(ip.getInvestmentStatus().getId().equals(investmentStatus.getId()))
+						{
+							itIp.remove();
+						}
+					}
+				}
+				List<InvestmentProject> investmentProjects = new ArrayList<InvestmentProject>();
+				if(investmentProject != null)
+				{
+					report.getInvestmentProjects().add(investmentProject);
+					investmentProjects.add(investmentProject);
+				}
+				mav.addObject("investmentProjects", investmentProjects);
+				break;
+			case SUPPLEMENTAL_LIQUIDITY:
+				SupplyLiquidProject supplyLiquidProject = projectProgressManager.findSupplyLiquidProject(investmentStatus, projectEndTimeDate);
+				Set<SupplyLiquidProject> setSlp= report.getSupplyLiquidProjects();
+				if(setSlp != null)
+				{
+					Iterator<SupplyLiquidProject> itSlp = setSlp.iterator();
+					while(itSlp.hasNext())
+					{
+						SupplyLiquidProject ip = itSlp.next();
+						if(ip.getInvestmentStatus().getId().equals(investmentStatus.getId()))
+						{
+							itSlp.remove();
+						}
+					}
+				}
+				List<SupplyLiquidProject> supplyLiquidProjects = new ArrayList<SupplyLiquidProject>();
+				if(supplyLiquidProject != null)
+				{
+					report.getSupplyLiquidProjects().add(supplyLiquidProject);
+					supplyLiquidProjects.add(supplyLiquidProject);
+				}
+				mav.addObject("supplyLiquidProjects", supplyLiquidProjects);
+				break;
+				default:
+			}
+		} catch (ParseException e) {
+			saveError(request, "Date format is incorrect ");
+			return mav;
+		}
+		
 		reportManager.save(report);
 		saveMessage(request, getText("report.update.success", request.getLocale()));		
 		mav.addObject("riskControlReport", report);
@@ -953,8 +1142,14 @@ public class RiskControlReportController extends BaseSheetController {
 			case "SaveFinanceCheckTab21":
 				mav = saveFinanceCheck(request, mav);
 				break;
+			case "ProjectProgressTab3":
+				mav = projectProgressTab3(request, mav);
+				break;
 			case "SaveTab3":
 				mav = saveTab3(request, mav);
+				break;
+			case "ProjectProgressTab4":
+				mav = projectProgressTab4(request, mav);
 				break;
 			case "SaveTab4":
 				mav = saveTab4(request, mav);
@@ -1395,5 +1590,25 @@ public class RiskControlReportController extends BaseSheetController {
 		mav.addObject("financeCheckList", financeCheckList);
 		
 		return mav;
+	}
+	
+	private InvestmentStatus findInvesetmentStatus(ProjectInfo projectInfo, Long investmentStatusId)
+	{
+		if(projectInfo == null || investmentStatusId == null)
+		{
+			return null;
+		}
+		
+		Set<InvestmentStatus> isSet = projectInfo.getInvestments();
+		Iterator<InvestmentStatus> isIt = isSet.iterator();
+		while(isIt.hasNext())
+		{
+			InvestmentStatus investmentStatus = isIt.next();
+			if(investmentStatus.getId().equals(investmentStatusId))
+			{
+				return investmentStatus;
+			}
+		}
+		return null;
 	}
 }

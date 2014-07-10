@@ -1,9 +1,11 @@
 package com.brxt.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.service.GenericManager;
 
+import com.brxt.model.InvestmentStatus;
 import com.brxt.model.ProjectProgress;
 import com.brxt.model.enums.CapitalInvestmentType;
 import com.brxt.model.projectprogress.InvestmentProject;
@@ -34,5 +36,11 @@ public interface ProjProgressManager extends
 	public RepaymentProject saveRepaymentProject(RepaymentProject o);
 	
 	public SupplyLiquidProject saveSupplyLiqidProject(SupplyLiquidProject o);
+	
+	public InvestmentProject findInvestmentProject(InvestmentStatus investmentStatus, Date projectEndTime);
+	
+	public SupplyLiquidProject findSupplyLiquidProject(InvestmentStatus investmentStatus, Date projectEndTime);
+	
+	public RepaymentProject findRepaymentProject(InvestmentStatus investmentStatus, Date projectEndTime);
 	
 }

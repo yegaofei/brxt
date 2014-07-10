@@ -1,6 +1,7 @@
 package com.brxt.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -306,6 +307,23 @@ implements ProjProgressManager {
 	@Override
 	public SupplyLiquidProject saveSupplyLiqidProject(SupplyLiquidProject o) {
 		return supplyLiquidProjectDao.save(o);
+	}
+	
+	public InvestmentProject findInvestmentProject(InvestmentStatus investmentStatus, Date projectEndTime)
+	{
+		return investmentProjectDao.find(investmentStatus, projectEndTime);
+	}
+
+	@Override
+	public SupplyLiquidProject findSupplyLiquidProject(
+			InvestmentStatus investmentStatus, Date projectEndTime) {
+		return supplyLiquidProjectDao.find(investmentStatus, projectEndTime);
+	}
+
+	@Override
+	public RepaymentProject findRepaymentProject(
+			InvestmentStatus investmentStatus, Date projectEndTime) {
+		return repaymentProjectDao.find(investmentStatus, projectEndTime);
 	}
 
 }
