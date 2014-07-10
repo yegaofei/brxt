@@ -2,14 +2,38 @@
 <div class="well form-horizontal">
 	<fieldset>
 	<div class="form-group">
-		<label for="repaymentEvaluation" class="col-lg-2 control-label"><fmt:message key="repaymentProject.evaluation" /></label>
-		<div class="col-lg-10">
+		<label for="investmentTab4" class="col-lg-3 control-label"><fmt:message key="repaymentProject.name" /></label>
+		<div class="col-lg-4">
+			<c:forEach var="investment" items="${repaymentInvestmentStatus}" varStatus="status">
+				<c:if test="${status.first}">
+								<select id="investmentTab4" name="investmentTab4" class="form-control  input-sm">
+									<option value=""> ---<fmt:message key="report.select.default"/>--- </option>
+				</c:if>
+				<option value="${investment.id}" <c:if test = "${investment.id == param.investmentTab4}" > selected </c:if>><c:out value="${investment.projectName}" /> -- <fmt:message key="${investment.projectType}"/></option>
+				<c:if test="${status.last}"></select></c:if>
+			</c:forEach>
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label for="projectEndTimeTab4" class="col-lg-3 control-label"><fmt:message key="projectProgress.deadline" /></label>
+		<div class="col-lg-4">
+			<input type="text" id="projectEndTimeTab4" name="projectEndTimeTab4" maxlength="20" class="form-control input-sm" value="<c:out value='${param.projectEndTimeTab4}' />"/>
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label for="repaymentEvaluation" class="col-lg-3 control-label"><fmt:message key="repaymentProject.evaluation" /></label>
+		<div class="col-lg-9">
 			<textarea class="form-control" rows="4" id="repaymentEvaluation" name="repaymentEvaluation"><c:out value="${riskControlReport.repaymentEvaluation}" /></textarea>			
 		</div>
 	</div>
 	
 	<div class="form-group">
-		<div class="col-lg-1 col-lg-offset-11">
+		<div class="col-lg-2 col-lg-offset-10">
+			<button type="submit" class="btn btn-primary" name="method" value="ProjectProgressTab4" onclick="$('#activeTab').val('tab4')">
+            		<i class="icon-ok icon-white"></i> <fmt:message key="button.ok"/>
+			</button>
 			<button type="submit" class="btn btn-primary form-control" style="width:50px;" name="method" value="SaveTab4" onclick="$('#activeTab').val('tab4')">
             		<i class="icon-ok icon-white"></i> <fmt:message key="button.save"/>
 			</button>
@@ -92,3 +116,13 @@
 	</c:if>
 </div>
 </div>
+
+<script>
+  $(function() {
+    $('#projectEndTimeTab4').datepicker({
+				language: 'zh-CN',
+				autoclose: true
+			});	
+  });
+  
+</script>
