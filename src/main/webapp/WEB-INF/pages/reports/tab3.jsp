@@ -26,28 +26,30 @@
 	<div class="form-group">
 		<label for="policyChanges" class="col-lg-3 control-label"><fmt:message key="investmentProject.policyChanges" /></label>
 		<div class="col-lg-9">
-			<input type="text" name="policyChanges" id="policyChanges" class="form-control input-sm" value="${riskControlReport.policyChanges}">
-		</div>
-	</div>
-	
-	
-	<div class="form-group">
-		<label for="policyChanges" class="col-lg-3 control-label"><fmt:message key="investmentProject.policyChanges" /></label>
-		<div class="col-lg-9">
-			<input type="text" name="policyChanges" id="policyChanges" class="form-control input-sm" value="${riskControlReport.policyChanges}">
+			<c:if test="${empty riskControlReport.policyChanges}" >
+				<input type="text" name="policyChanges" id="policyChanges" class="form-control input-sm" value="${param.policyChanges}">
+			</c:if>
+			<c:if test="${not empty riskControlReport.policyChanges }" >
+				<input type="text" name="policyChanges" id="policyChanges" class="form-control input-sm" value="${riskControlReport.policyChanges}">
+			</c:if>
 		</div>
 	</div>
 	<div class="form-group">
-		<label for="policyChanges" class="col-lg-3 control-label"><fmt:message key="investmentProject.priceChanges" /></label>
+		<label for="priceChanges" class="col-lg-3 control-label"><fmt:message key="investmentProject.priceChanges" /></label>
 		<div class="col-lg-9">
-			<textarea class="form-control" rows="4" id="priceChanges" name="priceChanges"><c:out  value="${riskControlReport.priceChanges}" /></textarea>
+			<textarea class="form-control" rows="4" id="priceChanges" name="priceChanges"><c:out value="${riskControlReport.priceChanges}" default="${param.priceChanges}"/></textarea>
 			<span class="help-block"><fmt:message key="investmentProject.priceChanges.help" /></span>
 		</div>
 	</div>
 	<div class="form-group">
 		<label for="investmentEvaluation" class="col-lg-3 control-label"><fmt:message key="investmentProject.evaluation" /></label>
 		<div class="col-lg-9">
-			<input type="text" id="investmentEvaluation" name="investmentEvaluation" class="form-control input-sm" value="${riskControlReport.investmentEvaluation}" >	
+			<c:if test="${empty riskControlReport.investmentEvaluation}" >
+				<input type="text" id="investmentEvaluation" name="investmentEvaluation" class="form-control input-sm" value="${param.investmentEvaluation}" >	
+			</c:if>
+			<c:if test="${not empty riskControlReport.investmentEvaluation}" >
+				<input type="text" id="investmentEvaluation" name="investmentEvaluation" class="form-control input-sm" value="${riskControlReport.investmentEvaluation}" >	
+			</c:if>
 		</div>
 	</div>
 	<div class="form-group">
@@ -186,19 +188,12 @@
 </c:if>
 
 <c:if test="${not empty param.preview and param.preview}">
-	<div class="col-lg-12">
-<div class="well form-horizontal">
+<div class="form-horizontal">
 	<fieldset disabled>
 	<div class="form-group">
 		<label for="policyChanges" class="col-lg-3 control-label"><fmt:message key="investmentProject.policyChanges" /></label>
 		<div class="col-lg-9">
 			<input type="text" id="policyChanges" class="form-control input-sm" value="${riskControlReport.policyChanges}">
-		</div>
-	</div>
-	<div class="form-group">
-		<label for="policyChanges" class="col-lg-3 control-label"><fmt:message key="investmentProject.policyChanges" /></label>
-		<div class="col-lg-9">
-			<input type="text" name="policyChanges" id="policyChanges" class="form-control input-sm" value="${riskControlReport.policyChanges}">
 		</div>
 	</div>
 	<div class="form-group">
@@ -342,7 +337,7 @@
 			</table>
 		</c:forEach>	
 	</c:if>
-</div>
+
 </c:if>
 
 <script>

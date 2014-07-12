@@ -1,6 +1,7 @@
 package com.brxt.model.report;
 
 import com.brxt.model.Counterparty;
+import com.brxt.model.CreditInformation;
 import com.brxt.model.finance.CorporateBalanceSheet;
 import com.brxt.model.finance.InstituteBalanceSheet;
 import com.brxt.model.finance.ProfitStatement;
@@ -23,6 +24,8 @@ public class FinanceCheck {
 	private CorporateBalanceSheet corpBalanceSheetChanges;
 	private InstituteBalanceSheet instituteBalanceSheetChanges;
 	private FinanceRatio financeRatioChanges;
+	
+	private CreditInformation creditInformation;
 	
 	public Long getId() {
 		return id;
@@ -111,6 +114,12 @@ public class FinanceCheck {
 	public void setInstituteBalanceSheetChanges(
 			InstituteBalanceSheet instituteBalanceSheetChanges) {
 		this.instituteBalanceSheetChanges = instituteBalanceSheetChanges;
+	}
+	public CreditInformation getCreditInformation() {
+		return creditInformation;
+	}
+	public void setCreditInformation(CreditInformation creditInformation) {
+		this.creditInformation = creditInformation;
 	}
 	
 }

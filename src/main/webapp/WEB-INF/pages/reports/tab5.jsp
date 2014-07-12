@@ -1,4 +1,4 @@
-
+<c:if test="${empty param.preview}">
 <div class="col-lg-12">
 <div class="well form-horizontal">
 	<fieldset>
@@ -19,3 +19,16 @@
 	</fieldset>
 </div>
 </div>
+</c:if>
+
+<c:if test="${not empty param.preview and param.preview}">
+<div class="col-lg-12">
+<div class="form-horizontal">
+	<fieldset disabled>
+		<div class="col-lg-12">
+			<textarea class="form-control" rows="4" id="collateralSummary" name="collateralSummary"><c:out value="${riskControlReport.collateralSummary}" /></textarea>			
+		</div>
+	</fieldset>
+</div>
+</div>
+</c:if>

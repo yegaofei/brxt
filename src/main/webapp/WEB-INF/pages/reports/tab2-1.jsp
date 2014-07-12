@@ -34,7 +34,7 @@
 			<div class="form-group">
 				<label for="financeStatementSummary" class="col-lg-3 control-label"><fmt:message key="report.financeCheck.financeStatementSummary" /></label>
 				<div class="col-lg-9">
-					<input type="text" id="financeStatementSummary" name="financeStatementSummary" class="form-control input-sm" value="${riskControlReport.financeCheckComment}">
+					<input type="text" id="financeStatementSummary" name="financeStatementSummary" class="form-control input-sm" value="<c:out value='${riskControlReport.financeCheckComment}' default='${param.financeStatementSummary}'/>">
 				</div>
 			</div>
 			
@@ -592,10 +592,51 @@
 			</table>
 		</c:if>
 		
+			
+		<c:if test="${not empty financeCheck.creditInformation}" >
+					<div class="row">
+					<appfuse:label styleClass="control-label" key="report.riskcontrol.otherCheck"/> : 
+					</div>
+					<table class="table table-striped table-bordered table-hover">
+						<tbody>
+						<tr>
+							<td><fmt:message key="creditInformation.debtBalance"/></td>
+							<td><fmt:formatNumber type="currency"><c:out value="${financeCheck.creditInformation.debtBalance}" /></fmt:formatNumber></td>
+						</tr>
+						<tr>
+							<td><fmt:message key="creditInformation.debt"/></td>
+							<td><fmt:formatNumber type="currency"><c:out value="${financeCheck.creditInformation.debt}" /></fmt:formatNumber></td>
+						</tr>
+						<tr>
+							<td><fmt:message key="creditInformation.outstanding"/></td>
+							<td>
+								<fmt:formatNumber type="currency"><c:out value="${financeCheck.creditInformation.outstanding}" /></fmt:formatNumber>
+							 </td>
+						</tr>
+						<tr>
+							<td><fmt:message key="creditInformation.balance"/></td>
+							<td>
+								<fmt:formatNumber type="currency"><c:out value="${financeCheck.creditInformation.balance}" /></fmt:formatNumber>
+							</td>
+						</tr>
+						<tr>
+							<td><fmt:message key="creditInformation.overdue"/></td>
+							<td>
+								<c:if test="${financeCheck.creditInformation.overdue}"><fmt:message key="label.yes"/></c:if>
+								<c:if test="${not financeCheck.creditInformation.overdue}"><fmt:message key="label.no"/></c:if>
+							</td>
+						</tr>
+						<tr>
+							<td><fmt:message key="creditInformation.comment"/></td>
+							<td>
+								<c:out value="${financeCheck.creditInformation.comment}" />
+							</td>
+						</tr>
+						</tbody>
+					</table>
+		</c:if>
 </div>
-	
 	</c:forEach>
-	
 	
 </c:if>		
 <script>

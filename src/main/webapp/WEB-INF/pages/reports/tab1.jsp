@@ -1,5 +1,5 @@
 <div class="col-lg-12">
-	<div class="well">
+	<div class="<c:if test='${empty param.preview }'>well</c:if>">
 					<div class="row">
                   			<label class="col-sm-4"><fmt:message key="projectInfo.nonrequired.projectName" /> : <c:out value="${projectInfo.projectName}" /></label>
                   			<label class="col-sm-4"><fmt:message key="projectInfo.expectedReturn" /> : <c:out value="${projectInfo.expectedReturn}" />%</label>

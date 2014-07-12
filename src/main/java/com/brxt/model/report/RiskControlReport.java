@@ -26,6 +26,7 @@ import org.appfuse.model.BaseObject;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import com.brxt.model.CreditInformation;
 import com.brxt.model.ProjectInfo;
 import com.brxt.model.SubjectCapacity;
 import com.brxt.model.finance.CorporateBalanceSheet;
@@ -54,6 +55,9 @@ public class RiskControlReport extends BaseObject{
 	private Set<CorporateBalanceSheet> corporateBalanceSheets = new HashSet<CorporateBalanceSheet>();
 	private Set<InstituteBalanceSheet> instituteBalanceSheet = new HashSet<InstituteBalanceSheet>();
 	private Set<ProfitStatement> profitStatements = new HashSet<ProfitStatement>();
+	
+	//征信信息排查
+	private Set<CreditInformation> creditInformations = new HashSet<CreditInformation>();
 	
 	//保证人财务排查
 	private Set<CorporateBalanceSheet> guarantorCorpBalanceSheets = new HashSet<CorporateBalanceSheet>();
@@ -173,7 +177,19 @@ public class RiskControlReport extends BaseObject{
 	public void setProfitStatements(Set<ProfitStatement> profitStatements) {
 		this.profitStatements = profitStatements;
 	}
-	
+	@ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)    
+    @JoinTable(
+            name = "report_credit_information",
+            joinColumns = { @JoinColumn(name = "risk_control_report_id") },
+            inverseJoinColumns = @JoinColumn(name = "credit_information_id")
+    )
+	public Set<CreditInformation> getCreditInformations() {
+		return creditInformations;
+	}
+	public void setCreditInformations(Set<CreditInformation> creditInformations) {
+		this.creditInformations = creditInformations;
+	}
 	@ManyToMany(fetch = FetchType.EAGER)
     @Fetch(FetchMode.SELECT)    
     @JoinTable(

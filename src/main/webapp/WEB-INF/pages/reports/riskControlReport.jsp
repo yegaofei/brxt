@@ -7,16 +7,15 @@
     
 </head>
 	<div class="col-lg-12">
-			<div class="row>
-            <h2 id="nav-tabs"><fmt:message key="report.riskcontrol.heading"/></h2> 
-			<a class="btn btn-default btn-sm" href="<c:url value='${ctx}/reports/previewReport'>
+			<ul class="breadcrumb" style="margin-bottom: 5px;">
+  				<li><a href="<c:url value='${ctx}/reports/reportSearch' />"><fmt:message key="report.search.heading"/></a></li>
+  				<li class="active"><fmt:message key="button.edit"/></li>
+  				<li><a href="<c:url value='${ctx}/reports/previewReport'>
 					<c:param name="reportId" value="${param.reportId}"/>
 					<c:param name="id" value="${param.id}"/>
 					<c:param name="preview" value="true"/>
-				</c:url>">
-            	<i class="icon-plus icon-white"></i> <fmt:message key="button.preview"/>
-            </a>
-			</div>		
+				</c:url>"><fmt:message key="button.preview"/></a></li>
+			</ul>		
             <div class="bs-example">
               <ul class="nav nav-tabs" style="margin-bottom: 5px;">
                 <li <c:if test="${param.activeTab == 'tab1' or empty param.activeTab}"> class="active" </c:if>><a href="#tab1" data-toggle="tab"><fmt:message key="report.riskcontrol.tab1"/></a></li>
@@ -39,7 +38,7 @@
               	<input type="hidden" name="id" value="<c:out value="${param.id}" />" >
               	<input type="hidden" name="reportId" value="<c:out value="${param.reportId}" />" >
               	<input type="hidden" name="counterpartyId" id="counterpartyId" value="<c:out value="${param.counterpartyId}" />" >
-              	<input type="hidden" name="guarantorId" id="guarantorId" value="<c:out value="${param.guarantorId}" />" >
+              	<input type="hidden" name="guarantorId" id="guarantorId" value="<c:out value="${param.guarantorIdTab6}" />" >
               	<input type="hidden" name="activeTab" id="activeTab" value="<c:out value="${param.activeTab}" />" >
               <div id="myTabContent" class="tab-content">
                 <div class="tab-pane fade <c:if test="${param.activeTab == 'tab1' or empty param.activeTab}"> active in </c:if>" id="tab1">

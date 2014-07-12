@@ -1,3 +1,4 @@
+<c:if test="${empty param.preview}">
 <div class="col-lg-12">
 <div class="well form-horizontal">
 	<fieldset>
@@ -18,14 +19,14 @@
 	<div class="form-group">
 		<label for="projectEndTimeTab4" class="col-lg-3 control-label"><fmt:message key="projectProgress.deadline" /></label>
 		<div class="col-lg-4">
-			<input type="text" id="projectEndTimeTab4" name="projectEndTimeTab4" maxlength="20" class="form-control input-sm" value="<c:out value='${param.projectEndTimeTab4}' />"/>
+			<input type="text" id="projectEndTimeTab4" name="projectEndTimeTab4" maxlength="20" class="form-control input-sm" value="<c:out value='${param.projectEndTimeTab4}'/>"/>
 		</div>
 	</div>
 	
 	<div class="form-group">
 		<label for="repaymentEvaluation" class="col-lg-3 control-label"><fmt:message key="repaymentProject.evaluation" /></label>
 		<div class="col-lg-9">
-			<textarea class="form-control" rows="4" id="repaymentEvaluation" name="repaymentEvaluation"><c:out value="${riskControlReport.repaymentEvaluation}" /></textarea>			
+			<textarea class="form-control" rows="4" id="repaymentEvaluation" name="repaymentEvaluation"><c:out value="${riskControlReport.repaymentEvaluation}" default="${param.repaymentEvaluation }"/></textarea>			
 		</div>
 	</div>
 	
@@ -42,12 +43,41 @@
 	</fieldset>
 </div>
 </div>
+</c:if>
 
+<c:if test="${not empty param.preview and param.preview}">
+<div class="col-lg-12">
+<div class="well form-horizontal">
+	<fieldset disabled >
+	<div class="form-group">
+		<label for="repaymentEvaluation" class="col-lg-3 control-label"><fmt:message key="repaymentProject.evaluation" /></label>
+		<div class="col-lg-9">
+			<textarea class="form-control" rows="4" id="repaymentEvaluation" name="repaymentEvaluation"><c:out value="${riskControlReport.repaymentEvaluation}" default="${param.repaymentEvaluation }"/></textarea>			
+		</div>
+	</div>	
+	</fieldset>
+</div>
+</div>
+</c:if>
 
 <div class="col-lg-12">
-<div class="form-group">		
-	<c:if test="${not empty repaymentProjects}">
-		<c:forEach var="repaymentProject" items="${repaymentProjects}" varStatus="status">
+	<c:if test="${empty riskControlReport.repaymentProjects and empty repaymentProjects and not empty param.preview}">
+		<div class="col-lg-12 alert alert-dismissable alert-danger">
+			<fmt:message key="report.repaymentProjects.empty" />
+		</div>
+	</c:if>
+	
+	<c:if test="${not empty repaymentProjects }">
+		<c:set var="dataSource" scope="request" value="${repaymentProjects}" ></c:set>
+	</c:if>
+	
+	<c:if test="${empty repaymentProjects and not empty riskControlReport.repaymentProjects }">
+		<c:set var="dataSource" scope="request" value="${riskControlReport.repaymentProjects}" ></c:set>
+	</c:if>
+	
+	<div class="form-group">		
+	<c:if test="${not empty dataSource}">
+		<c:forEach var="repaymentProject" items="${dataSource}" varStatus="status">
 			<div class="page-header">
 				<h4>
 					<fmt:message key="repaymentProject.name" />:
@@ -116,6 +146,7 @@
 	</c:if>
 </div>
 </div>
+
 
 <script>
   $(function() {
