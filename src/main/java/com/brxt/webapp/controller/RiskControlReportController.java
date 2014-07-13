@@ -465,8 +465,23 @@ public class RiskControlReportController extends BaseSheetController {
 				InstituteBalanceSheet currIBS = financeSheetManager.findInstituteBalanceSheet(projectInfo, guarantor,
 						c2.get(Calendar.YEAR), c2.get(Calendar.MONTH) + 1);
 				
-				financeCheck.setCurrInstituteBalanceSheet(currIBS);
-				financeCheck.setPrevInstituteBalanceSheet(prevIBS);
+				if(prevIBS == null)
+				{
+					saveMessage(request, getText("report.financeCheck.notFound", new String[]{guarantor.getName(), prevTermTime}, request.getLocale()));
+				}
+				else
+				{
+					financeCheck.setPrevInstituteBalanceSheet(prevIBS);
+				}
+				
+				if(currIBS == null)
+				{
+					saveMessage(request, getText("report.financeCheck.notFound", new String[]{guarantor.getName(), currTermTime}, request.getLocale()));
+				}
+				else
+				{
+					financeCheck.setCurrInstituteBalanceSheet(currIBS);
+				}
 			}
 			mav.addObject("financeCheckTab6", financeCheck);
 			
@@ -1702,7 +1717,7 @@ public class RiskControlReportController extends BaseSheetController {
 			financeCheckListTab6.add(financeCheckTab6Map.get(cp));
 		}
 		mav.addObject("financeCheckListTab6", financeCheckListTab6);
-		
+		mav.addObject("user", getCurrentUser());
 		return mav;
 	}
 	

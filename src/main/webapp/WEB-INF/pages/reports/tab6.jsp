@@ -20,7 +20,7 @@
 			<div class="form-group">
 				<label for="prevTermTimeTab6" class="col-lg-3 control-label"><fmt:message key="report.prev.term.report" /></label>
 				<div class="col-lg-3">
-					<input type="text" id="prevTermTimeTab6" name="prevTermTimeTab6"  value="<c:out value='${param.prevTermTimeTab6}' />"  class="form-control  input-sm" >
+					<input type="text" id="prevTermTimeTab6" name="prevTermTimeTab6"  value="<c:out value='${param.prevTermTimeTab6}' />"  class="form-control input-sm" >
 				</div>
 			</div>
 			
@@ -69,8 +69,8 @@
 		</div>
 		
 		<appfuse:label styleClass="control-label" key="report.riskcontrol.financeCheck"/> <br>
-		
 		<c:if test="${financeCheckTab6.counterparty.counterpartyType != 'institution'}">
+		<c:if test="${not empty financeCheckTab6.prevCorpBalanceSheet or not empty financeCheckTab6.currCorpBalanceSheet }">
 		<appfuse:label styleClass="control-label" key="report.financeCheck.base"/>  
 		<table class="table table-striped table-bordered table-hover">
 			<thead>
@@ -158,8 +158,10 @@
 			</tbody>
 		</table>		
 		</c:if>	
+		</c:if>	
 		
 		<c:if test="${financeCheckTab6.counterparty.counterpartyType == 'institution'}">
+			<c:if test="${not empty financeCheckTab6.prevInstituteBalanceSheet or not empty financeCheckTab6.currInstituteBalanceSheet}" >
 			<table class="table table-striped table-bordered table-hover">
 			<thead>
 				<tr>
@@ -234,6 +236,7 @@
         		</tr>
 			</tbody>
 			</table>
+			</c:if>
 		</c:if>	
 					<div class="form-group">
 					<c:if test="${not empty creditInformationTab6}" >

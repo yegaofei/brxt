@@ -75,14 +75,22 @@
     		<%@ include file="./tab8.jsp" %>
   		</div>
 	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
+</div>
 
+<div class="form-group">
+	<div class="col-lg-3 col-lg-offset-9">
+		<c:if test="${fn:contains(user.roles, 'ROLE_RISK_OPERATOR') or fn:contains(user.roles, 'ROLE_ADMIN')}">
+			<a class="btn btn-primary" href="<c:url value='${ctx}/reports/commitReport'>
+						<c:param name="reportId" value="${param.reportId}"/>
+				</c:url>">
+            	<i class="icon-ok"></i> <fmt:message key="button.commit"/>
+            </a>
+		</c:if>
+		
+		<c:if test="${fn:contains(user.roles, 'ROLE_RISK_MANAGER') }">			
+		<button type="submit" class="btn btn-primary" name="method" value="AuditReport" >
+			<i class="icon-ok icon-white"></i> <fmt:message key="button.audit"/>
+		</button>	
+		</c:if>
+	</div>
 </div>

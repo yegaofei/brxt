@@ -10,17 +10,10 @@
 <p><fmt:message key="home.message"/></p>
 
 <ul class="glassList">
-    <li>
-        <a href="<c:url value='${ctx}/projectInfo'/>"><fmt:message key="menu.projectInfo.list"/></a>
-    </li>
-    <li>
-        <a href="<c:url value='${ctx}/projectInfoForm'/>"><fmt:message key="menu.projectInfo.add"/></a>
-    </li>
-    <li>
-        <a href="<c:url value='${ctx}/collateral/collateralList'/>"><fmt:message key="collateral.title"/></a>
-    </li>
-    <li>
-        <a href="<c:url value='${ctx}/reports/reportSearch'/>"><fmt:message key="menu.projectInfo.report"/></a>
-    </li>
+<menu:useMenuDisplayer name="Velocity" config="navMainMenu.vm" permissions="rolesAdapter">
+    <menu:displayMenu name="ProjectInfoMenu"/>
+    <menu:displayMenu name="Collateral"/>
+    <menu:displayMenu name="RiskControlReport"/>
+</menu:useMenuDisplayer>
 </ul>
 </body>

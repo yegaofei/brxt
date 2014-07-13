@@ -159,7 +159,7 @@
             <label class="control-label"><fmt:message key="user.roles"/>:</label>
             <div class="readonly">
                 <c:forEach var="role" items="${user.roleList}" varStatus="status">
-                    <c:out value="${role.label}"/><c:if test="${!status.last}">,</c:if>
+                    <fmt:message key="userProfile.${role.label}" /><c:if test="${!status.last}">,</c:if>
                     <input type="hidden" name="userRoles" value="<c:out value="${role.label}"/>"/>
                 </c:forEach>
             </div>
