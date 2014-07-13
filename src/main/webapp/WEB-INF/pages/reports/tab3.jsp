@@ -120,6 +120,12 @@
 								<c:if test="${not investmentProject.delayed}"><fmt:message key="label.no"/></c:if>
 							</td>
 						</tr>
+						<tr>
+							<td><fmt:message key="investmentProject.comments"/></td>
+							<td>
+								<c:out value="${investmentProject.comments}" />
+							</td>
+						</tr>
 						</tbody>
 			</table>
 		</c:forEach>	
@@ -271,6 +277,12 @@
 							<td>
 								<c:if test="${investmentProject.delayed}"><fmt:message key="label.yes"/></c:if>
 								<c:if test="${not investmentProject.delayed}"><fmt:message key="label.no"/></c:if>
+							</td>
+						</tr>
+						<tr>
+							<td><fmt:message key="investmentProject.comments"/></td>
+							<td>
+								<c:out value="${investmentProject.comments}" />
 							</td>
 						</tr>
 						</tbody>
