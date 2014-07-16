@@ -92,5 +92,11 @@
 			<i class="icon-ok icon-white"></i> <fmt:message key="button.audit"/>
 		</button>	
 		</c:if>
+		
+		<a class="btn btn-primary" href="<c:url value='${ctx}/reports/generateReport'>
+						<c:param name="reportId" value="${param.reportId}"/>
+				</c:url>">
+            	<i class="icon-ok"></i> <fmt:message key="button.pdf"/>
+        </a>
 	</div>
 </div>

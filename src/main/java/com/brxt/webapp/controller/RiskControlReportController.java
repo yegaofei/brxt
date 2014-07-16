@@ -17,6 +17,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,7 @@ import com.brxt.service.ProjectInfoManager;
 import com.brxt.service.RepaymentManager;
 import com.brxt.service.ReportManager;
 import com.brxt.service.SubjectCapacityManager;
+import com.brxt.webapp.spring.RiskControlReportPDF;
 
 @Controller
 public class RiskControlReportController extends BaseSheetController {
@@ -1740,4 +1742,13 @@ public class RiskControlReportController extends BaseSheetController {
 		}
 		return null;
 	}
+	
+	@RequestMapping(value = "/reports/generateReport*", method = RequestMethod.GET)
+	public ModelAndView generateReport(final HttpServletRequest request, HttpServletResponse response)
+	{
+		RiskControlReport report = getRiskControlReport(request);
+		RiskControlReportPDF pdf = new RiskControlReportPDF(report, report.getProjectInfo());
+		return new ModelAndView(pdf);
+	}
+	
 }

@@ -11,6 +11,7 @@ import org.springframework.web.servlet.view.document.AbstractPdfView;
 import com.brxt.model.ProjectInfo;
 import com.brxt.model.report.RiskControlReport;
 import com.lowagie.text.Document;
+import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfWriter;
 
@@ -41,17 +42,17 @@ public class RiskControlReportPDF extends AbstractPdfView{
 			return;
 		}
 		
-		String pdfFileName = projectInfo.getProjectName()+ "_" +report.getReportSeason() + ".pdf";  
+		String pdfFileName = projectInfo.getProjectName() + "_" +report.getReportSeason() + ".pdf";  
         // 设置response方式,使执行此controller时候自动出现下载页面,而非直接使用pdf打开  
         response.setContentType("APPLICATION/OCTET-STREAM");  
-        response.setHeader("Content-Disposition", "attachment; filename="+ URLEncoder.encode(pdfFileName, "UTF-8"));    
+        response.setHeader("Content-Disposition", "attachment; filename="+ pdfFileName );// URLEncoder.encode(pdfFileName, "UTF-8"));    
           
         //List stuList = (List) model.get("list");            
         //显示中文  
-        BaseFont bfChinese = BaseFont.createFont("STSong-Light", "UniGB-UCS2-H", BaseFont.NOT_EMBEDDED);   
+        BaseFont bfChinese = BaseFont.createFont("C:/WINDOWS/Fonts/SIMYOU.TTF", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);   
         com.lowagie.text.Font FontChinese = new com.lowagie.text.Font(bfChinese, 12, com.lowagie.text.Font.NORMAL);    
         
-        
+        document.add(new Paragraph(projectInfo.getProjectName(), FontChinese));   
         
 		
 	}
