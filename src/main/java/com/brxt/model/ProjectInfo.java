@@ -37,7 +37,7 @@ public class ProjectInfo extends BaseObject {
 	private static final long serialVersionUID = -217461395372350336L;
 	private Long id; //项目id
 	private String projectName; //项目名称
-	private Double expectedReturn; //预期收益率
+	private String expectedReturn; //预期收益率
 	private String fundUsage; //资金运用方式
 	private String riskManager; //风险经理
 	private String delegateManager; //托管经理
@@ -68,11 +68,11 @@ public class ProjectInfo extends BaseObject {
 		this.projectName = projectName;
 	}
 
-	public Double getExpectedReturn() {
+	public String getExpectedReturn() {
 		return expectedReturn;
 	}
 
-	public void setExpectedReturn(Double expectedReturn) {
+	public void setExpectedReturn(String expectedReturn) {
 		this.expectedReturn = expectedReturn;
 	}
 

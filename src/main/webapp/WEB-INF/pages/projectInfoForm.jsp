@@ -35,10 +35,10 @@
     </div>
 
     <spring:bind path="projectInfo.expectedReturn">
-    <div class="col-sm-2 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    <div class="col-sm-3 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="projectInfo.expectedReturn"/>
-        <div class="input-group"><form:input path="expectedReturn" id="expectedReturn" maxlength="20" cssClass="form-control input-sm"/><span class="input-group-addon input-sm">%</span></div>
+        <div class="input-group"><form:input path="expectedReturn" id="expectedReturn" maxlength="40" cssClass="form-control input-sm"/></div>
         <form:errors path="expectedReturn" cssClass="help-block"/>
     </div>
 	</div>
@@ -120,7 +120,7 @@
     <div class="col-sm-6 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="projectInfo.fundUsage"/>:
-        <form:input path="fundUsage" id="fundUsage" maxlength="300" cssClass="form-control input-sm"/>
+        <form:textarea path="fundUsage" id="fundUsage" rows="5" cssClass="form-control input-sm"/>
         <form:errors path="fundUsage" cssClass="help-inline"/>
     </div>
     
@@ -215,25 +215,25 @@
         <form:input path="trustManager" id="trustManager" maxlength="10" cssClass="form-control input-sm"/>
         <form:errors path="trustManager" cssClass="help-block"/>
     </div>
+    
+    <spring:bind path="projectInfo.projectType">
+    <div class="col-sm-3 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    </spring:bind>
+        <appfuse:label styleClass="control-label" key="projectInfo.projectType"/>:
+        <form:select path="projectType" class="form-control input-sm">          
+            <form:options items="${projectTypes}" />
+        </form:select>        
+        <form:errors path="projectType" cssClass="help-block"/>
+    </div>
     </div>
 
 	<div class="row">
 	<spring:bind path="projectInfo.guaranteeMode">
-    <div class="col-sm-6 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    <div class="col-sm-12 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="projectInfo.guaranteeMode"/>:
-        <form:input path="guaranteeMode" id="guaranteeMode" maxlength="300" cssClass="form-control input-sm"/>
+        <form:textarea path="guaranteeMode" id="guaranteeMode" row="3" cssClass="form-control input-sm"/>
         <form:errors path="guaranteeMode" cssClass="help-inline"/>
-    </div>
-    
-    <spring:bind path="projectInfo.projectType">
-    <div class="col-sm-6 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
-    </spring:bind>
-        <appfuse:label styleClass="control-label" key="projectInfo.projectType"/>:
-        <form:select path="projectType" class="form-control input-sm">    		
-			<form:options items="${projectTypes}" />
-		</form:select>        
-        <form:errors path="projectType" cssClass="help-block"/>
     </div>
 	</div>
 	

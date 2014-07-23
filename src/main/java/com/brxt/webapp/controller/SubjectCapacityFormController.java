@@ -156,7 +156,7 @@ public class SubjectCapacityFormController extends BaseFormController {
 			counterparties = getCounterparties(projectInfoId);
 		}
 
-		if (counterparties == null) {
+		if (counterparties == null || counterparties.size() == 0) {
 			saveError(request, getText("errors.counterparty.required", locale));
 			mav.setViewName(getCancelView());
 			return mav;
@@ -170,7 +170,24 @@ public class SubjectCapacityFormController extends BaseFormController {
 			mav.addObject("subjectCapacity", subjectCapacity);
 		} else {
 			// Add
-			mav.addObject("subjectCapacity", getNewSubjectCapacity());
+		    SubjectCapacity newSubjectCapacity = getNewSubjectCapacity();
+		    String counterpartyId = request.getParameter("counterpartyId");
+		    if(StringUtils.isBlank(counterpartyId))
+		    {
+		        newSubjectCapacity.setCounterparty(counterparties.get(0));
+		    }
+		    else
+		    {
+		        for(Counterparty cp : counterparties)
+		        {
+		            if(cp.getId().equals(Long.valueOf(counterpartyId)))
+		            {
+		                newSubjectCapacity.setCounterparty(cp);
+		                break;
+		            }
+		        }
+		    }
+			mav.addObject("subjectCapacity", newSubjectCapacity);
 		}
 
 		mav.addObject("counterparties", counterparties);

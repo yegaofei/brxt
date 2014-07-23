@@ -60,11 +60,13 @@
 						</tr>
 						</thead>
 						<tbody>
+						<c:if test="${subjectCapacity.counterparty.counterpartyType != 'institution'}">   
 						<tr>
 							<td><fmt:message key="subjectCapacity.licenseVerificationDate"/></td>
 							<td><c:out value="${subjectCapacity.licenseVerificationDate}" /></td>
 							<td></td>
 						</tr>
+						</c:if>
 						<tr>
 							<td><fmt:message key="subjectCapacity.orgCodeVerificationDate"/></td>
 							<td><c:out value="${subjectCapacity.orgCodeVerificationDate}" /></td>
@@ -94,6 +96,7 @@
 							</td>
 							<td></td>
 						</tr>
+						<c:if test="${subjectCapacity.counterparty.counterpartyType != 'institution'}">   
 						<tr>
 							<td><fmt:message key="subjectCapacity.ownershipChanged"/></td>
 							<td>
@@ -110,6 +113,18 @@
 							</td>
 							<td></td>
 						</tr>
+						</c:if>
+						<c:if test="${subjectCapacity.counterparty.counterpartyType == 'real_estate_firm'}">        
+                        <tr>
+                            <td><fmt:message key="subjectCapacity.devCapacityChanged"/></td>
+                            <td>
+                                <c:if test="${subjectCapacity.devCapacityChanged}"><fmt:message key="label.yes"/></c:if>
+                                <c:if test="${not subjectCapacity.devCapacityChanged}"><fmt:message key="label.no"/></c:if>
+                            </td>
+                            <td><c:out value="${subjectCapacity.comment_dcc}" /></td>
+                        </tr>
+                        </c:if> 
+                        <c:if test="${subjectCapacity.counterparty.counterpartyType != 'institution'}">     
 						<tr>
 							<td><fmt:message key="subjectCapacity.bizScopeChanged"/></td>
 							<td>
@@ -118,6 +133,7 @@
 							</td>
 							<td></td>
 						</tr>
+						</c:if>
 						<tr>
 							<td><fmt:message key="subjectCapacity.otherBigChanges"/></td>
 							<td>
@@ -126,6 +142,16 @@
 							</td>
 							<td></td>
 						</tr>
+						<c:if test="${subjectCapacity.counterparty.counterpartyType == 'institution'}">       
+                        <tr>
+                            <td><fmt:message key="subjectCapacity.verifyResults"/></td>
+                            <td>
+                                <c:if test="${subjectCapacity.verifyResults}"><fmt:message key="label.yes"/></c:if>
+                                <c:if test="${not subjectCapacity.verifyResults}"><fmt:message key="label.no"/></c:if>
+                            </td>
+                            <td><c:out value="${subjectCapacity.comment_vr}" /></td>
+                        </tr>
+                        </c:if> 
 						</tbody>
 					</table>
 					</div>
@@ -161,11 +187,13 @@
 						</tr>
 						</thead>
 						<tbody>
+						<c:if test="${subjectCapacity.counterparty.counterpartyType != 'institution'}">   
 						<tr>
 							<td><fmt:message key="subjectCapacity.licenseVerificationDate"/></td>
 							<td><c:out value="${subjectCapacity.licenseVerificationDate}" /></td>
 							<td></td>
 						</tr>
+						</c:if>
 						<tr>
 							<td><fmt:message key="subjectCapacity.orgCodeVerificationDate"/></td>
 							<td><c:out value="${subjectCapacity.orgCodeVerificationDate}" /></td>
@@ -195,6 +223,7 @@
 							</td>
 							<td></td>
 						</tr>
+						<c:if test="${subjectCapacity.counterparty.counterpartyType != 'institution'}">   
 						<tr>
 							<td><fmt:message key="subjectCapacity.ownershipChanged"/></td>
 							<td>
@@ -211,6 +240,18 @@
 							</td>
 							<td></td>
 						</tr>
+						</c:if>
+						<c:if test="${subjectCapacity.counterparty.counterpartyType == 'real_estate_firm'}">        
+                        <tr>
+                            <td><fmt:message key="subjectCapacity.devCapacityChanged"/></td>
+                            <td>
+                                <c:if test="${subjectCapacity.devCapacityChanged}"><fmt:message key="label.yes"/></c:if>
+                                <c:if test="${not subjectCapacity.devCapacityChanged}"><fmt:message key="label.no"/></c:if>
+                            </td>
+                            <td><c:out value="${subjectCapacity.comment_dcc}" /></td>
+                        </tr>
+                        </c:if> 
+                        <c:if test="${subjectCapacity.counterparty.counterpartyType != 'institution'}">  
 						<tr>
 							<td><fmt:message key="subjectCapacity.bizScopeChanged"/></td>
 							<td>
@@ -219,6 +260,7 @@
 							</td>
 							<td></td>
 						</tr>
+						</c:if>
 						<tr>
 							<td><fmt:message key="subjectCapacity.otherBigChanges"/></td>
 							<td>
@@ -227,6 +269,16 @@
 							</td>
 							<td></td>
 						</tr>
+						<c:if test="${subjectCapacity.counterparty.counterpartyType == 'institution'}">       
+                        <tr>
+                            <td><fmt:message key="subjectCapacity.verifyResults"/></td>
+                            <td>
+                                <c:if test="${subjectCapacity.verifyResults}"><fmt:message key="label.yes"/></c:if>
+                                <c:if test="${not subjectCapacity.verifyResults}"><fmt:message key="label.no"/></c:if>
+                            </td>
+                            <td><c:out value="${subjectCapacity.comment_vr}" /></td>
+                        </tr>
+                        </c:if> 
 						</tbody>
 					</table>
 					</div>

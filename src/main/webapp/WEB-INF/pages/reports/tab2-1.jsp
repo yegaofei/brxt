@@ -584,10 +584,6 @@
         				<fmt:formatNumber type="currency"><c:out value="${financeCheck.prevInstituteBalanceSheet.incomeTotal}" /></fmt:formatNumber>
         			</td>
         		</tr>
-        		<tr>
-					<td><appfuse:label key="report.financeCheck.financeStatementSummary"/></td>
-					<td colspan="3"><input type="text" name="financeStatementSummary" class="form-control input-sm"></td>
-				</tr>
 			</tbody>
 			</table>
 		</c:if>
@@ -637,7 +633,16 @@
 		</c:if>
 </div>
 	</c:forEach>
-	
+	<div class="form-horizontal">
+    <fieldset disabled>
+    <div class="form-group">
+        <label for="financeStatementSummary" class="col-lg-3 control-label"><fmt:message key="report.financeCheck.financeStatementSummary" /></label>
+        <div class="col-lg-9">
+            <input type="text" id="financeStatementSummary" class="form-control input-sm" value="${riskControlReport.financeCheckComment}">
+        </div>
+    </div>
+    </fieldset>
+    </div>
 </c:if>		
 <script>
   $(function() {

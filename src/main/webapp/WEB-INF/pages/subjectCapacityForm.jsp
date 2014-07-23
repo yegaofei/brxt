@@ -21,18 +21,24 @@
 	<div class="row">
 		<div class="col-sm-7 form-group">
 		<appfuse:label styleClass="control-label" key="projectInfo.counterparty.name"/> : 
-		<c:forEach var="counterparty" items="${counterparties}" varStatus="status">
-			<c:if test="${status.first}"><select id="counterpartyId" name="counterpartyId" class="form-control"></c:if>
+		<c:if test="${empty subjectCapacity.id}">
+		  <c:forEach var="counterparty" items="${counterparties}" varStatus="status">
+			<c:if test="${status.first}"><select id="counterpartyId" name="counterpartyId" class="form-control input-sm"></c:if>
 				<option value="${counterparty.id}" <c:if test = "${counterparty.id == subjectCapacity.counterparty.id}" > selected </c:if>><c:out value="${counterparty.name}" /></option>
 			<c:if test="${status.last}"></select></c:if>
-		</c:forEach>
+		  </c:forEach>
+		</c:if>
+		<c:if test="${not empty subjectCapacity.id}">
+		  <input value="${subjectCapacity.counterparty.name}" maxlength="20" class="form-control input-sm" disabled/>
+		  <input type="hidden" name="counterpartyId" value="${subjectCapacity.counterparty.id}" />
+		</c:if>
 		</div>
 		
 		<spring:bind path="subjectCapacity.checkTime">
     	<div class="col-sm-4 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     	</spring:bind>
         	<appfuse:label styleClass="control-label" key="subjectCapacity.checkTime"/>
-        	<form:input path="checkTime" id="checkTime" maxlength="20" cssClass="form-control"/>
+        	<form:input path="checkTime" id="checkTime" maxlength="20" cssClass="form-control input-sm"/>
         	<form:errors path="checkTime" cssClass="help-block"/>
     	</div>
 	</div>
@@ -47,11 +53,13 @@
 						</tr>
 						</thead>
 						<tbody>
+					<c:if test="${subjectCapacity.counterparty.counterpartyType != 'institution'}">	
 						<tr>
 							<td><fmt:message key="subjectCapacity.licenseVerificationDate"/></td>
 							<td><form:input path="licenseVerificationDate" id="licenseVerificationDate" maxlength="20" cssClass="form-control input-sm"/></td>
 							<td><form:input path="comment_lvd" id="comment_lvd" maxlength="20" cssClass="form-control input-sm"/></td>
 						</tr>
+					</c:if>	
 						<tr>
 							<td><fmt:message key="subjectCapacity.orgCodeVerificationDate"/></td>
 							<td><form:input path="orgCodeVerificationDate" id="orgCodeVerificationDate" maxlength="20" cssClass="form-control input-sm"/></td>
@@ -89,6 +97,7 @@
 								</label></td>
 							<td><form:input path="comment_oc" id="comment_oc" maxlength="20" cssClass="form-control input-sm"/></td>
 						</tr>
+					<c:if test="${subjectCapacity.counterparty.counterpartyType != 'institution'}">	
 						<tr>
 							<td><fmt:message key="subjectCapacity.ownershipChanged"/></td>
 							<td><label class="checkbox-inline">
@@ -109,6 +118,8 @@
 								</label></td>
 							<td><form:input path="comment_cc" id="comment_cc" maxlength="20" cssClass="form-control input-sm"/></td>
 						</tr>
+					</c:if>    	
+					<c:if test="${subjectCapacity.counterparty.counterpartyType == 'real_estate_firm'}">        
 						<tr>
 							<td><fmt:message key="subjectCapacity.devCapacityChanged"/></td>
 							<td><label class="checkbox-inline">
@@ -119,6 +130,8 @@
 								</label></td>
 							<td><form:input path="comment_dcc" id="comment_dcc" maxlength="20" cssClass="form-control input-sm"/></td>
 						</tr>
+					</c:if>	
+					<c:if test="${subjectCapacity.counterparty.counterpartyType != 'institution'}">    	
 						<tr>
 							<td><fmt:message key="subjectCapacity.bizScopeChanged"/></td>
 							<td><label class="checkbox-inline">
@@ -129,6 +142,7 @@
 								</label></td>
 							<td><form:input path="comment_bsc" id="comment_bsc" maxlength="20" cssClass="form-control input-sm"/></td>
 						</tr>
+					</c:if>	
 						<tr>
 							<td><fmt:message key="subjectCapacity.otherBigChanges"/></td>
 							<td><label class="checkbox-inline">
@@ -139,6 +153,7 @@
 								</label></td>
 							<td><form:input path="comment_obc" id="comment_obc" maxlength="20" cssClass="form-control input-sm"/></td>
 						</tr>
+					<c:if test="${subjectCapacity.counterparty.counterpartyType == 'institution'}">    	
 						<tr>
 							<td><fmt:message key="subjectCapacity.verifyResults"/></td>
 							<td><label class="checkbox-inline">
@@ -149,6 +164,7 @@
 								</label></td>
 							<td><form:input path="comment_vr" id="comment_vr" maxlength="20" cssClass="form-control input-sm"/></td>
 						</tr>
+					</c:if>	
 						</tbody>
 					</table>		
 	</div>
@@ -177,6 +193,14 @@
 
 <v:javascript formName="subjectCapacity" cdata="false" dynamicJavascript="true" staticJavascript="false"/>
 <script type="text/javascript" src="<c:url value='/scripts/validator.jsp'/>"></script>
+<script language="javascript" type="text/javascript">
+$(document).ready(function(){
+    $('#counterpartyId').change(function(){
+        var cpId=$(this).children('option:selected').val(); 
+        window.location.href='<c:url value="${ctx}/subjectCapacityForm" />?counterpartyId=' + cpId;
+    })
+})
+</script>
 <script>
   $(function() {
     $('#checkTime').datepicker({

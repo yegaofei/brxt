@@ -11,7 +11,7 @@
 <div class="col-sm-10">
     <h2><fmt:message key='subjectCapacity.heading'/></h2>
     
-    <form name="subjectCapacity" action="/subjectCapacity" method="post">
+    <form name="subjectCapacity" action="${ctx}/subjectCapacity" method="post">
  	<div id="actions" class="btn-group">
         <a class="btn btn-primary" href="<c:url value='/subjectCapacityForm'/>">
             <i class="icon-plus icon-white"></i> <fmt:message key="button.add"/></a>
