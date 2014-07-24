@@ -48,6 +48,13 @@ public class CorporateBalanceSheet extends BaseObject {
 	private BigDecimal actualCapital;
 	private BigDecimal unAssignedProfit;
 	private BigDecimal netAsset;
+
+	private BigDecimal nonLiquid;
+	private BigDecimal longInvestment;
+	private BigDecimal fixedAsset;
+	private BigDecimal intangibleAsset;
+	private BigDecimal capitalReserve;
+	
 	protected Integer reportYear;
 	protected Short reportMonth;
 	protected String createUser; //创建人
@@ -202,7 +209,13 @@ public class CorporateBalanceSheet extends BaseObject {
 	public void setNetAsset(BigDecimal netAsset) {
 		this.netAsset = netAsset;
 	}
-	@Transient
+	public BigDecimal getNonLiquid() {
+        return nonLiquid;
+    }
+    public void setNonLiquid(BigDecimal nonLiquid) {
+        this.nonLiquid = nonLiquid;
+    }
+    @Transient
 	public String getReportName() {
 		return reportName;
 	}
@@ -252,7 +265,31 @@ public class CorporateBalanceSheet extends BaseObject {
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
-	@Version
+	public BigDecimal getLongInvestment() {
+        return longInvestment;
+    }
+    public void setLongInvestment(BigDecimal longInvestment) {
+        this.longInvestment = longInvestment;
+    }
+    public BigDecimal getFixedAsset() {
+        return fixedAsset;
+    }
+    public void setFixedAsset(BigDecimal fixedAsset) {
+        this.fixedAsset = fixedAsset;
+    }
+    public BigDecimal getIntangibleAsset() {
+        return intangibleAsset;
+    }
+    public void setIntangibleAsset(BigDecimal intangibleAsset) {
+        this.intangibleAsset = intangibleAsset;
+    }
+    public BigDecimal getCapitalReserve() {
+        return capitalReserve;
+    }
+    public void setCapitalReserve(BigDecimal capitalReserve) {
+        this.capitalReserve = capitalReserve;
+    }
+    @Version
 	public Integer getVersion() {
 		return version;
 	}

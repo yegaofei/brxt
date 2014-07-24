@@ -79,6 +79,8 @@ public class RiskControlReport extends BaseObject{
 	private String statusBeforeMaturity; //到期前情况说明
 	private String comments; //结论和建议
 	
+	private String tab8Option;
+	
 	private Date createTime;
 	private String createUser;
 	private Date updateTime;
@@ -281,7 +283,14 @@ public class RiskControlReport extends BaseObject{
 	public void setComments(String comments) {
 		this.comments = comments;
 	}
-	public Date getCreateTime() {
+	@Transient
+	public String getTab8Option() {
+        return tab8Option;
+    }
+    public void setTab8Option(String tab8Option) {
+        this.tab8Option = tab8Option;
+    }
+    public Date getCreateTime() {
 		return createTime;
 	}
 	public void setCreateTime(Date createTime) {

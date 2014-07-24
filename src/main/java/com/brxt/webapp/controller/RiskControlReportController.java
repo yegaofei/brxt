@@ -108,7 +108,18 @@ public class RiskControlReportController extends BaseSheetController {
 	public RiskControlReport getRiskControlReport(final HttpServletRequest request) {
 		String reportId = request.getParameter("reportId");
 		if (!StringUtils.isBlank(reportId)) {
-			return reportManager.get(Long.valueOf(reportId));
+		    final String tab8Option1 = getText("report.riskcontrol.tab8.option1", request.getLocale());
+		    final String tab8Option2 = getText("report.riskcontrol.tab8.option2", request.getLocale());
+		    
+			 RiskControlReport report = reportManager.get(Long.valueOf(reportId));
+			 if(tab8Option1.equals(report.getComments())){
+			     report.setTab8Option("option1");
+			 } else if(tab8Option2.equals(report.getComments())){
+                 report.setTab8Option("option2");
+             } else {
+                 report.setTab8Option("option3");
+             }
+			 return report;
 		} 
 		return new RiskControlReport();
 	}
@@ -1026,7 +1037,20 @@ public class RiskControlReportController extends BaseSheetController {
 	{
 		RiskControlReport report = getRiskControlReport(request);
 		String comments = request.getParameter("comments");
-		report.setComments(comments);
+		String optionsRadios = request.getParameter("optionsRadios");
+		report.setTab8Option(optionsRadios);
+		switch (optionsRadios) {
+		    case "option1":
+		        report.setComments(getText("report.riskcontrol.tab8.option1", request.getLocale()));
+		        break;
+		    case "option2":
+		        report.setComments(getText("report.riskcontrol.tab8.option2", request.getLocale()));
+		        break;
+		    case "option3":
+		        report.setComments(comments);
+		        break;
+		        default:
+		}
 		reportManager.save(report);
 		saveMessage(request, getText("report.update.success", request.getLocale()));	
 		mav.addObject("riskControlReport", report);
@@ -1234,6 +1258,7 @@ public class RiskControlReportController extends BaseSheetController {
 		corpBalanceSheetChanges.setTotalAsset(calculateChangesRatio(currTermCbs.getTotalAsset(), prevTermCbs.getTotalAsset()));
 		corpBalanceSheetChanges.setCash(calculateChangesRatio(currTermCbs.getCash(), prevTermCbs.getCash()));
 		corpBalanceSheetChanges.setInventory(calculateChangesRatio(currTermCbs.getInventory(), prevTermCbs.getInventory()));
+		corpBalanceSheetChanges.setNonLiquid(calculateChangesRatio(currTermCbs.getNonLiquid(), prevTermCbs.getNonLiquid()));
 		corpBalanceSheetChanges.setTotalDebt(calculateChangesRatio(currTermCbs.getTotalDebt(), prevTermCbs.getTotalDebt()));
 		corpBalanceSheetChanges.setPrereceive(calculateChangesRatio(currTermCbs.getPrereceive(), prevTermCbs.getPrereceive()));
 		corpBalanceSheetChanges.setShortLoan(calculateChangesRatio(currTermCbs.getShortLoan(), prevTermCbs.getShortLoan()));

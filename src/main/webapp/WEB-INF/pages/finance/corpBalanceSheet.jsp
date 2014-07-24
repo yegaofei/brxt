@@ -62,26 +62,6 @@
         </thead>
         <tbody> 
         <tr>
-            <td><appfuse:label key="corpBalanceSheet.inventory"/> </td>
-            <td>
-                <spring:bind path="corpBalanceSheetModel.beginBalSheet"> 
-                <div>
-                </spring:bind>        
-                    <form:input path="beginBalSheet.inventory" id="inventory" maxlength="20"  class="form-control input-sm"/>
-                    <form:errors path="beginBalSheet.inventory" />
-                </div>
-            </td>
-            <td>
-                <spring:bind path="corpBalanceSheetModel.endBalSheet">        
-                <div class="">
-                </spring:bind>        
-                    <form:input path="endBalSheet.inventory" id="inventory" maxlength="20"  class="form-control input-sm"/>
-                    <form:errors path="endBalSheet.inventory" />
-                </div>
-            </td>
-        </tr>
-
-        <tr>
             <td><appfuse:label styleClass="control-label" key="corpBalanceSheet.cash"/></td>
             <td>
                 <spring:bind path="corpBalanceSheetModel.beginBalSheet">    
@@ -100,7 +80,25 @@
                 </div>
             </td>
         </tr>
-
+        <tr>
+            <td><appfuse:label key="corpBalanceSheet.inventory"/> </td>
+            <td>
+                <spring:bind path="corpBalanceSheetModel.beginBalSheet"> 
+                <div>
+                </spring:bind>        
+                    <form:input path="beginBalSheet.inventory" id="inventory" maxlength="20"  class="form-control input-sm"/>
+                    <form:errors path="beginBalSheet.inventory" />
+                </div>
+            </td>
+            <td>
+                <spring:bind path="corpBalanceSheetModel.endBalSheet">        
+                <div class="">
+                </spring:bind>        
+                    <form:input path="endBalSheet.inventory" id="inventory" maxlength="20"  class="form-control input-sm"/>
+                    <form:errors path="endBalSheet.inventory" />
+                </div>
+            </td>
+        </tr>
         <tr>
             <td><appfuse:label styleClass="control-label" key="corpBalanceSheet.receivableNote"/></td>
             <td>
@@ -140,7 +138,25 @@
         </div>
             </td>
         </tr>
-
+        <tr>
+            <td><appfuse:label styleClass="control-label" key="corpBalanceSheet.prepayment"/></td>
+            <td>
+                <spring:bind path="corpBalanceSheetModel.beginBalSheet">        
+                <div class="">
+                </spring:bind>        
+                    <form:input path="beginBalSheet.prepayment" id="prepayment" maxlength="20"  class="form-control input-sm"/>
+                    <form:errors path="beginBalSheet.prepayment" />
+                </div>
+            </td>
+            <td>
+                <spring:bind path="corpBalanceSheetModel.endBalSheet">      
+                <div class="">
+                </spring:bind>        
+                    <form:input path="endBalSheet.prepayment" id="prepayment" maxlength="20"  class="form-control input-sm"/>
+                    <form:errors path="endBalSheet.prepayment" />
+                </div>
+            </td>
+        </tr>
         <tr>
             <td><appfuse:label styleClass="control-label" key="corpBalanceSheet.receivableOther"/></td>
             <td>
@@ -164,27 +180,98 @@
         <tr>
             <td><appfuse:label styleClass="control-label" key="corpBalanceSheet.liquidAsset"/></td>
             <td>
-
                 <spring:bind path="corpBalanceSheetModel.beginBalSheet">        
-         <div class="">
-        </spring:bind>        
-        <form:input path="beginBalSheet.liquidAsset" id="liquidAsset" maxlength="20"  class="form-control input-sm"/>
-        <form:errors path="beginBalSheet.liquidAsset" />
-        </div>
-
-
+                <div class="">
+                </spring:bind>        
+                    <form:input path="beginBalSheet.liquidAsset" id="liquidAsset" maxlength="20"  class="form-control input-sm"/>
+                    <form:errors path="beginBalSheet.liquidAsset" />
+                </div>
             </td>
             <td>
-                    <spring:bind path="corpBalanceSheetModel.endBalSheet">      
-         <div class="">
-        </spring:bind>        
-        <form:input path="endBalSheet.liquidAsset" id="liquidAsset" maxlength="20"  class="form-control input-sm"/>
-        <form:errors path="endBalSheet.liquidAsset" />
-        </div>
-
+                <spring:bind path="corpBalanceSheetModel.endBalSheet">      
+                <div class="">
+                </spring:bind>        
+                    <form:input path="endBalSheet.liquidAsset" id="liquidAsset" maxlength="20"  class="form-control input-sm"/>
+                    <form:errors path="endBalSheet.liquidAsset" />
+                </div>
             </td>
         </tr>
-
+        <tr>
+            <td><appfuse:label styleClass="control-label" key="corpBalanceSheet.nonLiquid"/></td>
+            <td>
+                <spring:bind path="corpBalanceSheetModel.beginBalSheet">        
+                <div class="">
+                </spring:bind>        
+                    <form:input path="beginBalSheet.nonLiquid" id="nonLiquid" maxlength="20"  class="form-control input-sm"/>
+                    <form:errors path="beginBalSheet.nonLiquid" />
+                </div>
+            </td>
+            <td>
+                <spring:bind path="corpBalanceSheetModel.endBalSheet">      
+                <div class="">
+                </spring:bind>        
+                    <form:input path="endBalSheet.nonLiquid" id="nonLiquid" maxlength="20"  class="form-control input-sm"/>
+                    <form:errors path="endBalSheet.nonLiquid" />
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td><appfuse:label styleClass="control-label" key="corpBalanceSheet.longInvestment"/></td>
+            <td>
+                <spring:bind path="corpBalanceSheetModel.beginBalSheet">        
+                <div class="">
+                </spring:bind>        
+                    <form:input path="beginBalSheet.longInvestment" id="longInvestment" maxlength="20"  class="form-control input-sm"/>
+                    <form:errors path="beginBalSheet.longInvestment" />
+                </div>
+            </td>
+            <td>
+                <spring:bind path="corpBalanceSheetModel.endBalSheet">      
+                <div class="">
+                </spring:bind>        
+                    <form:input path="endBalSheet.longInvestment" id="longInvestment" maxlength="20"  class="form-control input-sm"/>
+                    <form:errors path="endBalSheet.longInvestment" />
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td><appfuse:label styleClass="control-label" key="corpBalanceSheet.fixedAsset"/></td>
+            <td>
+                <spring:bind path="corpBalanceSheetModel.beginBalSheet">        
+                <div class="">
+                </spring:bind>        
+                    <form:input path="beginBalSheet.fixedAsset" id="fixedAsset" maxlength="20"  class="form-control input-sm"/>
+                    <form:errors path="beginBalSheet.fixedAsset" />
+                </div>
+            </td>
+            <td>
+                <spring:bind path="corpBalanceSheetModel.endBalSheet">      
+                <div class="">
+                </spring:bind>        
+                    <form:input path="endBalSheet.fixedAsset" id="fixedAsset" maxlength="20"  class="form-control input-sm"/>
+                    <form:errors path="endBalSheet.fixedAsset" />
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td><appfuse:label styleClass="control-label" key="corpBalanceSheet.intangibleAsset"/></td>
+            <td>
+                <spring:bind path="corpBalanceSheetModel.beginBalSheet">        
+                <div class="">
+                </spring:bind>        
+                    <form:input path="beginBalSheet.intangibleAsset" id="intangibleAsset" maxlength="20"  class="form-control input-sm"/>
+                    <form:errors path="beginBalSheet.intangibleAsset" />
+                </div>
+            </td>
+            <td>
+                <spring:bind path="corpBalanceSheetModel.endBalSheet">      
+                <div class="">
+                </spring:bind>        
+                    <form:input path="endBalSheet.intangibleAsset" id="intangibleAsset" maxlength="20"  class="form-control input-sm"/>
+                    <form:errors path="endBalSheet.intangibleAsset" />
+                </div>
+            </td>
+        </tr>                        
         <tr>
             <td><appfuse:label styleClass="control-label" key="corpBalanceSheet.totalAsset"/></td>
             <td>
@@ -208,28 +295,7 @@
         </div>
             </td>
         </tr>
-        <tr>
-            <td><appfuse:label styleClass="control-label" key="corpBalanceSheet.prepayment"/></td>
-            <td>
-                <spring:bind path="corpBalanceSheetModel.beginBalSheet">        
-         <div class="">
-        </spring:bind>        
-        <form:input path="beginBalSheet.prepayment" id="prepayment" maxlength="20"  class="form-control input-sm"/>
-        <form:errors path="beginBalSheet.prepayment" />
-        </div>
 
-
-            </td>
-            <td>
-                    <spring:bind path="corpBalanceSheetModel.endBalSheet">      
-         <div class="">
-        </spring:bind>        
-        <form:input path="endBalSheet.prepayment" id="prepayment" maxlength="20"  class="form-control input-sm"/>
-        <form:errors path="endBalSheet.prepayment" />
-        </div>
-
-            </td>
-        </tr>
         <tr>
             <td><appfuse:label styleClass="control-label" key="corpBalanceSheet.shortLoan"/> </td>
             <td>
@@ -348,20 +414,43 @@
 
         <tr>
             <td> <appfuse:label styleClass="control-label" key="corpBalanceSheet.actualCapital"/></td>
-            <td><spring:bind path="corpBalanceSheetModel.beginBalSheet">        
-        <div class="">
-        </spring:bind>        
-        <form:input path="beginBalSheet.actualCapital" id="actualCapital" maxlength="20"  class="form-control input-sm"/>
-        <form:errors path="beginBalSheet.actualCapital" />
-        </div>
-        </td>
-            <td><spring:bind path="corpBalanceSheetModel.endBalSheet">      
-         <div class="">
-        </spring:bind>        
-        <form:input path="endBalSheet.actualCapital" id="actualCapital" maxlength="20"  class="form-control input-sm"/>
-        <form:errors path="endBalSheet.actualCapital" />
-        </div></td>
+            <td>
+                <spring:bind path="corpBalanceSheetModel.beginBalSheet">        
+                <div class="">
+                </spring:bind>        
+                    <form:input path="beginBalSheet.actualCapital" id="actualCapital" maxlength="20"  class="form-control input-sm"/>
+                    <form:errors path="beginBalSheet.actualCapital" />
+                </div>
+            </td>
+            <td>
+                <spring:bind path="corpBalanceSheetModel.endBalSheet">      
+                <div class="">
+                </spring:bind>        
+                    <form:input path="endBalSheet.actualCapital" id="actualCapital" maxlength="20"  class="form-control input-sm"/>
+                    <form:errors path="endBalSheet.actualCapital" />
+                </div>
+            </td>
         </tr>
+        
+        <tr>
+            <td> <appfuse:label styleClass="control-label" key="corpBalanceSheet.capitalReserve"/></td>
+            <td>
+                <spring:bind path="corpBalanceSheetModel.beginBalSheet">        
+                <div class="">
+                </spring:bind>        
+                    <form:input path="beginBalSheet.capitalReserve" id="capitalReserve" maxlength="20"  class="form-control input-sm"/>
+                    <form:errors path="beginBalSheet.capitalReserve" />
+                </div>
+            </td>
+            <td>
+                <spring:bind path="corpBalanceSheetModel.endBalSheet">      
+                <div class="">
+                </spring:bind>        
+                    <form:input path="endBalSheet.capitalReserve" id="capitalReserve" maxlength="20"  class="form-control input-sm"/>
+                    <form:errors path="endBalSheet.capitalReserve" />
+                </div>
+            </td>
+        </tr>        
 
         <tr>
             <td><appfuse:label styleClass="control-label" key="corpBalanceSheet.unAssignedProfit"/> </td>
