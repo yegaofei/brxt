@@ -18,44 +18,46 @@
 	<form:hidden path="version"/>
 	<input type="hidden" name="projectInfoId" value="${projectInfoId}"/>
 	 
-	<div class="form-group">
+	<div class="row"> 
+	<div class="form-group col-sm-6">
 		<appfuse:label styleClass="control-label" key="projectInfo.counterparty.name"/> : 
 		<c:forEach var="counterparty" items="${counterparties}" varStatus="status">
-			<c:if test="${status.first}"><select id="counterpartyId" name="counterpartyId" class="form-control"></c:if>
+			<c:if test="${status.first}"><select id="counterpartyId" name="counterpartyId" class="form-control input-sm"></c:if>
 				<option value="${counterparty.id}" <c:if test = "${counterparty.id == creditInformation.counterparty.id}" > selected </c:if>><c:out value="${counterparty.name}" /></option>
 			<c:if test="${status.last}"></select></c:if>
 		</c:forEach>
 	</div>
 	
     <spring:bind path="creditInformation.queryTime">
-    <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    <div class="form-group col-sm-4">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="creditInformation.queryTime"/>
-        <form:input path="queryTime" id="queryTime" maxlength="20" cssClass="form-control"/>
+        <form:input path="queryTime" id="queryTime" maxlength="20" cssClass="form-control input-sm"/>
         <form:errors path="queryTime" cssClass="help-block"/>
+    </div>
     </div>
 
     <spring:bind path="creditInformation.debt">
     <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
-        <appfuse:label styleClass="control-label" key="creditInformation.debt"/>
-        <form:input path="debt" id="debt" maxlength="60" cssClass="form-control"/>
+        <appfuse:label styleClass="control-label" key="creditInformation.debt"/><fmt:message key="currency.unit.wan"/>
+        <form:input path="debt" id="debt" maxlength="60" cssClass="form-control input-sm"/>
         <form:errors path="debt" cssClass="help-inline"/>
     </div>
     
     <spring:bind path="creditInformation.outstanding">
     <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
-        <appfuse:label styleClass="control-label" key="creditInformation.outstanding"/>
-        <form:input path="outstanding" id="outstanding" maxlength="60" cssClass="form-control"/>
+        <appfuse:label styleClass="control-label" key="creditInformation.outstanding"/><fmt:message key="currency.unit.wan"/>
+        <form:input path="outstanding" id="outstanding" maxlength="60" cssClass="form-control input-sm"/>
         <form:errors path="outstanding" cssClass="help-inline"/>
     </div>
     
     <spring:bind path="creditInformation.balance">
     <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
-        <appfuse:label styleClass="control-label" key="creditInformation.balance"/>
-        <form:input path="balance" id="balance" maxlength="60" cssClass="form-control"/>
+        <appfuse:label styleClass="control-label" key="creditInformation.balance"/><fmt:message key="currency.unit.wan"/>
+        <form:input path="balance" id="balance" maxlength="60" cssClass="form-control input-sm"/>
         <form:errors path="balance" cssClass="help-inline"/>
     </div>
     
@@ -75,7 +77,7 @@
     <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="creditInformation.comment"/>
-        <form:input path="comment" id="comment" maxlength="60" cssClass="form-control"/>
+        <form:input path="comment" id="comment" maxlength="60" cssClass="form-control input-sm"/>
         <form:errors path="comment" cssClass="help-inline"/>
     </div>
     

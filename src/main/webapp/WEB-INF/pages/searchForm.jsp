@@ -6,7 +6,9 @@
         	</div>	
     		<div class="col-sm-3 form-group">
         		<appfuse:label styleClass="control-label" key="projectInfo.riskManager"/>
-        		<form:input path="riskManager" id="riskManager" maxlength="20" cssClass="form-control"/>
+        		<form:select path="riskManager" class="form-control input-sm">          
+                    <form:options items="${allRiskManagers}" />
+                </form:select> 
     		</div>
     		<div class="col-sm-3 form-group">
         		<appfuse:label styleClass="control-label" key="projectInfo.search.startTime"/>
@@ -21,12 +23,16 @@
 			<div class="row">
     		<div class="col-sm-3 form-group">
         		<appfuse:label styleClass="control-label" key="projectInfo.delegateManager"/>
-        		<form:input path="delegateManager" id="delegateManager" maxlength="20" cssClass="form-control"/>
+        		<form:select path="delegateManager" class="form-control input-sm">          
+                    <form:options items="${allDelegateManagers}" />
+                </form:select>  
     		</div>
 
     		<div class="col-sm-3 form-group">
         		<appfuse:label styleClass="control-label" key="projectInfo.trustManager"/>
-        		<form:input path="trustManager" id="trustManager" maxlength="20" cssClass="form-control"/>
+        		<form:select path="trustManager" class="form-control input-sm">          
+                    <form:options items="${allTrustManagers}" />
+                </form:select>  
     		</div>
     		
     		<div class="col-sm-2 form-group">

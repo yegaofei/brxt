@@ -192,28 +192,30 @@
     </div>
     
 	<div class="row">
-    <spring:bind path="projectInfo.riskManager">
-    <div class="col-sm-3 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
-    </spring:bind>
+    
+    <div class="col-sm-3 form-group">
         <appfuse:label styleClass="control-label" key="projectInfo.riskManager"/>
-        <form:input path="riskManager" id="riskManager" maxlength="10" cssClass="form-control input-sm"/>
-        <form:errors path="riskManager" cssClass="help-block"/>
+        <form:select path="riskManager" class="form-control input-sm">          
+            <form:options items="${allRiskManagers}" />
+        </form:select>   
     </div>
 
     <spring:bind path="projectInfo.delegateManager">
     <div class="col-sm-3 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="projectInfo.delegateManager"/>
-        <form:input path="delegateManager" id="delegateManager" maxlength="10" cssClass="form-control input-sm"/>
-        <form:errors path="delegateManager" cssClass="help-block"/>
+        <form:select path="delegateManager" class="form-control input-sm">          
+            <form:options items="${allDelegateManagers}" />
+        </form:select>  
     </div>
 
     <spring:bind path="projectInfo.trustManager">
     <div class="col-sm-3 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="projectInfo.trustManager"/>
-        <form:input path="trustManager" id="trustManager" maxlength="10" cssClass="form-control input-sm"/>
-        <form:errors path="trustManager" cssClass="help-block"/>
+        <form:select path="trustManager" class="form-control input-sm">          
+            <form:options items="${allTrustManagers}" />
+        </form:select>  
     </div>
     
     <spring:bind path="projectInfo.projectType">

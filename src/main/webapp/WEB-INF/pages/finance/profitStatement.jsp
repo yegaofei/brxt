@@ -55,7 +55,7 @@
 	<table class="table table-condensed">
 		 <tr>
             <th><appfuse:label key="profitStatement.itemName"/></th>
-            <th><appfuse:label key="profitStatement.endValue"/></th>
+            <th><appfuse:label key="profitStatement.endValue"/><fmt:message key="currency.unit.yuan"/></th>
         </tr>   
         
         <tr>

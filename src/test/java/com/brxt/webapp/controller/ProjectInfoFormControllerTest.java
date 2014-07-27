@@ -44,7 +44,7 @@ public class ProjectInfoFormControllerTest extends BaseControllerTestCase {
         request.addParameter("method", "SaveProjectInfo");
         // update required fields
         projectInfo.setProjectName("TestProject5");
-        projectInfo.setExpectedReturn(88d);
+        projectInfo.setExpectedReturn("88");
  
         BindingResult errors = new DataBinder(projectInfo).getBindingResult();
         form.onSubmit(projectInfo, errors, request, new MockHttpServletResponse());
@@ -56,7 +56,7 @@ public class ProjectInfoFormControllerTest extends BaseControllerTestCase {
         mav = form.showForm(request);
         assertNotNull(mav);        
         projectInfo = form.getProjectInfo(request);
-        assertTrue(projectInfo.getExpectedReturn() == 88d);
+        assertTrue(projectInfo.getExpectedReturn().equals("88"));
     }
  
     @Test

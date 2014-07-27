@@ -31,6 +31,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.brxt.model.Counterparty;
 import com.brxt.model.CreditInformation;
 import com.brxt.model.InvestmentStatus;
+import com.brxt.model.Manager;
 import com.brxt.model.ProjectInfo;
 import com.brxt.model.Repayment;
 import com.brxt.model.ReportContentKey;
@@ -521,6 +522,7 @@ public class RiskControlReportController extends BaseSheetController {
 			Date projectEndTimeDate = dateFormat.parse(projectEndTime);
 			ProjectInfo projectInfo = projectInfoManager.get(Long.valueOf(projectInfoId));
 			InvestmentStatus investmentStatus = findInvesetmentStatus(projectInfo, Long.valueOf(invesetmentStatusId));
+			mav.addObject("selectedInvestmentStatus", investmentStatus);
 			String projectType = investmentStatus.getProjectType();
 			CapitalInvestmentType investmentType = CapitalInvestmentType.valueOf(projectType.toUpperCase());
 			switch (investmentType) 
@@ -967,6 +969,7 @@ public class RiskControlReportController extends BaseSheetController {
 			String projectInfoId = request.getParameter("id");
 			ProjectInfo projectInfo = projectInfoManager.get(Long.valueOf(projectInfoId));
 			InvestmentStatus investmentStatus = findInvesetmentStatus(projectInfo, Long.valueOf(invesetmentStatusId));
+			mav.addObject("selectedInvestmentStatus", investmentStatus);
 			String projectType = investmentStatus.getProjectType();
 			CapitalInvestmentType investmentType = CapitalInvestmentType.valueOf(projectType.toUpperCase());
 			switch (investmentType) 
@@ -1775,5 +1778,41 @@ public class RiskControlReportController extends BaseSheetController {
 		RiskControlReportPDF pdf = new RiskControlReportPDF(report, report.getProjectInfo());
 		return new ModelAndView(pdf);
 	}
+	
+    @ModelAttribute("allTrustManagers")
+    public Map<String, String> getAllTrustManagers()
+    {
+        List<Manager> managers = this.projectInfoManager.getAllTrustManagers();
+        Map<String, String> allTrustManagers = new HashMap<String, String>();
+        for(Manager m : managers)
+        {
+            allTrustManagers.put(m.getName(), m.getName());
+        }
+        return allTrustManagers;
+    }
+    
+    @ModelAttribute("allDelegateManagers")
+    public Map<String, String> getAllDelegateManagers()
+    {
+        List<Manager> managers = this.projectInfoManager.getAllDelegateManagers();
+        Map<String, String> allDelegateManagers = new HashMap<String, String>();
+        for(Manager m : managers)
+        {
+            allDelegateManagers.put(m.getName(), m.getName());
+        }
+        return allDelegateManagers;
+    }
+    
+    @ModelAttribute("allRiskManagers")
+    public Map<String, String> getAllRiskManagers()
+    {
+        List<Manager> managers = this.projectInfoManager.getAllRiskManagers();
+        Map<String, String> allRiskManagers = new HashMap<String, String>();
+        for(Manager m : managers)
+        {
+            allRiskManagers.put(m.getName(), m.getName());
+        }
+        return allRiskManagers;
+    }	
 	
 }

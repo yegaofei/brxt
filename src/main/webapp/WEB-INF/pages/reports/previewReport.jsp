@@ -22,19 +22,14 @@
 	</div>
 	
 	<div class="panel panel-default">
-  		<div class="panel-heading"><fmt:message key="subjectCapacity.heading"/></div>
+  		<div class="panel-heading"><fmt:message key="report.riskcontrol.tab2"/></div>
   		<div class="panel-body">
     		<%@ include file="./tab2.jsp" %>
+  		    <%@ include file="./tab2-1.jsp" %>
   		</div>
 	</div>
-	
-	<div class="panel panel-default">
-  		<div class="panel-heading"><fmt:message key="report.riskcontrol.financeOtherCheck"/></div>
-  		<div class="panel-body">
-    		<%@ include file="./tab2-1.jsp" %>
-  		</div>
-	</div>
-	
+
+	<c:if test="${riskControlReport.projectInfo.projectType == 'non_transaction_management' }">
 	<div class="panel panel-default">
   		<div class="panel-heading"><fmt:message key="report.riskcontrol.tab3"/></div>
   		<div class="panel-body">
@@ -55,6 +50,7 @@
     		<%@ include file="./tab5.jsp" %>
   		</div>
 	</div>
+	</c:if>
 	
 	<div class="panel panel-default">
   		<div class="panel-heading"><fmt:message key="report.riskcontrol.tab6"/></div>
@@ -63,11 +59,14 @@
   		</div>
 	</div>
 	
+	<c:if test="${riskControlReport.projectInfo.projectType == 'non_transaction_management' }">
 	<div class="panel panel-default">
   		<div class="panel-heading"><fmt:message key="report.riskcontrol.tab7"/></div>
   		<div class="panel-body">
     		<%@ include file="./tab7.jsp" %>
+	   </div>
 	</div>
+	</c:if>
 	
 	<div class="panel panel-default">
   		<div class="panel-heading"><fmt:message key="report.riskcontrol.tab8"/></div>

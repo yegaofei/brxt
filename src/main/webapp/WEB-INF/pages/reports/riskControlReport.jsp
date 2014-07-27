@@ -16,6 +16,7 @@
 					<c:param name="preview" value="true"/>
 				</c:url>"><fmt:message key="button.preview"/></a></li>
 			</ul>		
+			<form name="riskControlReport" id="riskControlReport" action="${ctx}/reports/riskControlReport" method="post">
             <div class="bs-example">
               <ul class="nav nav-tabs" style="margin-bottom: 5px;">
                 <li <c:if test="${param.activeTab == 'tab1' or empty param.activeTab}"> class="active" </c:if>><a href="#tab1" data-toggle="tab"><fmt:message key="report.riskcontrol.tab1"/></a></li>
@@ -25,16 +26,18 @@
                     <li><a href="#tab2-1" data-toggle="tab"><fmt:message key="report.riskcontrol.financeOtherCheck"/></a></li>
                   </ul>
                 </li>
-                
-                <li <c:if test="${param.activeTab == 'tab3'}"> class="active" </c:if>><a href="#tab3" data-toggle="tab"><fmt:message key="report.riskcontrol.tab3"/></a></li>
-                <li <c:if test="${param.activeTab == 'tab4'}"> class="active" </c:if>><a href="#tab4" data-toggle="tab"><fmt:message key="report.riskcontrol.tab4"/></a></li>
-                <li <c:if test="${param.activeTab == 'tab5'}"> class="active" </c:if>><a href="#tab5" data-toggle="tab"><fmt:message key="report.riskcontrol.tab5"/></a></li>
+                <c:if test="${riskControlReport.projectInfo.projectType == 'non_transaction_management' }">
+                    <li <c:if test="${param.activeTab == 'tab3'}"> class="active" </c:if>><a href="#tab3" data-toggle="tab"><fmt:message key="report.riskcontrol.tab3"/></a></li>
+                    <li <c:if test="${param.activeTab == 'tab4'}"> class="active" </c:if>><a href="#tab4" data-toggle="tab"><fmt:message key="report.riskcontrol.tab4"/></a></li>
+                    <li <c:if test="${param.activeTab == 'tab5'}"> class="active" </c:if>><a href="#tab5" data-toggle="tab"><fmt:message key="report.riskcontrol.tab5"/></a></li>
+                </c:if>
                 <li <c:if test="${param.activeTab == 'tab6'}"> class="active" </c:if>><a href="#tab6" data-toggle="tab"><fmt:message key="report.riskcontrol.tab6"/></a></li>
-                <li <c:if test="${param.activeTab == 'tab7'}"> class="active" </c:if>><a href="#tab7" data-toggle="tab"><fmt:message key="report.riskcontrol.tab7"/></a></li>
+                <c:if test="${riskControlReport.projectInfo.projectType == 'non_transaction_management' }">
+                    <li <c:if test="${param.activeTab == 'tab7'}"> class="active" </c:if>><a href="#tab7" data-toggle="tab"><fmt:message key="report.riskcontrol.tab7"/></a></li>
+                </c:if>
                 <li <c:if test="${param.activeTab == 'tab8'}"> class="active" </c:if>><a href="#tab8" data-toggle="tab"><fmt:message key="report.riskcontrol.tab8"/></a></li>
               </ul>
               
-              <form name="riskControlReport" id="riskControlReport" action="${ctx}/reports/riskControlReport" method="post">
               	<input type="hidden" name="id" value="<c:out value="${param.id}" />" >
               	<input type="hidden" name="reportId" value="<c:out value="${param.reportId}" />" >
               	<input type="hidden" name="counterpartyId" id="counterpartyId" value="<c:out value="${param.counterpartyId}" />" >

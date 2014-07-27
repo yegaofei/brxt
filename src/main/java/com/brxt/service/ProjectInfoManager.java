@@ -5,6 +5,7 @@ import java.util.List;
 import org.appfuse.service.GenericManager;
 
 import com.brxt.model.Counterparty;
+import com.brxt.model.Manager;
 import com.brxt.model.ProjectInfo;
 import com.brxt.model.ProjectSize;
 
@@ -31,5 +32,12 @@ public interface ProjectInfoManager extends GenericManager<ProjectInfo, Long> {
 	List<String> getAllProjectNames();
 	
 	public Counterparty findCounterparty(Counterparty counterparty);
+	
+	public List<Manager> getAllTrustManagers();
+    
+    public List<Manager> getAllRiskManagers();
+
+    public List<Manager> getAllDelegateManagers();
+
 	
 }

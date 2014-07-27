@@ -163,7 +163,8 @@
 <c:if test="${not empty param.preview and param.preview}">
 	<c:if test="${empty riskControlReport.subjectCapacities}">
 		<div class="col-lg-12">
-		<div class="alert alert-dismissable alert-danger">
+		<div class="alert alert-danger alert-dismissable">
+            <a href="#" data-dismiss="alert" class="close">&times;</a>
 			<fmt:message key="report.subjectCapacities.empty" />
 		</div>
 		</div>

@@ -1,3 +1,4 @@
+<c:set var="numberFormatType" scope="request">number</c:set>
 <c:if test="${empty param.preview}">
 <div class="col-lg-12">
 	<div class="well form-horizontal">
@@ -59,7 +60,6 @@
 		<input type="hidden" name="prevTermTimeTab21" value="<c:out value='${param.prevTermTime}'/>" >
 		<input type="hidden" name="currTermTimeTab21" value="<c:out value='${param.currTermTime}'/>" >
 	
-<c:set var="numberFormatType" scope="request">number</c:set>	
 <div class="col-lg-12">			
 	<c:if test="${not empty financeCheck}" >
 	<div class=" form-group">
@@ -178,20 +178,20 @@
 			<tbody>
 				<tr>
 					<td><fmt:message key="report.financeCheck.assetLiabilityRatio"/></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.prevFinanceRatio.assetLiabilityRatio}" /></fmt:formatNumber></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.currFinanceRatio.assetLiabilityRatio}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="percent" pattern="#0.00%"><c:out value="${financeCheck.prevFinanceRatio.assetLiabilityRatio}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="percent" pattern="#0.00%"><c:out value="${financeCheck.currFinanceRatio.assetLiabilityRatio}" /></fmt:formatNumber></td>
 					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.financeRatioChanges.assetLiabilityRatio}" /></fmt:formatNumber></td>
 				</tr>
 				<tr>
 					<td><fmt:message key="report.financeCheck.liquidityRatio"/></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.prevFinanceRatio.liquidityRatio}" /></fmt:formatNumber></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.currFinanceRatio.liquidityRatio}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="number" pattern="#0.00"><c:out value="${financeCheck.prevFinanceRatio.liquidityRatio}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="number" pattern="#0.00"><c:out value="${financeCheck.currFinanceRatio.liquidityRatio}" /></fmt:formatNumber></td>
 					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.financeRatioChanges.liquidityRatio}" /></fmt:formatNumber></td>
 				</tr>
 				<tr>
 					<td><fmt:message key="report.financeCheck.quickRatio"/></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.prevFinanceRatio.quickRatio}" /></fmt:formatNumber></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.currFinanceRatio.quickRatio}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="number" pattern="#0.00"><c:out value="${financeCheck.prevFinanceRatio.quickRatio}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="number" pattern="#0.00"><c:out value="${financeCheck.currFinanceRatio.quickRatio}" /></fmt:formatNumber></td>
 					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.financeRatioChanges.quickRatio}" /></fmt:formatNumber></td>
 				</tr>
 				<tr>
@@ -202,15 +202,15 @@
 				</tr>
 				<tr>
 					<td><fmt:message key="report.financeCheck.assetRoR"/></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.prevFinanceRatio.assetRoR}" /></fmt:formatNumber></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.currFinanceRatio.assetRoR}" /></fmt:formatNumber></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.financeRatioChanges.assetRoR}" /></fmt:formatNumber></td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
 				</tr>
 				<tr>
 					<td><fmt:message key="report.financeCheck.salesIncrementRatio"/></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.prevFinanceRatio.salesIncrementRatio}" /></fmt:formatNumber></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.currFinanceRatio.salesIncrementRatio}" /></fmt:formatNumber></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.financeRatioChanges.salesIncrementRatio}" /></fmt:formatNumber></td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
 				</tr>
 			</tbody>
 		</table>
@@ -300,7 +300,7 @@
 </div>
 </c:if>
 				<div class="form-group">
-					<c:if test="${not empty creditInformation}" >
+					<c:if test="${not empty creditInformation and financeCheck.counterparty.counterpartyType != 'institution'}" >
 					<div class="row">
 					<appfuse:label styleClass="control-label" key="report.riskcontrol.otherCheck"/> : 
 					</div>
@@ -344,8 +344,26 @@
 					</c:if>
 				</div>
 </div>
+<script>
+  $(function() {
+    $('#prevTermTime').datepicker({
+                language: 'zh-CN',
+                format: '<c:out value="${shortDatePatternJs}" />',
+                autoclose: true,
+                minViewMode: 1
+            }); 
+  });
+  
+  $(function() {
+    $('#currTermTime').datepicker({
+                language: 'zh-CN',
+                format: '<c:out value="${shortDatePatternJs}" />',
+                autoclose: true,
+                minViewMode: 1
+            }); 
+  });  
+</script>
 </c:if>
-
 
 <c:if test="${not empty param.preview and param.preview}">
 	<c:if test="${empty financeCheckList}">
@@ -357,8 +375,7 @@
 	</c:if>	
 	
 	<c:forEach var="financeCheck" items="${financeCheckList}">
-	
-		<div class=" form-group">
+		<div class="form-group">
 		<div class="page-header">
 			<h4>
 				<fmt:message key="projectInfo.counterparty.name" />:
@@ -400,9 +417,9 @@
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.nonLiquid"/></td>
-					<td>-</td>
-					<td>-</td>
-					<td>-</td>
+					<td><fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.prevCorpBalanceSheet.nonLiquid}" /></fmt:formatNumber></td>
+                    <td><fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.currCorpBalanceSheet.nonLiquid}" /></fmt:formatNumber></td>
+                    <td><fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.nonLiquid}" /></fmt:formatNumber></td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.totalDebt"/></td>
@@ -474,20 +491,20 @@
 			<tbody>
 				<tr>
 					<td><fmt:message key="report.financeCheck.assetLiabilityRatio"/></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.prevFinanceRatio.assetLiabilityRatio}" /></fmt:formatNumber></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.currFinanceRatio.assetLiabilityRatio}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="percent" pattern="#0.00%"><c:out value="${financeCheck.prevFinanceRatio.assetLiabilityRatio}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="percent" pattern="#0.00%"><c:out value="${financeCheck.currFinanceRatio.assetLiabilityRatio}" /></fmt:formatNumber></td>
 					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.financeRatioChanges.assetLiabilityRatio}" /></fmt:formatNumber></td>
 				</tr>
 				<tr>
 					<td><fmt:message key="report.financeCheck.liquidityRatio"/></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.prevFinanceRatio.liquidityRatio}" /></fmt:formatNumber></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.currFinanceRatio.liquidityRatio}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="number" pattern="#0.00"><c:out value="${financeCheck.prevFinanceRatio.liquidityRatio}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="number" pattern="#0.00"><c:out value="${financeCheck.currFinanceRatio.liquidityRatio}" /></fmt:formatNumber></td>
 					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.financeRatioChanges.liquidityRatio}" /></fmt:formatNumber></td>
 				</tr>
 				<tr>
 					<td><fmt:message key="report.financeCheck.quickRatio"/></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.prevFinanceRatio.quickRatio}" /></fmt:formatNumber></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.currFinanceRatio.quickRatio}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="number" pattern="#0.00"><c:out value="${financeCheck.prevFinanceRatio.quickRatio}" /></fmt:formatNumber></td>
+					<td><fmt:formatNumber type="number" pattern="#0.00"><c:out value="${financeCheck.currFinanceRatio.quickRatio}" /></fmt:formatNumber></td>
 					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.financeRatioChanges.quickRatio}" /></fmt:formatNumber></td>
 				</tr>
 				<tr>
@@ -498,15 +515,15 @@
 				</tr>
 				<tr>
 					<td><fmt:message key="report.financeCheck.assetRoR"/></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.prevFinanceRatio.assetRoR}" /></fmt:formatNumber></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.currFinanceRatio.assetRoR}" /></fmt:formatNumber></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.financeRatioChanges.assetRoR}" /></fmt:formatNumber></td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
 				</tr>
 				<tr>
 					<td><fmt:message key="report.financeCheck.salesIncrementRatio"/></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.prevFinanceRatio.salesIncrementRatio}" /></fmt:formatNumber></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.currFinanceRatio.salesIncrementRatio}" /></fmt:formatNumber></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.financeRatioChanges.salesIncrementRatio}" /></fmt:formatNumber></td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
 				</tr>
 			</tbody>
 		</table>
@@ -588,30 +605,38 @@
 			</tbody>
 			</table>
 		</c:if>
-		
-			
-		<c:if test="${not empty financeCheck.creditInformation}" >
+		<div class="form-horizontal">
+            <fieldset disabled>
+            <div class="form-group">
+                <label for="financeStatementSummary" class="col-lg-3 control-label"><fmt:message key="report.financeCheck.financeStatementSummary" /></label>
+                <div class="col-lg-9">
+                    <input type="text" id="financeStatementSummary" class="form-control input-sm" value="${riskControlReport.financeCheckComment}">
+                </div>
+            </div>
+            </fieldset>
+        </div>	
+		<c:if test="${not empty financeCheck.creditInformation and financeCheck.counterparty.counterpartyType != 'institution'}" >
 					<div class="row">
 					<appfuse:label styleClass="control-label" key="report.riskcontrol.otherCheck"/> : 
 					</div>
 					<table class="table table-striped table-bordered table-hover">
 						<tbody>
 						<tr>
-							<td><fmt:message key="creditInformation.debtBalance"/></td>
+							<td><fmt:message key="creditInformation.debtBalance"/><fmt:message key="currency.unit.wan"/></td>
 							<td><fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.creditInformation.debtBalance}" /></fmt:formatNumber></td>
 						</tr>
 						<tr>
-							<td><fmt:message key="creditInformation.debt"/></td>
+							<td><fmt:message key="creditInformation.debt"/><fmt:message key="currency.unit.wan"/></td>
 							<td><fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.creditInformation.debt}" /></fmt:formatNumber></td>
 						</tr>
 						<tr>
-							<td><fmt:message key="creditInformation.outstanding"/></td>
+							<td><fmt:message key="creditInformation.outstanding"/><fmt:message key="currency.unit.wan"/></td>
 							<td>
 								<fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.creditInformation.outstanding}" /></fmt:formatNumber>
 							 </td>
 						</tr>
 						<tr>
-							<td><fmt:message key="creditInformation.balance"/></td>
+							<td><fmt:message key="creditInformation.balance"/><fmt:message key="currency.unit.wan"/></td>
 							<td>
 								<fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.creditInformation.balance}" /></fmt:formatNumber>
 							</td>
@@ -634,34 +659,5 @@
 		</c:if>
 </div>
 	</c:forEach>
-	<div class="form-horizontal">
-    <fieldset disabled>
-    <div class="form-group">
-        <label for="financeStatementSummary" class="col-lg-3 control-label"><fmt:message key="report.financeCheck.financeStatementSummary" /></label>
-        <div class="col-lg-9">
-            <input type="text" id="financeStatementSummary" class="form-control input-sm" value="${riskControlReport.financeCheckComment}">
-        </div>
-    </div>
-    </fieldset>
-    </div>
 </c:if>		
-<script>
-  $(function() {
-    $('#prevTermTime').datepicker({
-				language: 'zh-CN',
-				format: '<c:out value="${shortDatePatternJs}" />',
-				autoclose: true,
-				minViewMode: 1
-			});	
-  });
-  
-  $(function() {
-    $('#currTermTime').datepicker({
-				language: 'zh-CN',
-				format: '<c:out value="${shortDatePatternJs}" />',
-				autoclose: true,
-				minViewMode: 1
-			});	
-  });  
-</script>
 

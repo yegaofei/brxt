@@ -5,22 +5,27 @@
     <link rel="stylesheet" type="text/css" href="${base}/webjars/bootstrap-datepicker/1.2.0/css/datepicker.css"/>
     <script type="text/javascript" src="${base}/webjars/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.js"></script>
     <script type="text/javascript" src="${base}/webjars/bootstrap-datepicker/1.2.0/js/locales/bootstrap-datepicker.zh-CN.js" charset="UTF-8"></script>  
+    <style type="text/css">
+        .container {
+            max-width: 1280px;
+        }
+    </style>
 </head>
  
 <div class="col-sm-2">
-	<h2><fmt:message key='budgetStatementForm.heading'/></h2> 
-	<span>
-    	<c:if test = '${budgetStatementModel.tradingRelationship.title == "counterparty"}' >
-    		<fmt:message key='corpBalanceSheet.counterpartyName'/> 
-    	</c:if>
-    	<c:if test = '${budgetStatementModel.tradingRelationship.title == "guarantor"}' >
-    		<fmt:message key='corpBalanceSheet.guarantorName'/> 
-    	</c:if>
-    	: &nbsp; <c:out value="${budgetStatementModel.counterpartyName}"/>, <fmt:message key="${budgetStatementModel.counterpartyType}"/>
+    <h2><fmt:message key='budgetStatementForm.heading'/></h2> 
+    <span>
+        <c:if test = '${budgetStatementModel.tradingRelationship.title == "counterparty"}' >
+            <fmt:message key='corpBalanceSheet.counterpartyName'/> 
+        </c:if>
+        <c:if test = '${budgetStatementModel.tradingRelationship.title == "guarantor"}' >
+            <fmt:message key='corpBalanceSheet.guarantorName'/> 
+        </c:if>
+        : &nbsp; <c:out value="${budgetStatementModel.counterpartyName}"/>, <fmt:message key="${budgetStatementModel.counterpartyType}"/>
     </span>
 </div>
  
-<div class="col-sm-7">	
+<div class="col-sm-8">	
     <form:errors path="*" cssClass="alert alert-danger alert-dismissable" element="div"/>
     <form:form commandName="budgetStatementModel" method="post" action="/finance/budgetStatementForm" id="budgetStatementModel" cssClass="well" >
 	<form:hidden path="projectId"/>
@@ -56,9 +61,9 @@
 		<thead>
 		 <tr>
 			<th><appfuse:label key="budgetStatementInfo.itemName"/> </th>
-			<th><appfuse:label key="budgetStatementInfo.fullYearBudget"/> </th>
-			<th><appfuse:label key="budgetStatementInfo.thisYear"/>   </th>
-			<th><appfuse:label key="budgetStatementInfo.lastYear"/>   </th>   
+			<th><appfuse:label key="budgetStatementInfo.fullYearBudget"/><fmt:message key="currency.unit.wan"/></th>
+			<th><appfuse:label key="budgetStatementInfo.thisYear"/><fmt:message key="currency.unit.wan"/></th>
+			<th><appfuse:label key="budgetStatementInfo.lastYear"/><fmt:message key="currency.unit.wan"/></th>   
 			<th><appfuse:label key="budgetStatementInfo.budgetRatio"/>   </th> 
 			<th><appfuse:label key="budgetStatementInfo.growthRate"/>   </th>    
         </tr>  

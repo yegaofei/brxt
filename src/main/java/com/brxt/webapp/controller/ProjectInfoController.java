@@ -1,6 +1,8 @@
 package com.brxt.webapp.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.brxt.model.Manager;
 import com.brxt.model.ProjectInfo;
 import com.brxt.service.ProjectInfoManager;
 
@@ -60,5 +63,41 @@ public class ProjectInfoController extends BaseFormController{
 		
 		return new ModelAndView().addObject(projectInfoManager.getAll());
 	}
+	
+	@ModelAttribute("allTrustManagers")
+    public Map<String, String> getAllTrustManagers()
+    {
+        List<Manager> managers = this.projectInfoManager.getAllTrustManagers();
+        Map<String, String> allTrustManagers = new HashMap<String, String>();
+        for(Manager m : managers)
+        {
+            allTrustManagers.put(m.getName(), m.getName());
+        }
+        return allTrustManagers;
+    }
+    
+    @ModelAttribute("allDelegateManagers")
+    public Map<String, String> getAllDelegateManagers()
+    {
+        List<Manager> managers = this.projectInfoManager.getAllDelegateManagers();
+        Map<String, String> allDelegateManagers = new HashMap<String, String>();
+        for(Manager m : managers)
+        {
+            allDelegateManagers.put(m.getName(), m.getName());
+        }
+        return allDelegateManagers;
+    }
+    
+    @ModelAttribute("allRiskManagers")
+    public Map<String, String> getAllRiskManagers()
+    {
+        List<Manager> managers = this.projectInfoManager.getAllRiskManagers();
+        Map<String, String> allRiskManagers = new HashMap<String, String>();
+        for(Manager m : managers)
+        {
+            allRiskManagers.put(m.getName(), m.getName());
+        }
+        return allRiskManagers;
+    }
 
 }

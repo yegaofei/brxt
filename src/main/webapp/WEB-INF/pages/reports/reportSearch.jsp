@@ -31,7 +31,9 @@
         	</div>	
     		<div class="col-sm-3 form-group">
         		<appfuse:label styleClass="control-label" key="projectInfo.riskManager"/>
-        		<form:input path="riskManager" id="riskManager" maxlength="20" cssClass="form-control"/>
+        		<form:select path="riskManager" class="form-control input-sm">          
+                    <form:options items="${allRiskManagers}" />
+                </form:select> 
     		</div>
     		<div class="col-sm-3 form-group">
         		<appfuse:label styleClass="control-label" key="projectInfo.search.startTime"/>
@@ -46,12 +48,16 @@
 			<div class="row">
     		<div class="col-sm-3 form-group">
         		<appfuse:label styleClass="control-label" key="projectInfo.delegateManager"/>
-        		<form:input path="delegateManager" id="delegateManager" maxlength="20" cssClass="form-control"/>
+        		<form:select path="delegateManager" class="form-control input-sm">          
+                    <form:options items="${allDelegateManagers}" />
+                </form:select>
     		</div>
 
     		<div class="col-sm-3 form-group">
         		<appfuse:label styleClass="control-label" key="projectInfo.trustManager"/>
-        		<form:input path="trustManager" id="trustManager" maxlength="20" cssClass="form-control"/>
+                <form:select path="trustManager" class="form-control input-sm">          
+                    <form:options items="${allTrustManagers}" />
+                </form:select>
     		</div>
     		
     		<div class="col-sm-2 form-group">
@@ -65,6 +71,9 @@
     	
     <display:table name="reportList" class="table table-condensed table-bordered table-striped table-hover" requestURI=""
                    id="riskControlReport" export="false" pagesize="20">        
+        <display:column style="width: 5%">
+                <input type="checkbox"  style="margin: 0 0 0 4px" onclick="radio(this)" />
+        </display:column>           
         <display:column titleKey="projectInfo.projectName">
             <c:url value="${ctx}/reports/riskControlReport" var="reportUrl">
         			<c:param name="id" value="${riskControlReport.projectInfo.id}"/>

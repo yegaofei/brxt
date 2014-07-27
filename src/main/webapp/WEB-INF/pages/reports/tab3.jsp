@@ -22,7 +22,7 @@
 			<input type="text" id="projectEndTime" name="projectEndTime" maxlength="20" class="form-control input-sm" value="<c:out value='${param.projectEndTime}' />"/>
 		</div>
 	</div>
-	
+	<c:if test="${not empty selectedInvestmentStatus and selectedInvestmentStatus.projectType == 'real_estate'}">
 	<div class="form-group">
 		<label for="policyChanges" class="col-lg-3 control-label"><fmt:message key="investmentProject.policyChanges" /></label>
 		<div class="col-lg-9">
@@ -41,6 +41,7 @@
 			<span class="help-block"><fmt:message key="investmentProject.priceChanges.help" /></span>
 		</div>
 	</div>
+	</c:if>
 	<div class="form-group">
 		<label for="investmentEvaluation" class="col-lg-3 control-label"><fmt:message key="investmentProject.evaluation" /></label>
 		<div class="col-lg-9">

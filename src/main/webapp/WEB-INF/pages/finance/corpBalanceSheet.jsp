@@ -56,8 +56,8 @@
     	<thead>
         <tr>
             <th><appfuse:label key="corpBalanceSheet.itemName"/></th>
-            <th><appfuse:label key="corpBalanceSheet.beginValue"/></th>
-            <th><appfuse:label key="corpBalanceSheet.endValue"/></th>
+            <th><appfuse:label key="corpBalanceSheet.beginValue"/><fmt:message key="currency.unit.yuan"/></th>
+            <th><appfuse:label key="corpBalanceSheet.endValue"/><fmt:message key="currency.unit.yuan"/></th>
         </tr>  
         </thead>
         <tbody> 

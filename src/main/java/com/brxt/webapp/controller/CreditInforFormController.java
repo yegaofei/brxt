@@ -24,6 +24,7 @@ import com.brxt.constant.SessionAttributes;
 import com.brxt.model.Counterparty;
 import com.brxt.model.CreditInformation;
 import com.brxt.model.ProjectInfo;
+import com.brxt.model.enums.CounterpartyType;
 import com.brxt.service.CreditInformationManager;
 import com.brxt.service.ProjectInfoManager;
 
@@ -53,14 +54,33 @@ public class CreditInforFormController extends BaseFormController {
 		{
 			ProjectInfo projectInfo = projectInfoManager.get(projectInfoId);
 			Set<Counterparty> counterparties = projectInfo.getCounterparties();
+			
 			List<Counterparty> cpList = null;
 			if (counterparties != null && counterparties.size() > 0) {
+			    Iterator<Counterparty> itCp = counterparties.iterator();
+                while(itCp.hasNext())
+                {
+                    Counterparty cp = itCp.next();
+                    if(cp.getCounterpartyType().equals(CounterpartyType.INSTITUTION.getTitle()))
+                    {
+                        itCp.remove();
+                    }
+                }
 				cpList = new ArrayList<Counterparty>(counterparties);
 			}
 			
 			Set<Counterparty> guarantors = projectInfo.getGuarantors();
 			if (guarantors != null && guarantors.size() > 0)
 			{
+			    Iterator<Counterparty> itGuarantor = guarantors.iterator();
+                while(itGuarantor.hasNext())
+                {
+                    Counterparty cp = itGuarantor.next();
+                    if(cp.getCounterpartyType().equals(CounterpartyType.INSTITUTION.getTitle()))
+                    {
+                        itGuarantor.remove();
+                    }
+                }
 				if(cpList != null)
 				{
 					cpList.addAll(guarantors);

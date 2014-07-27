@@ -94,6 +94,7 @@ public class ProjectInfo extends BaseObject {
 		this.id = id;
 	}
 
+	@Column(name = "guaranteeMode", columnDefinition = "longtext")
 	public String getGuaranteeMode() {
 		return guaranteeMode;
 	}

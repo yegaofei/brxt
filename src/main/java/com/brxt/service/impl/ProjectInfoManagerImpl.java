@@ -5,21 +5,20 @@ import java.util.List;
 
 import org.appfuse.service.impl.GenericManagerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.brxt.dao.CounterpartyDao;
 import com.brxt.dao.InvestmentProjectDao;
-import com.brxt.dao.InvestmentStatusDao;
+import com.brxt.dao.ManagerDao;
 import com.brxt.dao.ProjectInfoDao;
 import com.brxt.dao.ProjectSizeDao;
 import com.brxt.dao.RepaymentProjectDao;
 import com.brxt.dao.SupplyLiquidProjectDao;
 import com.brxt.model.Counterparty;
-import com.brxt.model.InvestmentStatus;
+import com.brxt.model.Manager;
 import com.brxt.model.ProjectInfo;
 import com.brxt.model.ProjectSize;
-import com.brxt.service.ProjProgressManager;
+import com.brxt.model.enums.ManagerType;
 import com.brxt.service.ProjectInfoManager;
 
 @Service("projectInfoManager")
@@ -36,6 +35,8 @@ public class ProjectInfoManagerImpl extends GenericManagerImpl<ProjectInfo, Long
 	RepaymentProjectDao repaymentProjectDao;
 
 	SupplyLiquidProjectDao supplyLiquidProjectDao;
+	
+	ManagerDao managerDao;
 
 	@Autowired
 	public void setInvestmentProjectDao(InvestmentProjectDao investmentProjectDao) {
@@ -67,6 +68,11 @@ public class ProjectInfoManagerImpl extends GenericManagerImpl<ProjectInfo, Long
 	public void setCounterpartyDao(CounterpartyDao counterpartyDao) {
 		this.counterpartyDao = counterpartyDao;
 	}
+	
+	@Autowired
+    public void setManagerDao(ManagerDao managerDao) {
+        this.managerDao = managerDao;
+    }
 
 	@Override
 	public ProjectInfo findByProjectName(String projectName) {
@@ -133,6 +139,18 @@ public class ProjectInfoManagerImpl extends GenericManagerImpl<ProjectInfo, Long
 
 	public Counterparty findCounterparty(Counterparty counterparty) {
 		return counterpartyDao.findByCounterparty(counterparty);
+	}
+	
+	public List<Manager> getAllTrustManagers() {
+	    return managerDao.findByType(ManagerType.TRUST_MANAGER);
+	}
+	
+	public List<Manager> getAllRiskManagers() {
+	    return managerDao.findByType(ManagerType.RISK_MANAGER);
+    }
+
+	public List<Manager> getAllDelegateManagers() {
+	    return managerDao.findByType(ManagerType.DELEGATE_MANAGER);
 	}
 
 }

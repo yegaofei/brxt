@@ -2,7 +2,7 @@
 	<div class="<c:if test='${empty param.preview }'>well</c:if>">
 					<div class="row">
                   			<label class="col-sm-4"><fmt:message key="projectInfo.nonrequired.projectName" /> : <c:out value="${projectInfo.projectName}" /></label>
-                  			<label class="col-sm-4"><fmt:message key="projectInfo.expectedReturn" /> : <c:out value="${projectInfo.expectedReturn}" />%</label>
+                  			<label class="col-sm-4"><fmt:message key="projectInfo.expectedReturn" /> : <c:out value="${projectInfo.expectedReturn}" /></label>
                   			<label class="col-sm-4"><fmt:message key="projectInfo.trustManager" /> : <c:out value="${projectInfo.trustManager}" /></label>
                   	</div>	
                   	<div class="row">
@@ -16,7 +16,7 @@
       								<fmt:formatDate value="${projectSize.endTime}" pattern="${datePattern}" />
   								</display:column>
   								<display:column titleKey="projectSize.size">
-  									<fmt:formatNumber type="currency" value="${projectSize.projectSize}" />
+  									<fmt:formatNumber type="number" value="${projectSize.projectSize}" />
   								</display:column>      			
 							</display:table>
 							</div>

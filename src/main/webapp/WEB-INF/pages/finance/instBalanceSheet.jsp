@@ -56,8 +56,8 @@
 	<table class="table table-condensed">
 		 <tr>
             <th><appfuse:label key="instBalanceSheet.itemName"/></th>
-            <th><appfuse:label key="instBalanceSheet.beginValue"/></th>
-            <th><appfuse:label key="instBalanceSheet.endValue"/></th>
+            <th><appfuse:label key="instBalanceSheet.beginValue"/><fmt:message key="currency.unit.wan"/></th>
+            <th><appfuse:label key="instBalanceSheet.endValue"/><fmt:message key="currency.unit.wan"/></th>
         </tr>   
         <tr>
         	<td><appfuse:label key="instBalanceSheet.assetGroupTotal"/> </td>

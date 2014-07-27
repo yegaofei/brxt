@@ -1,4 +1,5 @@
 Alter table riskmanagement.project_info  modify  expectedReturn varchar(255);
+Alter table riskmanagement.project_info  modify  guaranteeMode longtext;
 
 Alter table riskmanagement.corp_balancesheet add column longInvestment decimal(19,2);
 Alter table riskmanagement.corp_balancesheet add column fixedAsset decimal(19,2);

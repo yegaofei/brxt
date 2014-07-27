@@ -24,6 +24,7 @@
 			<Item name="ViewUsers" title="menu.admin.users" page="/admin/users"/>
 			<Item name="ActiveUsers" title="home.activeUsers" page="/admin/activeUsers"/>
 			<Item name="ReloadContext" title="menu.admin.reload" page="/admin/reload"/>
+			<Item name="CreateUser" title="menu.admin.createUser" page="/signup"/>
 			<Item name="FileUpload" title="menu.selectFile" page="/fileupload"/>
 		</Menu>
 		<Menu name="UserMenu" title="menu.user" description="User Menu" page="/userform" roles="ROLE_ADMIN,ROLE_USER,ROLE_RISK_MANAGER,ROLE_RISK_OPERATOR,ROLE_RISK_DIRECTOR"/>

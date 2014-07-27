@@ -37,7 +37,9 @@
         <display:column sortable="false" titleKey="repayment.type">
         		<c:if test="${not empty repayment.type}" > <fmt:message key="${repayment.type}"/> </c:if>
         </display:column>
-        <display:column property="amount" sortable="false" titleKey="repayment.amount"/>
+        <display:column sortable="false" titleKey="repayment.amount">
+            <fmt:formatNumber type="currency" value="${repayment.amount}" />
+        </display:column>
         <display:column property="comment" sortable="false" titleKey="repayment.comment"/>
         <display:setProperty name="paging.banner.item_name"><fmt:message key="repayment.heading"/></display:setProperty>
         <display:setProperty name="paging.banner.items_name"><fmt:message key="repayment.heading"/></display:setProperty>

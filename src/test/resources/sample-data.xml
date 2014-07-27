@@ -823,6 +823,11 @@
 			<value>名仕家园一期</value>
 			<value>repayment_project</value>
 		</row>
+		<row>
+            <value>3</value>
+            <value>中石化补充资金</value>
+            <value>supplemental_liquidity</value>
+        </row>
 	</table>
 	<table name="project_info_investments">
 		<column>project_info_id</column>
@@ -835,6 +840,10 @@
 			<value>1</value>
 			<value>2</value>
 		</row>
+		<row>
+            <value>1</value>
+            <value>3</value>
+        </row>
 	</table>
 	
 	<table name="investment_project">
@@ -920,5 +929,24 @@
 			<value>2</value>
 		</row>
 	</table>
-	
+	<table name="manager">
+	   <column>id</column>
+        <column>name</column>
+        <column>managerType</column>
+        <row>
+            <value>1</value>
+            <value>王小明</value>
+            <value>risk_manager</value>
+        </row>
+        <row>
+            <value>2</value>
+            <value>李亮</value>
+            <value>delegate_manager</value>
+        </row>
+        <row>
+            <value>3</value>
+            <value>张倩</value>
+            <value>trust_manager</value>
+        </row>
+	</table>
 </dataset>

@@ -239,7 +239,7 @@
 			</c:if>
 		</c:if>	
 					<div class="form-group">
-					<c:if test="${not empty creditInformationTab6}" >
+					<c:if test="${not empty creditInformationTab6 and financeCheckTab6.counterparty.counterpartyType != 'institution'}" >
 					<appfuse:label styleClass="control-label" key="creditInformation.heading"/> :
 					<table class="table table-striped table-bordered table-hover">
 						<tbody>
@@ -472,7 +472,7 @@
 			</table>
 		</c:if>	
 					<div class="form-group">
-					<c:if test="${not empty financeCheckTab6.creditInformation}" >
+					<c:if test="${not empty financeCheckTab6.creditInformation and financeCheckTab6.counterparty.counterpartyType != 'institution'}" >
 					<appfuse:label styleClass="control-label" key="creditInformation.heading"/> :
 					<table class="table table-striped table-bordered table-hover">
 						<tbody>
