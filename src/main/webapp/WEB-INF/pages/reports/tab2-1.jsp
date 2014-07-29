@@ -365,8 +365,8 @@
 </script>
 </c:if>
 
-<c:if test="${not empty param.preview and param.preview}">
-	<c:if test="${empty financeCheckList}">
+<c:if test="${empty financeCheck}">
+	<c:if test="${empty financeCheckList and not empty param.preview and param.preview}">
 		<div class="col-lg-12">
 		<div class="alert alert-dismissable alert-danger">
 			<fmt:message key="report.financeCheck.empty" />
@@ -605,7 +605,10 @@
 			</tbody>
 			</table>
 		</c:if>
-		<div class="form-horizontal">
+</div>
+	</c:forEach>
+	<c:if test="${not empty param.preview and param.preview}">
+        <div class="form-horizontal">
             <fieldset disabled>
             <div class="form-group">
                 <label for="financeStatementSummary" class="col-lg-3 control-label"><fmt:message key="report.financeCheck.financeStatementSummary" /></label>
@@ -614,50 +617,51 @@
                 </div>
             </div>
             </fieldset>
-        </div>	
-		<c:if test="${not empty financeCheck.creditInformation and financeCheck.counterparty.counterpartyType != 'institution'}" >
-					<div class="row">
-					<appfuse:label styleClass="control-label" key="report.riskcontrol.otherCheck"/> : 
-					</div>
-					<table class="table table-striped table-bordered table-hover">
-						<tbody>
-						<tr>
-							<td><fmt:message key="creditInformation.debtBalance"/><fmt:message key="currency.unit.wan"/></td>
-							<td><fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.creditInformation.debtBalance}" /></fmt:formatNumber></td>
-						</tr>
-						<tr>
-							<td><fmt:message key="creditInformation.debt"/><fmt:message key="currency.unit.wan"/></td>
-							<td><fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.creditInformation.debt}" /></fmt:formatNumber></td>
-						</tr>
-						<tr>
-							<td><fmt:message key="creditInformation.outstanding"/><fmt:message key="currency.unit.wan"/></td>
-							<td>
-								<fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.creditInformation.outstanding}" /></fmt:formatNumber>
-							 </td>
-						</tr>
-						<tr>
-							<td><fmt:message key="creditInformation.balance"/><fmt:message key="currency.unit.wan"/></td>
-							<td>
-								<fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.creditInformation.balance}" /></fmt:formatNumber>
-							</td>
-						</tr>
-						<tr>
-							<td><fmt:message key="creditInformation.overdue"/></td>
-							<td>
-								<c:if test="${financeCheck.creditInformation.overdue}"><fmt:message key="label.yes"/></c:if>
-								<c:if test="${not financeCheck.creditInformation.overdue}"><fmt:message key="label.no"/></c:if>
-							</td>
-						</tr>
-						<tr>
-							<td><fmt:message key="creditInformation.comment"/></td>
-							<td>
-								<c:out value="${financeCheck.creditInformation.comment}" />
-							</td>
-						</tr>
-						</tbody>
-					</table>
-		</c:if>
-</div>
-	</c:forEach>
+        </div>  
+     </c:if>
+     <c:forEach var="financeCheck" items="${financeCheckList}">
+        <c:if test="${not empty financeCheck.creditInformation and financeCheck.counterparty.counterpartyType != 'institution'}" >
+                    <div class="row">
+                    <appfuse:label styleClass="control-label" key="report.riskcontrol.otherCheck"/> : 
+                    </div>
+                    <table class="table table-striped table-bordered table-hover">
+                        <tbody>
+                        <tr>
+                            <td><fmt:message key="creditInformation.debtBalance"/><fmt:message key="currency.unit.wan"/></td>
+                            <td><fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.creditInformation.debtBalance}" /></fmt:formatNumber></td>
+                        </tr>
+                        <tr>
+                            <td><fmt:message key="creditInformation.debt"/><fmt:message key="currency.unit.wan"/></td>
+                            <td><fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.creditInformation.debt}" /></fmt:formatNumber></td>
+                        </tr>
+                        <tr>
+                            <td><fmt:message key="creditInformation.outstanding"/><fmt:message key="currency.unit.wan"/></td>
+                            <td>
+                                <fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.creditInformation.outstanding}" /></fmt:formatNumber>
+                             </td>
+                        </tr>
+                        <tr>
+                            <td><fmt:message key="creditInformation.balance"/><fmt:message key="currency.unit.wan"/></td>
+                            <td>
+                                <fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.creditInformation.balance}" /></fmt:formatNumber>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><fmt:message key="creditInformation.overdue"/></td>
+                            <td>
+                                <c:if test="${financeCheck.creditInformation.overdue}"><fmt:message key="label.yes"/></c:if>
+                                <c:if test="${not financeCheck.creditInformation.overdue}"><fmt:message key="label.no"/></c:if>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><fmt:message key="creditInformation.comment"/></td>
+                            <td>
+                                <c:out value="${financeCheck.creditInformation.comment}" />
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+        </c:if>
+     </c:forEach>
 </c:if>		
 

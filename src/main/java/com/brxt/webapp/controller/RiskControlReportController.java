@@ -372,7 +372,7 @@ public class RiskControlReportController extends BaseSheetController {
 			}
 			report.getSubjectCapacities().add(subjectCapacity);
 			reportManager.save(report); 
-			mav.addObject("subjectCapacity", subjectCapacity);
+			mav.addObject("riskControlReport", report);
 			saveMessage(request, getText("report.update.success", request.getLocale()));
 		} 
 		catch (ParseException e)
@@ -1429,200 +1429,207 @@ public class RiskControlReportController extends BaseSheetController {
 		return mav;
 	}
 	
+	@ModelAttribute("financeCheckList")
+	public List<FinanceCheck> getFinanceCheckList(final HttpServletRequest request) 
+	{
+	    RiskControlReport report = getRiskControlReport(request);
+	    Map<Counterparty, FinanceCheck> financeCheckMap = new HashMap<Counterparty, FinanceCheck>();
+        if(report.getCorporateBalanceSheets() != null)
+        {
+            for(CorporateBalanceSheet cbs : report.getCorporateBalanceSheets())
+            {
+                FinanceCheck financeCheck = financeCheckMap.get(cbs.getCounterparty()) ;
+                if(financeCheck == null)
+                {
+                    financeCheck = new FinanceCheck();
+                    financeCheck.setCounterparty(cbs.getCounterparty());
+                }
+                
+                if(financeCheck.getCurrCorpBalanceSheet() != null && financeCheck.getPrevCorpBalanceSheet() != null)
+                {
+                    continue;
+                }
+                
+                Iterator<CorporateBalanceSheet> itCbs = report.getCorporateBalanceSheets().iterator();
+                while(itCbs.hasNext())
+                {
+                    CorporateBalanceSheet cbs2 = itCbs.next();
+                    if(!cbs2.equals(cbs) && cbs2.getCounterparty().equals(cbs.getCounterparty()))
+                    {
+                        if(cbs2.getReportYear().intValue() > cbs.getReportYear().intValue())
+                        {
+                            financeCheck.setCurrCorpBalanceSheet(cbs2);
+                            financeCheck.setPrevCorpBalanceSheet(cbs);
+                        } 
+                        else if (cbs2.getReportYear().intValue() < cbs.getReportYear().intValue())
+                        {
+                            financeCheck.setCurrCorpBalanceSheet(cbs);
+                            financeCheck.setPrevCorpBalanceSheet(cbs2);
+                        } 
+                        else if (cbs2.getReportMonth().intValue() > cbs.getReportMonth().intValue())
+                        {
+                            financeCheck.setCurrCorpBalanceSheet(cbs2);
+                            financeCheck.setPrevCorpBalanceSheet(cbs);
+                        } else if (cbs2.getReportMonth().intValue() < cbs.getReportMonth().intValue())
+                        {
+                            financeCheck.setCurrCorpBalanceSheet(cbs);
+                            financeCheck.setPrevCorpBalanceSheet(cbs2);
+                        }
+                        CorporateBalanceSheet corpBalanceSheetChanges = calculate(financeCheck.getPrevCorpBalanceSheet(), financeCheck.getCurrCorpBalanceSheet());
+                        financeCheck.setCorpBalanceSheetChanges(corpBalanceSheetChanges);
+                        financeCheckMap.put(cbs.getCounterparty(), financeCheck);
+                        break;
+                    }
+                }
+                
+            }
+        }
+        
+        if(report.getInstituteBalanceSheet() != null)
+        {
+            for(InstituteBalanceSheet ibs : report.getInstituteBalanceSheet())
+            {
+                FinanceCheck financeCheck = financeCheckMap.get(ibs.getCounterparty()) ;
+                if(financeCheck == null)
+                {
+                    financeCheck = new FinanceCheck();
+                    financeCheck.setCounterparty(ibs.getCounterparty());
+                }
+                
+                if(financeCheck.getCurrInstituteBalanceSheet() != null && financeCheck.getPrevInstituteBalanceSheet() != null)
+                {
+                    continue;
+                }
+                
+                Iterator<InstituteBalanceSheet> itCbs = report.getInstituteBalanceSheet().iterator();
+                while(itCbs.hasNext())
+                {
+                    InstituteBalanceSheet ibs2 = itCbs.next();
+                    if(!ibs2.equals(ibs) && ibs2.getCounterparty().equals(ibs.getCounterparty()))
+                    {
+                        if(ibs2.getReportYear().intValue() > ibs.getReportYear().intValue())
+                        {
+                            financeCheck.setCurrInstituteBalanceSheet(ibs2);
+                            financeCheck.setPrevInstituteBalanceSheet(ibs);
+                        } 
+                        else if (ibs2.getReportYear().intValue() < ibs.getReportYear().intValue())
+                        {
+                            financeCheck.setCurrInstituteBalanceSheet(ibs);
+                            financeCheck.setPrevInstituteBalanceSheet(ibs2);
+                        } 
+                        else if (ibs2.getReportMonth().intValue() > ibs.getReportMonth().intValue())
+                        {
+                            financeCheck.setCurrInstituteBalanceSheet(ibs2);
+                            financeCheck.setPrevInstituteBalanceSheet(ibs);
+                        } else if (ibs2.getReportMonth().intValue() < ibs.getReportMonth().intValue())
+                        {
+                            financeCheck.setCurrInstituteBalanceSheet(ibs);
+                            financeCheck.setPrevInstituteBalanceSheet(ibs2);
+                        }
+                        financeCheckMap.put(ibs.getCounterparty(), financeCheck);
+                        break;
+                    }
+                }
+            }
+        }
+        
+        if(report.getProfitStatements() != null)
+        {
+            for(ProfitStatement ibs : report.getProfitStatements())
+            {
+                FinanceCheck financeCheck = financeCheckMap.get(ibs.getCounterparty()) ;
+                if(financeCheck == null)
+                {
+                    financeCheck = new FinanceCheck();
+                    financeCheck.setCounterparty(ibs.getCounterparty());
+                }
+                
+                if(financeCheck.getCurrProfitStatement() != null && financeCheck.getPrevProfitStatement() != null)
+                {
+                    continue;
+                }
+                
+                Iterator<ProfitStatement> itPs = report.getProfitStatements().iterator();
+                while(itPs.hasNext())
+                {
+                    ProfitStatement ibs2 = itPs.next();
+                    if(!ibs2.equals(ibs) && ibs2.getCounterparty().equals(ibs.getCounterparty()))
+                    {
+                        if(ibs2.getReportYear().intValue() > ibs.getReportYear().intValue())
+                        {
+                            financeCheck.setCurrProfitStatement(ibs2);
+                            financeCheck.setPrevProfitStatement(ibs);
+                        } 
+                        else if (ibs2.getReportYear().intValue() < ibs.getReportYear().intValue())
+                        {
+                            financeCheck.setCurrProfitStatement(ibs);
+                            financeCheck.setPrevProfitStatement(ibs2);
+                        } 
+                        else if (ibs2.getReportMonth().intValue() > ibs.getReportMonth().intValue())
+                        {
+                            financeCheck.setCurrProfitStatement(ibs2);
+                            financeCheck.setPrevProfitStatement(ibs);
+                        } else if (ibs2.getReportMonth().intValue() < ibs.getReportMonth().intValue())
+                        {
+                            financeCheck.setCurrProfitStatement(ibs);
+                            financeCheck.setPrevProfitStatement(ibs2);
+                        }
+                        calculateFinanceRatio(financeCheck.getPrevCorpBalanceSheet(), financeCheck.getCurrCorpBalanceSheet(), 
+                                financeCheck.getPrevProfitStatement(), financeCheck.getCurrProfitStatement(), financeCheck);
+                        financeCheckMap.put(ibs.getCounterparty(), financeCheck);
+                        break;
+                    }
+                }
+            }
+        }
+        
+        if(report.getCreditInformations() != null)
+        {
+            for(CreditInformation ci : report.getCreditInformations()) 
+            {
+                if(findCounterparty(ci.getProjectInfo(), ci.getId()) == null)
+                {
+                    continue;
+                }
+                FinanceCheck financeCheck = financeCheckMap.get(ci.getCounterparty()) ;
+                if(financeCheck == null)
+                {
+                    financeCheck = new FinanceCheck();
+                    financeCheck.setCounterparty(ci.getCounterparty());
+                }
+                
+                if(ci.getCounterparty().equals(financeCheck.getCounterparty()))
+                {
+                    if(financeCheck.getCurrCorpBalanceSheet() != null)
+                    {
+                        if(financeCheck.getCurrCorpBalanceSheet().getLongLoan() != null)
+                        {
+                            ci.setDebtBalance(financeCheck.getCurrCorpBalanceSheet().getLongLoan().add(financeCheck.getCurrCorpBalanceSheet().getShortLoan()));                 
+                        }
+                        else
+                        {
+                            ci.setDebtBalance(financeCheck.getCurrCorpBalanceSheet().getShortLoan());   
+                        }
+                    }
+                    financeCheck.setCreditInformation(ci);
+                }
+            }
+        }
+        List<FinanceCheck> financeCheckList = new ArrayList<FinanceCheck>();
+        Iterator<Counterparty> itCp = financeCheckMap.keySet().iterator();
+        while(itCp.hasNext())
+        {
+            Counterparty cp = itCp.next();
+            financeCheckList.add(financeCheckMap.get(cp));
+        }
+        return financeCheckList;
+	}
+	
 	@RequestMapping(value = "/reports/previewReport*", method = RequestMethod.GET)
 	public ModelAndView previewReport(final HttpServletRequest request){
 		ModelAndView mav = new ModelAndView("/reports/previewReport");
 		RiskControlReport report = getRiskControlReport(request);
-		Map<Counterparty, FinanceCheck> financeCheckMap = new HashMap<Counterparty, FinanceCheck>();
-		if(report.getCorporateBalanceSheets() != null)
-		{
-			for(CorporateBalanceSheet cbs : report.getCorporateBalanceSheets())
-			{
-				FinanceCheck financeCheck = financeCheckMap.get(cbs.getCounterparty()) ;
-				if(financeCheck == null)
-				{
-					financeCheck = new FinanceCheck();
-					financeCheck.setCounterparty(cbs.getCounterparty());
-				}
-				
-				if(financeCheck.getCurrCorpBalanceSheet() != null && financeCheck.getPrevCorpBalanceSheet() != null)
-				{
-					continue;
-				}
-				
-				Iterator<CorporateBalanceSheet> itCbs = report.getCorporateBalanceSheets().iterator();
-				while(itCbs.hasNext())
-				{
-					CorporateBalanceSheet cbs2 = itCbs.next();
-					if(!cbs2.equals(cbs) && cbs2.getCounterparty().equals(cbs.getCounterparty()))
-					{
-						if(cbs2.getReportYear().intValue() > cbs.getReportYear().intValue())
-						{
-							financeCheck.setCurrCorpBalanceSheet(cbs2);
-							financeCheck.setPrevCorpBalanceSheet(cbs);
-						} 
-						else if (cbs2.getReportYear().intValue() < cbs.getReportYear().intValue())
-						{
-							financeCheck.setCurrCorpBalanceSheet(cbs);
-							financeCheck.setPrevCorpBalanceSheet(cbs2);
-						} 
-						else if (cbs2.getReportMonth().intValue() > cbs.getReportMonth().intValue())
-						{
-							financeCheck.setCurrCorpBalanceSheet(cbs2);
-							financeCheck.setPrevCorpBalanceSheet(cbs);
-						} else if (cbs2.getReportMonth().intValue() < cbs.getReportMonth().intValue())
-						{
-							financeCheck.setCurrCorpBalanceSheet(cbs);
-							financeCheck.setPrevCorpBalanceSheet(cbs2);
-						}
-						CorporateBalanceSheet corpBalanceSheetChanges = calculate(financeCheck.getPrevCorpBalanceSheet(), financeCheck.getCurrCorpBalanceSheet());
-						financeCheck.setCorpBalanceSheetChanges(corpBalanceSheetChanges);
-						financeCheckMap.put(cbs.getCounterparty(), financeCheck);
-						break;
-					}
-				}
-				
-			}
-		}
 		
-		if(report.getInstituteBalanceSheet() != null)
-		{
-			for(InstituteBalanceSheet ibs : report.getInstituteBalanceSheet())
-			{
-				FinanceCheck financeCheck = financeCheckMap.get(ibs.getCounterparty()) ;
-				if(financeCheck == null)
-				{
-					financeCheck = new FinanceCheck();
-					financeCheck.setCounterparty(ibs.getCounterparty());
-				}
-				
-				if(financeCheck.getCurrInstituteBalanceSheet() != null && financeCheck.getPrevInstituteBalanceSheet() != null)
-				{
-					continue;
-				}
-				
-				Iterator<InstituteBalanceSheet> itCbs = report.getInstituteBalanceSheet().iterator();
-				while(itCbs.hasNext())
-				{
-					InstituteBalanceSheet ibs2 = itCbs.next();
-					if(!ibs2.equals(ibs) && ibs2.getCounterparty().equals(ibs.getCounterparty()))
-					{
-						if(ibs2.getReportYear().intValue() > ibs.getReportYear().intValue())
-						{
-							financeCheck.setCurrInstituteBalanceSheet(ibs2);
-							financeCheck.setPrevInstituteBalanceSheet(ibs);
-						} 
-						else if (ibs2.getReportYear().intValue() < ibs.getReportYear().intValue())
-						{
-							financeCheck.setCurrInstituteBalanceSheet(ibs);
-							financeCheck.setPrevInstituteBalanceSheet(ibs2);
-						} 
-						else if (ibs2.getReportMonth().intValue() > ibs.getReportMonth().intValue())
-						{
-							financeCheck.setCurrInstituteBalanceSheet(ibs2);
-							financeCheck.setPrevInstituteBalanceSheet(ibs);
-						} else if (ibs2.getReportMonth().intValue() < ibs.getReportMonth().intValue())
-						{
-							financeCheck.setCurrInstituteBalanceSheet(ibs);
-							financeCheck.setPrevInstituteBalanceSheet(ibs2);
-						}
-						financeCheckMap.put(ibs.getCounterparty(), financeCheck);
-						break;
-					}
-				}
-			}
-		}
-		
-		if(report.getProfitStatements() != null)
-		{
-			for(ProfitStatement ibs : report.getProfitStatements())
-			{
-				FinanceCheck financeCheck = financeCheckMap.get(ibs.getCounterparty()) ;
-				if(financeCheck == null)
-				{
-					financeCheck = new FinanceCheck();
-					financeCheck.setCounterparty(ibs.getCounterparty());
-				}
-				
-				if(financeCheck.getCurrProfitStatement() != null && financeCheck.getPrevProfitStatement() != null)
-				{
-					continue;
-				}
-				
-				Iterator<ProfitStatement> itPs = report.getProfitStatements().iterator();
-				while(itPs.hasNext())
-				{
-					ProfitStatement ibs2 = itPs.next();
-					if(!ibs2.equals(ibs) && ibs2.getCounterparty().equals(ibs.getCounterparty()))
-					{
-						if(ibs2.getReportYear().intValue() > ibs.getReportYear().intValue())
-						{
-							financeCheck.setCurrProfitStatement(ibs2);
-							financeCheck.setPrevProfitStatement(ibs);
-						} 
-						else if (ibs2.getReportYear().intValue() < ibs.getReportYear().intValue())
-						{
-							financeCheck.setCurrProfitStatement(ibs);
-							financeCheck.setPrevProfitStatement(ibs2);
-						} 
-						else if (ibs2.getReportMonth().intValue() > ibs.getReportMonth().intValue())
-						{
-							financeCheck.setCurrProfitStatement(ibs2);
-							financeCheck.setPrevProfitStatement(ibs);
-						} else if (ibs2.getReportMonth().intValue() < ibs.getReportMonth().intValue())
-						{
-							financeCheck.setCurrProfitStatement(ibs);
-							financeCheck.setPrevProfitStatement(ibs2);
-						}
-						calculateFinanceRatio(financeCheck.getPrevCorpBalanceSheet(), financeCheck.getCurrCorpBalanceSheet(), 
-								financeCheck.getPrevProfitStatement(), financeCheck.getCurrProfitStatement(), financeCheck);
-						financeCheckMap.put(ibs.getCounterparty(), financeCheck);
-						break;
-					}
-				}
-			}
-		}
-		
-		if(report.getCreditInformations() != null)
-		{
-			for(CreditInformation ci : report.getCreditInformations()) 
-			{
-				if(findCounterparty(ci.getProjectInfo(), ci.getId()) == null)
-				{
-					continue;
-				}
-				FinanceCheck financeCheck = financeCheckMap.get(ci.getCounterparty()) ;
-				if(financeCheck == null)
-				{
-					financeCheck = new FinanceCheck();
-					financeCheck.setCounterparty(ci.getCounterparty());
-				}
-				
-				if(ci.getCounterparty().equals(financeCheck.getCounterparty()))
-				{
-					if(financeCheck.getCurrCorpBalanceSheet() != null)
-					{
-						if(financeCheck.getCurrCorpBalanceSheet().getLongLoan() != null)
-						{
-							ci.setDebtBalance(financeCheck.getCurrCorpBalanceSheet().getLongLoan().add(financeCheck.getCurrCorpBalanceSheet().getShortLoan()));					
-						}
-						else
-						{
-							ci.setDebtBalance(financeCheck.getCurrCorpBalanceSheet().getShortLoan());	
-						}
-					}
-					financeCheck.setCreditInformation(ci);
-				}
-			}
-		}
-		List<FinanceCheck> financeCheckList = new ArrayList<FinanceCheck>();
-		Iterator<Counterparty> itCp = financeCheckMap.keySet().iterator();
-		while(itCp.hasNext())
-		{
-			Counterparty cp = itCp.next();
-			financeCheckList.add(financeCheckMap.get(cp));
-		}
-		mav.addObject("financeCheckList", financeCheckList);
 		
 		Map<Counterparty, FinanceCheck> financeCheckTab6Map = new HashMap<Counterparty, FinanceCheck>();
 		if(report.getGuarantorCorpBalanceSheets() != null)
@@ -1740,7 +1747,7 @@ public class RiskControlReportController extends BaseSheetController {
 		}
 		
 		List<FinanceCheck> financeCheckListTab6 = new ArrayList<FinanceCheck>();
-		itCp = financeCheckTab6Map.keySet().iterator();
+		Iterator<Counterparty> itCp = financeCheckTab6Map.keySet().iterator();
 		while(itCp.hasNext())
 		{
 			Counterparty cp = itCp.next();

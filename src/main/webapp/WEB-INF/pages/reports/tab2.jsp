@@ -159,9 +159,8 @@
 </c:if>	
 </c:if>	
 
-
-<c:if test="${not empty param.preview and param.preview}">
-	<c:if test="${empty riskControlReport.subjectCapacities}">
+<c:if test="${empty subjectCapacity}">
+	<c:if test="${empty riskControlReport.subjectCapacities and not empty param.preview and param.preview}">
 		<div class="col-lg-12">
 		<div class="alert alert-danger alert-dismissable">
             <a href="#" data-dismiss="alert" class="close">&times;</a>
@@ -172,13 +171,15 @@
 	<c:forEach var="subjectCapacity" items="${riskControlReport.subjectCapacities}">
 			<div class="col-lg-12">			
 					<div class="form-group">
-					<div class="page-header">
-							<h4>
-								<fmt:message key="subjectCapacity.heading" />:
-								<c:out value="${subjectCapacity.counterparty.name}" /> 
-								<fmt:formatDate value="${subjectCapacity.checkTime}" pattern="${shortDatePattern}" />
-							</h4>
-					</div>
+					   <div>
+							<legend class="accordion-heading">
+								<a data-toggle="collapse" href="#collapse-address<c:out value="${subjectCapacity.id}"/>">
+								    <fmt:message key="subjectCapacity.heading" />:
+								    <c:out value="${subjectCapacity.counterparty.name}" /> 
+								    <fmt:formatDate value="${subjectCapacity.checkTime}" pattern="${shortDatePattern}" />
+								</a>
+							</legend>
+					<div id="collapse-address<c:out value="${subjectCapacity.id}"/>" class="accordion-body collapse">
 					<table class="table table-striped table-bordered table-hover">
 						<thead>
 						<tr>
@@ -282,6 +283,8 @@
                         </c:if> 
 						</tbody>
 					</table>
+					</div>
+					</div>
 					</div>
 				</div>		
 	</c:forEach> 
