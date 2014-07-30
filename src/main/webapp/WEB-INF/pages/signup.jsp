@@ -109,6 +109,38 @@
                 </div>
             </div>
         </div>
+
+        <div class="form-group">
+            <label class="control-label"><fmt:message key="userProfile.accountSettings"/></label>
+            <label class="checkbox-inline">
+                <form:checkbox path="enabled" id="enabled"/>
+                <fmt:message key="user.enabled"/>
+            </label>
+
+            <label class="checkbox-inline">
+                <form:checkbox path="accountExpired" id="accountExpired"/>
+                <fmt:message key="user.accountExpired"/>
+            </label>
+
+            <label class="checkbox-inline">
+                <form:checkbox path="accountLocked" id="accountLocked"/>
+                <fmt:message key="user.accountLocked"/>
+            </label>
+
+            <label class="checkbox-inline">
+                <form:checkbox path="credentialsExpired" id="credentialsExpired"/>
+                <fmt:message key="user.credentialsExpired"/>
+            </label>
+        </div>
+        <div class="form-group">
+            <label for="userRoles" class="control-label"><fmt:message key="userProfile.assignRoles"/></label>
+            <select id="userRoles" name="userRoles" multiple="true" class="form-control">
+                <c:forEach items="${availableRoles}" var="role">
+                <option value="${role.value}" ${fn:contains(user.roles, role.label) ? 'selected' : ''}><fmt:message key="userProfile.${role.label}" /></option>
+                </c:forEach>
+            </select>
+        </div>
+ 
         <div class="form-group">
             <button type="submit" class="btn btn-primary" name="save" onclick="bCancel=false">
                 <i class="icon-ok icon-white"></i> <fmt:message key="button.register"/>

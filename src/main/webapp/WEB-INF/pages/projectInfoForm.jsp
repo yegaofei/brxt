@@ -99,7 +99,7 @@
             			<input type="text" name="projectSize" style="padding: 0" class="form-control input-sm"
                 			value="<c:out value="${projectSize.projectSize}"/>" />
         			</c:when>
-        			<c:otherwise><c:out value="${projectSize.projectSize}"/></c:otherwise>
+        			<c:otherwise><fmt:formatNumber type="number"><c:out value="${projectSize.projectSize}"/></fmt:formatNumber></c:otherwise>
     			</c:choose>
   			</display:column>
 		</display:table>

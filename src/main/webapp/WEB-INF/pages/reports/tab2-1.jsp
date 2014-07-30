@@ -378,21 +378,17 @@
 		<div class="form-group">
 		<div class="page-header">
 			<h4>
-				<fmt:message key="projectInfo.counterparty.name" />:
-				<c:out value="${financeCheck.counterparty.name}" />
+				<appfuse:label styleClass="control-label" key="report.riskcontrol.financeCheck"/> : <c:out value="${financeCheck.counterparty.name}" />
 			</h4>
 		</div>
-					
-		<appfuse:label styleClass="control-label" key="report.riskcontrol.financeCheck"/> <br>
-		
 		<c:if test="${financeCheck.counterparty.counterpartyType != 'institution'}">
 		<appfuse:label styleClass="control-label" key="report.financeCheck.base"/>  
 		<table class="table table-striped table-bordered table-hover">
 			<thead>
 				<tr>
 					<th><fmt:message key="instBalanceSheet.itemName"/></th>
-					<th><fmt:message key="report.financeCheck.prevTerm"/></th>
-					<th><fmt:message key="report.financeCheck.currTerm"/></th>
+					<th><fmt:message key="report.financeCheck.prevTerm"/>-<c:out value="${financeCheck.prevCorpBalanceSheet.reportYear}"/><fmt:formatNumber type="number" pattern="#00"><c:out value="${financeCheck.prevCorpBalanceSheet.reportMonth}"/></fmt:formatNumber></th>
+					<th><fmt:message key="report.financeCheck.currTerm"/>-<c:out value="${financeCheck.currCorpBalanceSheet.reportYear}"/><fmt:formatNumber type="number" pattern="#00"><c:out value="${financeCheck.currCorpBalanceSheet.reportMonth}"/></fmt:formatNumber></th>
 					<th><fmt:message key="report.financeCheck.changes"/></th>
 				</tr>
 			</thead>
@@ -622,7 +618,9 @@
      <c:forEach var="financeCheck" items="${financeCheckList}">
         <c:if test="${not empty financeCheck.creditInformation and financeCheck.counterparty.counterpartyType != 'institution'}" >
                     <div class="row">
-                    <appfuse:label styleClass="control-label" key="report.riskcontrol.otherCheck"/> : 
+                        <h4>
+                            <appfuse:label styleClass="control-label" key="report.riskcontrol.otherCheck"/> : <c:out value="${financeCheck.creditInformation.counterparty.name }" />
+                        </h4>
                     </div>
                     <table class="table table-striped table-bordered table-hover">
                         <tbody>

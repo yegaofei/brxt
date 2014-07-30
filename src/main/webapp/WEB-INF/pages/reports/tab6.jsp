@@ -63,12 +63,9 @@
 		<div class=" form-group">
 		<div class="page-header">
 			<h4>
-				<fmt:message key="projectInfo.guarantor.name" />:
-				<c:out value="${financeCheckTab6.counterparty.name}" />
+				<appfuse:label styleClass="control-label" key="report.riskcontrol.financeCheck"/>:<c:out value="${financeCheckTab6.counterparty.name}" />
 			</h4>
 		</div>
-		
-		<appfuse:label styleClass="control-label" key="report.riskcontrol.financeCheck"/> <br>
 		<c:if test="${financeCheckTab6.counterparty.counterpartyType != 'institution'}">
 		<c:if test="${not empty financeCheckTab6.prevCorpBalanceSheet or not empty financeCheckTab6.currCorpBalanceSheet }">
 		<appfuse:label styleClass="control-label" key="report.financeCheck.base"/>  
@@ -76,8 +73,8 @@
 			<thead>
 				<tr>
 					<th><fmt:message key="instBalanceSheet.itemName"/></th>
-					<th><fmt:message key="report.financeCheck.prevTerm"/></th>
-					<th><fmt:message key="report.financeCheck.currTerm"/></th>
+					<th><fmt:message key="report.financeCheck.prevTerm"/><fmt:message key="currency.unit.wan"/></th>
+					<th><fmt:message key="report.financeCheck.currTerm"/><fmt:message key="currency.unit.wan"/></th>
 					<th><fmt:message key="report.financeCheck.changes"/></th>
 				</tr>
 			</thead>
@@ -166,8 +163,8 @@
 			<thead>
 				<tr>
 					<th><fmt:message key="instBalanceSheet.itemName"/></th>
-					<th><fmt:message key="report.prev"/></th>
-					<th><fmt:message key="report.curr"/></th>
+					<th><fmt:message key="report.prev"/><fmt:message key="currency.unit.wan"/></th>
+					<th><fmt:message key="report.curr"/><fmt:message key="currency.unit.wan"/></th>
 				</tr>
 			</thead>	
 			<tbody>
@@ -285,8 +282,8 @@
 </div>	
 </c:if>
 
-<c:if test="${not empty param.preview and param.preview}">
-	<c:if test="${empty financeCheckListTab6}">
+<c:if test="${empty financeCheckTab6}">
+	<c:if test="${empty financeCheckListTab6 and not empty param.preview and param.preview}">
 		<div class="col-lg-12">
 		<div class="alert alert-dismissable alert-danger">
 			<fmt:message key="report.financeCheck.empty" />
@@ -299,21 +296,17 @@
 		<div class=" form-group">
 		<div class="page-header">
 			<h4>
-				<fmt:message key="projectInfo.guarantor.name" />:
-				<c:out value="${financeCheckTab6.counterparty.name}" />
+				<appfuse:label styleClass="control-label" key="report.riskcontrol.financeCheck"/>:<c:out value="${financeCheckTab6.counterparty.name}" />
 			</h4>
 		</div>
-		
-		<appfuse:label styleClass="control-label" key="report.riskcontrol.financeCheck"/> <br>
-		
 		<c:if test="${financeCheckTab6.counterparty.counterpartyType != 'institution'}">
 		<appfuse:label styleClass="control-label" key="report.financeCheck.base"/>  
 		<table class="table table-striped table-bordered table-hover">
 			<thead>
 				<tr>
 					<th><fmt:message key="instBalanceSheet.itemName"/></th>
-					<th><fmt:message key="report.financeCheck.prevTerm"/></th>
-					<th><fmt:message key="report.financeCheck.currTerm"/></th>
+					<th><fmt:message key="report.financeCheck.prevTerm"/><fmt:message key="currency.unit.wan"/></th>
+					<th><fmt:message key="report.financeCheck.currTerm"/><fmt:message key="currency.unit.wan"/></th>
 					<th><fmt:message key="report.financeCheck.changes"/></th>
 				</tr>
 			</thead>
@@ -400,8 +393,8 @@
 			<thead>
 				<tr>
 					<th><fmt:message key="instBalanceSheet.itemName"/></th>
-					<th><fmt:message key="report.prev"/></th>
-					<th><fmt:message key="report.curr"/></th>
+					<th><fmt:message key="report.prev"/><fmt:message key="currency.unit.wan"/></th>
+					<th><fmt:message key="report.curr"/><fmt:message key="currency.unit.wan"/></th>
 				</tr>
 			</thead>	
 			<tbody>

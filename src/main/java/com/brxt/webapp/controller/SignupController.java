@@ -9,12 +9,8 @@ import org.appfuse.Constants;
 import org.appfuse.model.User;
 import org.appfuse.service.RoleManager;
 import org.appfuse.service.UserExistsException;
-import com.brxt.webapp.util.RequestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailException;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -73,10 +69,20 @@ public class SignupController extends BaseFormController {
         user.setEnabled(true);
 
         // Set the default user role on this new user
-        user.addRole(roleManager.getRole(Constants.USER_ROLE));
+        if (request.isUserInRole(Constants.ADMIN_ROLE)) {
+            final String[] userRoles = request.getParameterValues("userRoles");
+
+            if (userRoles != null) {
+                user.getRoles().clear();
+                for (final String roleName : userRoles) {
+                    user.addRole(roleManager.getRole(roleName));
+                }
+            }
+        } 
+        //user.addRole(roleManager.getRole(Constants.USER_ROLE));
 
         // unencrypted users password to log in user automatically
-        final String password = user.getPassword();
+        // final String password = user.getPassword();
 
         try {
             this.getUserManager().saveUser(user);
@@ -96,25 +102,26 @@ public class SignupController extends BaseFormController {
         request.getSession().setAttribute(Constants.REGISTERED, Boolean.TRUE);
 
         // log user in automatically
-        final UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-                user.getUsername(), password, user.getAuthorities());
-        auth.setDetails(user);
-        SecurityContextHolder.getContext().setAuthentication(auth);
+        //final UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
+        //        user.getUsername(), password, user.getAuthorities());
+        //auth.setDetails(user);
+        //SecurityContextHolder.getContext().setAuthentication(auth);
 
         // Send user an e-mail
-        if (log.isDebugEnabled()) {
-            log.debug("Sending user '" + user.getUsername() + "' an account information e-mail");
-        }
+        //if (log.isDebugEnabled()) {
+       //     log.debug("Sending user '" + user.getUsername() + "' an account information e-mail");
+       // }
 
         // Send an account information e-mail
-        message.setSubject(getText("signup.email.subject", locale));
+        //message.setSubject(getText("signup.email.subject", locale));
 
-        try {
-            sendUserMessage(user, getText("signup.email.message", locale), RequestUtil.getAppURL(request));
-        } catch (final MailException me) {
-            saveError(request, me.getMostSpecificCause().getMessage());
-        }
+       // try {
+       //     sendUserMessage(user, getText("signup.email.message", locale), RequestUtil.getAppURL(request));
+       // } catch (final MailException me) {
+       //     saveError(request, me.getMostSpecificCause().getMessage());
+       // }
 
         return getSuccessView();
+        
     }
 }
