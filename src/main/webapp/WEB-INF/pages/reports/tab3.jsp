@@ -135,7 +135,7 @@
 	<c:if test="${not empty supplyLiquidProjects}">
 		<c:forEach var="supplyLiquidProject" items="${supplyLiquidProjects}" varStatus="status">
 			<div class="row">
-				<appfuse:label styleClass="control-label" key="supplyLiquidProject.name"/>
+				<appfuse:label styleClass="control-label" key="supplyLiquidProject.name"/>:
 				<c:out value="${supplyLiquidProject.investmentStatus.projectName}" /> (<fmt:message key='supplyLiquidProject.title' />)
 			</div>
 			<table class="table table-striped table-bordered table-hover">
@@ -147,44 +147,48 @@
 						<tr>
 							<td><fmt:message key="supplyLiquidProject.industryVista"/></td>
 							<td>
-								<c:out value="${supplyLiquidProject.industryVista}" />
+								<input type="text" name="industryVista" value="${supplyLiquidProject.industryVista}" class="form-control input-sm" >
 							 </td>
 						</tr>
 						<tr>
 							<td><fmt:message key="supplyLiquidProject.firmSize"/></td>
 							<td>
-								<c:out value="${supplyLiquidProject.firmSize}" />
+								<input type="text" name="firmSize" value="${supplyLiquidProject.firmSize}" class="form-control input-sm" >
 							</td>
 						</tr>
 						<tr>
 							<td><fmt:message key="supplyLiquidProject.description"/></td>
 							<td>
-								<c:out value="${supplyLiquidProject.description}" />
+								<input type="text" name="description" value="${supplyLiquidProject.description}" class="form-control input-sm" >
 							</td>
 						</tr>
 						<tr>
 							<td><fmt:message key="supplyLiquidProject.saleSituation"/></td>
 							<td>
-								<c:out value="${supplyLiquidProject.saleSituation}" />
+								<input type="text" name="saleSituation" value="${supplyLiquidProject.saleSituation}" class="form-control input-sm" >
 							</td>
 						</tr>
 						<tr>
 							<td><fmt:message key="supplyLiquidProject.bigChanges"/></td>
 							<td>
-								<c:if test="${supplyLiquidProject.bigChanges}"><fmt:message key="label.yes"/></c:if>
-								<c:if test="${not supplyLiquidProject.bigChanges}"><fmt:message key="label.no"/></c:if>
+							     <label class="checkbox-inline">
+                                    <input id="bigChanges1" name="bigChanges" type="radio" value="true" <c:if test="${supplyLiquidProject.bigChanges}">checked="checked"</c:if> /><fmt:message key='label.yes'/> 
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input id="bigChanges2" name="bigChanges" type="radio" value="false" <c:if test="${not supplyLiquidProject.bigChanges}">checked="checked"</c:if> /><fmt:message key='label.no'/>
+                                </label>
 							</td>
 						</tr>
 						<tr>
 							<td><fmt:message key="supplyLiquidProject.investmentProgress"/></td>
 							<td>
-								<c:out value="${supplyLiquidProject.investmentProgress}" />
+								<input type="text" name="investmentProgress" value="${supplyLiquidProject.investmentProgress}" class="form-control input-sm" >
 							</td>
 						</tr>
 						<tr>
 							<td><fmt:message key="supplyLiquidProject.comments"/></td>
 							<td>
-								<c:out value="${supplyLiquidProject.comments}" />
+								<input type="text" name="supplyLiquidProject.comments" value="${supplyLiquidProject.comments}" class="form-control input-sm" >
 							</td>
 						</tr>					
 						</tbody>
@@ -218,10 +222,10 @@
 	</div>
 	</fieldset>
 </div>
-</div>
+</c:if>
 
 <div class="col-lg-12">
-	<c:if test="${empty riskControlReport.investmentProjects and empty riskControlReport.supplyLiquidProjects}">
+	<c:if test="${empty riskControlReport.investmentProjects and empty riskControlReport.supplyLiquidProjects and not empty param.preview and param.preview}">
 		<div class="col-lg-12">
 		<div class="alert alert-dismissable alert-danger">
 			<fmt:message key="report.investmentProjects.empty" />
@@ -229,7 +233,7 @@
 		</div>
 	</c:if>
 
-	<c:if test="${not empty riskControlReport.investmentProjects}">
+	<c:if test="${not empty riskControlReport.investmentProjects and empty investmentProjects}">
 		<c:forEach var="investmentProject" items="${riskControlReport.investmentProjects}" varStatus="status">
 			<div class="page-header">
 				<h4>
@@ -291,7 +295,7 @@
 		</c:forEach>	
 	</c:if>
 	
-	<c:if test="${not empty riskControlReport.supplyLiquidProjects}">
+	<c:if test="${not empty riskControlReport.supplyLiquidProjects and empty supplyLiquidProjects}">
 		<c:forEach var="supplyLiquidProject" items="${riskControlReport.supplyLiquidProjects}" varStatus="status">
 			<div class="row">
 				<appfuse:label styleClass="control-label" key="supplyLiquidProject.name"/>
@@ -350,9 +354,7 @@
 			</table>
 		</c:forEach>	
 	</c:if>
-
-</c:if>
-
+</div>
 <script>
   $(function() {
     $('#projectEndTime').datepicker({

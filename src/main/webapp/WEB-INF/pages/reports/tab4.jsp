@@ -45,21 +45,6 @@
 </div>
 </c:if>
 
-<c:if test="${not empty param.preview and param.preview}">
-<div class="col-lg-12">
-<div class="well form-horizontal">
-	<fieldset disabled >
-	<div class="form-group">
-		<label for="repaymentEvaluation" class="col-lg-3 control-label"><fmt:message key="repaymentProject.evaluation" /></label>
-		<div class="col-lg-9">
-			<textarea class="form-control" rows="4" id="repaymentEvaluation" name="repaymentEvaluation"><c:out value="${riskControlReport.repaymentEvaluation}" default="${param.repaymentEvaluation }"/></textarea>			
-		</div>
-	</div>	
-	</fieldset>
-</div>
-</div>
-</c:if>
-
 <div class="col-lg-12">
 	<c:if test="${empty riskControlReport.repaymentProjects and empty repaymentProjects and not empty param.preview}">
 		<div class="col-lg-12 alert alert-dismissable alert-danger">
@@ -147,6 +132,20 @@
 </div>
 </div>
 
+<c:if test="${not empty param.preview and param.preview}">
+<div class="col-lg-12">
+<div class="well form-horizontal">
+    <fieldset disabled >
+    <div class="form-group">
+        <label for="repaymentEvaluation" class="col-lg-3 control-label"><fmt:message key="repaymentProject.evaluation" /></label>
+        <div class="col-lg-9">
+            <textarea class="form-control" rows="4" id="repaymentEvaluation" name="repaymentEvaluation"><c:out value="${riskControlReport.repaymentEvaluation}" default="${param.repaymentEvaluation}"/></textarea>         
+        </div>
+    </div>  
+    </fieldset>
+</div>
+</div>
+</c:if>
 
 <script>
   $(function() {

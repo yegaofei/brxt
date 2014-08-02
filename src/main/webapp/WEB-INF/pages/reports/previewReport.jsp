@@ -14,66 +14,132 @@
   		<li class="active"><fmt:message key="button.preview"/></li>
 	</ul>
 	
+	<c:if test="${fn:contains(tabList, 'Tab1')}" >
 	<div class="panel panel-default">
-  		<div class="panel-heading"><fmt:message key="report.riskcontrol.tab1"/></div>
+  		<div class="panel-heading"><a href="<c:url value='${ctx}/reports/removeTab'>
+                        <c:param name="reportId" value="${param.reportId}"/>
+                        <c:param name="id" value="${param.id}"/>
+                        <c:param name="preview" value="true"/>
+                        <c:param name="tabList" value="${tabList}"/>
+                        <c:param name="tabId" value="Tab1"/>
+                </c:url>" data-dismiss="alert" class="close">&times;</a> <fmt:message key="report.riskcontrol.tab1"/></div>
   		<div class="panel-body">
     		<%@ include file="./tab1.jsp" %>
   		</div>
 	</div>
+	</c:if>
 	
+	<c:if test="${fn:contains(tabList, 'Tab2')}" >
 	<div class="panel panel-default">
-  		<div class="panel-heading"><fmt:message key="report.riskcontrol.tab2"/></div>
+  		<div class="panel-heading"><a href="<c:url value='${ctx}/reports/removeTab'>
+                        <c:param name="reportId" value="${param.reportId}"/>
+                        <c:param name="id" value="${param.id}"/>
+                        <c:param name="preview" value="true"/>
+                        <c:param name="tabList" value="${tabList}"/>
+                        <c:param name="tabId" value="Tab2"/>
+                </c:url>" data-dismiss="alert" class="close">&times;</a> <fmt:message key="report.riskcontrol.tab2"/></div>
   		<div class="panel-body">
     		<%@ include file="./tab2.jsp" %>
   		    <%@ include file="./tab2-1.jsp" %>
   		</div>
 	</div>
+	</c:if>
 
 	<c:if test="${riskControlReport.projectInfo.projectType == 'non_transaction_management' }">
+	<c:if test="${fn:contains(tabList, 'Tab3')}" >
 	<div class="panel panel-default">
-  		<div class="panel-heading"><fmt:message key="report.riskcontrol.tab3"/></div>
+  		<div class="panel-heading"><a href="<c:url value='${ctx}/reports/removeTab'>
+                        <c:param name="reportId" value="${param.reportId}"/>
+                        <c:param name="id" value="${param.id}"/>
+                        <c:param name="preview" value="true"/>
+                        <c:param name="tabList" value="${tabList}"/>
+                        <c:param name="tabId" value="Tab3"/>
+                </c:url>" data-dismiss="alert" class="close">&times;</a> <fmt:message key="report.riskcontrol.tab3"/></div>
   		<div class="panel-body">
     		<%@ include file="./tab3.jsp" %>
   		</div>
 	</div>
+	</c:if>
+	</c:if>
 	
+	<c:if test="${fn:contains(tabList, 'Tab6')}" >
 	<div class="panel panel-default">
-  		<div class="panel-heading"><fmt:message key="report.riskcontrol.tab4"/></div>
+        <div class="panel-heading"><a href="<c:url value='${ctx}/reports/removeTab'>
+                        <c:param name="reportId" value="${param.reportId}"/>
+                        <c:param name="id" value="${param.id}"/>
+                        <c:param name="preview" value="true"/>
+                        <c:param name="tabList" value="${tabList}"/>
+                        <c:param name="tabId" value="Tab6"/>
+                </c:url>" data-dismiss="alert" class="close">&times;</a> <fmt:message key="report.riskcontrol.tab6"/></div>
+        <div class="panel-body">
+            <%@ include file="./tab6.jsp" %>
+        </div>
+    </div>
+    </c:if>
+    
+	<c:if test="${riskControlReport.projectInfo.projectType == 'non_transaction_management' }">
+	<c:if test="${fn:contains(tabList, 'Tab4')}" >
+	<div class="panel panel-default">
+  		<div class="panel-heading"><a href="<c:url value='${ctx}/reports/removeTab'>
+                        <c:param name="reportId" value="${param.reportId}"/>
+                        <c:param name="id" value="${param.id}"/>
+                        <c:param name="preview" value="true"/>
+                        <c:param name="tabList" value="${tabList}"/>
+                        <c:param name="tabId" value="Tab4"/>
+                </c:url>" data-dismiss="alert" class="close">&times;</a> <fmt:message key="report.riskcontrol.tab4"/></div>
   		<div class="panel-body">
     		<%@ include file="./tab4.jsp" %>
   		</div>
 	</div>
+	</c:if>
 	
+	<c:if test="${fn:contains(tabList, 'Tab5')}" >
 	<div class="panel panel-default">
-  		<div class="panel-heading"><fmt:message key="report.riskcontrol.tab5"/></div>
+  		<div class="panel-heading"><a href="<c:url value='${ctx}/reports/removeTab'>
+                        <c:param name="reportId" value="${param.reportId}"/>
+                        <c:param name="id" value="${param.id}"/>
+                        <c:param name="preview" value="true"/>
+                        <c:param name="tabList" value="${tabList}"/>
+                        <c:param name="tabId" value="Tab5"/>
+                </c:url>" data-dismiss="alert" class="close">&times;</a> <fmt:message key="report.riskcontrol.tab5"/></div>
   		<div class="panel-body">
     		<%@ include file="./tab5.jsp" %>
   		</div>
 	</div>
 	</c:if>
-	
-	<div class="panel panel-default">
-  		<div class="panel-heading"><fmt:message key="report.riskcontrol.tab6"/></div>
-  		<div class="panel-body">
-    		<%@ include file="./tab6.jsp" %>
-  		</div>
-	</div>
+	</c:if>
 	
 	<c:if test="${riskControlReport.projectInfo.projectType == 'non_transaction_management' }">
+	<c:if test="${fn:contains(tabList, 'Tab7')}" >
 	<div class="panel panel-default">
-  		<div class="panel-heading"><fmt:message key="report.riskcontrol.tab7"/></div>
+  		<div class="panel-heading"><a href="<c:url value='${ctx}/reports/removeTab'>
+                        <c:param name="reportId" value="${param.reportId}"/>
+                        <c:param name="id" value="${param.id}"/>
+                        <c:param name="preview" value="true"/>
+                        <c:param name="tabList" value="${tabList}"/>
+                        <c:param name="tabId" value="Tab7"/>
+                </c:url>" data-dismiss="alert" class="close">&times;</a> <fmt:message key="report.riskcontrol.tab7"/></div>
   		<div class="panel-body">
     		<%@ include file="./tab7.jsp" %>
 	   </div>
 	</div>
 	</c:if>
+	</c:if>
 	
+	<c:if test="${fn:contains(tabList, 'Tab8')}" >
 	<div class="panel panel-default">
-  		<div class="panel-heading"><fmt:message key="report.riskcontrol.tab8"/></div>
+  		<div class="panel-heading"><a href="<c:url value='${ctx}/reports/removeTab'>
+                        <c:param name="reportId" value="${param.reportId}"/>
+                        <c:param name="id" value="${param.id}"/>
+                        <c:param name="preview" value="true"/>
+                        <c:param name="tabList" value="${tabList}"/>
+                        <c:param name="tabId" value="Tab8"/>
+                </c:url>" data-dismiss="alert" class="close">&times;</a> <fmt:message key="report.riskcontrol.tab8"/></div>
   		<div class="panel-body">
     		<%@ include file="./tab8.jsp" %>
   		</div>
 	</div>
+	</c:if>
 </div>
 
 <div class="form-group">

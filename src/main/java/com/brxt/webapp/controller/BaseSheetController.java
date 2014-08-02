@@ -139,7 +139,7 @@ public class BaseSheetController extends BaseFormController {
 		Iterator<Counterparty> iterator = ga.iterator();
 		while (iterator.hasNext()) {
 			Counterparty counterparty = iterator.next();
-			if (counterparty.getId() == counterpartyId) {
+			if (counterparty.getId().equals(counterpartyId)) {
 				cpObj = counterparty;
 				break;
 			}
