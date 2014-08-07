@@ -12,4 +12,5 @@ public interface RepaymentDao extends GenericDao<Repayment, Long> {
 
 	public List<Repayment> findByProjId(Long projectInfoId);
 	public List<Repayment> findByProjectInfo(ProjectInfo projectInfo, Date timeRangeStart, Date timeRangeEnd);
+	
 }

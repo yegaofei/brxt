@@ -179,7 +179,7 @@
 								    <fmt:formatDate value="${subjectCapacity.checkTime}" pattern="${shortDatePattern}" />
 								</a>
 							</legend>
-					<div id="collapse-address<c:out value="${subjectCapacity.id}"/>" class="accordion-body collapse">
+					<div id="collapse-address<c:out value="${subjectCapacity.id}"/>" class="accordion-body">
 					<table class="table table-striped table-bordered table-hover">
 						<thead>
 						<tr>

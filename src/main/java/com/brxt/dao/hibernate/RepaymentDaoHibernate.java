@@ -18,8 +18,10 @@ import com.brxt.model.Repayment;
 public class RepaymentDaoHibernate extends GenericDaoHibernate<Repayment, Long>
 		implements RepaymentDao {
 
+    
 	public RepaymentDaoHibernate() {
 		super(Repayment.class);
+		
 	}
 
 	@Override
@@ -38,5 +40,7 @@ public class RepaymentDaoHibernate extends GenericDaoHibernate<Repayment, Long>
 		criteria.add(Restrictions.le("repaymentTime", timeRangeEnd));
 		return criteria.list();
 	}
+
+   
 
 }

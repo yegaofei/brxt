@@ -289,10 +289,6 @@
         				<fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.prevInstituteBalanceSheet.incomeTotal}" /></fmt:formatNumber>
         			</td>
         		</tr>
-        		<tr>
-					<td><appfuse:label key="report.financeCheck.financeStatementSummary"/></td>
-					<td colspan="3"><input type="text" name="financeStatementSummary" class="form-control input-sm"></td>
-				</tr>
 			</tbody>
 			</table>
 		</c:if>

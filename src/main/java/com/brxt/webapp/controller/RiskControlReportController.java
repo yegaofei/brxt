@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -493,6 +492,8 @@ public class RiskControlReportController extends BaseSheetController {
             ProjectInfo projectInfo = projectInfoManager.get(Long.valueOf(projectInfoId));
             InvestmentStatus investmentStatus = reportManager.findInvesetmentStatus(projectInfo, Long.valueOf(invesetmentStatusId));
             mav.addObject("selectedInvestmentStatus", investmentStatus);
+            List<String> projectEndTimeList = this.projectProgressManager.getAvailableEndTimes(investmentStatus.getId());
+            mav.addObject("projectEndTimeList", projectEndTimeList);
             String projectType = investmentStatus.getProjectType();
             CapitalInvestmentType investmentType = CapitalInvestmentType.valueOf(projectType.toUpperCase());
             switch (investmentType) {
@@ -1319,7 +1320,7 @@ public class RiskControlReportController extends BaseSheetController {
     @ModelAttribute("allTrustManagers")
     public Map<String, String> getAllTrustManagers() {
         List<Manager> managers = this.projectInfoManager.getAllTrustManagers();
-        Map<String, String> allTrustManagers = new HashMap<String, String>();
+        Map<String, String> allTrustManagers = new TreeMap<String, String>();
         for (Manager m : managers) {
             allTrustManagers.put(m.getName(), m.getName());
         }
@@ -1329,7 +1330,7 @@ public class RiskControlReportController extends BaseSheetController {
     @ModelAttribute("allDelegateManagers")
     public Map<String, String> getAllDelegateManagers() {
         List<Manager> managers = this.projectInfoManager.getAllDelegateManagers();
-        Map<String, String> allDelegateManagers = new HashMap<String, String>();
+        Map<String, String> allDelegateManagers = new TreeMap<String, String>();
         for (Manager m : managers) {
             allDelegateManagers.put(m.getName(), m.getName());
         }
@@ -1339,7 +1340,7 @@ public class RiskControlReportController extends BaseSheetController {
     @ModelAttribute("allRiskManagers")
     public Map<String, String> getAllRiskManagers() {
         List<Manager> managers = this.projectInfoManager.getAllRiskManagers();
-        Map<String, String> allRiskManagers = new HashMap<String, String>();
+        Map<String, String> allRiskManagers = new TreeMap<String, String>();
         for (Manager m : managers) {
             allRiskManagers.put(m.getName(), m.getName());
         }

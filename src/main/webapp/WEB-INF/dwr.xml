@@ -7,7 +7,18 @@
             <param name="class" value="org.appfuse.service.UserManager"/>
             <param name="beanName" value="userManager"/>
             <include method="getUsers"/>
+            <include method="getUser"/>
+            <include method="getAll"/>
         </create>
+        
+        <create creator="spring" javascript="ProjProgressManager">
+            <param name="class" value="com.brxt.service.ProjProgressManager"/>
+            <param name="beanName" value="projectProgressManager"/>
+            <include method="getAvailableEndTimes"/>
+            <include method="getAll"/>
+        </create>
+        
         <convert converter="bean" match="org.appfuse.model.User"/>
     </allow>
+   
 </dwr>

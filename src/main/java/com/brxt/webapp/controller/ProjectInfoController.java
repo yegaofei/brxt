@@ -1,8 +1,8 @@
 package com.brxt.webapp.controller;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -68,7 +68,7 @@ public class ProjectInfoController extends BaseFormController{
     public Map<String, String> getAllTrustManagers()
     {
         List<Manager> managers = this.projectInfoManager.getAllTrustManagers();
-        Map<String, String> allTrustManagers = new HashMap<String, String>();
+        Map<String, String> allTrustManagers = new TreeMap<String, String>();
         for(Manager m : managers)
         {
             allTrustManagers.put(m.getName(), m.getName());
@@ -80,7 +80,7 @@ public class ProjectInfoController extends BaseFormController{
     public Map<String, String> getAllDelegateManagers()
     {
         List<Manager> managers = this.projectInfoManager.getAllDelegateManagers();
-        Map<String, String> allDelegateManagers = new HashMap<String, String>();
+        Map<String, String> allDelegateManagers = new TreeMap<String, String>();
         for(Manager m : managers)
         {
             allDelegateManagers.put(m.getName(), m.getName());
@@ -92,7 +92,7 @@ public class ProjectInfoController extends BaseFormController{
     public Map<String, String> getAllRiskManagers()
     {
         List<Manager> managers = this.projectInfoManager.getAllRiskManagers();
-        Map<String, String> allRiskManagers = new HashMap<String, String>();
+        Map<String, String> allRiskManagers = new TreeMap<String, String>();
         for(Manager m : managers)
         {
             allRiskManagers.put(m.getName(), m.getName());

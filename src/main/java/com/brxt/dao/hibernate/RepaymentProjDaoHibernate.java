@@ -3,18 +3,27 @@ package com.brxt.dao.hibernate;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Table;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.orm.hibernate4.SessionFactoryUtils;
 import org.springframework.stereotype.Repository;
 
 import com.brxt.dao.RepaymentProjectDao;
 import com.brxt.model.InvestmentStatus;
+import com.brxt.model.Repayment;
 import com.brxt.model.projectprogress.RepaymentProject;
 
 @Repository("repaymentProjectDao")
 public class RepaymentProjDaoHibernate extends
 GenericDaoHibernate<RepaymentProject, Long> implements RepaymentProjectDao{
 
+    private JdbcTemplate jdbcTemplate = null;
+    private final Table table = AnnotationUtils.findAnnotation(Repayment.class, Table.class);
+    
 	public RepaymentProjDaoHibernate()
 	{
 		super(RepaymentProject.class);
@@ -32,6 +41,13 @@ GenericDaoHibernate<RepaymentProject, Long> implements RepaymentProjectDao{
 		return null;
 	}
 	
-	
+	 @Override
+	    public List<Date> listProjectEndTime(Long investmentStatusId) {
+	     if(jdbcTemplate == null) {
+	            jdbcTemplate = new JdbcTemplate(SessionFactoryUtils.getDataSource(getSessionFactory()));
+	        }
+	        return jdbcTemplate.queryForList(
+	                "select projectEndTime from " + table.name() + " where investment_status_id=?", Date.class, investmentStatusId);
+	    }
 
 }

@@ -31,7 +31,8 @@
         	</div>	
     		<div class="col-sm-3 form-group">
         		<appfuse:label styleClass="control-label" key="projectInfo.riskManager"/>
-        		<form:select path="riskManager" class="form-control input-sm">          
+        		<form:select path="riskManager" class="form-control input-sm">  
+        		      <option value="" selected></option>           
                     <form:options items="${allRiskManagers}" />
                 </form:select> 
     		</div>
@@ -48,14 +49,16 @@
 			<div class="row">
     		<div class="col-sm-3 form-group">
         		<appfuse:label styleClass="control-label" key="projectInfo.delegateManager"/>
-        		<form:select path="delegateManager" class="form-control input-sm">          
+        		<form:select path="delegateManager" class="form-control input-sm">    
+        		      <option value="" selected></option>         
                     <form:options items="${allDelegateManagers}" />
                 </form:select>
     		</div>
 
     		<div class="col-sm-3 form-group">
         		<appfuse:label styleClass="control-label" key="projectInfo.trustManager"/>
-                <form:select path="trustManager" class="form-control input-sm">          
+                <form:select path="trustManager" class="form-control input-sm">     
+                    <option value="" selected></option>            
                     <form:options items="${allTrustManagers}" />
                 </form:select>
     		</div>

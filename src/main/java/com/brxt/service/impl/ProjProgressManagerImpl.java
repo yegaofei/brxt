@@ -1,5 +1,6 @@
 package com.brxt.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -7,10 +8,12 @@ import java.util.List;
 import java.util.Set;
 
 import org.appfuse.service.impl.GenericManagerImpl;
+import org.appfuse.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.brxt.dao.InvestmentProjectDao;
+import com.brxt.dao.InvestmentStatusDao;
 import com.brxt.dao.ProjectInfoDao;
 import com.brxt.dao.RepaymentProjectDao;
 import com.brxt.dao.SupplyLiquidProjectDao;
@@ -31,6 +34,7 @@ implements ProjProgressManager {
 	private SupplyLiquidProjectDao supplyLiquidProjectDao;
 	private RepaymentProjectDao repaymentProjectDao;
 	private ProjectInfoDao projectInfoDao;
+	private InvestmentStatusDao investmentStatusDao;
 	
 	private static final Long BASE_INVESTMENT_PROJECT_ID = 100000L;
 	private static final Long BASE_SUPPLY_LIQUIDPROJECT_ID = 300000L;
@@ -56,6 +60,11 @@ implements ProjProgressManager {
 	@Autowired
 	public void setProjectInfoDao(ProjectInfoDao projectInfoDao) {
 		this.projectInfoDao = projectInfoDao;
+	}
+	
+	@Autowired
+	public void setInvestmentStatusDao(InvestmentStatusDao investmentStatusDao) {
+	    this.investmentStatusDao = investmentStatusDao;
 	}
 
 	public RepaymentProject getRepaymentProject(Long id){
@@ -324,6 +333,44 @@ implements ProjProgressManager {
 	public RepaymentProject findRepaymentProject(
 			InvestmentStatus investmentStatus, Date projectEndTime) {
 		return repaymentProjectDao.find(investmentStatus, projectEndTime);
+	}
+	
+	public List<String> getAvailableEndTimes(Long investmentStatusId) { 
+	    String projectType = null;
+	    InvestmentStatus investmentStatus = investmentStatusDao.get(investmentStatusId);
+	    if(investmentStatus != null) {
+	        projectType = investmentStatus.getProjectType();
+	    }
+	    if(projectType != null && investmentStatusId != null) {
+	        List<Date> projectEndTimeList = null;
+	        CapitalInvestmentType type = CapitalInvestmentType.valueOf(projectType.toUpperCase());
+	        switch (type) {
+	            case REAL_ESTATE:
+	            case INFRASTRUCTURE:
+	                projectEndTimeList = investmentProjectDao.listProjectEndTime(investmentStatusId);
+	                break;
+	            case SUPPLEMENTAL_LIQUIDITY:
+	                projectEndTimeList = supplyLiquidProjectDao.listProjectEndTime(investmentStatusId);
+	                break;
+	            case REPAYMENT_PROJECT:
+	                projectEndTimeList = repaymentProjectDao.listProjectEndTime(investmentStatusId);
+	                break;
+	                default:
+	        }
+	        
+	        if(projectEndTimeList == null ) {
+	            return null;
+	        }
+	        
+	        SimpleDateFormat sf = new SimpleDateFormat(DateUtil.getDatePattern());
+	        List<String> availableEndTimes = new ArrayList<String>();
+	        for(Date d : projectEndTimeList) {
+	            availableEndTimes.add(sf.format(d));
+	        }
+	        return availableEndTimes;
+	    }
+	    
+	    return null;
 	}
 
 }

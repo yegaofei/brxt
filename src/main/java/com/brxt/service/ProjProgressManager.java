@@ -43,4 +43,6 @@ public interface ProjProgressManager extends
 	
 	public RepaymentProject findRepaymentProject(InvestmentStatus investmentStatus, Date projectEndTime);
 	
+	public List<String> getAvailableEndTimes(Long investmentStatusId);
+	
 }

@@ -4,7 +4,9 @@
 	<link rel="stylesheet" type="text/css" href="${base}/webjars/bootstrap-datepicker/1.2.0/css/datepicker.css"/>
     <script type="text/javascript" src="${base}/webjars/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.js"></script>
     <script type="text/javascript" src="${base}/webjars/bootstrap-datepicker/1.2.0/js/locales/bootstrap-datepicker.zh-CN.js" charset="UTF-8"></script>
-    
+    <script type='text/javascript' src='/dwr/interface/ProjProgressManager.js'></script>
+    <script type='text/javascript' src='/dwr/engine.js'></script>
+    <script type='text/javascript' src='/dwr/util.js'></script>
 </head>
 	<div class="col-lg-12">
 			<ul class="breadcrumb" style="margin-bottom: 5px;">
