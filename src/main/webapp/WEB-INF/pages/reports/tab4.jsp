@@ -19,7 +19,13 @@
 	<div class="form-group">
 		<label for="projectEndTimeTab4" class="col-lg-3 control-label"><fmt:message key="projectProgress.deadline" /></label>
 		<div class="col-lg-4">
-			<input type="text" id="projectEndTimeTab4" name="projectEndTimeTab4" maxlength="20" class="form-control input-sm" value="<c:out value='${param.projectEndTimeTab4}'/>"/>
+			<select id="projectEndTimeTab4" name="projectEndTimeTab4" class="form-control input-sm">
+                <c:if test="${not empty projectEndTimeList}">
+                    <c:forEach var="projectEndTimeVar" items="${projectEndTimeList}" varStatus="status">
+                        <option value="${projectEndTimeVar}" <c:if test="${projectEndTimeVar == param.projectEndTimeTab4}">selected</c:if>><c:out value='${projectEndTimeVar}' /></option>
+                    </c:forEach>
+                </c:if>
+            </select>
 		</div>
 	</div>
 	
@@ -148,11 +154,24 @@
 </c:if>
 
 <script>
-  $(function() {
-    $('#projectEndTimeTab4').datepicker({
-				language: 'zh-CN',
-				autoclose: true
-			});	
-  });
-  
+    var replyTab4 = function(data) {
+        if (data != null && typeof data == 'object') {
+            $("#projectEndTimeTab4").empty();
+            $.each(data, function(i) {
+                $("#projectEndTimeTab4").append("<option value='" + data[i] + "'>" + data[i] + "</option>");
+            });
+        }
+    }
+
+    $(function() {
+        $('#investmentTab4').change(function() {
+            var p1 = $(this).children('option:selected').val();
+            if (p1 != null && p1 != "") {
+                ProjProgressManager.getAvailableEndTimes(p1, replyTab4);
+            }
+            if (p1 == "") {
+                $("#projectEndTimeTab4").empty();
+            }
+        });
+    });
 </script>

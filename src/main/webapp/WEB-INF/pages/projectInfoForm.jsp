@@ -35,10 +35,12 @@
     </div>
 
     <spring:bind path="projectInfo.expectedReturn">
-    <div class="col-sm-3 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    <div class="col-sm-6 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="projectInfo.expectedReturn"/>
-        <div class="input-group"><form:input path="expectedReturn" id="expectedReturn" maxlength="40" cssClass="form-control input-sm"/></div>
+        <div class="input-group">
+            <form:textarea path="expectedReturn" id="expectedReturn" rows="3" cols="50" cssClass="form-control input-sm"/>
+        </div>
         <form:errors path="expectedReturn" cssClass="help-block"/>
     </div>
 	</div>

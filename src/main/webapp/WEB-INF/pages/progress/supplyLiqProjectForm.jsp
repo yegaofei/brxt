@@ -32,7 +32,7 @@
         <form:input path="projectEndTime" id="projectEndTime" maxlength="60" cssClass="form-control"/>
         <form:errors path="projectEndTime" cssClass="help-inline"/>
     </div>
-    
+<!--     
     <spring:bind path="supplyLiquidProject.industryVista">
     <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
@@ -100,7 +100,7 @@
         <form:input path="evaluation" id="evaluation" maxlength="60" cssClass="form-control"/>
         <form:errors path="evaluation" cssClass="help-inline"/>
     </div>
-    
+ -->    
     <c:if test="${not empty supplyLiquidProject.createUser}">
         <form:hidden path="createUser" id="createUser"/>      
         <form:hidden path="createTime"/>        

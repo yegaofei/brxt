@@ -14,7 +14,6 @@ import org.springframework.stereotype.Repository;
 
 import com.brxt.dao.RepaymentProjectDao;
 import com.brxt.model.InvestmentStatus;
-import com.brxt.model.Repayment;
 import com.brxt.model.projectprogress.RepaymentProject;
 
 @Repository("repaymentProjectDao")
@@ -22,7 +21,7 @@ public class RepaymentProjDaoHibernate extends
 GenericDaoHibernate<RepaymentProject, Long> implements RepaymentProjectDao{
 
     private JdbcTemplate jdbcTemplate = null;
-    private final Table table = AnnotationUtils.findAnnotation(Repayment.class, Table.class);
+    private final Table table = AnnotationUtils.findAnnotation(RepaymentProject.class, Table.class);
     
 	public RepaymentProjDaoHibernate()
 	{

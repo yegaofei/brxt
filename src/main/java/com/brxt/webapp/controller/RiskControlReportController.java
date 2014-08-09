@@ -547,6 +547,8 @@ public class RiskControlReportController extends BaseSheetController {
             Date projectEndTimeDate = dateFormat.parse(projectEndTime);
             ProjectInfo projectInfo = projectInfoManager.get(Long.valueOf(projectInfoId));
             InvestmentStatus investmentStatus = reportManager.findInvesetmentStatus(projectInfo, Long.valueOf(invesetmentStatusId));
+            List<String> projectEndTimeList = this.projectProgressManager.getAvailableEndTimes(investmentStatus.getId());
+            mav.addObject("projectEndTimeList", projectEndTimeList);
             String projectType = investmentStatus.getProjectType();
             CapitalInvestmentType investmentType = CapitalInvestmentType.valueOf(projectType.toUpperCase());
             switch (investmentType) {
@@ -772,6 +774,8 @@ public class RiskControlReportController extends BaseSheetController {
             String projectInfoId = request.getParameter("id");
             ProjectInfo projectInfo = projectInfoManager.get(Long.valueOf(projectInfoId));
             InvestmentStatus investmentStatus = reportManager.findInvesetmentStatus(projectInfo, Long.valueOf(invesetmentStatusId));
+            List<String> projectEndTimeList = this.projectProgressManager.getAvailableEndTimes(investmentStatus.getId());
+            mav.addObject("projectEndTimeList", projectEndTimeList);
             String projectType = investmentStatus.getProjectType();
             CapitalInvestmentType investmentType = CapitalInvestmentType.valueOf(projectType.toUpperCase());
             switch (investmentType) {
@@ -872,6 +876,8 @@ public class RiskControlReportController extends BaseSheetController {
             ProjectInfo projectInfo = projectInfoManager.get(Long.valueOf(projectInfoId));
             InvestmentStatus investmentStatus = reportManager.findInvesetmentStatus(projectInfo, Long.valueOf(invesetmentStatusId));
             mav.addObject("selectedInvestmentStatus", investmentStatus);
+            List<String> projectEndTimeList = this.projectProgressManager.getAvailableEndTimes(investmentStatus.getId());
+            mav.addObject("projectEndTimeList", projectEndTimeList);
             String projectType = investmentStatus.getProjectType();
             CapitalInvestmentType investmentType = CapitalInvestmentType.valueOf(projectType.toUpperCase());
             switch (investmentType) {
