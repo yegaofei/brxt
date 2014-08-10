@@ -1,10 +1,1 @@
-Alter table riskmanagement.project_info  modify  expectedReturn varchar(255);
-Alter table riskmanagement.project_info  modify  guaranteeMode longtext;
-
-Alter table riskmanagement.corp_balancesheet add column longInvestment decimal(19,2);
-Alter table riskmanagement.corp_balancesheet add column fixedAsset decimal(19,2);
-Alter table riskmanagement.corp_balancesheet add column intangibleAsset decimal(19,2);
-Alter table riskmanagement.corp_balancesheet add column capitalReserve decimal(19,2);
-Alter table riskmanagement.corp_balancesheet add column nonLiquid decimal(19,2);
-
-create table manager (id bigint not null auto_increment, employeeId varchar(255), managerType varchar(255), name varchar(255), primary key (id)) ENGINE=InnoDB;
+Alter table riskmanagement.risk_control_report_status add column auditComment varchar(255);

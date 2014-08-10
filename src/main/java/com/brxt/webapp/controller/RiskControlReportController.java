@@ -42,6 +42,7 @@ import com.brxt.model.projectprogress.InvestmentProject;
 import com.brxt.model.projectprogress.RepaymentProject;
 import com.brxt.model.projectprogress.SupplyLiquidProject;
 import com.brxt.model.report.FinanceCheck;
+import com.brxt.model.report.ReportStatus;
 import com.brxt.model.report.RiskControlReport;
 import com.brxt.service.CreditInformationManager;
 import com.brxt.service.ProjProgressManager;
@@ -324,6 +325,14 @@ public class RiskControlReportController extends BaseSheetController {
 
     @RequestMapping(value = "/reports/riskControlReport*", method = RequestMethod.GET)
     public String handleRequest(final HttpServletRequest request) {
+        RiskControlReport report = getRiskControlReport(request);
+        ReportStatus status = report.getReportStatus();
+        if(status.getReportAudit() != null && status.getReportAudit()) {
+            saveMessage(request, getText("report.audit.comments", request.getLocale()) + ":" + status.getAuditComment());
+            return "redirect:/reports/previewReport?reportId=" + report.getId() + "&id=" + report.getProjectInfo().getId() + "&preview=true";
+        } else if (status.getAuditComment() != null) {
+            saveError(request, getText("report.audit.comments", request.getLocale()) + ":" + status.getAuditComment());
+        }
         return "/reports/riskControlReport";
     }
 

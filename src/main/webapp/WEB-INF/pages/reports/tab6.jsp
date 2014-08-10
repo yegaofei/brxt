@@ -565,6 +565,20 @@
 					</div>
 					</div>
 	</c:forEach>
+	
+	<c:if test="${not empty param.preview and param.preview}">
+        <div class="form-horizontal">
+            <fieldset disabled>
+            <div class="form-group">
+                <label for="guarantorCheckComment" class="col-lg-3 control-label"><fmt:message key="report.financeCheck.guarantorCheckComment" /></label>
+                <div class="col-lg-9">
+                    <input type="text" id="guarantorCheckComment" class="form-control input-sm" value="${riskControlReport.guarantorCheckComment}">
+                </div>
+            </div>
+            </fieldset>
+        </div>  
+     </c:if>
+     
 	</c:if>
 </c:if>
 <script>

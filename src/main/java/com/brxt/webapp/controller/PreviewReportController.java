@@ -36,5 +36,20 @@ public class PreviewReportController extends BaseFormController {
 		return "redirect:/reports/reportSearch";
 	}
 	
+	@RequestMapping(value = "/reports/auditCommentForm*", method = RequestMethod.POST)
+	public String auditComment(final HttpServletRequest request) {
+	    String reportIdStr = request.getParameter("reportId");
+	    if(!StringUtils.isBlank(reportIdStr)) 
+	    {
+	        String auditComment = request.getParameter("auditComment");
+	        String inlineRadioOptions = request.getParameter("inlineRadioOptions");
+	        RiskControlReport report = reportManager.get(Long.valueOf(reportIdStr));
+	        report.getReportStatus().setReportAudit(inlineRadioOptions.equals("true"));
+	        report.getReportStatus().setAuditComment(auditComment);
+	        reportManager.save(report);
+	    }
+	    return "redirect:/reports/reportSearch";
+	}
+	
 	
 }

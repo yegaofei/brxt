@@ -27,7 +27,7 @@
     		<div class="row">
     		<div class="col-sm-3 form-group">
         		<appfuse:label styleClass="control-label" key="projectInfo.nonrequired.projectName"/>
-        		<form:input path="projectName" id="projectName" maxlength="50" cssClass="form-control"/>
+        		<form:input path="projectName" id="projectName" maxlength="50" cssClass="form-control input-sm"/>
         	</div>	
     		<div class="col-sm-3 form-group">
         		<appfuse:label styleClass="control-label" key="projectInfo.riskManager"/>
@@ -38,11 +38,11 @@
     		</div>
     		<div class="col-sm-3 form-group">
         		<appfuse:label styleClass="control-label" key="projectInfo.search.startTime"/>
-        		<form:input path="searchTimeStart" id="searchTimeStart" maxlength="20" cssClass="form-control"/>
+        		<form:input path="searchTimeStart" id="searchTimeStart" maxlength="20" cssClass="form-control input-sm"/>
     		</div>
     		<div class="col-sm-3 form-group">
         		<appfuse:label styleClass="control-label" key="projectInfo.search.endTime"/>
-        		<form:input path="searchTimeEnd" id="searchTimeEnd" maxlength="20" cssClass="form-control"/>
+        		<form:input path="searchTimeEnd" id="searchTimeEnd" maxlength="20" cssClass="form-control input-sm"/>
     		</div>
     		</div>
 
@@ -102,11 +102,11 @@
         	</c:if>
         </display:column>
         <display:column titleKey="report.riskcontrol.audit">
-        	<c:if test="${riskControlReport.reportStatus.reportAudit}">
-        		<fmt:message key='report.committed'/>
+        	<c:if test="${not empty riskControlReport.reportStatus.reportAudit and riskControlReport.reportStatus.reportAudit}">
+        		<fmt:message key='report.audited'/>
         	</c:if>
         	<c:if test="${not riskControlReport.reportStatus.reportAudit}">
-        		<fmt:message key='report.non.committed'/>
+        		<fmt:message key='report.non.audited'/>
         	</c:if>
          </display:column>
         <display:setProperty name="paging.banner.item_name"><fmt:message key="projectInfoList.heading"/></display:setProperty>

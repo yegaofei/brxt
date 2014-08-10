@@ -2,11 +2,14 @@
 	<div class="<c:if test='${empty param.preview }'>well</c:if>">
 					<div class="row">
                   			<label class="col-sm-4"><fmt:message key="projectInfo.nonrequired.projectName" /> : <c:out value="${projectInfo.projectName}" /></label>
-                  			<label class="col-sm-4"><fmt:message key="projectInfo.expectedReturn" /> : <c:out value="${projectInfo.expectedReturn}" /></label>
                   			<label class="col-sm-4"><fmt:message key="projectInfo.trustManager" /> : <c:out value="${projectInfo.trustManager}" /></label>
                   	</div>	
+                  	<div class="form-group">
+                            <appfuse:label styleClass="control-label" key="projectInfo.expectedReturn"/>:
+                            <textarea class="form-control" rows="4" cols="50" readonly="readonly" ><c:out escapeXml="false" value="${projectInfo.expectedReturn}" /></textarea>
+                    </div>  
                   	<div class="row">
-                  			<label class="col-lg-9"><fmt:message key="projectSize.title" /></label>
+                  			<label class="col-lg-9"><fmt:message key="projectSize.title" />:</label>
 	                  		<div class="col-lg-6">
 							<display:table name="projectInfo.projectSizes" id="projectSize" class="table table-condensed table-bordered  table-striped table-hover">
   								<display:column titleKey="projectSize.startTime">
@@ -34,7 +37,7 @@
                   		
                   		
                   	<div class="row">
-                  		<label class="col-lg-9"><fmt:message key="repayment.heading" /></label>
+                  		<label class="col-lg-9"><fmt:message key="repayment.heading" />:</label>
                   		<div class="col-lg-9">
                   		<display:table name="repaymentList" class="table table-condensed table-bordered table-striped table-hover" id="repayment">
         					<display:column sortable="false" titleKey="repayment.repaymentTime">

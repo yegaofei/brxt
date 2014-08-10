@@ -17,9 +17,10 @@ public class ReportStatus {
 	
 	private Long id;
 	private RiskControlReport riskControlReport;
-	private Boolean offsiteDataInput = Boolean.FALSE;
-	private Boolean commitReport = Boolean.FALSE;
-	private Boolean reportAudit = Boolean.FALSE;
+	private Boolean offsiteDataInput;
+	private Boolean commitReport;
+	private Boolean reportAudit;
+	private String auditComment;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -56,7 +57,7 @@ public class ReportStatus {
 		this.commitReport = commitReport;
 	}
 	
-	@Column(name = "reportAudit", nullable=true, columnDefinition="char(1) default 'N'" )
+	@Column(name = "reportAudit", nullable=true, columnDefinition="char(1)" )
 	@Type(type="yes_no")
 	public Boolean getReportAudit() {
 		return reportAudit;
@@ -64,6 +65,13 @@ public class ReportStatus {
 	public void setReportAudit(Boolean reportAudit) {
 		this.reportAudit = reportAudit;
 	}
+	
+    public String getAuditComment() {
+        return auditComment;
+    }
+    public void setAuditComment(String auditComment) {
+        this.auditComment = auditComment;
+    }
 	
 
 }

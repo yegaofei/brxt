@@ -105,8 +105,7 @@
 
 	<div class="col-lg-12">
 		<c:if test="${not empty investmentProjects}">
-			<c:forEach var="investmentProject" items="${investmentProjects}"
-				varStatus="status">
+			<c:forEach var="investmentProject" items="${investmentProjects}" varStatus="status">
 				<div class="page-header">
 					<h4>
 						<fmt:message key="investmentProject.name" />
@@ -167,17 +166,17 @@
 		</c:if>
 
 		<c:if test="${not empty supplyLiquidProjects}">
-			<c:forEach var="supplyLiquidProject" items="${supplyLiquidProjects}"
-				varStatus="status">
-				<div class="row">
-					<appfuse:label styleClass="control-label"
-						key="supplyLiquidProject.name" />
-					:
-					<c:out value="${supplyLiquidProject.investmentStatus.projectName}" />
-					(
-					<fmt:message key='supplyLiquidProject.title' />
-					)
-				</div>
+			<c:forEach var="supplyLiquidProject" items="${supplyLiquidProjects}" varStatus="status">
+			 <div class="page-header">
+                    <h4>
+                        <fmt:message key="supplyLiquidProject.name" />
+                        :
+                        <c:out value="${supplyLiquidProject.investmentStatus.projectName}" />
+                        (
+                        <fmt:message key='supplyLiquidProject.title' />
+                        )
+                    </h4>
+                </div>
 				<table class="table table-striped table-bordered table-hover">
 					<thead>
 						<th><fmt:message key="subjectCapacity.checkContent" /></th>
@@ -352,14 +351,16 @@
 		test="${not empty riskControlReport.supplyLiquidProjects and empty supplyLiquidProjects}">
 		<c:forEach var="supplyLiquidProject"
 			items="${riskControlReport.supplyLiquidProjects}" varStatus="status">
-			<div class="row">
-				<appfuse:label styleClass="control-label"
-					key="supplyLiquidProject.name" />
-				<c:out value="${supplyLiquidProject.investmentStatus.projectName}" />
-				(
-				<fmt:message key='supplyLiquidProject.title' />
-				)
-			</div>
+			<div class="page-header">
+                    <h4>
+                        <fmt:message key="supplyLiquidProject.name" />
+                        :
+                        <c:out value="${supplyLiquidProject.investmentStatus.projectName}" />
+                        (
+                        <fmt:message key='supplyLiquidProject.title' />
+                        )
+                    </h4>
+            </div>
 			<table class="table table-striped table-bordered table-hover">
 				<thead>
 					<th><fmt:message key="subjectCapacity.checkContent" /></th>
