@@ -281,7 +281,7 @@
   			<display:column titleKey="projectInfo.counterparty.name"  class="input-sm">
     			<c:choose>
         			<c:when test="${method == 'EditCounterparty' and param.counterpartyId == counterparty.id}">
-            			<input type="text" name="counterpartyName" style="padding: 0"
+            			<input type="text" name="counterpartyName" style="padding: 0" class="form-control input-sm"
                 			value="<c:out value="${counterparty.name}" />" />
         			</c:when>
         			<c:otherwise><c:out value="${counterparty.name}" /></c:otherwise>
@@ -347,7 +347,7 @@
   			<display:column titleKey="projectInfo.guarantor.name"  class="input-sm">
     			<c:choose>
         			<c:when test="${method == 'EditGuarantor' and param.guarantorId == guarantor.id}">
-            			<input type="text" name="guarantorName" style="padding: 0"
+            			<input type="text" name="guarantorName" style="padding: 0" class="form-control input-sm"
                 			value="<c:out value="${guarantor.name}" />" />
         			</c:when>
         			<c:otherwise><c:out value="${guarantor.name}" /></c:otherwise>
@@ -437,5 +437,14 @@
 				language: 'zh-CN'
 			});		
   });
-</script>
   
+  
+</script>
+<c:if test="${not empty anchor}" >
+  <script>
+  $(document).ready(function() {
+	  var new_position = $('#'+'<c:out value="${anchor}"/>').offset();
+	  window.scrollTo(new_position.left,new_position.top);
+	  });
+  </script>
+</c:if>  

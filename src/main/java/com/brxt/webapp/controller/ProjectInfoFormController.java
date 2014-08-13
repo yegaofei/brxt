@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.brxt.constant.SessionAttributes;
 import com.brxt.model.Counterparty;
@@ -164,6 +165,7 @@ public class ProjectInfoFormController extends BaseFormController {
 			case "EditCounterparty":
 				mav.addObject("projectInfo", getProjectInfo(request));
 				mav.addObject("method", "EditCounterparty");
+				mav.addObject("anchor", "counterparty");
 				mav.setViewName("projectInfoForm");
 				break;
 			case "AddCounterparty":
@@ -171,6 +173,7 @@ public class ProjectInfoFormController extends BaseFormController {
 				projectInfo.getCounterparties().add(new Counterparty());
 				mav.addObject("projectInfo", projectInfo);
 				mav.addObject("method", "EditCounterparty");
+				mav.addObject("anchor", "counterparty");
 				mav.setViewName("projectInfoForm");
 				break;
 			case "DeleteCounterparty":
@@ -180,16 +183,19 @@ public class ProjectInfoFormController extends BaseFormController {
 				mav.addObject("method", "SaveCounterparty");
 				projectInfo = projectInfoManager.save(projectInfo);
 				projectInfo = loadProjectInfo(projectInfo.getId());
+				mav.addObject("anchor", "counterparty");
 				mav.addObject("projectInfo", projectInfo);
 				break;
 			case "SaveCounterparty":
 				projectInfo = getProjectInfo(request);
 				mav = saveCounterparty(projectInfo, errors, request, mav);
 				mav.addObject("method", "SaveCounterparty");
+				mav.addObject("anchor", "counterparty");
 				break;
 			case "EditGuarantor":
 				mav.addObject("projectInfo", getProjectInfo(request));
 				mav.addObject("method", "EditGuarantor");
+				mav.addObject("anchor", "guarantor");
 				mav.setViewName("projectInfoForm");
 				break;
 			case "AddGuarantor":
@@ -197,6 +203,7 @@ public class ProjectInfoFormController extends BaseFormController {
 				projectInfo.getGuarantors().add(new Counterparty());
 				mav.addObject("projectInfo", projectInfo);
 				mav.addObject("method", "EditGuarantor");
+				mav.addObject("anchor", "guarantor");
 				mav.setViewName("projectInfoForm");
 				break;
 			case "DeleteGuarantor":
@@ -207,11 +214,13 @@ public class ProjectInfoFormController extends BaseFormController {
 				projectInfo = projectInfoManager.save(projectInfo);
 				projectInfo = loadProjectInfo(projectInfo.getId());
 				mav.addObject("projectInfo", projectInfo);
+				mav.addObject("anchor", "guarantor");
 				break;
 			case "SaveGuarantor":
 				projectInfo = getProjectInfo(request);
 				mav = saveGuarantor(projectInfo, errors, request, mav);
 				mav.addObject("method", "SaveGuarantor");
+				mav.addObject("anchor", "guarantor");
 				break;
 			case "CommitProjectInfo":
 				projectInfo = getProjectInfo(request);
@@ -227,6 +236,7 @@ public class ProjectInfoFormController extends BaseFormController {
 					projectInfo.getInvestments().add(new InvestmentStatus());
 					mav.addObject("projectInfo", projectInfo);
 					mav.addObject("method", "EditInvestment");
+					mav.addObject("anchor", "investment");
 				}
 				mav.setViewName("projectInfoForm");
 				break;
@@ -234,16 +244,19 @@ public class ProjectInfoFormController extends BaseFormController {
 				projectInfo = getProjectInfo(request);
 				mav = saveInvestment(projectInfo, errors, request, mav);
 				mav.addObject("method", "SaveInvestment");
+				mav.addObject("anchor", "investment");
 				break;
 			case "EditInvestment":
 				mav.addObject("projectInfo", getProjectInfo(request));
 				mav.addObject("method", "EditInvestment");
+				mav.addObject("anchor", "investment");
 				mav.setViewName("projectInfoForm");
 				break;
 			case "DeleteInvestment":
 				projectInfo = getProjectInfo(request);
 				mav = deleteInvestment(projectInfo, errors, request, mav);
 				mav.addObject("method", "SaveInvestment");
+				mav.addObject("anchor", "investment");
 				break;
 			case "CancelInvestment":
 			case "CancelProjectSize":
@@ -309,7 +322,7 @@ public class ProjectInfoFormController extends BaseFormController {
 			Iterator<Counterparty> cpIt = projectInfo.getCounterparties().iterator();
 			while (cpIt.hasNext()) {
 				Counterparty cp = cpIt.next();
-				if (cp.getId() == Long.valueOf(id)) {
+				if (cp.getId().equals(Long.valueOf(id))) {
 					Counterparty tempCp = new Counterparty();
 					tempCp.setName(name);
 					tempCp.setCounterpartyType(type);
@@ -394,7 +407,7 @@ public class ProjectInfoFormController extends BaseFormController {
 			Iterator<InvestmentStatus> isIt = projectInfo.getInvestments().iterator();
 			while (isIt.hasNext()) {
 				InvestmentStatus is = isIt.next();
-				if (is.getId() == Long.valueOf(id)) {
+				if (is.getId().equals(Long.valueOf(id))) {
 					InvestmentStatus tempIs = new InvestmentStatus();
 					tempIs.setProjectName(name);
 					tempIs.setProjectType(type);
@@ -519,7 +532,7 @@ public class ProjectInfoFormController extends BaseFormController {
 			Iterator<Counterparty> cpIt = projectInfo.getGuarantors().iterator();
 			while (cpIt.hasNext()) {
 				Counterparty cp = cpIt.next();
-				if (cp.getId() == Long.valueOf(id)) {
+				if (cp.getId().equals(Long.valueOf(id))) {
 					Counterparty tempCp = new Counterparty();
 					tempCp.setName(name);
 					tempCp.setCounterpartyType(type);
@@ -584,7 +597,7 @@ public class ProjectInfoFormController extends BaseFormController {
 		if (!StringUtils.isBlank(id)) {
 			for (int i = 0; i < projectInfo.getProjectSizes().size(); i++) {
 				ProjectSize ps = projectInfo.getProjectSizes().get(i);
-				if (ps.getId() == Long.valueOf(id)) {
+				if (ps.getId().equals(Long.valueOf(id))) {
 					// Update
 					if (startTime != null) {
 						ps.setStartTime(sdf.parse(startTime));
