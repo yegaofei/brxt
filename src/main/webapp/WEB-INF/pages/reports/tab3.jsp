@@ -134,13 +134,13 @@
 						</tr>
 						<tr>
 							<td><fmt:message key="investmentProject.totalAmount" /></td>
-							<td><fmt:formatNumber type="currency">
+							<td><fmt:formatNumber type="number">
 									<c:out value="${investmentProject.totalAmount}" />
 								</fmt:formatNumber></td>
 						</tr>
 						<tr>
 							<td><fmt:message key="investmentProject.investmentAmount" /></td>
-							<td><fmt:formatNumber type="currency">
+							<td><fmt:formatNumber type="number">
 									<c:out value="${investmentProject.investmentAmount}" />
 								</fmt:formatNumber></td>
 						</tr>
@@ -316,13 +316,13 @@
 					</tr>
 					<tr>
 						<td><fmt:message key="investmentProject.totalAmount" /></td>
-						<td><fmt:formatNumber type="currency">
+						<td><fmt:formatNumber type="number">
 								<c:out value="${investmentProject.totalAmount}" />
 							</fmt:formatNumber></td>
 					</tr>
 					<tr>
 						<td><fmt:message key="investmentProject.investmentAmount" /></td>
-						<td><fmt:formatNumber type="currency">
+						<td><fmt:formatNumber type="number">
 								<c:out value="${investmentProject.investmentAmount}" />
 							</fmt:formatNumber></td>
 					</tr>

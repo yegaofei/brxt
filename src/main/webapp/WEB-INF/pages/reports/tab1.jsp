@@ -1,9 +1,13 @@
 <div class="col-lg-12">
 	<div class="<c:if test='${empty param.preview }'>well</c:if>">
-					<div class="row">
-                  			<label class="col-sm-4"><fmt:message key="projectInfo.nonrequired.projectName" /> : <c:out value="${projectInfo.projectName}" /></label>
-                  			<label class="col-sm-4"><fmt:message key="projectInfo.trustManager" /> : <c:out value="${projectInfo.trustManager}" /></label>
-                  	</div>	
+	               <div class="form-group">
+                            <appfuse:label styleClass="control-label" key="projectInfo.nonrequired.projectName"/>:
+                            <c:out value="${projectInfo.projectName}" />
+                    </div>
+                    <div class="form-group">
+                            <appfuse:label styleClass="control-label" key="projectInfo.trustManager"/>:
+                            <c:out value="${projectInfo.trustManager}" />
+                    </div>
                   	<div class="form-group">
                             <appfuse:label styleClass="control-label" key="projectInfo.expectedReturn"/>:
                             <textarea class="form-control" rows="4" cols="50" readonly="readonly" ><c:out escapeXml="false" value="${projectInfo.expectedReturn}" /></textarea>
