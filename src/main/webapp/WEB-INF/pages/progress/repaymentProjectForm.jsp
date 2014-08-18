@@ -33,8 +33,9 @@
         <form:errors path="projectEndTime" cssClass="help-inline"/>
     </div>
     
+    <div class="row">
     <spring:bind path="repaymentProject.totalSize">
-    <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    <div class="col-sm-3 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="repaymentProject.totalSize"/>
         <form:input path="totalSize" id="totalSize" maxlength="60" cssClass="form-control"/>
@@ -42,7 +43,7 @@
     </div>
     
     <spring:bind path="repaymentProject.totalSaleSize">
-    <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    <div class="col-sm-3 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="repaymentProject.totalSaleSize"/>
         <form:input path="totalSaleSize" id="totalSaleSize" maxlength="60" cssClass="form-control"/>
@@ -50,15 +51,17 @@
     </div>
     
     <spring:bind path="repaymentProject.permitSaleSize">
-    <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    <div class="col-sm-3 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="repaymentProject.permitSaleSize"/>
         <form:input path="permitSaleSize" id="permitSaleSize" maxlength="60" cssClass="form-control"/>
         <form:errors path="permitSaleSize" cssClass="help-inline"/>
     </div>
+    </div>
     
+    <div class="row">
     <spring:bind path="repaymentProject.openDate">
-    <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    <div class="col-sm-3 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="repaymentProject.openDate"/>
         <form:input path="openDate" id="openDate" maxlength="60" cssClass="form-control"/>
@@ -66,7 +69,7 @@
     </div>
     
     <spring:bind path="repaymentProject.preSaleSize">
-    <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    <div class="col-sm-3 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="repaymentProject.preSaleSize"/>
         <form:input path="preSaleSize" id="preSaleSize" maxlength="60" cssClass="form-control"/>
@@ -74,15 +77,17 @@
     </div>
     
     <spring:bind path="repaymentProject.salePercentRate">
-    <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    <div class="col-sm-6 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="repaymentProject.salePercentRate"/>
         <form:input path="salePercentRate" id="salePercentRate" maxlength="60" cssClass="form-control"/>
         <form:errors path="salePercentRate" cssClass="help-inline"/>
     </div>
+    </div>
     
+    <div class="row">
     <spring:bind path="repaymentProject.preAvgPrice">
-    <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    <div class="col-sm-4 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="repaymentProject.preAvgPrice"/>
         <form:input path="preAvgPrice" id="preAvgPrice" maxlength="60" cssClass="form-control"/>
@@ -90,18 +95,19 @@
     </div>
     
     <spring:bind path="repaymentProject.currAvgPrice">
-    <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    <div class="col-sm-4 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="repaymentProject.currAvgPrice"/>
         <form:input path="currAvgPrice" id="currAvgPrice" maxlength="60" cssClass="form-control"/>
         <form:errors path="currAvgPrice" cssClass="help-inline"/>
+    </div>
     </div>
     
     <spring:bind path="repaymentProject.comments">
     <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="repaymentProject.comments"/>
-        <form:input path="comments" id="comments" maxlength="60" cssClass="form-control"/>
+        <form:textarea path="comments" id="comments" maxlength="60" cssClass="form-control"/>
         <form:errors path="comments" cssClass="help-inline"/>
     </div>
     

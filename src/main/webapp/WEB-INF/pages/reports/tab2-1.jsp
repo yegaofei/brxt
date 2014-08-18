@@ -331,27 +331,27 @@
 					<table class="table table-striped table-bordered table-hover">
 						<tbody>
 						<tr>
-							<td><fmt:message key="creditInformation.debtBalance"/></td>
+							<td><fmt:message key="creditInformation.debtBalance"/><fmt:message key="currency.unit.wan"/></td>
 							<td><fmt:formatNumber type="${numberFormatType}"><c:out value="${creditInformation.debtBalance}" /></fmt:formatNumber></td>
 						</tr>
 						<tr>
-							<td><fmt:message key="creditInformation.debt"/></td>
+							<td><fmt:message key="creditInformation.debt"/><fmt:message key="currency.unit.wan"/></td>
 							<td><fmt:formatNumber type="${numberFormatType}"><c:out value="${creditInformation.debt}" /></fmt:formatNumber></td>
 						</tr>
 						<tr>
-							<td><fmt:message key="creditInformation.outstanding"/></td>
+							<td><fmt:message key="creditInformation.outstanding"/><fmt:message key="currency.unit.wan"/></td>
 							<td>
 								<fmt:formatNumber type="${numberFormatType}"><c:out value="${creditInformation.outstanding}" /></fmt:formatNumber>
 							 </td>
 						</tr>
 						<tr>
-							<td><fmt:message key="creditInformation.balance"/></td>
+							<td><fmt:message key="creditInformation.balance"/><fmt:message key="currency.unit.wan"/></td>
 							<td>
 								<fmt:formatNumber type="${numberFormatType}"><c:out value="${creditInformation.balance}" /></fmt:formatNumber>
 							</td>
 						</tr>
 						<tr>
-							<td><fmt:message key="creditInformation.overdue"/></td>
+							<td><fmt:message key="creditInformation.overdue"/><fmt:message key="currency.unit.wan"/></td>
 							<td>
 								<c:if test="${creditInformation.overdue}"><fmt:message key="label.yes"/></c:if>
 								<c:if test="${not creditInformation.overdue}"><fmt:message key="label.no"/></c:if>

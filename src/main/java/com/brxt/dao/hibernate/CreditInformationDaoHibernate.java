@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -38,6 +39,7 @@ GenericDaoHibernate<CreditInformation, Long> implements CreditInformationDao{
 		criteria.add(Restrictions.eq("counterparty", counterparty));
 		criteria.add(Restrictions.ge("queryTime", startDate));
 		criteria.add(Restrictions.le("queryTime", endDate));
+		criteria.addOrder(Order.desc("queryTime"));
 		return criteria.list();
 	}
 

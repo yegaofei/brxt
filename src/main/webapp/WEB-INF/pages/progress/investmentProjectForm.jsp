@@ -38,8 +38,9 @@
         <form:errors path="projectEndTime" cssClass="help-inline"/>
     </div>
     
+    <div class="row">
     <spring:bind path="investmentProject.startTime">
-    <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    <div class="col-sm-4 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="investmentProject.startTime"/>
         <form:input path="startTime" id="startTime" maxlength="60" cssClass="form-control"/>
@@ -47,7 +48,7 @@
     </div>
     
     <spring:bind path="investmentProject.endTime">
-    <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    <div class="col-sm-4 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="investmentProject.endTime"/>
         <form:input path="endTime" id="endTime" maxlength="60" cssClass="form-control"/>
@@ -55,11 +56,12 @@
     </div>
     
     <spring:bind path="investmentProject.investmentAmount">
-    <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    <div class="col-sm-4 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="investmentProject.investmentAmount"/>
         <form:input path="investmentAmount" id="investmentAmount" maxlength="60" cssClass="form-control"/>
         <form:errors path="investmentAmount" cssClass="help-inline"/>
+    </div>
     </div>
     
     <spring:bind path="investmentProject.totalAmount">
@@ -74,7 +76,7 @@
     <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="investmentProject.description"/>
-        <form:input path="description" id="description" maxlength="60" cssClass="form-control"/>
+        <form:textarea path="description" id="description" maxlength="60" cssClass="form-control"/>
         <form:errors path="description" cssClass="help-inline"/>
     </div>
     
@@ -94,7 +96,7 @@
     <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="investmentProject.comments"/>
-        <form:input path="comments" id="comments" maxlength="60" cssClass="form-control"/>
+        <form:textarea path="comments" id="comments" maxlength="60" cssClass="form-control"/>
         <form:errors path="comments" cssClass="help-inline"/>
     </div>
     
