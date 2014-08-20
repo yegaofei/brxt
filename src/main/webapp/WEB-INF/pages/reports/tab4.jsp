@@ -114,13 +114,13 @@
 							</td>
 						</tr>
 						<tr>
-							<td><fmt:message key="repaymentProject.preAvgPrice"/></td>
+							<td><fmt:message key="repaymentProject.preAvgPrice"/><fmt:message key="currency.unit.yuan"/></td>
 							<td>
 								<fmt:formatNumber type="currency"><c:out value="${repaymentProject.preAvgPrice}" /></fmt:formatNumber>
 							</td>
 						</tr>
 						<tr>
-							<td><fmt:message key="repaymentProject.currAvgPrice"/></td>
+							<td><fmt:message key="repaymentProject.currAvgPrice"/><fmt:message key="currency.unit.yuan"/></td>
 							<td>
 								<fmt:formatNumber type="currency"><c:out value="${repaymentProject.currAvgPrice}" /></fmt:formatNumber>
 							</td>
