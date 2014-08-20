@@ -295,6 +295,13 @@ public class ProjectInfoFormController extends BaseFormController {
 			// Add
 			projectInfo.setCreateUser(currentUserName);
 			projectInfo.setCreateTime(new Date());
+			ProjectInfo info = projectInfoManager.findByProjectName(projectInfo.getProjectName());
+			if(info != null) {
+			    saveError(request, projectInfo.getProjectName() + getText("errors.duplicated", locale));
+			    mav.setViewName("redirect:/projectInfoForm");
+			    return mav;
+			}
+			
 		} else {
 			projectInfo.setUpdateUser(currentUserName);
 			projectInfo.setUpdateTime(new Date());
@@ -665,7 +672,7 @@ public class ProjectInfoFormController extends BaseFormController {
 		Iterator<Counterparty> it = counterparties.iterator();
 		while (it.hasNext()) {
 			Counterparty cp = it.next();
-			if (cp.getId() == Long.valueOf(counterpartyId)) {
+			if (cp.getId().equals(Long.valueOf(counterpartyId))) {
 				it.remove();
 				break;
 			}
@@ -681,7 +688,7 @@ public class ProjectInfoFormController extends BaseFormController {
 		Iterator<Counterparty> it = counterparties.iterator();
 		while (it.hasNext()) {
 			Counterparty cp = it.next();
-			if (cp.getId() == Long.valueOf(counterpartyId)) {
+			if (cp.getId().equals(Long.valueOf(counterpartyId))) {
 				it.remove();
 				break;
 			}

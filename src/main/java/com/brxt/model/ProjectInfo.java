@@ -76,6 +76,7 @@ public class ProjectInfo extends BaseObject {
 		this.expectedReturn = expectedReturn;
 	}
 
+	@Column(columnDefinition = "longtext")
 	public String getFundUsage() {
 		return fundUsage;
 	}

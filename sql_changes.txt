@@ -1,1 +1,11 @@
-Alter table riskmanagement.risk_control_report_status add column auditComment varchar(255);
+Alter table riskmanagement.risk_control_report  modify  financeCheckComment longtext;
+Alter table riskmanagement.risk_control_report  modify  investmentEvaluation longtext;
+Alter table riskmanagement.risk_control_report  modify  policyChanges longtext;
+Alter table riskmanagement.risk_control_report  modify  priceChanges longtext;
+Alter table riskmanagement.risk_control_report  modify  repaymentEvaluation longtext;
+Alter table riskmanagement.risk_control_report  modify  collateralSummary longtext;
+Alter table riskmanagement.risk_control_report  modify  guarantorCheckComment longtext;
+Alter table riskmanagement.risk_control_report  modify  guarantorSummary longtext;
+Alter table riskmanagement.risk_control_report  modify  statusBeforeMaturity longtext;
+Alter table riskmanagement.risk_control_report  modify  comments longtext;
+Alter table riskmanagement.project_info  modify  fundUsage longtext;

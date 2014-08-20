@@ -124,7 +124,7 @@ public class BaseSheetController extends BaseFormController {
 		Iterator<Counterparty> it = cp.iterator();
 		while (it.hasNext()) {
 			Counterparty counterparty = it.next();
-			if (counterparty.getId() == counterpartyId) {
+			if (counterparty.getId().equals(counterpartyId)) {
 				cpObj = counterparty;
 				break;
 			}

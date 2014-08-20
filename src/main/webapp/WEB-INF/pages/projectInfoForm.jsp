@@ -448,3 +448,37 @@
 	  });
   </script>
 </c:if>  
+
+<c:if test="${empty param.id}">
+<script type='text/javascript' src='/dwr/interface/ProjectInfoManager.js'></script>
+<script type='text/javascript' src='/dwr/engine.js'></script>
+<script type='text/javascript' src='/dwr/util.js'></script>
+<script>
+  var projectNameArray = [];
+  
+  $(document).ready(function() {
+      ProjectInfoManager.getAllProjectNames(reply);
+  });
+  
+  var reply = function(data) {
+      if (data != null && typeof data == 'object') {
+          projectNameArray = data;
+      }
+  }
+  
+  $(function() {
+      $('#projectName').blur(function() {
+          var projectName = $(this).val();          
+          if (projectName != null && projectName != "") {
+              for ( var i = 0; i < projectNameArray.length; i = i + 1 ) {
+                  if ( projectNameArray[ i ] == projectName) {
+                      alert(projectName + "<fmt:message key="errors.duplicated"/>");
+                      break;
+                  }
+              }
+          }
+      });
+  });
+  </script>
+</c:if>
+

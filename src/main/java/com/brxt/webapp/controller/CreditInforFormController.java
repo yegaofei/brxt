@@ -209,7 +209,7 @@ public class CreditInforFormController extends BaseFormController {
 			while(cpIt.hasNext())
 			{
 				Counterparty counterparty = cpIt.next();
-				if(counterparty.getId() == counterpartyId)
+				if(counterparty.getId().equals(counterpartyId))
 				{
 					return counterparty;
 				}
@@ -223,7 +223,7 @@ public class CreditInforFormController extends BaseFormController {
 			while(cpIt.hasNext())
 			{
 				Counterparty counterparty = cpIt.next();
-				if(counterparty.getId() == counterpartyId)
+				if(counterparty.getId().equals(counterpartyId))
 				{
 					return counterparty;
 				}

@@ -89,7 +89,7 @@
     <spring:bind path="repaymentProject.preAvgPrice">
     <div class="col-sm-4 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
-        <appfuse:label styleClass="control-label" key="repaymentProject.preAvgPrice"/>
+        <appfuse:label styleClass="control-label" key="repaymentProject.preAvgPrice"/><fmt:message key="currency.unit.yuan"/>
         <form:input path="preAvgPrice" id="preAvgPrice" maxlength="60" cssClass="form-control"/>
         <form:errors path="preAvgPrice" cssClass="help-inline"/>
     </div>
@@ -97,7 +97,7 @@
     <spring:bind path="repaymentProject.currAvgPrice">
     <div class="col-sm-4 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
-        <appfuse:label styleClass="control-label" key="repaymentProject.currAvgPrice"/>
+        <appfuse:label styleClass="control-label" key="repaymentProject.currAvgPrice"/><fmt:message key="currency.unit.yuan"/>
         <form:input path="currAvgPrice" id="currAvgPrice" maxlength="60" cssClass="form-control"/>
         <form:errors path="currAvgPrice" cssClass="help-inline"/>
     </div>

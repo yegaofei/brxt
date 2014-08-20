@@ -35,7 +35,7 @@
 			<div class="form-group">
 				<label for="guarantorCheckComment" class="col-lg-3 control-label"><fmt:message key="creditInformation.guarantor.evaluation" /></label>
 				<div class="col-lg-9">
-					<input type="text" id="guarantorCheckComment" name="guarantorCheckComment" class="form-control input-sm" value="${riskControlReport.guarantorCheckComment}">
+					<textarea id="guarantorCheckComment" name="guarantorCheckComment" class="form-control input-sm"><c:out value="${riskControlReport.guarantorCheckComment}"/></textarea>
 				</div>
 			</div>
 			
@@ -572,7 +572,7 @@
             <div class="form-group">
                 <label for="guarantorCheckComment" class="col-lg-3 control-label"><fmt:message key="report.financeCheck.guarantorCheckComment" /></label>
                 <div class="col-lg-9">
-                    <input type="text" id="guarantorCheckComment" class="form-control input-sm" value="${riskControlReport.guarantorCheckComment}">
+                    <textarea id="guarantorCheckComment" class="form-control input-sm"><c:out value="${riskControlReport.guarantorCheckComment}"/></textarea>
                 </div>
             </div>
             </fieldset>

@@ -1,5 +1,6 @@
 package com.brxt.webapp.controller;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -53,25 +54,31 @@ public class CreditInformationController extends BaseFormController{
 			Set<Counterparty> ga = null;
 			
 			ciList = creditInformationManager.findByProjId(Long.valueOf(projectInfoId));
-			for(int i = 0; i < ciList.size(); i++)
-			{
-				CreditInformation ci = ciList.get(i); 
-				if(i == 0)
-				{
-					project = ci.getProjectInfo();
-					cp = project.getCounterparties();
-					ga = project.getGuarantors();
-				}
-				
-				if(cp != null && !cp.isEmpty() && cp.contains(ci.getCounterparty()))
-				{
-					ci.setTradeRelationship(TradingRelationship.COUNTERPARTY);
-				}
-				
-				if(ga != null && !ga.isEmpty() && ga.contains(ci.getCounterparty()))
-				{
-					ci.setTradeRelationship(TradingRelationship.GUARANTOR);
-				}				
+			
+			if(ciList != null && ciList.size() > 0) {
+			    CreditInformation ci = ciList.get(0); 
+			    project = ci.getProjectInfo();
+                cp = project.getCounterparties();
+                ga = project.getGuarantors();
+			} else {
+			    return ciList;
+			}
+			
+			Iterator<CreditInformation> itCp = ciList.iterator();
+			while(itCp.hasNext()) {
+			    CreditInformation ci = itCp.next();
+			    if (cp != null && !cp.isEmpty() && cp.contains(ci.getCounterparty()))
+                {
+                    ci.setTradeRelationship(TradingRelationship.COUNTERPARTY);
+                } 
+			    else if (ga != null && !ga.isEmpty() && ga.contains(ci.getCounterparty()))
+                {
+                    ci.setTradeRelationship(TradingRelationship.GUARANTOR);
+                }  
+			    else 
+			    {
+			        itCp.remove();
+			    }
 			}
 		}
 		return ciList;

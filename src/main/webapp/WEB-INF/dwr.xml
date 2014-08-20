@@ -18,6 +18,11 @@
             <include method="getAll"/>
         </create>
         
+        <create creator="spring" javascript="ProjectInfoManager">
+            <param name="class" value="com.brxt.service.ProjectInfoManager"/>
+            <param name="beanName" value="projectInfoManager"/>
+            <include method="getAllProjectNames"/>
+        </create>
         <convert converter="bean" match="org.appfuse.model.User"/>
     </allow>
    

@@ -41,13 +41,12 @@
 								key="investmentProject.policyChanges" /></label>
 						<div class="col-lg-9">
 							<c:if test="${empty riskControlReport.policyChanges}">
-								<input type="text" name="policyChanges" id="policyChanges"
-									class="form-control input-sm" value="${param.policyChanges}">
+								<textarea name="policyChanges" id="policyChanges"
+									class="form-control input-sm"><c:out value="${param.policyChanges}"/></textarea>
 							</c:if>
 							<c:if test="${not empty riskControlReport.policyChanges }">
-								<input type="text" name="policyChanges" id="policyChanges"
-									class="form-control input-sm"
-									value="${riskControlReport.policyChanges}">
+								<textarea name="policyChanges" id="policyChanges"
+									class="form-control input-sm"><c:out value="${riskControlReport.policyChanges}"/></textarea>
 							</c:if>
 						</div>
 					</div>
@@ -69,14 +68,12 @@
 							key="investmentProject.evaluation" /></label>
 					<div class="col-lg-9">
 						<c:if test="${empty riskControlReport.investmentEvaluation}">
-							<input type="text" id="investmentEvaluation"
-								name="investmentEvaluation" class="form-control input-sm"
-								value="${param.investmentEvaluation}">
+							<textarea id="investmentEvaluation"
+								name="investmentEvaluation" class="form-control input-sm"><c:out value="${param.investmentEvaluation}"/></textarea>
 						</c:if>
 						<c:if test="${not empty riskControlReport.investmentEvaluation}">
-							<input type="text" id="investmentEvaluation"
-								name="investmentEvaluation" class="form-control input-sm"
-								value="${riskControlReport.investmentEvaluation}">
+							<textarea id="investmentEvaluation"
+								name="investmentEvaluation" class="form-control input-sm"><c:out value="${riskControlReport.investmentEvaluation}"/></textarea>
 						</c:if>
 					</div>
 				</div>
@@ -185,9 +182,7 @@
 					<tbody>
 						<tr>
 							<td><fmt:message key="supplyLiquidProject.industryVista" /></td>
-							<td><input type="text" name="industryVista"
-								value="${supplyLiquidProject.industryVista}"
-								class="form-control input-sm"></td>
+							<td><textarea name="industryVista" class="form-control input-sm"><c:out value="${supplyLiquidProject.industryVista}"/></textarea></td>
 						</tr>
 						<tr>
 							<td><fmt:message key="supplyLiquidProject.firmSize" /></td>
@@ -197,15 +192,11 @@
 						</tr>
 						<tr>
 							<td><fmt:message key="supplyLiquidProject.description" /></td>
-							<td><input type="text" name="description"
-								value="${supplyLiquidProject.description}"
-								class="form-control input-sm"></td>
+							<td><textarea name="description" class="form-control input-sm"><c:out value="${supplyLiquidProject.description}"/></textarea></td>
 						</tr>
 						<tr>
 							<td><fmt:message key="supplyLiquidProject.saleSituation" /></td>
-							<td><input type="text" name="saleSituation"
-								value="${supplyLiquidProject.saleSituation}"
-								class="form-control input-sm"></td>
+							<td><textarea name="saleSituation" class="form-control input-sm"><c:out value="${supplyLiquidProject.saleSituation}"/></textarea></td>
 						</tr>
 						<tr>
 							<td><fmt:message key="supplyLiquidProject.bigChanges" /></td>
@@ -222,15 +213,11 @@
 						<tr>
 							<td><fmt:message
 									key="supplyLiquidProject.investmentProgress" /></td>
-							<td><input type="text" name="investmentProgress"
-								value="${supplyLiquidProject.investmentProgress}"
-								class="form-control input-sm"></td>
+							<td><textarea name="investmentProgress" class="form-control input-sm"><c:out value="${supplyLiquidProject.investmentProgress}"/></textarea></td>
 						</tr>
 						<tr>
 							<td><fmt:message key="supplyLiquidProject.comments" /></td>
-							<td><input type="text" name="supplyLiquidProject.comments"
-								value="${supplyLiquidProject.comments}"
-								class="form-control input-sm"></td>
+							<td><textarea name="supplyLiquidProject.comments" class="form-control input-sm"><c:out value="${supplyLiquidProject.comments}"/></textarea></td>
 						</tr>
 					</tbody>
 				</table>
@@ -246,8 +233,7 @@
 				<label for="policyChanges" class="col-lg-3 control-label"><fmt:message
 						key="investmentProject.policyChanges" /></label>
 				<div class="col-lg-9">
-					<input type="text" id="policyChanges" class="form-control input-sm"
-						value="${riskControlReport.policyChanges}">
+					<textarea id="policyChanges" class="form-control input-sm"><c:out value="${riskControlReport.policyChanges}"/></textarea>
 				</div>
 			</div>
 			<div class="form-group">
@@ -255,8 +241,7 @@
 						key="investmentProject.priceChanges" /></label>
 				<div class="col-lg-9">
 					<textarea class="form-control" rows="4" id="priceChanges"
-						name="priceChanges"><c:out
-							value="${riskControlReport.priceChanges}" /></textarea>
+						name="priceChanges"><c:out value="${riskControlReport.priceChanges}" /></textarea>
 					<span class="help-block"><fmt:message
 							key="investmentProject.priceChanges.help" /></span>
 				</div>
@@ -265,9 +250,8 @@
 				<label for="investmentEvaluation" class="col-lg-3 control-label"><fmt:message
 						key="investmentProject.evaluation" /></label>
 				<div class="col-lg-9">
-					<input type="text" id="investmentEvaluation"
-						name="investmentEvaluation" class="form-control input-sm"
-						value="${riskControlReport.investmentEvaluation}">
+					<textarea id="investmentEvaluation"
+						name="investmentEvaluation" class="form-control input-sm"><c:out value="${riskControlReport.investmentEvaluation}"/></textarea>
 				</div>
 			</div>
 		</fieldset>

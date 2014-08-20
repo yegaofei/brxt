@@ -35,7 +35,7 @@
 			<div class="form-group">
 				<label for="financeStatementSummary" class="col-lg-3 control-label"><fmt:message key="report.financeCheck.financeStatementSummary" /></label>
 				<div class="col-lg-9">
-					<input type="text" id="financeStatementSummary" name="financeStatementSummary" class="form-control input-sm" value="<c:out value='${riskControlReport.financeCheckComment}' default='${param.financeStatementSummary}'/>">
+					<textarea id="financeStatementSummary" name="financeStatementSummary" class="form-control input-sm" ><c:out value='${riskControlReport.financeCheckComment}' default='${param.financeStatementSummary}'/></textarea>
 				</div>
 			</div>
 			
@@ -661,7 +661,7 @@
             <div class="form-group">
                 <label for="financeStatementSummary" class="col-lg-3 control-label"><fmt:message key="report.financeCheck.financeStatementSummary" /></label>
                 <div class="col-lg-9">
-                    <input type="text" id="financeStatementSummary" class="form-control input-sm" value="${riskControlReport.financeCheckComment}">
+                    <textarea id="financeStatementSummary" class="form-control input-sm"><c:out value="${riskControlReport.financeCheckComment}"/></textarea>
                 </div>
             </div>
             </fieldset>

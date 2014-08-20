@@ -222,6 +222,7 @@ public class RiskControlReport extends BaseObject{
 		this.guarantorInstBalanceSheet = guarantorInstBalanceSheet;
 	}
 	
+	@Column(columnDefinition = "longtext")
 	public String getFinanceCheckComment() {
 		return financeCheckComment;
 	}
@@ -229,54 +230,63 @@ public class RiskControlReport extends BaseObject{
 	public void setFinanceCheckComment(String financeCheckComment) {
 		this.financeCheckComment = financeCheckComment;
 	}
+	@Column(columnDefinition = "longtext")
 	public String getInvestmentEvaluation() {
 		return investmentEvaluation;
 	}
 	public void setInvestmentEvaluation(String investmentEvaluation) {
 		this.investmentEvaluation = investmentEvaluation;
 	}
+	@Column(columnDefinition = "longtext")
 	public String getPolicyChanges() {
 		return policyChanges;
 	}
 	public void setPolicyChanges(String policyChanges) {
 		this.policyChanges = policyChanges;
 	}
+	@Column(columnDefinition = "longtext")
 	public String getPriceChanges() {
 		return priceChanges;
 	}
 	public void setPriceChanges(String priceChanges) {
 		this.priceChanges = priceChanges;
 	}
+	@Column(columnDefinition = "longtext")
 	public String getRepaymentEvaluation() {
 		return repaymentEvaluation;
 	}
 	public void setRepaymentEvaluation(String repaymentEvaluation) {
 		this.repaymentEvaluation = repaymentEvaluation;
 	}
+	@Column(columnDefinition = "longtext")
 	public String getCollateralSummary() {
 		return collateralSummary;
 	}
 	public void setCollateralSummary(String collateralSummary) {
 		this.collateralSummary = collateralSummary;
 	}
+	@Column(columnDefinition = "longtext")
 	public String getGuarantorCheckComment() {
 		return guarantorCheckComment;
 	}
 	public void setGuarantorCheckComment(String guarantorCheckComment) {
 		this.guarantorCheckComment = guarantorCheckComment;
 	}
+	@Column(columnDefinition = "longtext")
 	public String getGuarantorSummary() {
 		return guarantorSummary;
 	}
 	public void setGuarantorSummary(String guarantorSummary) {
 		this.guarantorSummary = guarantorSummary;
 	}
+	@Column(columnDefinition = "longtext")
 	public String getStatusBeforeMaturity() {
 		return statusBeforeMaturity;
 	}
 	public void setStatusBeforeMaturity(String statusBeforeMaturity) {
 		this.statusBeforeMaturity = statusBeforeMaturity;
 	}
+	@Column(columnDefinition = "longtext")
 	public String getComments() {
 		return comments;
 	}
