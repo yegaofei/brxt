@@ -35,7 +35,7 @@
     
     <div class="row">
     <spring:bind path="repaymentProject.totalSize">
-    <div class="col-sm-3 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    <div class="col-sm-4 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="repaymentProject.totalSize"/>
         <form:input path="totalSize" id="totalSize" maxlength="60" cssClass="form-control"/>
@@ -51,7 +51,7 @@
     </div>
     
     <spring:bind path="repaymentProject.permitSaleSize">
-    <div class="col-sm-3 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    <div class="col-sm-4 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="repaymentProject.permitSaleSize"/>
         <form:input path="permitSaleSize" id="permitSaleSize" maxlength="60" cssClass="form-control"/>
@@ -69,7 +69,7 @@
     </div>
     
     <spring:bind path="repaymentProject.preSaleSize">
-    <div class="col-sm-3 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    <div class="col-sm-4 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="repaymentProject.preSaleSize"/>
         <form:input path="preSaleSize" id="preSaleSize" maxlength="60" cssClass="form-control"/>
@@ -77,7 +77,7 @@
     </div>
     
     <spring:bind path="repaymentProject.salePercentRate">
-    <div class="col-sm-6 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
+    <div class="col-sm-5 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="repaymentProject.salePercentRate"/>
         <form:input path="salePercentRate" id="salePercentRate" maxlength="60" cssClass="form-control"/>
