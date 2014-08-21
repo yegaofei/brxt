@@ -49,7 +49,7 @@
     <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="repayment.comment"/>
-        <form:input path="comment" id="comment" maxlength="60" cssClass="form-control"/>
+        <form:input path="comment" id="comment" cssClass="form-control"/>
         <form:errors path="comment" cssClass="help-inline"/>
     </div>
     

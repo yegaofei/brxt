@@ -29,7 +29,7 @@
 		  </c:forEach>
 		</c:if>
 		<c:if test="${not empty subjectCapacity.id}">
-		  <input value="${subjectCapacity.counterparty.name}" maxlength="20" class="form-control input-sm" disabled/>
+		  <input value="${subjectCapacity.counterparty.name}"  class="form-control input-sm" disabled/>
 		  <input type="hidden" name="counterpartyId" value="${subjectCapacity.counterparty.id}" />
 		</c:if>
 		</div>
@@ -38,7 +38,7 @@
     	<div class="col-sm-4 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     	</spring:bind>
         	<appfuse:label styleClass="control-label" key="subjectCapacity.checkTime"/>
-        	<form:input path="checkTime" id="checkTime" maxlength="20" cssClass="form-control input-sm"/>
+        	<form:input path="checkTime" id="checkTime"  cssClass="form-control input-sm"/>
         	<form:errors path="checkTime" cssClass="help-block"/>
     	</div>
 	</div>
@@ -56,14 +56,14 @@
 					<c:if test="${subjectCapacity.counterparty.counterpartyType != 'institution'}">	
 						<tr>
 							<td><fmt:message key="subjectCapacity.licenseVerificationDate"/></td>
-							<td><form:input path="licenseVerificationDate" id="licenseVerificationDate" maxlength="20" cssClass="form-control input-sm"/></td>
-							<td><form:input path="comment_lvd" id="comment_lvd" maxlength="20" cssClass="form-control input-sm"/></td>
+							<td><form:input path="licenseVerificationDate" id="licenseVerificationDate"  cssClass="form-control input-sm"/></td>
+							<td><form:input path="comment_lvd" id="comment_lvd"  cssClass="form-control input-sm"/></td>
 						</tr>
 					</c:if>	
 						<tr>
 							<td><fmt:message key="subjectCapacity.orgCodeVerificationDate"/></td>
-							<td><form:input path="orgCodeVerificationDate" id="orgCodeVerificationDate" maxlength="20" cssClass="form-control input-sm"/></td>
-							<td><form:input path="comment_ocvd" id="comment_ocvd" maxlength="20" cssClass="form-control input-sm"/></td>
+							<td><form:input path="orgCodeVerificationDate" id="orgCodeVerificationDate"  cssClass="form-control input-sm"/></td>
+							<td><form:input path="comment_ocvd" id="comment_ocvd"  cssClass="form-control input-sm"/></td>
 						</tr>
 						<tr>
 							<td><fmt:message key="subjectCapacity.loanCardValid"/></td>
@@ -75,7 +75,7 @@
 								<form:radiobutton path="loanCardValid" value="False" /><fmt:message key='label.no'/>
 								</label>
 							</td>
-							<td><form:input path="comment_lcv" id="comment_lcv" maxlength="20" cssClass="form-control input-sm"/></td>
+							<td><form:input path="comment_lcv" id="comment_lcv"  cssClass="form-control input-sm"/></td>
 						</tr>
 						<tr>
 							<td><fmt:message key="subjectCapacity.nameChanged"/></td>
@@ -85,7 +85,7 @@
         						<label class="checkbox-inline">
 									<form:radiobutton path="nameChanged" value="False" /><fmt:message key='label.no'/>
 								</label></td>
-							<td><form:input path="comment_nc" id="comment_nc" maxlength="20" cssClass="form-control input-sm"/></td>
+							<td><form:input path="comment_nc" id="comment_nc"  cssClass="form-control input-sm"/></td>
 						</tr>
 						<tr>
 							<td><fmt:message key="subjectCapacity.ownerChanged"/></td>
@@ -95,7 +95,7 @@
         						<label class="checkbox-inline">
 									<form:radiobutton path="ownerChanged" value="False" /><fmt:message key='label.no'/>
 								</label></td>
-							<td><form:input path="comment_oc" id="comment_oc" maxlength="20" cssClass="form-control input-sm"/></td>
+							<td><form:input path="comment_oc" id="comment_oc"  cssClass="form-control input-sm"/></td>
 						</tr>
 					<c:if test="${subjectCapacity.counterparty.counterpartyType != 'institution'}">	
 						<tr>
@@ -106,7 +106,7 @@
         						<label class="checkbox-inline">
 									<form:radiobutton path="ownershipChanged" value="False" /><fmt:message key='label.no'/>
 								</label></td>
-							<td><form:input path="comment_osc" id="comment_osc" maxlength="20" cssClass="form-control input-sm"/></td>
+							<td><form:input path="comment_osc" id="comment_osc"  cssClass="form-control input-sm"/></td>
 						</tr>
 						<tr>
 							<td><fmt:message key="subjectCapacity.capitalChanged"/></td>
@@ -116,7 +116,7 @@
         						<label class="checkbox-inline">
 									<form:radiobutton path="capitalChanged" value="False" /><fmt:message key='label.no'/>
 								</label></td>
-							<td><form:input path="comment_cc" id="comment_cc" maxlength="20" cssClass="form-control input-sm"/></td>
+							<td><form:input path="comment_cc" id="comment_cc"  cssClass="form-control input-sm"/></td>
 						</tr>
 					</c:if>    	
 					<c:if test="${subjectCapacity.counterparty.counterpartyType == 'real_estate_firm'}">        
@@ -128,7 +128,7 @@
         						<label class="checkbox-inline">
 									<form:radiobutton path="devCapacityChanged" value="False" /><fmt:message key='label.no'/>
 								</label></td>
-							<td><form:input path="comment_dcc" id="comment_dcc" maxlength="20" cssClass="form-control input-sm"/></td>
+							<td><form:input path="comment_dcc" id="comment_dcc"  cssClass="form-control input-sm"/></td>
 						</tr>
 					</c:if>	
 					<c:if test="${subjectCapacity.counterparty.counterpartyType != 'institution'}">    	
@@ -140,7 +140,7 @@
         						<label class="checkbox-inline">
 									<form:radiobutton path="bizScopeChanged" value="False" /><fmt:message key='label.no'/>
 								</label></td>
-							<td><form:input path="comment_bsc" id="comment_bsc" maxlength="20" cssClass="form-control input-sm"/></td>
+							<td><form:input path="comment_bsc" id="comment_bsc"  cssClass="form-control input-sm"/></td>
 						</tr>
 					</c:if>	
 						<tr>
@@ -151,7 +151,7 @@
         						<label class="checkbox-inline">
 									<form:radiobutton path="otherBigChanges" value="False" /><fmt:message key='label.no'/>
 								</label></td>
-							<td><form:input path="comment_obc" id="comment_obc" maxlength="20" cssClass="form-control input-sm"/></td>
+							<td><form:input path="comment_obc" id="comment_obc"  cssClass="form-control input-sm"/></td>
 						</tr>
 					<c:if test="${subjectCapacity.counterparty.counterpartyType == 'institution'}">    	
 						<tr>
@@ -162,7 +162,7 @@
         						<label class="checkbox-inline">
 									<form:radiobutton path="verifyResults" value="False" /><fmt:message key='label.no'/>
 								</label></td>
-							<td><form:input path="comment_vr" id="comment_vr" maxlength="20" cssClass="form-control input-sm"/></td>
+							<td><form:input path="comment_vr" id="comment_vr"  cssClass="form-control input-sm"/></td>
 						</tr>
 					</c:if>	
 						</tbody>

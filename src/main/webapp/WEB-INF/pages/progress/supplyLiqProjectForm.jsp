@@ -22,14 +22,14 @@
 	
     <div class="form-group">
         <appfuse:label styleClass="control-label" key="supplyLiquidProject.name"/>
-        <form:input path="investmentStatus.projectName" id="projectName" maxlength="20" cssClass="form-control" readonly="true"/>
+        <form:input path="investmentStatus.projectName" id="projectName" cssClass="form-control" readonly="true"/>
     </div>
 
     <spring:bind path="supplyLiquidProject.projectEndTime">
     <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="supplyLiquidProject.projectEndTime"/>
-        <form:input path="projectEndTime" id="projectEndTime" maxlength="60" cssClass="form-control"/>
+        <form:input path="projectEndTime" id="projectEndTime"  cssClass="form-control"/>
         <form:errors path="projectEndTime" cssClass="help-inline"/>
     </div>
 <!--     
@@ -37,7 +37,7 @@
     <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="supplyLiquidProject.industryVista"/>
-        <form:input path="industryVista" id="industryVista" maxlength="60" cssClass="form-control"/>
+        <form:input path="industryVista" id="industryVista"  cssClass="form-control"/>
         <form:errors path="industryVista" cssClass="help-inline"/>
     </div>
     
@@ -45,7 +45,7 @@
     <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="supplyLiquidProject.firmSize"/>
-        <form:input path="firmSize" id="firmSize" maxlength="60" cssClass="form-control"/>
+        <form:input path="firmSize" id="firmSize"  cssClass="form-control"/>
         <form:errors path="firmSize" cssClass="help-inline"/>
     </div>
     
@@ -53,7 +53,7 @@
     <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="supplyLiquidProject.description"/>
-        <form:input path="description" id="description" maxlength="60" cssClass="form-control"/>
+        <form:input path="description" id="description"  cssClass="form-control"/>
         <form:errors path="description" cssClass="help-inline"/>
     </div>
     
@@ -61,7 +61,7 @@
     <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="supplyLiquidProject.saleSituation"/>
-        <form:input path="saleSituation" id="saleSituation" maxlength="60" cssClass="form-control"/>
+        <form:input path="saleSituation" id="saleSituation"  cssClass="form-control"/>
         <form:errors path="saleSituation" cssClass="help-inline"/>
     </div>
     
@@ -81,7 +81,7 @@
     <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="supplyLiquidProject.investmentProgress"/>
-        <form:input path="investmentProgress" id="investmentProgress" maxlength="60" cssClass="form-control"/>
+        <form:input path="investmentProgress" id="investmentProgress"  cssClass="form-control"/>
         <form:errors path="investmentProgress" cssClass="help-inline"/>
     </div>
     
@@ -89,7 +89,7 @@
     <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="supplyLiquidProject.comments"/>
-        <form:input path="comments" id="comments" maxlength="60" cssClass="form-control"/>
+        <form:input path="comments" id="comments"  cssClass="form-control"/>
         <form:errors path="comments" cssClass="help-inline"/>
     </div>
     
@@ -97,7 +97,7 @@
     <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="supplyLiquidProject.evaluation"/>
-        <form:input path="evaluation" id="evaluation" maxlength="60" cssClass="form-control"/>
+        <form:input path="evaluation" id="evaluation"  cssClass="form-control"/>
         <form:errors path="evaluation" cssClass="help-inline"/>
     </div>
  -->    

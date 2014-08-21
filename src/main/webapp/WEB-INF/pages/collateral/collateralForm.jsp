@@ -24,7 +24,7 @@
     <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="collateral.description"/>
-        <form:input path="description" id="description" maxlength="20" cssClass="form-control"/>
+        <form:input path="description" id="description"  cssClass="form-control"/>
         <form:errors path="description" cssClass="help-block"/>
     </div>
     
@@ -32,7 +32,7 @@
     <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="collateral.evaluatedValue"/>
-        <form:input path="evaluatedValue" id="evaluatedValue" maxlength="20" cssClass="form-control"/>
+        <form:input path="evaluatedValue" id="evaluatedValue"  cssClass="form-control"/>
         <form:errors path="evaluatedValue" cssClass="help-block"/>
     </div>
     
@@ -40,7 +40,7 @@
     <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="collateral.rate"/>
-        <form:input path="rate" id="rate" maxlength="20" cssClass="form-control"/>
+        <form:input path="rate" id="rate"  cssClass="form-control"/>
         <form:errors path="rate" cssClass="help-block"/>
     </div>
     

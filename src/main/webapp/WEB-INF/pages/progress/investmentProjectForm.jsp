@@ -27,14 +27,14 @@
 	
     <div class="form-group">
         <appfuse:label styleClass="control-label" key="investmentProject.name"/>
-        <form:input path="investmentStatus.projectName" id="projectName" maxlength="20" cssClass="form-control" readonly="true"/>
+        <form:input path="investmentStatus.projectName" id="projectName" cssClass="form-control" readonly="true"/>
     </div>
 
     <spring:bind path="investmentProject.projectEndTime">
     <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="investmentProject.projectEndTime"/>
-        <form:input path="projectEndTime" id="projectEndTime" maxlength="60" cssClass="form-control"/>
+        <form:input path="projectEndTime" id="projectEndTime"  cssClass="form-control"/>
         <form:errors path="projectEndTime" cssClass="help-inline"/>
     </div>
     
@@ -43,7 +43,7 @@
     <div class="col-sm-4 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="investmentProject.startTime"/>
-        <form:input path="startTime" id="startTime" maxlength="60" cssClass="form-control"/>
+        <form:input path="startTime" id="startTime"  cssClass="form-control"/>
         <form:errors path="startTime" cssClass="help-inline"/>
     </div>
     
@@ -51,7 +51,7 @@
     <div class="col-sm-4 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="investmentProject.endTime"/>
-        <form:input path="endTime" id="endTime" maxlength="60" cssClass="form-control"/>
+        <form:input path="endTime" id="endTime"  cssClass="form-control"/>
         <form:errors path="endTime" cssClass="help-inline"/>
     </div>
     
@@ -59,7 +59,7 @@
     <div class="col-sm-4 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="investmentProject.investmentAmount"/>
-        <form:input path="investmentAmount" id="investmentAmount" maxlength="60" cssClass="form-control"/>
+        <form:input path="investmentAmount" id="investmentAmount"  cssClass="form-control"/>
         <form:errors path="investmentAmount" cssClass="help-inline"/>
     </div>
     </div>
@@ -68,7 +68,7 @@
     <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="investmentProject.totalAmount"/>
-        <form:input path="totalAmount" id="totalAmount" maxlength="60" cssClass="form-control"/>
+        <form:input path="totalAmount" id="totalAmount"  cssClass="form-control"/>
         <form:errors path="totalAmount" cssClass="help-inline"/>
     </div>
     
@@ -76,7 +76,7 @@
     <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="investmentProject.description"/>
-        <form:textarea path="description" id="description" maxlength="60" cssClass="form-control"/>
+        <form:textarea path="description" id="description"  cssClass="form-control"/>
         <form:errors path="description" cssClass="help-inline"/>
     </div>
     
@@ -96,7 +96,7 @@
     <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="investmentProject.comments"/>
-        <form:textarea path="comments" id="comments" maxlength="60" cssClass="form-control"/>
+        <form:textarea path="comments" id="comments" cssClass="form-control"/>
         <form:errors path="comments" cssClass="help-inline"/>
     </div>
     

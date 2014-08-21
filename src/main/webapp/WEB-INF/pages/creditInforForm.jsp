@@ -77,7 +77,7 @@
     <div class="form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="creditInformation.comment"/>
-        <form:textarea path="comment" id="comment" maxlength="60" cssClass="form-control input-sm"/>
+        <form:textarea path="comment" id="comment" cssClass="form-control input-sm"/>
         <form:errors path="comment" cssClass="help-inline"/>
     </div>
     
