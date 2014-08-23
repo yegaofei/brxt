@@ -25,12 +25,6 @@ public class SubjectCapacityManagerImpl extends GenericManagerImpl<SubjectCapaci
 	} 
 	
 	@Override
-	public List<SubjectCapacity> findByProjIdCpId(Long projectInfoId,
-			Long counterpartyId) {
-		return subjectCapacityDao.findByProjIdCpId(projectInfoId, counterpartyId);
-	}
-
-	@Override
 	public List<SubjectCapacity> findByProjId(Long projectInfoId) {
 		return subjectCapacityDao.findByProjId(projectInfoId);
 	}

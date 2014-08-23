@@ -29,7 +29,7 @@ import com.brxt.model.enums.TradingRelationship;
 @NamedNativeQueries({
 	@NamedNativeQuery(
 			name = "searchCIByProjectInfoId",
-			query = "select * from credit_information s where s.projectInfo_id = :projectInfo_id",
+			query = " SELECT * FROM credit_information s WHERE s.counterparty_id IN (SELECT cp.counterparty_id FROM project_info_counterparties cp WHERE cp.project_info_id = :projectInfo_id UNION SELECT g.guarantor_id FROM project_info_guarantors g WHERE g.project_info_id = :projectInfo_id)",
 		        resultClass = CreditInformation.class
 			)
 })
@@ -37,14 +37,10 @@ import com.brxt.model.enums.TradingRelationship;
 @Entity
 @Table(name = "credit_information")
 public class CreditInformation extends BaseObject {
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 3447667612952483922L;
 	private Long id;
 	private Counterparty counterparty; 
-	private ProjectInfo projectInfo; // 项目id 
 	private Date queryTime; //征信查询时间
 	private String debt; //征信系统显示的信托到期前须偿还的金融负债
 	private String outstanding; //征信系统查询贷款余额
@@ -67,15 +63,6 @@ public class CreditInformation extends BaseObject {
 	}
 	public void setId(Long id) {
 		this.id = id;
-	}
-	
-	@ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH}, optional=true)  
-	@JoinColumn(name="projectInfo_id") 
-	public ProjectInfo getProjectInfo() {
-		return projectInfo;
-	}
-	public void setProjectInfo(ProjectInfo projectInfo) {
-		this.projectInfo = projectInfo;
 	}
 	
 	@ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH}, optional=true)  
@@ -188,7 +175,7 @@ public class CreditInformation extends BaseObject {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
-		.append(this.counterparty).append(this.projectInfo)
+		.append(this.counterparty) 
 		.append(this.queryTime).toString();
 	}
 	@Override
@@ -205,9 +192,6 @@ public class CreditInformation extends BaseObject {
 		return !(counterparty != null ? !counterparty
 				.equals(creditInformation.counterparty)
 				: creditInformation.counterparty != null)
-				&& !(projectInfo != null ? !projectInfo
-						.equals(creditInformation.projectInfo)
-						: creditInformation.projectInfo != null)
 				&& !(queryTime != null ? !queryTime
 						.equals(creditInformation.queryTime)
 						: creditInformation.queryTime != null);
@@ -216,12 +200,7 @@ public class CreditInformation extends BaseObject {
 	public int hashCode() {
 		int result;
         result = (counterparty != null ? counterparty.hashCode() : 0);
-        result = 29 * result + (projectInfo != null ? projectInfo.hashCode() : 0);
         result = 29 * result + (queryTime != null ? queryTime.hashCode() : 0);
         return result;
 	}
-	
-	
-	
-
 }

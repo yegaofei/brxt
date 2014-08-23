@@ -169,16 +169,6 @@
 					</table>		
 	</div>
 	
-    <c:if test="${not empty subjectCapacity.createUser}">
-        <form:hidden path="createUser" id="createUser"/>      
-        <form:hidden path="createTime"/>        
-    </c:if>
-    
-    <c:if test="${not empty subjectCapacity.updateUser}">
-        <form:hidden path="updateUser" />     
-        <form:hidden path="updateTime" />     
-    </c:if>
-    
     <div class="form-group form-actions">
         <button type="submit" class="btn btn-primary" name="method" value="SaveSubjectCapacity" onclick="bCancel=false">
             <i class="icon-ok icon-white"></i> <fmt:message key="button.save"/>

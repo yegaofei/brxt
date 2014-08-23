@@ -23,14 +23,6 @@ GenericDaoHibernate<SubjectCapacity, Long> implements SubjectCapacityDao{
 		super(SubjectCapacity.class);
 	}	
 	
-	@Override
-	public List<SubjectCapacity> findByProjIdCpId(Long projectInfoId,
-			Long counterpartyId) {
-		Map<String, Object> queryParams = new HashMap<String, Object>();
-		queryParams.put("projectInfo_id", projectInfoId);
-		queryParams.put("counterparty_id", counterpartyId);
-		return findByNamedQuery("searchByProjectInfoIdCounterpartyId", queryParams);
-	}
 
 	@Override
 	public List<SubjectCapacity> findByProjId(Long projectInfoId) {
@@ -43,7 +35,7 @@ GenericDaoHibernate<SubjectCapacity, Long> implements SubjectCapacityDao{
 	public List<SubjectCapacity> findByProjIdCpId(ProjectInfo projectInfo,
 			Counterparty counterparty, Date startDate, Date endDate) {
 		Criteria criteria = getSession().createCriteria(SubjectCapacity.class);
-		criteria.add(Restrictions.eq("projectInfo", projectInfo));
+		//criteria.add(Restrictions.eq("projectInfo", projectInfo));
 		criteria.add(Restrictions.eq("counterparty", counterparty));
 		criteria.add(Restrictions.ge("checkTime", startDate));
 		criteria.add(Restrictions.le("checkTime", endDate));

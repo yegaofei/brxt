@@ -1,6 +1,7 @@
 package com.brxt.dao.hibernate;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.criterion.Order;
@@ -27,7 +28,7 @@ public class CorpBalanceSheetDaoHibernate extends
 			Counterparty counterparty, Integer year, Short month) {
 		List<CorporateBalanceSheet> results = getSession()
 				.createCriteria(CorporateBalanceSheet.class)
-				.add(Restrictions.eq("projectInfo", projectInfo))
+				//.add(Restrictions.eq("projectInfo", projectInfo))
 				.add(Restrictions.eq("counterparty", counterparty))
 				.add(Restrictions.eq("reportYear", year))
 				.add(Restrictions.eq("reportMonth", month)).list();
@@ -43,7 +44,7 @@ public class CorpBalanceSheetDaoHibernate extends
 			Counterparty counterparty) {
 		List<CorporateBalanceSheet> results = getSession()
 				.createCriteria(CorporateBalanceSheet.class)
-				.add(Restrictions.eq("projectInfo", projectInfo))
+				//.add(Restrictions.eq("projectInfo", projectInfo))
 				.add(Restrictions.eq("counterparty", counterparty))
 				 .addOrder(Order.desc("reportYear")) 
 				 .addOrder(Order.desc("reportMonth")).list();
@@ -55,10 +56,10 @@ public class CorpBalanceSheetDaoHibernate extends
 	}
 
 	@Override
-	public List<CorporateBalanceSheet> getAll(ProjectInfo projectInfo) {
+	public List<CorporateBalanceSheet> getAll(Set<Counterparty> counterparties) {
 		List<CorporateBalanceSheet> results = getSession()
 				.createCriteria(CorporateBalanceSheet.class)
-				.add(Restrictions.eq("projectInfo", projectInfo))
+				.add(Restrictions.in("counterparty", counterparties))
 				 .list();
 		return results;
 	}

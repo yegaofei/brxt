@@ -251,7 +251,7 @@ public class ReportManagerImpl extends
         {
             for(CreditInformation ci : report.getCreditInformations()) 
             {
-                if(findGuarantor(ci.getProjectInfo(), ci.getCounterparty().getId()) == null)
+                if(findGuarantor(report.getProjectInfo(), ci.getCounterparty().getId()) == null)
                 {
                     continue;
                 }
@@ -494,7 +494,7 @@ public class ReportManagerImpl extends
         {
             for(CreditInformation ci : report.getCreditInformations()) 
             {
-                if(findCounterparty(ci.getProjectInfo(), ci.getCounterparty().getId()) == null)
+                if(findCounterparty(report.getProjectInfo(), ci.getCounterparty().getId()) == null)
                 {
                     continue;
                 }

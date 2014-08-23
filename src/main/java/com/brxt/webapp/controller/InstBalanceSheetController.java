@@ -50,7 +50,7 @@ public class InstBalanceSheetController extends BaseSheetController {
 			counterparty = endSheet.getCounterparty();
 			ibs.setCounterpartyId(counterparty.getId());
 			ibs.setCounterpartyType(counterparty.getCounterpartyType());
-			projectInfo = endSheet.getProjectInfo();
+			projectInfo = projectInfoManager.get(Long.valueOf(projectInfoIdStr));
 			ibs.setProjectId(projectInfo.getId());
 			if (findCounterparty(projectInfo, counterparty.getId()) != null) {
 				ibs.setTradingRelationship(TradingRelationship.COUNTERPARTY);
@@ -110,14 +110,12 @@ public class InstBalanceSheetController extends BaseSheetController {
 		InstituteBalanceSheet beginSheet = financeSheetManager.findInstituteBalanceSheet(projectInfo, counterparty, year, 0);
 		if (beginSheet == null) {
 			beginSheet = new InstituteBalanceSheet();
-			beginSheet.setProjectInfo(projectInfo);
 			beginSheet.setCounterparty(counterparty);
 		}
 		ibs.setBeginBalSheet(beginSheet);
 
 		if (endSheet == null) {
 			endSheet = new InstituteBalanceSheet();
-			endSheet.setProjectInfo(projectInfo);
 			endSheet.setCounterparty(counterparty);
 		}
 		ibs.setEndBalSheet(endSheet);
@@ -171,11 +169,9 @@ public class InstBalanceSheetController extends BaseSheetController {
 		}
 
 		InstituteBalanceSheet beginBalSheet = instBalanceSheetModel.getBeginBalSheet();
-		beginBalSheet.setProjectInfo(projectInfo);
 		beginBalSheet.setCounterparty(cp);
 
 		InstituteBalanceSheet endBalSheet = instBalanceSheetModel.getEndBalSheet();
-		endBalSheet.setProjectInfo(projectInfo);
 		endBalSheet.setCounterparty(cp);
 		
 		Date reportTime = instBalanceSheetModel.getReportTime();
@@ -192,6 +188,11 @@ public class InstBalanceSheetController extends BaseSheetController {
 		User currentUser = getCurrentUser();
 		if (isNewBeginBalSheet) {
 			// Add
+		    InstituteBalanceSheet ibs = super.financeSheetManager.findInstituteBalanceSheet(null, cp, getYear(reportTime), getMonth(reportTime).intValue());
+		    if(ibs != null) {
+		        saveError(request, getText("finance.balSheet.existed", new String[]{ getYear(reportTime).toString(), getMonth(reportTime).toString()}, request.getLocale()));
+                return;
+		    }
 			beginBalSheet.setCreateUser(currentUser.getUsername());
 			beginBalSheet.setCreateTime(new Date());
 		} else {

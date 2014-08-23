@@ -31,7 +31,7 @@ public class SupplyLiquidProject extends BaseObject {
 	private String firmSize;
 	private String description;
 	private String saleSituation;
-	private Boolean bigChanges;
+	private Boolean bigChanges = Boolean.FALSE;
 	private String investmentProgress;
 	private String comments;
 	private String evaluation;

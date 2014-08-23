@@ -51,15 +51,14 @@ public class SubjectCapacityDaoTest extends BaseDaoTestCase {
 		if (it.hasNext()) {
 			Counterparty cp = it.next();
 			SubjectCapacity subjectCapacity = new SubjectCapacity();
-			subjectCapacity.setProjectInfo(project);
+		//	subjectCapacity.setProjectInfo(project);
 			subjectCapacity.setCounterparty(cp);
 			subjectCapacity.setCheckTime(sf.parse("2014-02-02"));
 			subjectCapacity.setOwnerChanged(Boolean.FALSE);
 			SubjectCapacity subjectCapacity2 = subjectCapacityDao.save(subjectCapacity);
 			flush();
 
-			List<SubjectCapacity> scList = subjectCapacityDao.findByProjIdCpId(
-					project.getId(), cp.getId());
+			List<SubjectCapacity> scList = subjectCapacityDao.getAll();
 			assertNotNull(scList);
 			assertTrue(scList.size() >= 1);
 

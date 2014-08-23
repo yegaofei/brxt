@@ -29,7 +29,6 @@ public class InstituteBalanceSheet extends BaseObject {
 	
 	private static final long serialVersionUID = 1743254494015304403L;
 	protected Long id; 
-	protected ProjectInfo projectInfo;
 	protected Counterparty counterparty;	
 	private BigDecimal assetGroupTotal;
 	private BigDecimal assetTotal;
@@ -56,15 +55,6 @@ public class InstituteBalanceSheet extends BaseObject {
 	}
 	public void setId(Long id) {
 		this.id = id;
-	}
-	
-	@ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH}, optional=true)  
-	@JoinColumn(name="projectInfo_id")
-	public ProjectInfo getProjectInfo() {
-		return projectInfo;
-	}
-	public void setProjectInfo(ProjectInfo projectInfo) {
-		this.projectInfo = projectInfo;
 	}
 	
 	@ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH}, optional=true)  
@@ -197,7 +187,6 @@ public class InstituteBalanceSheet extends BaseObject {
 	public int hashCode() {
 		int result;
         result = (counterparty != null ? counterparty.hashCode() : 0);
-        result = 29 * result + (projectInfo != null ? projectInfo.hashCode() : 0);
         result = 29 * result + (reportYear != null ? reportYear.hashCode() : 0);
         result = 29 * result + (reportMonth != null ? reportMonth.hashCode() : 0);
         return result;
@@ -217,9 +206,6 @@ public class InstituteBalanceSheet extends BaseObject {
 		return !(counterparty != null ? !counterparty
 				.equals(statement.counterparty)
 				: statement.counterparty != null)
-				&& !(projectInfo != null ? !projectInfo
-						.equals(statement.projectInfo)
-						: statement.projectInfo != null)
 				&& !(statementType != null ? !statementType
 						.equals(statement.statementType)
 						: statement.statementType != null)

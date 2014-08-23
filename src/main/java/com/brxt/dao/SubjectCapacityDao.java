@@ -11,7 +11,6 @@ import com.brxt.model.SubjectCapacity;
 
 public interface SubjectCapacityDao extends GenericDao<SubjectCapacity, Long> {
 	
-	public List<SubjectCapacity> findByProjIdCpId(Long projectInfoId, Long counterpartyId);
 	
 	public List<SubjectCapacity> findByProjIdCpId(ProjectInfo projectInfo, Counterparty counterparty, Date startDate, Date endDate);
 	

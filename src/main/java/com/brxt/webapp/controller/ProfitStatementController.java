@@ -173,6 +173,12 @@ public class ProfitStatementController extends BaseSheetController {
 		User currentUser = getCurrentUser();
 		if (isNew) {
 			// Add
+		    ProfitStatement ps = super.financeSheetManager.findProfitStatement(null, cp, getYear(reportTime), getMonth(reportTime).intValue());
+		    if (ps != null) {
+		        saveError(request, getText("finance.profitSheet.existed", new String[]{getYear(reportTime).toString(), getMonth(reportTime).toString()}, request.getLocale()));
+		        return;
+		    }
+		    
 			endBalSheet.setCreateUser(currentUser.getUsername());
 			endBalSheet.setCreateTime(new Date());
 		} else {

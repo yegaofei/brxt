@@ -19,7 +19,6 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.appfuse.model.BaseObject;
 
 import com.brxt.model.Counterparty;
-import com.brxt.model.ProjectInfo;
 import com.brxt.model.enums.BudgetType;
 import com.brxt.model.enums.StatementType;
 
@@ -29,7 +28,6 @@ public class BudgetStatement extends BaseObject {
 	
 	private static final long serialVersionUID = 1743254494015304403L;
 	protected Long id; 
-	protected ProjectInfo projectInfo;
 	protected Counterparty counterparty;	
 	private BigDecimal incomeTotal;
 	private BigDecimal budgetIncomeTotal;
@@ -60,14 +58,6 @@ public class BudgetStatement extends BaseObject {
 		this.id = id;
 	}
 	
-	@ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH}, optional=true)  
-	@JoinColumn(name="projectInfo_id")
-	public ProjectInfo getProjectInfo() {
-		return projectInfo;
-	}
-	public void setProjectInfo(ProjectInfo projectInfo) {
-		this.projectInfo = projectInfo;
-	}
 	
 	@ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH}, optional=true)  
 	@JoinColumn(name="counterparty_id") 
@@ -200,7 +190,6 @@ public class BudgetStatement extends BaseObject {
 	public int hashCode() {
 		int result;
         result = (counterparty != null ? counterparty.hashCode() : 0);
-        result = 29 * result + (projectInfo != null ? projectInfo.hashCode() : 0);
         result = 29 * result + (reportYear != null ? reportYear.hashCode() : 0);
         result = 29 * result + (reportMonth != null ? reportMonth.hashCode() : 0);
         return result;
@@ -220,9 +209,6 @@ public class BudgetStatement extends BaseObject {
 		return !(counterparty != null ? !counterparty
 				.equals(statement.counterparty)
 				: statement.counterparty != null)
-				&& !(projectInfo != null ? !projectInfo
-						.equals(statement.projectInfo)
-						: statement.projectInfo != null)
 				&& !(statementType != null ? !statementType
 						.equals(statement.statementType)
 						: statement.statementType != null)

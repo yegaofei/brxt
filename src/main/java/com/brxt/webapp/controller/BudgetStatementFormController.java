@@ -59,7 +59,7 @@ public class BudgetStatementFormController extends BaseSheetController {
 			counterparty = thisYear.getCounterparty();
 			bsm.setCounterpartyId(counterparty.getId());
 			bsm.setCounterpartyType(counterparty.getCounterpartyType());
-			projectInfo = thisYear.getProjectInfo();
+			projectInfo = projectInfoManager.get(Long.valueOf(projectInfoIdStr));
 			bsm.setProjectId(projectInfo.getId());
 			if(findCounterparty(projectInfo, counterparty.getId()) != null)
 			{
@@ -267,13 +267,32 @@ public class BudgetStatementFormController extends BaseSheetController {
 		{
 			cp = findGuarantor(projectInfo, counterpartyId);
 		}
+		Date reportTime = budgetStatementModel.getReportTime();
+		User currentUser = getCurrentUser();
+		
+		BudgetStatement thisYear = budgetStatementModel.getThisYear();
+        thisYear.setCounterparty(cp);
+        thisYear.setReportYear(getYear(reportTime));
+        thisYear.setReportMonth(getMonth(reportTime));
+        
+        boolean isNewThisYear = (thisYear.getId() == null);
+        if (isNewThisYear) {
+            // Add
+            BudgetStatement bs = financeSheetManager.findBudgetStatement(null, cp, getYear(reportTime), getMonth(reportTime).intValue());
+            if(bs != null) {
+                saveError(request, getText("finance.budgetSheet.existed", new String[]{ getYear(reportTime).toString(), getMonth(reportTime).toString()}, request.getLocale()));
+                return;
+            }
+            thisYear.setCreateUser(currentUser.getUsername());
+            thisYear.setCreateTime(new Date());
+        } else {
+            thisYear.setUpdateUser(currentUser.getUsername());
+            thisYear.setUpdateTime(new Date());
+        }
 		
 		BudgetStatement thisYearBudget = budgetStatementModel.getThisYearBudget();
-		thisYearBudget.setProjectInfo(projectInfo);
 		thisYearBudget.setCounterparty(cp);
-		
-		Date reportTime = budgetStatementModel.getReportTime();
-		if(thisYearBudget.getReportYear() != null && thisYearBudget.getReportYear().intValue() != getYear(reportTime).intValue() )
+		if(thisYearBudget.getReportYear() != null && thisYearBudget.getReportYear().intValue() != getYear(reportTime).intValue())
 		{
 			thisYearBudget.setId(null);
 		}
@@ -281,7 +300,6 @@ public class BudgetStatementFormController extends BaseSheetController {
 		thisYearBudget.setReportMonth((short) 0);
 		
 		boolean isNewThisYearBudget = (thisYearBudget.getId() == null);
-		User currentUser = getCurrentUser();
 		if (isNewThisYearBudget) {
 			// Add
 			thisYearBudget.setCreateUser(currentUser.getUsername());
@@ -291,22 +309,6 @@ public class BudgetStatementFormController extends BaseSheetController {
 			thisYearBudget.setUpdateTime(new Date());
 		}
 
-		BudgetStatement thisYear = budgetStatementModel.getThisYear();
-		thisYear.setProjectInfo(projectInfo);
-		thisYear.setCounterparty(cp);
-		thisYear.setReportYear(getYear(reportTime));
-		thisYear.setReportMonth(getMonth(reportTime));
-		
-		boolean isNewThisYear = (thisYear.getId() == null);
-		if (isNewThisYear) {
-			// Add
-			thisYear.setCreateUser(currentUser.getUsername());
-			thisYear.setCreateTime(new Date());
-		} else {
-			thisYear.setUpdateUser(currentUser.getUsername());
-			thisYear.setUpdateTime(new Date());
-		}
-		
 		financeSheetManager.saveBudgetStatements(thisYearBudget, thisYear);
 		updateProjectInfoStatus(projectInfo, true);
 		BudgetStatement budgetRatio = calculateBudgetRatio(thisYearBudget, thisYear);

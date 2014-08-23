@@ -1,6 +1,7 @@
 package com.brxt.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -105,10 +106,13 @@ public class FinanceSheetManagerImpl implements FinanceSheetManager {
 	
 	public List<FinanceStatement> getAll(ProjectInfo projectInfo) {
 		List<FinanceStatement> statements = new ArrayList<FinanceStatement>();
-		List<BudgetStatement> budgetStatements = budgetStatementDao.getAll(projectInfo);
-		List<CorporateBalanceSheet> corporateBalanceSheets = corpBalanceSheetDao.getAll(projectInfo);
-		List<InstituteBalanceSheet> instituteBalanceSheets = instBalanceDao.getAll(projectInfo);
-		List<ProfitStatement> profitStatements = profitStatementDao.getAll(projectInfo);
+		Set<Counterparty> counterparties = new HashSet<Counterparty>();
+		counterparties.addAll(projectInfo.getCounterparties());
+		counterparties.addAll(projectInfo.getGuarantors());
+		List<BudgetStatement> budgetStatements = budgetStatementDao.getAll(counterparties);
+		List<CorporateBalanceSheet> corporateBalanceSheets = corpBalanceSheetDao.getAll(counterparties);
+		List<InstituteBalanceSheet> instituteBalanceSheets = instBalanceDao.getAll(counterparties);
+		List<ProfitStatement> profitStatements = profitStatementDao.getAll(counterparties);
 		
 		Set<Counterparty> cp = projectInfo.getCounterparties();
 		Set<Counterparty> ga = projectInfo.getGuarantors();

@@ -23,6 +23,7 @@ import com.brxt.model.CreditInformation;
 import com.brxt.model.ProjectInfo;
 import com.brxt.model.enums.TradingRelationship;
 import com.brxt.service.CreditInformationManager;
+import com.brxt.service.ProjectInfoManager;
 
 
 @Controller
@@ -30,6 +31,7 @@ import com.brxt.service.CreditInformationManager;
 public class CreditInformationController extends BaseFormController{
 	
 	private CreditInformationManager creditInformationManager;
+	private ProjectInfoManager projectInfoManager;
 
 	@Autowired
 	public void setCreditInformationManager(
@@ -37,6 +39,11 @@ public class CreditInformationController extends BaseFormController{
 		this.creditInformationManager = creditInformationManager;
 	}
 	
+	@Autowired
+    public void setProjectInfoManager(
+            @Qualifier("projectInfoManager") ProjectInfoManager projectInfoManager) {
+        this.projectInfoManager = projectInfoManager;
+    }
 	
 	public CreditInformationController() {
 		setCancelView("redirect:/projectInfo");
@@ -56,8 +63,7 @@ public class CreditInformationController extends BaseFormController{
 			ciList = creditInformationManager.findByProjId(Long.valueOf(projectInfoId));
 			
 			if(ciList != null && ciList.size() > 0) {
-			    CreditInformation ci = ciList.get(0); 
-			    project = ci.getProjectInfo();
+			    project = projectInfoManager.get(Long.valueOf(projectInfoId));
                 cp = project.getCounterparties();
                 ga = project.getGuarantors();
 			} else {

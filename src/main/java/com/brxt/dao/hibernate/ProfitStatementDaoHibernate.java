@@ -1,6 +1,7 @@
 package com.brxt.dao.hibernate;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.criterion.Order;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Repository;
 import com.brxt.dao.FinancialSheetDao;
 import com.brxt.model.Counterparty;
 import com.brxt.model.ProjectInfo;
-import com.brxt.model.finance.BudgetStatement;
 import com.brxt.model.finance.ProfitStatement;
 
 @Repository("profitStatementDao")
@@ -28,7 +28,7 @@ public class ProfitStatementDaoHibernate extends
 			Counterparty counterparty, Integer year, Short month) {
 		List<ProfitStatement> results = getSession()
 				.createCriteria(ProfitStatement.class)
-				.add(Restrictions.eq("projectInfo", projectInfo))
+				//.add(Restrictions.eq("projectInfo", projectInfo))
 				.add(Restrictions.eq("counterparty", counterparty))
 				.add(Restrictions.eq("reportYear", year))
 				.add(Restrictions.eq("reportMonth", month)).list();
@@ -44,7 +44,7 @@ public class ProfitStatementDaoHibernate extends
 			Counterparty counterparty) {
 		List<ProfitStatement> results = getSession()
 				.createCriteria(ProfitStatement.class)
-				.add(Restrictions.eq("projectInfo", projectInfo))
+				//.add(Restrictions.eq("projectInfo", projectInfo))
 				.add(Restrictions.eq("counterparty", counterparty))
 				.addOrder(Order.desc("reportYear"))
 				.addOrder(Order.desc("reportMonth")).list();
@@ -56,10 +56,10 @@ public class ProfitStatementDaoHibernate extends
 	}
 
 	@Override
-	public List<ProfitStatement> getAll(ProjectInfo projectInfo) {
+	public List<ProfitStatement> getAll(Set<Counterparty> counterparties) {
 		List<ProfitStatement> results = getSession()
 				.createCriteria(ProfitStatement.class)
-				.add(Restrictions.eq("projectInfo", projectInfo))
+				.add(Restrictions.in("counterparty", counterparties))
 				.list();
 		return results;
 	}

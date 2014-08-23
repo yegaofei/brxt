@@ -34,7 +34,7 @@ public class CorpBalanceSheetDaoTest  extends BaseDaoTestCase{
 		{
 			Counterparty cp = it.next();
 			CorporateBalanceSheet cbs = new CorporateBalanceSheet();
-			cbs.setProjectInfo(project);
+			
 			cbs.setCounterparty(cp);
 			cbs.setReportYear(2014);
 			cbs.setReportMonth((short)5);
@@ -56,7 +56,7 @@ public class CorpBalanceSheetDaoTest  extends BaseDaoTestCase{
 		{
 			Counterparty cp = it.next();
 			CorporateBalanceSheet cbs = new CorporateBalanceSheet();
-			cbs.setProjectInfo(project);
+			
 			cbs.setCounterparty(cp);
 			cbs.setReportYear(2014);
 			cbs.setReportMonth((short)5);
@@ -84,7 +84,7 @@ public class CorpBalanceSheetDaoTest  extends BaseDaoTestCase{
 		{
 			Counterparty cp = it.next();
 			CorporateBalanceSheet cbs = new CorporateBalanceSheet();
-			cbs.setProjectInfo(project);
+			
 			cbs.setCounterparty(cp);
 			cbs.setReportYear(2014);
 			cbs.setReportMonth((short)5);
@@ -92,7 +92,7 @@ public class CorpBalanceSheetDaoTest  extends BaseDaoTestCase{
 			corpBalanceSheetDao.save(cbs);
 			
 			CorporateBalanceSheet cbsOld = new CorporateBalanceSheet();
-			cbsOld.setProjectInfo(project);
+			
 			cbsOld.setCounterparty(cp);
 			cbsOld.setReportYear(2015);
 			cbsOld.setReportMonth((short)7);

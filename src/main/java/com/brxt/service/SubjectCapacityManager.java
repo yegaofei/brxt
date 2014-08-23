@@ -11,7 +11,6 @@ import com.brxt.model.SubjectCapacity;
 
 public interface SubjectCapacityManager extends GenericManager<SubjectCapacity, Long> { 
 
-	public List<SubjectCapacity> findByProjIdCpId(Long projectInfoId, Long counterpartyId);
 	
 	public List<SubjectCapacity> findByProjIdCpId(ProjectInfo projectInfo, Counterparty counterparty, Date startTime, Date endTime);
 	

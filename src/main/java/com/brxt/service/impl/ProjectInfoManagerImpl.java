@@ -152,5 +152,9 @@ public class ProjectInfoManagerImpl extends GenericManagerImpl<ProjectInfo, Long
 	public List<Manager> getAllDelegateManagers() {
 	    return managerDao.findByType(ManagerType.DELEGATE_MANAGER);
 	}
+	
+	public int countProjectInfo(Counterparty counterparty) {
+	    return counterpartyDao.countProjectInfoId(counterparty);
+	}
 
 }

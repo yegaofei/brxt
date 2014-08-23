@@ -36,7 +36,7 @@ public class InvestmentProject extends BaseObject  {
 	private BigDecimal investmentAmount; //截至本期已投资额
 	private BigDecimal totalAmount; //预计总投资额
 	private String description; //项目进度描述
-	private Boolean delayed;
+	private Boolean delayed = Boolean.FALSE;
 	private String comments;
 	
 	private String evaluation; //资金投向综合评价

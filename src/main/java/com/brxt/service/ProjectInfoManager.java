@@ -38,6 +38,7 @@ public interface ProjectInfoManager extends GenericManager<ProjectInfo, Long> {
     public List<Manager> getAllRiskManagers();
 
     public List<Manager> getAllDelegateManagers();
-
+    
+    public int countProjectInfo(Counterparty counterparty);
 	
 }

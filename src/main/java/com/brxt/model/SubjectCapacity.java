@@ -22,13 +22,8 @@ import org.hibernate.annotations.Type;
 
 @NamedNativeQueries({
 	@NamedNativeQuery(
-	name = "searchByProjectInfoIdCounterpartyId",
-	query = "select * from subject_capacity s where s.projectInfo_id = :projectInfo_id and s.counterparty_id = :counterparty_id",
-        resultClass = SubjectCapacity.class
-	),
-	@NamedNativeQuery(
 			name = "searchByProjectInfoId",
-			query = "select * from subject_capacity s where s.projectInfo_id = :projectInfo_id",
+			query = "select s.* from subject_capacity s, project_info_counterparties pc where s.counterparty_id = pc.counterparty_id and pc.project_info_id=:projectInfo_id",
 		        resultClass = SubjectCapacity.class
 			)
 })
@@ -38,7 +33,6 @@ public class SubjectCapacity extends BaseObject {
 
 	private Long id;
 	private Counterparty counterparty; // 交易对手id
-	private ProjectInfo projectInfo; // 项目id
 	private Integer reportSeason; // 报表季度
 	private Date checkTime; // 排查时间
 	private String licenseVerificationDate; // 营业执照最新年检日期
@@ -92,16 +86,6 @@ public class SubjectCapacity extends BaseObject {
 
 	public void setCounterparty(Counterparty counterparty) {
 		this.counterparty = counterparty;
-	}
-
-	@ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH}, optional=true)  
-	@JoinColumn(name="projectInfo_id") 
-	public ProjectInfo getProjectInfo() {
-		return projectInfo;
-	}
-
-	public void setProjectInfo(ProjectInfo projectInfo) {
-		this.projectInfo = projectInfo;
 	}
 
 	public Integer getReportSeason() {
@@ -356,7 +340,7 @@ public class SubjectCapacity extends BaseObject {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
-				.append(this.counterparty).append(this.projectInfo)
+				.append(this.counterparty)
 				.append(this.checkTime).toString();
 	}
 
@@ -374,9 +358,6 @@ public class SubjectCapacity extends BaseObject {
 		return !(counterparty != null ? !counterparty
 				.equals(subjectCapacity.counterparty)
 				: subjectCapacity.counterparty != null)
-				&& !(projectInfo != null ? !projectInfo
-						.equals(subjectCapacity.projectInfo)
-						: subjectCapacity.projectInfo != null)
 				&& !(checkTime != null ? !checkTime
 						.equals(subjectCapacity.checkTime)
 						: subjectCapacity.checkTime != null);
@@ -386,7 +367,6 @@ public class SubjectCapacity extends BaseObject {
 	public int hashCode() {
 		int result;
         result = (counterparty != null ? counterparty.hashCode() : 0);
-        result = 29 * result + (projectInfo != null ? projectInfo.hashCode() : 0);
         result = 29 * result + (checkTime != null ? checkTime.hashCode() : 0);
         return result;
 	}

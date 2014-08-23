@@ -2,6 +2,7 @@ package com.brxt.dao;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -15,7 +16,7 @@ public interface FinancialSheetDao<T, PK extends Serializable> extends GenericDa
 	
 	public T findLatest(ProjectInfo projectInfo, Counterparty counterparty);
 	
-	public List<T> getAll(ProjectInfo projectInfo);
+	public List<T> getAll(Set<Counterparty> counterparties);
 	
 	public String getTableName();
 

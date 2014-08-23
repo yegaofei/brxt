@@ -93,9 +93,22 @@ public class SubjectCapacityController extends BaseFormController {
 				mav.setViewName("redirect:/subjectCapacityForm?id=" + subjectCapacityId);
 				break;
 			case "Delete":				
-				subjectCapacityManager.remove(Long.valueOf(subjectCapacityId));
-				List<SubjectCapacity> subjectCapacityList = fetchSubjectCapacityList(request);
-				mav.addObject("subjectCapacityList", subjectCapacityList);
+			    Long id = Long.valueOf(subjectCapacityId);
+			    SubjectCapacity scp  = subjectCapacityManager.get(id);
+			    List<SubjectCapacity> subjectCapacityList = fetchSubjectCapacityList(request);
+                mav.addObject("subjectCapacityList", subjectCapacityList);
+			    if (scp != null) {
+			        int i = projectInfoManager.countProjectInfo(scp.getCounterparty());
+			        if (i > 1) {
+			            saveError(request, getText("subjectCapacity.delete.error", locale));
+			            break;
+			        } else if (i == 1) {
+			            subjectCapacityManager.remove(id);
+			            subjectCapacityList = fetchSubjectCapacityList(request);
+		                mav.addObject("subjectCapacityList", subjectCapacityList);
+			        }
+			    }
+				
 				if(subjectCapacityList == null || subjectCapacityList.isEmpty())
 				{
 					String projectInfoId = (String) request.getSession().getAttribute(SessionAttributes.PROJECT_INFO_ID);

@@ -109,7 +109,9 @@ public class CreditInforFormController extends BaseFormController {
 			return creditInformation;
 		}
 		// Add
-		return new CreditInformation();
+		CreditInformation ci = new CreditInformation();
+		ci.setOverdue(false);
+		return ci;
 	}
 	
 	@ModelAttribute("projectInfoId")
@@ -161,7 +163,6 @@ public class CreditInforFormController extends BaseFormController {
 				User currentUser = getCurrentUser();
 				Long creditInformationId = creditInformation.getId();
 				ProjectInfo projectInfo = projectInfoManager.get(projectInfoId);
-				creditInformation.setProjectInfo(projectInfo);
 				//Lookup the underlying counterparty
 				creditInformation.setCounterparty(lookupCounterparty(projectInfo, counterpartyId));
 				
