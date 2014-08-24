@@ -1,6 +1,8 @@
 <%@ include file="/common/taglibs.jsp"%>
 <head>
     <title><fmt:message key="report.add.title"/></title>
+    <script type="text/javascript" src="${base}/scripts/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="${base}/styles/jquery-ui.min.css">
 </head>
 <div class="col-sm-10">
     <h2><fmt:message key='report.add.heading'/></h2>
@@ -8,11 +10,9 @@
     <form:form commandName="riskControlReport" method="post" action="${ctx}/reports/addReport" cssClass="well">
     	
     <div class="row">	
-    	<div class="col-sm-2">
-    	<appfuse:label styleClass="control-label" key="report.add.projectName"/>
-        <form:select path="projectInfo.projectName" id="projectName" cssClass="form-control input-sm" >    		
-			<form:options items="${allProjectNames}" />
-		</form:select>   
+    	<div class="col-sm-8">
+    	<appfuse:label styleClass="control-label" key="report.add.projectName"/>  
+		<form:input path="projectInfo.projectName" id="projectName" cssClass="form-control input-sm" />
 		</div>
 		
 		<div class="col-sm-2">
@@ -39,4 +39,23 @@
     </form:form>
 </div>
 
+<script language="JavaScript" type="text/javascript">
 
+var availableNames = []; 
+
+$(document).ready(function() {
+	 $.getJSON("${ctx}/reports/addReport/allProjectNames", function(data) {
+		 $.each(data, function(i, item){
+			 availableNames.push(item);
+		});
+	});    
+});
+
+
+$(function(){
+    $("#projectName").autocomplete({
+	 source: availableNames
+    });
+});
+
+</script>

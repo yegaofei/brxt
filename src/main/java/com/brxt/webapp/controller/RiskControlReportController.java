@@ -23,6 +23,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.brxt.model.Counterparty;
@@ -1205,16 +1206,6 @@ public class RiskControlReportController extends BaseSheetController {
     @RequestMapping(value = "/reports/addReport*", method = RequestMethod.GET)
     public ModelAndView addReport() {
         ModelAndView mav = new ModelAndView("/reports/addReport");
-        Map<String, String> projectNames = new TreeMap<String, String>();
-        List<String> nameList = projectInfoManager.getAllProjectNames();
-        if (nameList != null && !nameList.isEmpty()) {
-            for (int i = 0; i < nameList.size(); i++) {
-                String name = nameList.get(i);
-                projectNames.put(name, name);
-            }
-        }
-        mav.addObject("allProjectNames", projectNames);
-
         Map<String, String> allReportSeasons = new TreeMap<String, String>();
         int startYear = getCurrentYear() - 3;
         int endYear = getCurrentYear() + 3;
@@ -1231,6 +1222,11 @@ public class RiskControlReportController extends BaseSheetController {
         mav.addObject("riskControlReport", report);
         return mav;
     }
+    
+    @RequestMapping(value = "/reports/addReport/allProjectNames*", method = RequestMethod.GET)
+    public @ResponseBody List<String> getAllProjectNames() {        
+        return projectInfoManager.getAllProjectNames();
+    }
 
     @RequestMapping(value = "/reports/addReport*", method = RequestMethod.POST)
     public ModelAndView addReport(final HttpServletRequest request) throws ParseException {
@@ -1238,6 +1234,11 @@ public class RiskControlReportController extends BaseSheetController {
         String projectName = request.getParameter("projectInfo.projectName");
         String reportSeason = request.getParameter("reportSeason");
         ProjectInfo projectInfo = projectInfoManager.findByProjectName(projectName);
+        if(projectInfo == null) {
+            saveError(request, getText("report.add.error.project.notFound", new String[]{projectName}, request.getLocale()));
+            return mav;
+        }
+        
         RiskControlReport report = reportManager.findRiskControlReport(projectInfo, reportSeason);
         if (report != null) {
             saveError(request, getText("report.add.error.existd", new String[]{projectInfo.getProjectName(), reportSeason}, request.getLocale()));
