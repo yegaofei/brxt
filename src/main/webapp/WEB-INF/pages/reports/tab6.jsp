@@ -84,56 +84,83 @@
 					<td><fmt:message key="instBalanceSheet.assetTotal"/></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.prevCorpBalanceSheet.totalAsset / 10000}" /></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.currCorpBalanceSheet.totalAsset / 10000}" /></td>
-					<td><fmt:formatNumber type="percent" value="${financeCheckTab6.corpBalanceSheetChanges.totalAsset}" /></td>
+					<td>
+					   <fmt:formatNumber type="percent" value="${financeCheckTab6.corpBalanceSheetChanges.totalAsset}" />
+					   <c:if test="${empty financeCheckTab6.corpBalanceSheetChanges.totalAsset}">-</c:if>
+					</td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.cash"/></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.prevCorpBalanceSheet.cash / 10000}" /></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.currCorpBalanceSheet.cash / 10000}" /></td>
-					<td><fmt:formatNumber type="percent" value="${financeCheckTab6.corpBalanceSheetChanges.cash}" /></td>
+					<td>
+					   <fmt:formatNumber type="percent" value="${financeCheckTab6.corpBalanceSheetChanges.cash}" />
+					   <c:if test="${empty financeCheckTab6.corpBalanceSheetChanges.cash}">-</c:if>
+					</td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.inventory"/></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.prevCorpBalanceSheet.inventory / 10000}" /></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.currCorpBalanceSheet.inventory / 10000}" /></td>
-					<td><fmt:formatNumber type="percent" value="${financeCheckTab6.corpBalanceSheetChanges.inventory}" /></td>
+					<td>
+					   <fmt:formatNumber type="percent" value="${financeCheckTab6.corpBalanceSheetChanges.inventory}" />
+					   <c:if test="${empty financeCheckTab6.corpBalanceSheetChanges.inventory}">-</c:if>
+					</td>
 				</tr>
 			
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.totalDebt"/></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.prevCorpBalanceSheet.totalDebt / 10000}" /></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.currCorpBalanceSheet.totalDebt / 10000}" /></td>
-					<td><fmt:formatNumber type="percent" value="${financeCheckTab6.corpBalanceSheetChanges.totalDebt}" /></td>
+					<td>
+					   <fmt:formatNumber type="percent" value="${financeCheckTab6.corpBalanceSheetChanges.totalDebt}" />
+					   <c:if test="${empty financeCheckTab6.corpBalanceSheetChanges.totalDebt}">-</c:if>
+					</td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.prereceive"/></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.prevCorpBalanceSheet.prereceive / 10000}" /></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.currCorpBalanceSheet.prereceive / 10000}" /></td>
-					<td><fmt:formatNumber type="percent" value="${financeCheckTab6.corpBalanceSheetChanges.prereceive}" /></td>
+					<td>
+					   <fmt:formatNumber type="percent" value="${financeCheckTab6.corpBalanceSheetChanges.prereceive}" />
+					   <c:if test="${empty financeCheckTab6.corpBalanceSheetChanges.prereceive}">-</c:if>
+					</td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.shortLoan"/></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.prevCorpBalanceSheet.shortLoan / 10000}" /></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.currCorpBalanceSheet.shortLoan / 10000}" /></td>
-					<td><fmt:formatNumber type="percent" value="${financeCheckTab6.corpBalanceSheetChanges.shortLoan}" /></td>
+					<td>
+					   <fmt:formatNumber type="percent" value="${financeCheckTab6.corpBalanceSheetChanges.shortLoan}" />
+					   <c:if test="${empty financeCheckTab6.corpBalanceSheetChanges.shortLoan}">-</c:if>
+					</td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.longLoan"/></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.prevCorpBalanceSheet.longLoan / 10000}" /></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.currCorpBalanceSheet.longLoan / 10000}" /></td>
-					<td><fmt:formatNumber type="percent" value="${financeCheckTab6.corpBalanceSheetChanges.longLoan}" /></td>
+					<td>
+					   <fmt:formatNumber type="percent" value="${financeCheckTab6.corpBalanceSheetChanges.longLoan}" />
+					   <c:if test="${empty financeCheckTab6.corpBalanceSheetChanges.longLoan}">-</c:if>
+					</td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.netAsset"/></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.prevCorpBalanceSheet.netAsset / 10000}" /></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.currCorpBalanceSheet.netAsset / 10000}" /></td>
-					<td><fmt:formatNumber type="percent" value="${financeCheckTab6.corpBalanceSheetChanges.netAsset}" /></td>
+					<td>
+					   <fmt:formatNumber type="percent" value="${financeCheckTab6.corpBalanceSheetChanges.netAsset}" />
+					   <c:if test="${empty financeCheckTab6.corpBalanceSheetChanges.netAsset}">-</c:if>
+					</td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.actualCapital"/></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.prevCorpBalanceSheet.actualCapital / 10000}" /></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.currCorpBalanceSheet.actualCapital / 10000}" /></td>
-					<td><fmt:formatNumber type="percent" value="${financeCheckTab6.corpBalanceSheetChanges.actualCapital}" /></td>
+					<td>
+					   <fmt:formatNumber type="percent" value="${financeCheckTab6.corpBalanceSheetChanges.actualCapital}" />
+					   <c:if test="${empty financeCheckTab6.corpBalanceSheetChanges.actualCapital}">-</c:if>
+					</td>
 				</tr>
 				<tr>
 					<td><fmt:message key="profitStatement.operatingIncome"/></td>
@@ -344,56 +371,83 @@
 					<td><fmt:message key="instBalanceSheet.assetTotal"/></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.prevCorpBalanceSheet.totalAsset / 10000}" /></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.currCorpBalanceSheet.totalAsset / 10000}" /></td>
-					<td><fmt:formatNumber type="percent" value="${financeCheckTab6.corpBalanceSheetChanges.totalAsset}" /></td>
+					<td>
+                       <fmt:formatNumber type="percent" value="${financeCheckTab6.corpBalanceSheetChanges.totalAsset}" />
+                       <c:if test="${empty financeCheckTab6.corpBalanceSheetChanges.totalAsset}">-</c:if>
+                    </td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.cash"/></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.prevCorpBalanceSheet.cash / 10000}" /></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.currCorpBalanceSheet.cash / 10000}" /></td>
-					<td><fmt:formatNumber type="percent" value="${financeCheckTab6.corpBalanceSheetChanges.cash}" /></td>
+					<td>
+                       <fmt:formatNumber type="percent" value="${financeCheckTab6.corpBalanceSheetChanges.cash}" />
+                       <c:if test="${empty financeCheckTab6.corpBalanceSheetChanges.cash}">-</c:if>
+                    </td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.inventory"/></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.prevCorpBalanceSheet.inventory / 10000}" /></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.currCorpBalanceSheet.inventory / 10000}" /></td>
-					<td><fmt:formatNumber type="percent" value="${financeCheckTab6.corpBalanceSheetChanges.inventory}" /></td>
+					<td>
+                       <fmt:formatNumber type="percent" value="${financeCheckTab6.corpBalanceSheetChanges.inventory}" />
+                       <c:if test="${empty financeCheckTab6.corpBalanceSheetChanges.inventory}">-</c:if>
+                    </td>
 				</tr>
 			
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.totalDebt"/></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.prevCorpBalanceSheet.totalDebt / 10000}" /></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.currCorpBalanceSheet.totalDebt / 10000}" /></td>
-					<td><fmt:formatNumber type="percent" value="${financeCheckTab6.corpBalanceSheetChanges.totalDebt}" /></td>
+					<td>
+                       <fmt:formatNumber type="percent" value="${financeCheckTab6.corpBalanceSheetChanges.totalDebt}" />
+                       <c:if test="${empty financeCheckTab6.corpBalanceSheetChanges.totalDebt}">-</c:if>
+                    </td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.prereceive"/></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.prevCorpBalanceSheet.prereceive / 10000}" /></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.currCorpBalanceSheet.prereceive / 10000}" /></td>
-					<td><fmt:formatNumber type="percent" value="${financeCheckTab6.corpBalanceSheetChanges.prereceive}" /></td>
+					<td>
+                       <fmt:formatNumber type="percent" value="${financeCheckTab6.corpBalanceSheetChanges.prereceive}" />
+                       <c:if test="${empty financeCheckTab6.corpBalanceSheetChanges.prereceive}">-</c:if>
+                    </td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.shortLoan"/></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.prevCorpBalanceSheet.shortLoan / 10000}" /></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.currCorpBalanceSheet.shortLoan / 10000}" /></td>
-					<td><fmt:formatNumber type="percent" value="${financeCheckTab6.corpBalanceSheetChanges.shortLoan}" /></td>
+					<td>
+                       <fmt:formatNumber type="percent" value="${financeCheckTab6.corpBalanceSheetChanges.shortLoan}" />
+                       <c:if test="${empty financeCheckTab6.corpBalanceSheetChanges.shortLoan}">-</c:if>
+                    </td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.longLoan"/></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.prevCorpBalanceSheet.longLoan / 10000}" /></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.currCorpBalanceSheet.longLoan / 10000}" /></td>
-					<td><fmt:formatNumber type="percent" value="${financeCheckTab6.corpBalanceSheetChanges.longLoan}" /></td>
+					<td>
+                       <fmt:formatNumber type="percent" value="${financeCheckTab6.corpBalanceSheetChanges.longLoan}" />
+                       <c:if test="${empty financeCheckTab6.corpBalanceSheetChanges.longLoan}">-</c:if>
+                    </td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.netAsset"/></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.prevCorpBalanceSheet.netAsset / 10000}" /></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.currCorpBalanceSheet.netAsset / 10000}" /></td>
-					<td><fmt:formatNumber type="percent" value="${financeCheckTab6.corpBalanceSheetChanges.netAsset}" /></td>
+					<td>
+                       <fmt:formatNumber type="percent" value="${financeCheckTab6.corpBalanceSheetChanges.netAsset}" />
+                       <c:if test="${empty financeCheckTab6.corpBalanceSheetChanges.netAsset}">-</c:if>
+                    </td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.actualCapital"/></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.prevCorpBalanceSheet.actualCapital / 10000}" /></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.currCorpBalanceSheet.actualCapital / 10000}" /></td>
-					<td><fmt:formatNumber type="percent" value="${financeCheckTab6.corpBalanceSheetChanges.actualCapital}" /></td>
+					<td>
+                       <fmt:formatNumber type="percent" value="${financeCheckTab6.corpBalanceSheetChanges.actualCapital}" />
+                       <c:if test="${empty financeCheckTab6.corpBalanceSheetChanges.actualCapital}">-</c:if>
+                    </td>
 				</tr>
 				<tr>
 					<td><fmt:message key="profitStatement.operatingIncome"/></td>

@@ -16,44 +16,37 @@ import com.brxt.model.ProjectInfo;
 import com.brxt.model.SubjectCapacity;
 
 @Repository("subjectCapacityDao")
-public class SubjectCapacityDaoHibernate extends
-GenericDaoHibernate<SubjectCapacity, Long> implements SubjectCapacityDao{
+public class SubjectCapacityDaoHibernate extends GenericDaoHibernate<SubjectCapacity, Long> implements SubjectCapacityDao {
 
-	public SubjectCapacityDaoHibernate() {
-		super(SubjectCapacity.class);
-	}	
-	
+    public SubjectCapacityDaoHibernate() {
+        super(SubjectCapacity.class);
+    }
 
-	@Override
-	public List<SubjectCapacity> findByProjId(Long projectInfoId) {
-		Map<String, Object> queryParams = new HashMap<String, Object>();
-		queryParams.put("projectInfo_id", projectInfoId);
-		return findByNamedQuery("searchByProjectInfoId", queryParams);
-	}
+    @Override
+    public List<SubjectCapacity> findByProjId(Long projectInfoId) {
+        Map<String, Object> queryParams = new HashMap<String, Object>();
+        queryParams.put("projectInfo_id", projectInfoId);
+        return findByNamedQuery("searchByProjectInfoId", queryParams);
+    }
 
-	@Override
-	public List<SubjectCapacity> findByProjIdCpId(ProjectInfo projectInfo,
-			Counterparty counterparty, Date startDate, Date endDate) {
-		Criteria criteria = getSession().createCriteria(SubjectCapacity.class);
-		//criteria.add(Restrictions.eq("projectInfo", projectInfo));
-		criteria.add(Restrictions.eq("counterparty", counterparty));
-		criteria.add(Restrictions.ge("checkTime", startDate));
-		criteria.add(Restrictions.le("checkTime", endDate));
-		return criteria.list();
-	}
-	
-	public SubjectCapacity find(ProjectInfo projectInfo,
-			Counterparty counterparty, Date checkTime) {
-		Criteria criteria = getSession().createCriteria(SubjectCapacity.class);
-		criteria.add(Restrictions.eq("projectInfo", projectInfo));
-		criteria.add(Restrictions.eq("counterparty", counterparty));
-		criteria.add(Restrictions.eq("checkTime", checkTime));
-		List<SubjectCapacity> results = criteria.list();
-		if(results != null && !results.isEmpty())
-		{
-			return results.get(0);
-		}
-		return null;
-	}
+    @Override
+    public List<SubjectCapacity> findByProjIdCpId(ProjectInfo projectInfo, Counterparty counterparty, Date startDate, Date endDate) {
+        Criteria criteria = getSession().createCriteria(SubjectCapacity.class);
+        criteria.add(Restrictions.eq("counterparty", counterparty));
+        criteria.add(Restrictions.ge("checkTime", startDate));
+        criteria.add(Restrictions.le("checkTime", endDate));
+        return criteria.list();
+    }
+
+    public SubjectCapacity find(ProjectInfo projectInfo, Counterparty counterparty, Date checkTime) {
+        Criteria criteria = getSession().createCriteria(SubjectCapacity.class);
+        criteria.add(Restrictions.eq("counterparty", counterparty));
+        criteria.add(Restrictions.eq("checkTime", checkTime));
+        List<SubjectCapacity> results = criteria.list();
+        if (results != null && !results.isEmpty()) {
+            return results.get(0);
+        }
+        return null;
+    }
 
 }

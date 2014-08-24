@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.brxt.dao.CreditInformationDao;
 import com.brxt.model.Counterparty;
 import com.brxt.model.CreditInformation;
-import com.brxt.model.ProjectInfo;
 import com.brxt.service.CreditInformationManager;
 
 @Service("creditInformationManager")
@@ -25,14 +24,12 @@ public class CreditInformationManagerImpl extends GenericManagerImpl<CreditInfor
 	
 	@Override
 	public List<CreditInformation> findByProjId(Long projectInfoId) {
-		
 		return creditInformationDao.findByProjId(projectInfoId);
 	}
 
 	@Override
-	public List<CreditInformation> findByProjIdCpId(ProjectInfo projectInfo,
-			Counterparty counterparty, Date startTime, Date endTime) {
-		return creditInformationDao.findByProjIdCpId(projectInfo, counterparty, startTime, endTime);
+	public List<CreditInformation> findByCounterpartyId(Counterparty counterparty, Date startTime, Date endTime) {
+		return creditInformationDao.findByCounterpartyId(counterparty, startTime, endTime);
 	}
 
 }

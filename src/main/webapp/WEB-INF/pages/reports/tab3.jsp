@@ -2,6 +2,7 @@
 	<div class="col-lg-12">
 		<div class="well form-horizontal">
 			<fieldset>
+				<c:if test="${not empty investmentStatus}"> 
 				<div class="form-group">
 					<label for="investmentTab3" class="col-lg-3 control-label"><fmt:message
 							key="investmentProject.name" /></label>
@@ -22,9 +23,9 @@
 				</div>
 
 				<div class="form-group">
-					<label for="projectEndTime" class="col-lg-3 control-label"><fmt:message
-							key="projectProgress.deadline" /></label>
-					<div class="col-lg-4">
+					<label for="projectEndTime" class="col-lg-3 control-label"><fmt:message key="projectProgress.deadline" /></label>
+					<div class="row">
+					<div class="col-lg-3">
 						<select id="projectEndTime" name="projectEndTime" class="form-control input-sm">
 							<c:if test="${not empty projectEndTimeList}">
 							 <c:forEach var="projectEndTimeVar" items="${projectEndTimeList}" varStatus="status">
@@ -33,9 +34,23 @@
 							</c:if>
 						</select>
 					</div>
+					<div class="help-inline" style="display:none;" id="errMsgProjectEndTime">
+					   <span class="text-danger"><fmt:message key="report.investmentProjects.projectEndTime.empty"/></span>
+					   <a href="${ctx}/projectInfoForm?id=${param.id}" class="alert-link"><fmt:message key="report.nav.back.projectInfoForm"/></a>
+					</div>
+					</div>
 				</div>
-				<c:if
-					test="${not empty selectedInvestmentStatus and selectedInvestmentStatus.projectType == 'real_estate'}">
+				</c:if>
+				
+				<c:if test="${empty investmentStatus}"> 
+				    <div class="alert alert-dismissable alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        <span class="text-danger"><fmt:message key="report.investmentProjects.empty"/></span>
+                        <a href="${ctx}/projectInfoForm?id=${param.id}" class="alert-link"><fmt:message key="report.nav.back.projectInfoForm"/></a>
+                    </div>
+				</c:if>
+				
+				<c:if test="${not empty selectedInvestmentStatus and selectedInvestmentStatus.projectType == 'real_estate'}">
 					<div class="form-group">
 						<label for="policyChanges" class="col-lg-3 control-label"><fmt:message
 								key="investmentProject.policyChanges" /></label>
@@ -229,6 +244,7 @@
 <c:if test="${not empty param.preview and param.preview}">
 	<div class="form-horizontal">
 		<fieldset disabled>
+		  <c:if test="${not empty riskControlReport.policyChanges}">
 			<div class="form-group">
 				<label for="policyChanges" class="col-lg-3 control-label"><fmt:message
 						key="investmentProject.policyChanges" /></label>
@@ -236,16 +252,19 @@
 					<textarea id="policyChanges" class="form-control input-sm"><c:out value="${riskControlReport.policyChanges}"/></textarea>
 				</div>
 			</div>
+		  </c:if>	
+		  
+		  <c:if test="${not empty riskControlReport.priceChanges}">
 			<div class="form-group">
-				<label for="policyChanges" class="col-lg-3 control-label"><fmt:message
-						key="investmentProject.priceChanges" /></label>
+				<label for="policyChanges" class="col-lg-3 control-label"><fmt:message key="investmentProject.priceChanges" /></label>
 				<div class="col-lg-9">
 					<textarea class="form-control" rows="4" id="priceChanges"
 						name="priceChanges"><c:out value="${riskControlReport.priceChanges}" /></textarea>
-					<span class="help-block"><fmt:message
-							key="investmentProject.priceChanges.help" /></span>
+					<span class="help-block"><fmt:message key="investmentProject.priceChanges.help" /></span>
 				</div>
 			</div>
+		  </c:if>
+			
 			<div class="form-group">
 				<label for="investmentEvaluation" class="col-lg-3 control-label"><fmt:message
 						key="investmentProject.evaluation" /></label>
@@ -394,6 +413,11 @@
 	var reply12 = function(data) {
 		if (data != null && typeof data == 'object') {
 			$("#projectEndTime").empty();
+			if(data.length == 0) {
+				$("#errMsgProjectEndTime").show();
+				return;
+			}
+			$("#errMsgProjectEndTime").hide();
 			$.each(data, function(i) {
 				$("#projectEndTime").append("<option value='" + data[i] + "'>" + data[i] + "</option>");
 			});

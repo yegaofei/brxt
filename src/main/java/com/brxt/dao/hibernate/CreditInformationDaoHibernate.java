@@ -14,7 +14,6 @@ import org.springframework.stereotype.Repository;
 import com.brxt.dao.CreditInformationDao;
 import com.brxt.model.Counterparty;
 import com.brxt.model.CreditInformation;
-import com.brxt.model.ProjectInfo;
 
 @Repository("creditInformationDao")
 public class CreditInformationDaoHibernate extends
@@ -32,10 +31,8 @@ GenericDaoHibernate<CreditInformation, Long> implements CreditInformationDao{
 	}
 
 	@Override
-	public List<CreditInformation> findByProjIdCpId(ProjectInfo projectInfo,
-			Counterparty counterparty, Date startDate, Date endDate) {
+	public List<CreditInformation> findByCounterpartyId(Counterparty counterparty, Date startDate, Date endDate) {
 		Criteria criteria = getSession().createCriteria(CreditInformation.class);
-		criteria.add(Restrictions.eq("projectInfo", projectInfo));
 		criteria.add(Restrictions.eq("counterparty", counterparty));
 		criteria.add(Restrictions.ge("queryTime", startDate));
 		criteria.add(Restrictions.le("queryTime", endDate));

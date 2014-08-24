@@ -2,6 +2,7 @@
 <div class="col-lg-12">
 <div class="well form-horizontal">
 	<fieldset>
+	<c:if test="${not empty repaymentInvestmentStatus}">
 	<div class="form-group">
 		<label for="investmentTab4" class="col-lg-3 control-label"><fmt:message key="repaymentProject.name" /></label>
 		<div class="col-lg-4">
@@ -18,7 +19,8 @@
 	
 	<div class="form-group">
 		<label for="projectEndTimeTab4" class="col-lg-3 control-label"><fmt:message key="projectProgress.deadline" /></label>
-		<div class="col-lg-4">
+		<div class="row">
+		<div class="col-lg-3">
 			<select id="projectEndTimeTab4" name="projectEndTimeTab4" class="form-control input-sm">
                 <c:if test="${not empty projectEndTimeList}">
                     <c:forEach var="projectEndTimeVar" items="${projectEndTimeList}" varStatus="status">
@@ -27,7 +29,21 @@
                 </c:if>
             </select>
 		</div>
+		<div class="help-inline" style="display:none;" id="errMsgRepaymentEndTime">
+            <span class="text-danger"><fmt:message key="report.investmentProjects.projectEndTime.empty"/></span>
+            <a href="${ctx}/projectInfoForm?id=${param.id}" class="alert-link"><fmt:message key="report.nav.back.projectInfoForm"/></a>
+        </div>
+        </div>
 	</div>
+	</c:if>
+	
+	<c:if test="${empty repaymentInvestmentStatus}">
+	   <div class="alert alert-dismissable alert-danger">
+          <button type="button" class="close" data-dismiss="alert">×</button>
+          <span class="text-danger"><fmt:message key="report.repaymentProjects.empty"/></span>
+          <a href="${ctx}/projectInfoForm?id=${param.id}" class="alert-link"><fmt:message key="report.nav.back.projectInfoForm"/></a>
+       </div>
+	</c:if>
 	
 	<div class="form-group">
 		<label for="repaymentEvaluation" class="col-lg-3 control-label"><fmt:message key="repaymentProject.evaluation" /></label>
@@ -52,12 +68,6 @@
 </c:if>
 
 <div class="col-lg-12">
-	<c:if test="${empty riskControlReport.repaymentProjects and empty repaymentProjects and not empty param.preview}">
-		<div class="col-lg-12 alert alert-dismissable alert-danger">
-			<fmt:message key="report.repaymentProjects.empty" />
-		</div>
-	</c:if>
-	
 	<c:if test="${not empty repaymentProjects }">
 		<c:set var="dataSource" scope="request" value="${repaymentProjects}" ></c:set>
 	</c:if>
@@ -157,6 +167,10 @@
     var replyTab4 = function(data) {
         if (data != null && typeof data == 'object') {
             $("#projectEndTimeTab4").empty();
+            if(data.length == 0) {
+                $("#errMsgRepaymentEndTime").show();
+                return;
+            }
             $.each(data, function(i) {
                 $("#projectEndTimeTab4").append("<option value='" + data[i] + "'>" + data[i] + "</option>");
             });

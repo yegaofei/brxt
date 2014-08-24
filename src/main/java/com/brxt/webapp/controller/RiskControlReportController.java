@@ -221,7 +221,7 @@ public class RiskControlReportController extends BaseSheetController {
         if (StringUtils.isNotBlank(cpId) && "tab2-1".equals(rck.getActiveTab())) {
             ProjectInfo projectInfo = rck.getProjectInfo();
             Counterparty counterparty = findCounterparty(projectInfo, Long.valueOf(cpId));
-            creditInformations = creditInformationManager.findByProjIdCpId(projectInfo, counterparty, rck.getStartTime(), rck.getEndTime());
+            creditInformations = creditInformationManager.findByCounterpartyId(counterparty, rck.getStartTime(), rck.getEndTime());
 
             if (creditInformations == null || creditInformations.isEmpty()) {
                 saveMessage(request, getText("report.creditInfo.error", rck.getCounterparty().getName(), request.getLocale()));
@@ -245,8 +245,7 @@ public class RiskControlReportController extends BaseSheetController {
             if (rck.getGuarantor().getCounterpartyType().equals(CounterpartyType.INSTITUTION.toString())) {
                 return null;
             }
-            creditInformations = creditInformationManager.findByProjIdCpId(rck.getProjectInfo(), rck.getGuarantor(), rck.getStartTime(),
-                    rck.getEndTime());
+            creditInformations = creditInformationManager.findByCounterpartyId(rck.getGuarantor(), rck.getStartTime(),rck.getEndTime());
 
             if (creditInformations == null || creditInformations.isEmpty()) {
                 saveMessage(request, getText("report.creditInfo.error", rck.getGuarantor().getName(), request.getLocale()));
@@ -765,15 +764,23 @@ public class RiskControlReportController extends BaseSheetController {
     private ModelAndView saveTab3(final HttpServletRequest request, final ModelAndView mav) {
         String projectEndTime = request.getParameter("projectEndTimeTab3");
         String invesetmentStatusId = request.getParameter("investmentIdTab3");
-        if (StringUtils.isBlank(projectEndTime) || StringUtils.isBlank(invesetmentStatusId)) {
+        String policyChanges = request.getParameter("policyChanges");
+        String priceChanges = request.getParameter("priceChanges");
+        String investmentEvaluation = request.getParameter("investmentEvaluation");
+        if ((StringUtils.isBlank(projectEndTime) || StringUtils.isBlank(invesetmentStatusId)) && StringUtils.isBlank(investmentEvaluation)) {
             saveError(request, getText("report.investment.project.required.error", request.getLocale()));
+            return mav;
+        } else if (StringUtils.isNotBlank(investmentEvaluation) && (StringUtils.isBlank(projectEndTime) || StringUtils.isBlank(invesetmentStatusId))) {
+            //Save investment evaluation only.
+            RiskControlReport report = getRiskControlReport(request);
+            report.setInvestmentEvaluation(investmentEvaluation);
+            reportManager.save(report);
+            saveMessage(request, getText("report.update.success", request.getLocale()));
+            mav.addObject("riskControlReport", report);
             return mav;
         }
 
         RiskControlReport report = getRiskControlReport(request);
-        String policyChanges = request.getParameter("policyChanges");
-        String priceChanges = request.getParameter("priceChanges");
-        String investmentEvaluation = request.getParameter("investmentEvaluation");
         report.setPolicyChanges(policyChanges);
         report.setPriceChanges(priceChanges);
         report.setInvestmentEvaluation(investmentEvaluation);
@@ -870,13 +877,20 @@ public class RiskControlReportController extends BaseSheetController {
     private ModelAndView saveTab4(final HttpServletRequest request, final ModelAndView mav) {
         String projectEndTime = request.getParameter("projectEndTimeTab4");
         String invesetmentStatusId = request.getParameter("investmentTab4");
-        if (StringUtils.isBlank(projectEndTime) || StringUtils.isBlank(invesetmentStatusId)) {
+        String repaymentEvaluation = request.getParameter("repaymentEvaluation");
+        if ((StringUtils.isBlank(projectEndTime) || StringUtils.isBlank(invesetmentStatusId)) && StringUtils.isBlank(repaymentEvaluation)) {
             saveError(request, getText("report.repayment.project.required.error", request.getLocale()));
+            return mav;
+        } else if ((StringUtils.isBlank(projectEndTime) || StringUtils.isBlank(invesetmentStatusId)) && StringUtils.isNotBlank(repaymentEvaluation)) {
+            RiskControlReport report = getRiskControlReport(request);
+            report.setRepaymentEvaluation(repaymentEvaluation);
+            reportManager.save(report);
+            saveMessage(request, getText("report.update.success", request.getLocale()));
+            mav.addObject("riskControlReport", report);
             return mav;
         }
 
         RiskControlReport report = getRiskControlReport(request);
-        String repaymentEvaluation = request.getParameter("repaymentEvaluation");
         report.setRepaymentEvaluation(repaymentEvaluation);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat(getText("date.format", request.getLocale()));

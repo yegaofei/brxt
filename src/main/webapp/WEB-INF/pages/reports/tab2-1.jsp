@@ -88,61 +88,91 @@
 					<td><fmt:message key="instBalanceSheet.assetTotal"/></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.prevCorpBalanceSheet.totalAsset / 10000}"/></fmt:formatNumber></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.currCorpBalanceSheet.totalAsset / 10000}" /></fmt:formatNumber></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.totalAsset}" /></fmt:formatNumber></td>
+					<td>
+					   <fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.totalAsset}" /></fmt:formatNumber>
+					   <c:if test="${empty financeCheck.corpBalanceSheetChanges.totalAsset}">-</c:if>
+					</td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.cash"/></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.prevCorpBalanceSheet.cash / 10000}" /></fmt:formatNumber></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.currCorpBalanceSheet.cash / 10000}" /></fmt:formatNumber></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.cash}" /></fmt:formatNumber></td>
+					<td>
+					   <fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.cash}" /></fmt:formatNumber>
+					   <c:if test="${empty financeCheck.corpBalanceSheetChanges.cash}">-</c:if>
+					</td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.inventory"/></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.prevCorpBalanceSheet.inventory / 10000}" /></fmt:formatNumber></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.currCorpBalanceSheet.inventory / 10000}" /></fmt:formatNumber></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.inventory}" /></fmt:formatNumber></td>
+					<td>
+					   <fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.inventory}" /></fmt:formatNumber>
+					   <c:if test="${empty financeCheck.corpBalanceSheetChanges.inventory}">-</c:if>
+					</td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.nonLiquid"/></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.prevCorpBalanceSheet.nonLiquid / 10000}" /></fmt:formatNumber></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.currCorpBalanceSheet.nonLiquid / 10000}" /></fmt:formatNumber></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.nonLiquid}" /></fmt:formatNumber></td>
+					<td>
+					   <fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.nonLiquid}" /></fmt:formatNumber>
+					   <c:if test="${empty financeCheck.corpBalanceSheetChanges.nonLiquid}">-</c:if>
+					</td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.totalDebt"/></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.prevCorpBalanceSheet.totalDebt / 10000}" /></fmt:formatNumber></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.currCorpBalanceSheet.totalDebt / 10000}" /></fmt:formatNumber></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.totalDebt}" /></fmt:formatNumber></td>
+					<td>
+					   <fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.totalDebt}" /></fmt:formatNumber>
+					   <c:if test="${empty financeCheck.corpBalanceSheetChanges.totalDebt}">-</c:if>
+					</td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.prereceive"/></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.prevCorpBalanceSheet.prereceive / 10000}" /></fmt:formatNumber></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.currCorpBalanceSheet.prereceive / 10000}" /></fmt:formatNumber></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.prereceive}" /></fmt:formatNumber></td>
+					<td>
+					   <fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.prereceive}" /></fmt:formatNumber>
+					   <c:if test="${empty financeCheck.corpBalanceSheetChanges.prereceive}">-</c:if>
+					</td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.shortLoan"/></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.prevCorpBalanceSheet.shortLoan / 10000}" /></fmt:formatNumber></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.currCorpBalanceSheet.shortLoan / 10000}" /></fmt:formatNumber></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.shortLoan}" /></fmt:formatNumber></td>
+					<td>
+					   <fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.shortLoan}" /></fmt:formatNumber>
+					   <c:if test="${empty financeCheck.corpBalanceSheetChanges.shortLoan}">-</c:if>
+					</td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.longLoan"/></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.prevCorpBalanceSheet.longLoan / 10000}" /></fmt:formatNumber></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.currCorpBalanceSheet.longLoan / 10000}" /></fmt:formatNumber></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.longLoan}" /></fmt:formatNumber></td>
+					<td>
+					   <fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.longLoan}" /></fmt:formatNumber>
+					   <c:if test="${empty financeCheck.corpBalanceSheetChanges.longLoan}">-</c:if>
+					 </td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.netAsset"/></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.prevCorpBalanceSheet.netAsset / 10000}" /></fmt:formatNumber></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.currCorpBalanceSheet.netAsset / 10000}" /></fmt:formatNumber></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.netAsset}" /></fmt:formatNumber></td>
+					<td>
+					   <fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.netAsset}" /></fmt:formatNumber>
+					   <c:if test="${empty financeCheck.corpBalanceSheetChanges.netAsset}">-</c:if>
+					</td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.actualCapital"/></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.prevCorpBalanceSheet.actualCapital / 10000}" /></fmt:formatNumber></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.currCorpBalanceSheet.actualCapital / 10000}" /></fmt:formatNumber></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.actualCapital}" /></fmt:formatNumber></td>
+					<td>
+					   <fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.actualCapital}"/></fmt:formatNumber>
+					   <c:if test="${empty financeCheck.corpBalanceSheetChanges.actualCapital}">-</c:if>
+					</td>
 				</tr>
 				<tr>
 					<td><fmt:message key="profitStatement.operatingIncome"/></td>
@@ -180,19 +210,28 @@
 					<td><fmt:message key="report.financeCheck.assetLiabilityRatio"/></td>
 					<td><fmt:formatNumber type="percent" pattern="#0.00%"><c:out value="${financeCheck.prevFinanceRatio.assetLiabilityRatio}" /></fmt:formatNumber></td>
 					<td><fmt:formatNumber type="percent" pattern="#0.00%"><c:out value="${financeCheck.currFinanceRatio.assetLiabilityRatio}" /></fmt:formatNumber></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.financeRatioChanges.assetLiabilityRatio}" /></fmt:formatNumber></td>
+					<td>
+					   <fmt:formatNumber type="percent"><c:out value="${financeCheck.financeRatioChanges.assetLiabilityRatio}" /></fmt:formatNumber>
+					   <c:if test="${empty financeCheck.financeRatioChanges.assetLiabilityRatio}">-</c:if>
+					</td>
 				</tr>
 				<tr>
 					<td><fmt:message key="report.financeCheck.liquidityRatio"/></td>
 					<td><fmt:formatNumber type="number" pattern="#0.00"><c:out value="${financeCheck.prevFinanceRatio.liquidityRatio}" /></fmt:formatNumber></td>
 					<td><fmt:formatNumber type="number" pattern="#0.00"><c:out value="${financeCheck.currFinanceRatio.liquidityRatio}" /></fmt:formatNumber></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.financeRatioChanges.liquidityRatio}" /></fmt:formatNumber></td>
+					<td>
+					   <fmt:formatNumber type="percent"><c:out value="${financeCheck.financeRatioChanges.liquidityRatio}" /></fmt:formatNumber>
+					   <c:if test="${empty financeCheck.financeRatioChanges.liquidityRatio}">-</c:if>
+					</td>
 				</tr>
 				<tr>
 					<td><fmt:message key="report.financeCheck.quickRatio"/></td>
 					<td><fmt:formatNumber type="number" pattern="#0.00"><c:out value="${financeCheck.prevFinanceRatio.quickRatio}" /></fmt:formatNumber></td>
 					<td><fmt:formatNumber type="number" pattern="#0.00"><c:out value="${financeCheck.currFinanceRatio.quickRatio}" /></fmt:formatNumber></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.financeRatioChanges.quickRatio}" /></fmt:formatNumber></td>
+					<td>
+					   <fmt:formatNumber type="percent"><c:out value="${financeCheck.financeRatioChanges.quickRatio}" /></fmt:formatNumber>
+					   <c:if test="${empty financeCheck.financeRatioChanges.quickRatio}">-</c:if>
+					</td>
 				</tr>
 				<tr>
 					<td></td>
@@ -421,61 +460,91 @@
 					<td><fmt:message key="instBalanceSheet.assetTotal"/></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.prevCorpBalanceSheet.totalAsset / 10000}"/></fmt:formatNumber></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.currCorpBalanceSheet.totalAsset / 10000}" /></fmt:formatNumber></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.totalAsset}" /></fmt:formatNumber></td>
+					<td>
+                       <fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.totalAsset}" /></fmt:formatNumber>
+                       <c:if test="${empty financeCheck.corpBalanceSheetChanges.totalAsset}">-</c:if>
+                    </td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.cash"/></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.prevCorpBalanceSheet.cash / 10000}" /></fmt:formatNumber></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.currCorpBalanceSheet.cash / 10000}" /></fmt:formatNumber></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.cash}" /></fmt:formatNumber></td>
+					<td>
+                       <fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.cash}" /></fmt:formatNumber>
+                       <c:if test="${empty financeCheck.corpBalanceSheetChanges.cash}">-</c:if>
+                    </td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.inventory"/></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.prevCorpBalanceSheet.inventory / 10000}" /></fmt:formatNumber></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.currCorpBalanceSheet.inventory / 10000}" /></fmt:formatNumber></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.inventory}" /></fmt:formatNumber></td>
+					<td>
+                       <fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.inventory}" /></fmt:formatNumber>
+                       <c:if test="${empty financeCheck.corpBalanceSheetChanges.inventory}">-</c:if>
+                    </td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.nonLiquid"/></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.prevCorpBalanceSheet.nonLiquid / 10000}" /></fmt:formatNumber></td>
                     <td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.currCorpBalanceSheet.nonLiquid / 10000}" /></fmt:formatNumber></td>
-                    <td><fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.nonLiquid}" /></fmt:formatNumber></td>
+                    <td>
+                       <fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.nonLiquid}" /></fmt:formatNumber>
+                       <c:if test="${empty financeCheck.corpBalanceSheetChanges.nonLiquid}">-</c:if>
+                    </td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.totalDebt"/></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.prevCorpBalanceSheet.totalDebt / 10000}" /></fmt:formatNumber></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.currCorpBalanceSheet.totalDebt / 10000}" /></fmt:formatNumber></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.totalDebt}" /></fmt:formatNumber></td>
+					<td>
+                       <fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.totalDebt}" /></fmt:formatNumber>
+                       <c:if test="${empty financeCheck.corpBalanceSheetChanges.totalDebt}">-</c:if>
+                    </td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.prereceive"/></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.prevCorpBalanceSheet.prereceive / 10000}" /></fmt:formatNumber></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.currCorpBalanceSheet.prereceive / 10000}" /></fmt:formatNumber></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.prereceive}" /></fmt:formatNumber></td>
+					<td>
+                       <fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.prereceive}" /></fmt:formatNumber>
+                       <c:if test="${empty financeCheck.corpBalanceSheetChanges.prereceive}">-</c:if>
+                    </td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.shortLoan"/></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.prevCorpBalanceSheet.shortLoan / 10000}" /></fmt:formatNumber></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.currCorpBalanceSheet.shortLoan / 10000}" /></fmt:formatNumber></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.shortLoan}" /></fmt:formatNumber></td>
+					<td>
+                       <fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.shortLoan}" /></fmt:formatNumber>
+                       <c:if test="${empty financeCheck.corpBalanceSheetChanges.shortLoan}">-</c:if>
+                    </td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.longLoan"/></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.prevCorpBalanceSheet.longLoan / 10000}" /></fmt:formatNumber></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.currCorpBalanceSheet.longLoan / 10000}" /></fmt:formatNumber></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.longLoan}" /></fmt:formatNumber></td>
+					<td>
+                       <fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.longLoan}" /></fmt:formatNumber>
+                       <c:if test="${empty financeCheck.corpBalanceSheetChanges.longLoan}">-</c:if>
+                     </td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.netAsset"/></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.prevCorpBalanceSheet.netAsset / 10000}" /></fmt:formatNumber></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.currCorpBalanceSheet.netAsset / 10000}" /></fmt:formatNumber></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.netAsset}" /></fmt:formatNumber></td>
+					<td>
+                       <fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.netAsset}" /></fmt:formatNumber>
+                       <c:if test="${empty financeCheck.corpBalanceSheetChanges.netAsset}">-</c:if>
+                    </td>
 				</tr>
 				<tr>
 					<td><fmt:message key="corpBalanceSheet.actualCapital"/></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.prevCorpBalanceSheet.actualCapital / 10000}" /></fmt:formatNumber></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.currCorpBalanceSheet.actualCapital / 10000}" /></fmt:formatNumber></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.actualCapital}" /></fmt:formatNumber></td>
+					<td>
+                       <fmt:formatNumber type="percent"><c:out value="${financeCheck.corpBalanceSheetChanges.actualCapital}"/></fmt:formatNumber>
+                       <c:if test="${empty financeCheck.corpBalanceSheetChanges.actualCapital}">-</c:if>
+                    </td>
 				</tr>
 				<tr>
 					<td><fmt:message key="profitStatement.operatingIncome"/></td>
@@ -513,19 +582,28 @@
 					<td><fmt:message key="report.financeCheck.assetLiabilityRatio"/></td>
 					<td><fmt:formatNumber type="percent" pattern="#0.00%"><c:out value="${financeCheck.prevFinanceRatio.assetLiabilityRatio}" /></fmt:formatNumber></td>
 					<td><fmt:formatNumber type="percent" pattern="#0.00%"><c:out value="${financeCheck.currFinanceRatio.assetLiabilityRatio}" /></fmt:formatNumber></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.financeRatioChanges.assetLiabilityRatio}" /></fmt:formatNumber></td>
+					<td>
+                       <fmt:formatNumber type="percent"><c:out value="${financeCheck.financeRatioChanges.assetLiabilityRatio}" /></fmt:formatNumber>
+                       <c:if test="${empty financeCheck.financeRatioChanges.assetLiabilityRatio}">-</c:if>
+                    </td>
 				</tr>
 				<tr>
 					<td><fmt:message key="report.financeCheck.liquidityRatio"/></td>
 					<td><fmt:formatNumber type="number" pattern="#0.00"><c:out value="${financeCheck.prevFinanceRatio.liquidityRatio}" /></fmt:formatNumber></td>
 					<td><fmt:formatNumber type="number" pattern="#0.00"><c:out value="${financeCheck.currFinanceRatio.liquidityRatio}" /></fmt:formatNumber></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.financeRatioChanges.liquidityRatio}" /></fmt:formatNumber></td>
+					<td>
+                       <fmt:formatNumber type="percent"><c:out value="${financeCheck.financeRatioChanges.liquidityRatio}" /></fmt:formatNumber>
+                       <c:if test="${empty financeCheck.financeRatioChanges.liquidityRatio}">-</c:if>
+                    </td>
 				</tr>
 				<tr>
 					<td><fmt:message key="report.financeCheck.quickRatio"/></td>
 					<td><fmt:formatNumber type="number" pattern="#0.00"><c:out value="${financeCheck.prevFinanceRatio.quickRatio}" /></fmt:formatNumber></td>
 					<td><fmt:formatNumber type="number" pattern="#0.00"><c:out value="${financeCheck.currFinanceRatio.quickRatio}" /></fmt:formatNumber></td>
-					<td><fmt:formatNumber type="percent"><c:out value="${financeCheck.financeRatioChanges.quickRatio}" /></fmt:formatNumber></td>
+					<td>
+                       <fmt:formatNumber type="percent"><c:out value="${financeCheck.financeRatioChanges.quickRatio}" /></fmt:formatNumber>
+                       <c:if test="${empty financeCheck.financeRatioChanges.quickRatio}">-</c:if>
+                    </td>
 				</tr>
 				<tr>
 					<td></td>
