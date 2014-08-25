@@ -39,5 +39,13 @@ GenericDaoHibernate<CreditInformation, Long> implements CreditInformationDao{
 		criteria.addOrder(Order.desc("queryTime"));
 		return criteria.list();
 	}
+	
+	@Override
+    public List<CreditInformation> findByCounterpartyId(Counterparty counterparty) {
+        Criteria criteria = getSession().createCriteria(CreditInformation.class);
+        criteria.add(Restrictions.eq("counterparty", counterparty));
+        criteria.addOrder(Order.desc("queryTime"));
+        return criteria.list();
+    }
 
 }

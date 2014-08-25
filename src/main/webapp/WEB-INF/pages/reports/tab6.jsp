@@ -331,6 +331,13 @@
 						</tr>					
 						</tbody>
 					</table>
+        <ul class="unstyled">  
+            <li>
+                <fmt:message key="report.creditInformation.querytime">
+                    <fmt:param><fmt:formatDate value="${creditInformationTab6.queryTime}" pattern="${datePattern}" /></fmt:param>
+                </fmt:message>
+            </li>
+        </ul>					
 					</c:if>
 					</div>
 					</div>
@@ -615,6 +622,13 @@
 						</tr>					
 						</tbody>
 					</table>
+        <ul class="unstyled">  
+            <li>
+                <fmt:message key="report.creditInformation.querytime">
+                    <fmt:param><fmt:formatDate value="${financeCheckTab6.creditInformation.queryTime}" pattern="${datePattern}" /></fmt:param>
+                </fmt:message>
+            </li>
+        </ul>   					
 					</c:if>
 					</div>
 					</div>

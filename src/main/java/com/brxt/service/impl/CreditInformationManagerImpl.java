@@ -31,5 +31,10 @@ public class CreditInformationManagerImpl extends GenericManagerImpl<CreditInfor
 	public List<CreditInformation> findByCounterpartyId(Counterparty counterparty, Date startTime, Date endTime) {
 		return creditInformationDao.findByCounterpartyId(counterparty, startTime, endTime);
 	}
+	
+	@Override
+    public List<CreditInformation> findByCounterpartyId(Counterparty counterparty) {
+        return creditInformationDao.findByCounterpartyId(counterparty);
+    }
 
 }

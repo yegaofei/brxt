@@ -13,4 +13,6 @@ public interface CreditInformationManager  extends GenericManager<CreditInformat
 	public List<CreditInformation> findByProjId(Long projectInfoId);
 	
 	public List<CreditInformation> findByCounterpartyId(Counterparty counterparty, Date startTime, Date endTime);
+	
+	public List<CreditInformation> findByCounterpartyId(Counterparty counterparty);
 }

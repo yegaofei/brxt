@@ -14,4 +14,6 @@ public interface CreditInformationDao extends GenericDao<CreditInformation, Long
 	
 	public List<CreditInformation> findByCounterpartyId(Counterparty counterparty, Date startDate, Date endDate);
 	
+	public List<CreditInformation> findByCounterpartyId(Counterparty counterparty);
+	
 }

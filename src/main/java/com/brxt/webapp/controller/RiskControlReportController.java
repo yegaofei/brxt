@@ -221,7 +221,7 @@ public class RiskControlReportController extends BaseSheetController {
         if (StringUtils.isNotBlank(cpId) && "tab2-1".equals(rck.getActiveTab())) {
             ProjectInfo projectInfo = rck.getProjectInfo();
             Counterparty counterparty = findCounterparty(projectInfo, Long.valueOf(cpId));
-            creditInformations = creditInformationManager.findByCounterpartyId(counterparty, rck.getStartTime(), rck.getEndTime());
+            creditInformations = creditInformationManager.findByCounterpartyId(counterparty);
 
             if (creditInformations == null || creditInformations.isEmpty()) {
                 saveMessage(request, getText("report.creditInfo.error", rck.getCounterparty().getName(), request.getLocale()));
@@ -245,7 +245,7 @@ public class RiskControlReportController extends BaseSheetController {
             if (rck.getGuarantor().getCounterpartyType().equals(CounterpartyType.INSTITUTION.toString())) {
                 return null;
             }
-            creditInformations = creditInformationManager.findByCounterpartyId(rck.getGuarantor(), rck.getStartTime(),rck.getEndTime());
+            creditInformations = creditInformationManager.findByCounterpartyId(rck.getGuarantor());
 
             if (creditInformations == null || creditInformations.isEmpty()) {
                 saveMessage(request, getText("report.creditInfo.error", rck.getGuarantor().getName(), request.getLocale()));
