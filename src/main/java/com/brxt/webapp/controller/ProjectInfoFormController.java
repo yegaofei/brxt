@@ -652,7 +652,7 @@ public class ProjectInfoFormController extends BaseFormController {
 		Iterator<ProjectSize> it = list.iterator();
 		while (it.hasNext()) {
 			ProjectSize ps = it.next();
-			if (ps.getId() == Long.valueOf(id)) {
+			if (ps.getId().equals(Long.valueOf(id))) {
 				it.remove();
 				ps.setProjectInfo(null);
 				projectInfoManager.deleteProjectSize(ps);
