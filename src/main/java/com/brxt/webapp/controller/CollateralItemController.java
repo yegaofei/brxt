@@ -332,7 +332,7 @@ public class CollateralItemController extends BaseFormController {
 			clm = new CollateralPropertyModel();
 			List<Collateral> collaterals = overview.getCollaterals();
 			for (Collateral c : collaterals) {
-				if (c.getId() == Long.valueOf(collateralId)) {
+				if (c.getId().equals(Long.valueOf(collateralId))) {
 					clm.setCollateralOverview(overview);
 					copyCollateral(c, clm);
 
@@ -374,7 +374,7 @@ public class CollateralItemController extends BaseFormController {
 			clm = new CollateralLandModel();
 			List<Collateral> collaterals = overview.getCollaterals();
 			for (Collateral c : collaterals) {
-				if (c.getId() == Long.valueOf(collateralId)) {
+				if (c.getId().equals(Long.valueOf(collateralId))) {
 					clm.setCollateralOverview(overview);
 					copyCollateral(c, clm);
 
@@ -417,7 +417,7 @@ public class CollateralItemController extends BaseFormController {
 			clm = new CollateralConstrProjModel();
 			List<Collateral> collaterals = overview.getCollaterals();
 			for (Collateral c : collaterals) {
-				if (c.getId() == Long.valueOf(collateralId)) {
+				if (c.getId().equals(Long.valueOf(collateralId))) {
 					clm.setCollateralOverview(overview);
 					copyCollateral(c, clm);
 

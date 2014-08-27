@@ -371,7 +371,7 @@
 						<tbody>
 						<tr>
 							<td><fmt:message key="creditInformation.debtBalance"/><fmt:message key="currency.unit.wan"/></td>
-							<td><fmt:formatNumber type="${numberFormatType}"><c:out value="${creditInformation.debtBalance}" /></fmt:formatNumber></td>
+							<td><fmt:formatNumber type="${numberFormatType}"><c:out value="${creditInformation.debtBalance / 10000}" /></fmt:formatNumber></td>
 						</tr>
 						<tr>
 							<td><fmt:message key="creditInformation.debt"/><fmt:message key="currency.unit.wan"/></td>
@@ -763,7 +763,7 @@
                         <tbody>
                         <tr>
                             <td><fmt:message key="creditInformation.debtBalance"/><fmt:message key="currency.unit.wan"/></td>
-                            <td><fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.creditInformation.debtBalance}" /></fmt:formatNumber></td>
+                            <td><fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.creditInformation.debtBalance / 10000}" /></fmt:formatNumber></td>
                         </tr>
                         <tr>
                             <td><fmt:message key="creditInformation.debt"/><fmt:message key="currency.unit.wan"/></td>

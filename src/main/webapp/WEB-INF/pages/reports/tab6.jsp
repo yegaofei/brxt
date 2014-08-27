@@ -297,21 +297,21 @@
 					<table class="table table-striped table-bordered table-hover">
 						<tbody>
 						<tr>
-							<td><fmt:message key="creditInformation.debtBalance"/></td>
-							<td><fmt:formatNumber type="number" value="${creditInformationTab6.debtBalance}" /></td>
+							<td><fmt:message key="creditInformation.debtBalance"/><fmt:message key="currency.unit.wan"/></td>
+							<td><fmt:formatNumber type="number" value="${creditInformationTab6.debtBalance / 10000}" /></td>
 						</tr>
 						<tr>
-							<td><fmt:message key="creditInformation.debt"/></td>
+							<td><fmt:message key="creditInformation.debt"/><fmt:message key="currency.unit.wan"/></td>
 							<td><fmt:formatNumber type="number" value="${creditInformationTab6.debt}" /></td>
 						</tr>
 						<tr>
-							<td><fmt:message key="creditInformation.outstanding"/></td>
+							<td><fmt:message key="creditInformation.outstanding"/><fmt:message key="currency.unit.wan"/></td>
 							<td>
 								<fmt:formatNumber type="number" value="${creditInformationTab6.outstanding}" />
 							 </td>
 						</tr>
 						<tr>
-							<td><fmt:message key="creditInformation.balance"/></td>
+							<td><fmt:message key="creditInformation.balance"/><fmt:message key="currency.unit.wan"/></td>
 							<td>
 								<fmt:formatNumber type="number" value="${creditInformationTab6.balance}" />
 							</td>
@@ -588,21 +588,21 @@
 					<table class="table table-striped table-bordered table-hover">
 						<tbody>
 						<tr>
-							<td><fmt:message key="creditInformation.debtBalance"/></td>
-							<td><fmt:formatNumber type="number" value="${financeCheckTab6.creditInformation.debtBalance}" /></td>
+							<td><fmt:message key="creditInformation.debtBalance"/><fmt:message key="currency.unit.wan"/></td>
+							<td><fmt:formatNumber type="number" value="${financeCheckTab6.creditInformation.debtBalance / 10000}" /></td>
 						</tr>
 						<tr>
-							<td><fmt:message key="creditInformation.debt"/></td>
+							<td><fmt:message key="creditInformation.debt"/><fmt:message key="currency.unit.wan"/></td>
 							<td><fmt:formatNumber type="number" value="${financeCheckTab6.creditInformation.debt}" /></td>
 						</tr>
 						<tr>
-							<td><fmt:message key="creditInformation.outstanding"/></td>
+							<td><fmt:message key="creditInformation.outstanding"/><fmt:message key="currency.unit.wan"/></td>
 							<td>
 								<fmt:formatNumber type="number" value="${financeCheckTab6.creditInformation.outstanding}" />
 							 </td>
 						</tr>
 						<tr>
-							<td><fmt:message key="creditInformation.balance"/></td>
+							<td><fmt:message key="creditInformation.balance"/><fmt:message key="currency.unit.wan"/></td>
 							<td>
 								<fmt:formatNumber type="number" value="${financeCheckTab6.creditInformation.balance}" />
 							</td>
