@@ -35,7 +35,7 @@
 			<div class="form-group">
 				<label for="guarantorCheckComment" class="col-lg-3 control-label"><fmt:message key="creditInformation.guarantor.evaluation" /></label>
 				<div class="col-lg-9">
-					<textarea id="guarantorCheckComment" name="guarantorCheckComment" class="form-control input-sm"><c:out value="${riskControlReport.guarantorCheckComment}"/></textarea>
+					<textarea id="guarantorCheckComment" name="guarantorCheckComment" class="form-control input-sm"><c:out value="${riskControlReport.guarantorCheckComment}" default='${param.guarantorCheckComment}'/></textarea>
 				</div>
 			</div>
 			
@@ -166,19 +166,28 @@
 					<td><fmt:message key="profitStatement.operatingIncome"/></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.prevProfitStatement.operatingIncome / 10000}" /></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.currProfitStatement.operatingIncome / 10000}" /></td>
-					<td>-</td>
+					<td>
+					   <fmt:formatNumber type="percent" value="${financeCheckTab6.profitStatementChanges.operatingIncome}" />
+                       <c:if test="${empty financeCheckTab6.profitStatementChanges.operatingIncome}">-</c:if>
+                    </td>
 				</tr>
 				<tr>
 					<td><fmt:message key="profitStatement.operatingProfit"/></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.prevProfitStatement.operatingProfit / 10000}" /></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.currProfitStatement.operatingProfit / 10000}" /></td>
-					<td>-</td>
+					<td>
+                        <fmt:formatNumber type="percent" value="${financeCheckTab6.profitStatementChanges.operatingProfit}" />
+                        <c:if test="${empty financeCheckTab6.profitStatementChanges.operatingProfit}">-</c:if>
+                    </td>
 				</tr>
 				<tr>
 					<td><fmt:message key="profitStatement.netProfit"/></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.prevProfitStatement.netProfit / 10000}" /></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.currProfitStatement.netProfit / 10000}" /></td>
-					<td>-</td>
+					<td>
+                        <fmt:formatNumber type="percent" value="${financeCheckTab6.profitStatementChanges.netProfit}" />
+                        <c:if test="${empty financeCheckTab6.profitStatementChanges.netProfit}">-</c:if>
+                    </td>
 				</tr>
 			</tbody>
 		</table>	
@@ -460,19 +469,28 @@
 					<td><fmt:message key="profitStatement.operatingIncome"/></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.prevProfitStatement.operatingIncome / 10000}" /></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.currProfitStatement.operatingIncome / 10000}" /></td>
-					<td>-</td>
+					<td>
+                       <fmt:formatNumber type="percent" value="${financeCheckTab6.profitStatementChanges.operatingIncome}" />
+                       <c:if test="${empty financeCheckTab6.profitStatementChanges.operatingIncome}">-</c:if>
+                    </td>
 				</tr>
 				<tr>
 					<td><fmt:message key="profitStatement.operatingProfit"/></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.prevProfitStatement.operatingProfit / 10000}" /></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.currProfitStatement.operatingProfit / 10000}" /></td>
-					<td>-</td>
+					<td>
+                        <fmt:formatNumber type="percent" value="${financeCheckTab6.profitStatementChanges.operatingProfit}" />
+                        <c:if test="${empty financeCheckTab6.profitStatementChanges.operatingProfit}">-</c:if>
+                    </td>
 				</tr>
 				<tr>
 					<td><fmt:message key="profitStatement.netProfit"/></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.prevProfitStatement.netProfit / 10000}" /></td>
 					<td><fmt:formatNumber type="number" value="${financeCheckTab6.currProfitStatement.netProfit / 10000}" /></td>
-					<td>-</td>
+					<td>
+					   <fmt:formatNumber type="percent" value="${financeCheckTab6.profitStatementChanges.netProfit}" />
+                       <c:if test="${empty financeCheckTab6.profitStatementChanges.netProfit}">-</c:if>
+                    </td>
 				</tr>
 			</tbody>
 		</table>		

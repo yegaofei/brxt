@@ -22,6 +22,8 @@ public interface ReportManager extends GenericManager<RiskControlReport, Long>  
 	
 	public CorporateBalanceSheet calculate(CorporateBalanceSheet prevTermCbs, CorporateBalanceSheet currTermCbs);
 	
+	public ProfitStatement calculate(ProfitStatement prevProfit, ProfitStatement currProfit);
+	
 	public List<FinanceCheck> getFinanceCheckListTab6(final RiskControlReport report);
 	
 	public List<FinanceCheck> getFinanceCheckList(final RiskControlReport report);

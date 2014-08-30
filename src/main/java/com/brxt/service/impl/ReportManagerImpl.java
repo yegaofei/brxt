@@ -136,6 +136,20 @@ public class ReportManagerImpl extends
         corpBalanceSheetChanges.setActualCapital(calculateChangesRatio(currTermCbs.getActualCapital(), prevTermCbs.getActualCapital()));
         return corpBalanceSheetChanges;
     }
+    
+    @Override
+    public ProfitStatement calculate(ProfitStatement prevProfit, ProfitStatement currProfit) {
+        if (prevProfit == null || currProfit == null) {
+            return null;
+        }
+        
+        ProfitStatement profitStatementChanges = new ProfitStatement();
+        profitStatementChanges.setNetProfit(calculateChangesRatio(currProfit.getNetProfit(), prevProfit.getNetProfit()));
+        profitStatementChanges.setOperatingProfit(calculateChangesRatio(currProfit.getOperatingProfit(), prevProfit.getOperatingProfit()));
+        profitStatementChanges.setOperatingIncome(calculateChangesRatio(currProfit.getOperatingIncome(), prevProfit.getOperatingIncome()));
+        profitStatementChanges.setOperatingTax(calculateChangesRatio(currProfit.getOperatingTax(), prevProfit.getOperatingTax()));
+        return profitStatementChanges;
+    }
 
     private final BigDecimal calculateRatio(BigDecimal number, BigDecimal baseNumber) {
         if (number == null || baseNumber == null) {
@@ -164,10 +178,16 @@ public class ReportManagerImpl extends
     public final List<FinanceCheck> getFinanceCheckListTab6(final RiskControlReport report)
     {
         Map<Counterparty, FinanceCheck> financeCheckTab6Map = new HashMap<Counterparty, FinanceCheck>();
+        final ProjectInfo projectInfo = report.getProjectInfo();
         if(report.getGuarantorCorpBalanceSheets() != null)
         {
             for(CorporateBalanceSheet cbs : report.getGuarantorCorpBalanceSheets())
             {
+                Long counterpartyId = cbs.getCounterparty().getId();
+                if(findGuarantor(projectInfo, counterpartyId) == null) {
+                    continue;
+                }
+                
                 FinanceCheck financeCheck = new FinanceCheck();
                 financeCheck.setCounterparty(cbs.getCounterparty());
                 Iterator<CorporateBalanceSheet> itCbs = report.getGuarantorCorpBalanceSheets().iterator();
@@ -209,6 +229,11 @@ public class ReportManagerImpl extends
         {
             for(InstituteBalanceSheet ibs : report.getGuarantorInstBalanceSheet())
             {
+                Long counterpartyId = ibs.getCounterparty().getId();
+                if(findGuarantor(projectInfo, counterpartyId) == null) {
+                    continue;
+                }
+                
                 FinanceCheck financeCheck = financeCheckTab6Map.get(ibs.getCounterparty()); 
                 if(financeCheck == null){
                     financeCheck = new FinanceCheck();
@@ -244,6 +269,64 @@ public class ReportManagerImpl extends
                     }
                 }
                 financeCheckTab6Map.put(ibs.getCounterparty(), financeCheck);
+            }
+        }
+        
+        if(report.getProfitStatements() != null && report.getProfitStatements().size() > 0)
+        {
+            for(ProfitStatement ibs : report.getProfitStatements())
+            {
+                Long counterpartyId = ibs.getCounterparty().getId();
+                if(findGuarantor(projectInfo, counterpartyId) == null) {
+                    continue;
+                }
+                
+                FinanceCheck financeCheck = financeCheckTab6Map.get(ibs.getCounterparty()) ;
+                if(financeCheck == null)
+                {
+                    financeCheck = new FinanceCheck();
+                    financeCheck.setCounterparty(ibs.getCounterparty());
+                }
+                
+                if(financeCheck.getCurrProfitStatement() != null && financeCheck.getPrevProfitStatement() != null)
+                {
+                    continue;
+                }
+                
+                Iterator<ProfitStatement> itPs = report.getProfitStatements().iterator();
+                while(itPs.hasNext())
+                {
+                    ProfitStatement ibs2 = itPs.next();
+                    if(!ibs2.equals(ibs) && ibs2.getCounterparty().equals(ibs.getCounterparty()))
+                    {
+                        if(ibs2.getReportYear().intValue() > ibs.getReportYear().intValue())
+                        {
+                            financeCheck.setCurrProfitStatement(ibs2);
+                            financeCheck.setPrevProfitStatement(ibs);
+                        } 
+                        else if (ibs2.getReportYear().intValue() < ibs.getReportYear().intValue())
+                        {
+                            financeCheck.setCurrProfitStatement(ibs);
+                            financeCheck.setPrevProfitStatement(ibs2);
+                        } 
+                        else if (ibs2.getReportMonth().intValue() > ibs.getReportMonth().intValue())
+                        {
+                            financeCheck.setCurrProfitStatement(ibs2);
+                            financeCheck.setPrevProfitStatement(ibs);
+                        } else if (ibs2.getReportMonth().intValue() < ibs.getReportMonth().intValue())
+                        {
+                            financeCheck.setCurrProfitStatement(ibs);
+                            financeCheck.setPrevProfitStatement(ibs2);
+                        }
+                        calculateFinanceRatio(financeCheck.getPrevCorpBalanceSheet(), financeCheck.getCurrCorpBalanceSheet(), 
+                                financeCheck.getPrevProfitStatement(), financeCheck.getCurrProfitStatement(), financeCheck);
+                        
+                        ProfitStatement profitStatementChanges = calculate(financeCheck.getPrevProfitStatement(), financeCheck.getCurrProfitStatement());
+                        financeCheck.setProfitStatementChanges(profitStatementChanges);
+                        financeCheckTab6Map.put(ibs.getCounterparty(), financeCheck);
+                        break;
+                    }
+                }
             }
         }
         
@@ -311,7 +394,7 @@ public class ReportManagerImpl extends
         Iterator<Counterparty> it = cp.iterator();
         while (it.hasNext()) {
             Counterparty counterparty = it.next();
-            if (counterparty.getId() == counterpartyId) {
+            if (counterparty.getId().equals(counterpartyId)) {
                 cpObj = counterparty;
                 break;
             }
@@ -342,10 +425,16 @@ public class ReportManagerImpl extends
     public List<FinanceCheck> getFinanceCheckList(final RiskControlReport report)
     {
         Map<Counterparty, FinanceCheck> financeCheckMap = new HashMap<Counterparty, FinanceCheck>();
+        final ProjectInfo projectInfo = report.getProjectInfo();
         if(report.getCorporateBalanceSheets() != null && report.getCorporateBalanceSheets().size() > 0)
         {
             for(CorporateBalanceSheet cbs : report.getCorporateBalanceSheets())
             {
+                Long counterpartyId = cbs.getCounterparty().getId();
+                if(findCounterparty(projectInfo, counterpartyId) == null) {
+                    continue;
+                }
+                
                 FinanceCheck financeCheck = financeCheckMap.get(cbs.getCounterparty()) ;
                 if(financeCheck == null)
                 {
@@ -396,6 +485,11 @@ public class ReportManagerImpl extends
         {
             for(InstituteBalanceSheet ibs : report.getInstituteBalanceSheet())
             {
+                Long counterpartyId = ibs.getCounterparty().getId();
+                if(findCounterparty(projectInfo, counterpartyId) == null) {
+                    continue;
+                }
+                
                 FinanceCheck financeCheck = financeCheckMap.get(ibs.getCounterparty()) ;
                 if(financeCheck == null)
                 {
@@ -444,6 +538,11 @@ public class ReportManagerImpl extends
         {
             for(ProfitStatement ibs : report.getProfitStatements())
             {
+                Long counterpartyId = ibs.getCounterparty().getId();
+                if(findCounterparty(projectInfo, counterpartyId) == null) {
+                    continue;
+                }
+                
                 FinanceCheck financeCheck = financeCheckMap.get(ibs.getCounterparty()) ;
                 if(financeCheck == null)
                 {
@@ -483,6 +582,8 @@ public class ReportManagerImpl extends
                         }
                         calculateFinanceRatio(financeCheck.getPrevCorpBalanceSheet(), financeCheck.getCurrCorpBalanceSheet(), 
                                 financeCheck.getPrevProfitStatement(), financeCheck.getCurrProfitStatement(), financeCheck);
+                        ProfitStatement profitStatementChanges = calculate(financeCheck.getPrevProfitStatement(), financeCheck.getCurrProfitStatement());
+                        financeCheck.setProfitStatementChanges(profitStatementChanges);
                         financeCheckMap.put(ibs.getCounterparty(), financeCheck);
                         break;
                     }

@@ -178,19 +178,28 @@
 					<td><fmt:message key="profitStatement.operatingIncome"/></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.prevProfitStatement.operatingIncome / 10000}" /></fmt:formatNumber></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.currProfitStatement.operatingIncome / 10000}" /></fmt:formatNumber></td>
-					<td>-</td>
+					<td>
+					   <fmt:formatNumber type="percent" value="${financeCheck.profitStatementChanges.operatingIncome}" />
+                       <c:if test="${empty financeCheck.profitStatementChanges.operatingIncome}">-</c:if>
+                    </td>
 				</tr>
 				<tr>
 					<td><fmt:message key="profitStatement.operatingProfit"/></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.prevProfitStatement.operatingProfit / 10000}" /></fmt:formatNumber></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.currProfitStatement.operatingProfit / 10000}" /></fmt:formatNumber></td>
-					<td>-</td>
+					<td>
+					   <fmt:formatNumber type="percent" value="${financeCheck.profitStatementChanges.operatingProfit}" />
+                       <c:if test="${empty financeCheck.profitStatementChanges.operatingProfit}">-</c:if>
+                    </td>
 				</tr>
 				<tr>
 					<td><fmt:message key="profitStatement.netProfit"/></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.prevProfitStatement.netProfit / 10000}" /></fmt:formatNumber></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.currProfitStatement.netProfit / 10000}" /></fmt:formatNumber></td>
-					<td>-</td>
+					<td>
+					   <fmt:formatNumber type="percent" value="${financeCheck.profitStatementChanges.netProfit}" />
+                        <c:if test="${empty financeCheck.profitStatementChanges.netProfit}">-</c:if>
+                    </td>
 				</tr>
 			</tbody>
 		</table>
@@ -557,19 +566,28 @@
 					<td><fmt:message key="profitStatement.operatingIncome"/></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.prevProfitStatement.operatingIncome / 10000}" /></fmt:formatNumber></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.currProfitStatement.operatingIncome / 10000}" /></fmt:formatNumber></td>
-					<td>-</td>
+					<td>
+                       <fmt:formatNumber type="percent" value="${financeCheck.profitStatementChanges.operatingIncome}" />
+                       <c:if test="${empty financeCheck.profitStatementChanges.operatingIncome}">-</c:if>
+                    </td>
 				</tr>
 				<tr>
 					<td><fmt:message key="profitStatement.operatingProfit"/></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.prevProfitStatement.operatingProfit / 10000}" /></fmt:formatNumber></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.currProfitStatement.operatingProfit / 10000}" /></fmt:formatNumber></td>
-					<td>-</td>
+					<td>
+                        <fmt:formatNumber type="percent" value="${financeCheck.profitStatementChanges.operatingProfit}" />
+                        <c:if test="${empty financeCheck.profitStatementChanges.operatingProfit}">-</c:if>
+                    </td>
 				</tr>
 				<tr>
 					<td><fmt:message key="profitStatement.netProfit"/></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.prevProfitStatement.netProfit / 10000}" /></fmt:formatNumber></td>
 					<td><fmt:formatNumber type="${numberFormatType}" pattern="#0.00"><c:out value="${financeCheck.currProfitStatement.netProfit / 10000}" /></fmt:formatNumber></td>
-					<td>-</td>
+					<td>
+                       <fmt:formatNumber type="percent" value="${financeCheck.profitStatementChanges.netProfit}" />
+                        <c:if test="${empty financeCheck.profitStatementChanges.netProfit}">-</c:if>
+                    </td>
 				</tr>
 			</tbody>
 		</table>
