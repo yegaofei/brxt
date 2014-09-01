@@ -37,8 +37,12 @@ public class ProjectInfoController extends BaseFormController{
 	}
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView handleRequest() throws Exception {
-		return new ModelAndView().addObject(projectInfoManager.getAll());
+	public ModelAndView handleRequest(@ModelAttribute("projectInfo") final ProjectInfo projectInfo) throws Exception {
+	    if(projectInfo != null) {
+	        List<ProjectInfo> projectInfos = projectInfoManager.findByProjectInfo(projectInfo);
+	        return new ModelAndView().addObject("projectInfoList", projectInfos);
+	    } 
+	    return new ModelAndView().addObject(projectInfoManager.getAll());
 	}
 
 	@RequestMapping(method = RequestMethod.POST)

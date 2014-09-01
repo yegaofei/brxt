@@ -692,13 +692,11 @@ public class RiskControlReportController extends BaseSheetController {
         return mav;
     }
     
-    private final RiskControlReport updateFinanceCheck(final Long projectInfoId, final RiskControlReport report, final Date prevTerm, final Date currTerm, final Long counterpartyId) {
+    private final RiskControlReport updateFinanceCheck(final ProjectInfo projectInfo, final RiskControlReport report, final Date prevTerm, final Date currTerm, final Counterparty counterparty) {
         Calendar c1 = Calendar.getInstance();
         Calendar c2 = Calendar.getInstance();
         c1.setTime(prevTerm);
         c2.setTime(currTerm);
-        ProjectInfo projectInfo = projectInfoManager.get(Long.valueOf(projectInfoId));
-        Counterparty counterparty = findGuarantor(projectInfo, counterpartyId);
         if (counterparty.getCounterpartyType().equals(CounterpartyType.REAL_ESTATE_FIRM.toString())
                 || counterparty.getCounterpartyType().equals(CounterpartyType.COMMERCE_COMPANY.toString())) {
             CorporateBalanceSheet prevTermCbs = financeSheetManager.findCorporateBalanceSheet(projectInfo, counterparty, c1.get(Calendar.YEAR),
@@ -797,7 +795,9 @@ public class RiskControlReportController extends BaseSheetController {
             Date prevTerm = shortDate.parse(prevTermTime);
             Date currTerm = shortDate.parse(currTermTime);
             RiskControlReport report = getRiskControlReport(request);
-            report = updateFinanceCheck(Long.valueOf(projectInfoId), report, prevTerm, currTerm, Long.valueOf(guarantorId));
+            ProjectInfo projectInfo = projectInfoManager.get(Long.valueOf(projectInfoId));
+            Counterparty guarantor = findGuarantor(projectInfo, Long.valueOf(guarantorId));
+            report = updateFinanceCheck(projectInfo, report, prevTerm, currTerm, guarantor);
             CreditInformation creditInformation = getCreditInformationTab6(request);
             if (creditInformation != null) {
                 report.getCreditInformations().add(creditInformation);
@@ -1070,7 +1070,9 @@ public class RiskControlReportController extends BaseSheetController {
             Date prevTerm = shortDate.parse(prevTermTime);
             Date currTerm = shortDate.parse(currTermTime);
             RiskControlReport report = getRiskControlReport(request);
-            report = updateFinanceCheck(Long.valueOf(projectInfoId), report, prevTerm, currTerm, Long.valueOf(counterpartyId));
+            ProjectInfo projectInfo = projectInfoManager.get(Long.valueOf(projectInfoId));
+            Counterparty counterparty = findCounterparty(projectInfo, Long.valueOf(counterpartyId));
+            report = updateFinanceCheck(projectInfo, report, prevTerm, currTerm, counterparty);
             CreditInformation creditInformation = getCreditInformation(request);
             if (creditInformation != null) {
                 report.getCreditInformations().add(creditInformation);
@@ -1150,12 +1152,36 @@ public class RiskControlReportController extends BaseSheetController {
     }
 
     @RequestMapping(value = "/reports/reportSearch*", method = RequestMethod.GET)
-    public ModelAndView reportSearch(final HttpServletRequest request) {
-        List<RiskControlReport> reports = reportManager.getAll();
+    public ModelAndView reportSearch(@ModelAttribute("projectInfo") final ProjectInfo projectInfo, final HttpServletRequest request) {
+        List<RiskControlReport> reports = searchReports(projectInfo);
         if (reports == null || reports.isEmpty()) {
             saveMessage(request, getText("report.add.help", request.getLocale()));
-        }
+        } 
         return new ModelAndView("/reports/reportSearch").addObject("reportList", reports);
+    }
+    
+    private List<RiskControlReport> searchReports(final ProjectInfo projectInfo) {
+        RiskControlReport report = new RiskControlReport();
+        report.setSearchTimeStart(projectInfo.getSearchTimeStart());
+        report.setSearchTimeEnd(projectInfo.getSearchTimeEnd());
+        List<RiskControlReport> reports = reportManager.findByReport(report);
+        projectInfo.setSearchTimeStart(null);
+        projectInfo.setSearchTimeEnd(null);
+        List<ProjectInfo> projectInfoList = projectInfoManager.findByProjectInfo(projectInfo);
+        projectInfo.setSearchTimeStart(report.getSearchTimeStart());
+        projectInfo.setSearchTimeEnd(report.getSearchTimeEnd());
+        Set<ProjectInfo> projectInfoSet = new HashSet<ProjectInfo>(projectInfoList);
+
+        if (reports != null && !reports.isEmpty()) {
+            Iterator<RiskControlReport> itR = reports.iterator();
+            while (itR.hasNext()) {
+                RiskControlReport r = itR.next();
+                if (!projectInfoSet.contains(r.getProjectInfo())) {
+                    itR.remove();
+                }
+            }
+        }
+        return reports;
     }
 
     @RequestMapping(value = "/reports/reportSearch*", method = RequestMethod.POST)
@@ -1166,27 +1192,7 @@ public class RiskControlReportController extends BaseSheetController {
         }
         switch (method) {
             case "SearchReport" :
-                RiskControlReport report = new RiskControlReport();
-                report.setSearchTimeStart(projectInfo.getSearchTimeStart());
-                report.setSearchTimeEnd(projectInfo.getSearchTimeEnd());
-                List<RiskControlReport> reports = reportManager.findByReport(report);
-                projectInfo.setSearchTimeStart(null);
-                projectInfo.setSearchTimeEnd(null);
-                List<ProjectInfo> projectInfoList = projectInfoManager.findByProjectInfo(projectInfo);
-                projectInfo.setSearchTimeStart(report.getSearchTimeStart());
-                projectInfo.setSearchTimeEnd(report.getSearchTimeEnd());
-                Set<ProjectInfo> projectInfoSet = new HashSet<ProjectInfo>(projectInfoList);
-
-                if (reports != null && !reports.isEmpty()) {
-                    Iterator<RiskControlReport> itR = reports.iterator();
-                    while (itR.hasNext()) {
-                        RiskControlReport r = itR.next();
-                        if (!projectInfoSet.contains(r.getProjectInfo())) {
-                            itR.remove();
-                        }
-                    }
-                }
-
+                List<RiskControlReport> reports = searchReports(projectInfo);
                 return new ModelAndView("/reports/reportSearch").addObject("reportList", reports);
             default :
         }

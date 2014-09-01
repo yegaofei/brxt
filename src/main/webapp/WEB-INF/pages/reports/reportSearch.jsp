@@ -27,7 +27,7 @@
     		<div class="row">
     		<div class="col-sm-3 form-group">
         		<appfuse:label styleClass="control-label" key="projectInfo.nonrequired.projectName"/>
-        		<form:input path="projectName" id="projectName" maxlength="50" cssClass="form-control input-sm"/>
+        		<form:input path="projectName" id="projectName" cssClass="form-control input-sm"/>
         	</div>	
     		<div class="col-sm-3 form-group">
         		<appfuse:label styleClass="control-label" key="projectInfo.riskManager"/>

@@ -467,7 +467,8 @@ public class ReportManagerImpl extends
                         {
                             financeCheck.setCurrCorpBalanceSheet(cbs2);
                             financeCheck.setPrevCorpBalanceSheet(cbs);
-                        } else if (cbs2.getReportMonth().intValue() < cbs.getReportMonth().intValue())
+                        } 
+                        else if (cbs2.getReportMonth().intValue() < cbs.getReportMonth().intValue())
                         {
                             financeCheck.setCurrCorpBalanceSheet(cbs);
                             financeCheck.setPrevCorpBalanceSheet(cbs2);
