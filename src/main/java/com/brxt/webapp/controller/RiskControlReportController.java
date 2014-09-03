@@ -692,7 +692,8 @@ public class RiskControlReportController extends BaseSheetController {
         return mav;
     }
     
-    private final RiskControlReport updateFinanceCheck(final ProjectInfo projectInfo, final RiskControlReport report, final Date prevTerm, final Date currTerm, final Counterparty counterparty) {
+    private RiskControlReport updateFinanceCheck(final ProjectInfo projectInfo, final RiskControlReport report, final Date prevTerm, final Date currTerm, 
+            final Counterparty counterparty, boolean isGuarantor) {
         Calendar c1 = Calendar.getInstance();
         Calendar c2 = Calendar.getInstance();
         c1.setTime(prevTerm);
@@ -704,8 +705,15 @@ public class RiskControlReportController extends BaseSheetController {
             CorporateBalanceSheet currTermCbs = financeSheetManager.findCorporateBalanceSheet(projectInfo, counterparty, c2.get(Calendar.YEAR),
                     c2.get(Calendar.MONTH) + 1);
 
-            Iterator<CorporateBalanceSheet> stIt = report.getGuarantorCorpBalanceSheets().iterator();
-            while (stIt != null && stIt.hasNext()) {
+            Set<CorporateBalanceSheet> corpBalanceSheets = null;
+            if(isGuarantor) {
+                corpBalanceSheets = report.getGuarantorCorpBalanceSheets();
+            } else {
+                corpBalanceSheets = report.getCorporateBalanceSheets();
+            }
+            
+            Iterator<CorporateBalanceSheet> stIt = corpBalanceSheets.iterator();
+            while (stIt.hasNext()) {
                 CorporateBalanceSheet ps = stIt.next();
                 if (ps.getCounterparty().equals(counterparty)) {
                     stIt.remove();
@@ -713,19 +721,21 @@ public class RiskControlReportController extends BaseSheetController {
             }
 
             if (prevTermCbs != null) {
-                report.getGuarantorCorpBalanceSheets().add(prevTermCbs);
+                corpBalanceSheets.add(prevTermCbs);
             }
 
             if (currTermCbs != null) {
-                report.getGuarantorCorpBalanceSheets().add(currTermCbs);
+                corpBalanceSheets.add(currTermCbs);
             }
             
             ProfitStatement prevProfitStatement = financeSheetManager.findProfitStatement(projectInfo, counterparty, c1.get(Calendar.YEAR),
                     c1.get(Calendar.MONTH) + 1);
             ProfitStatement currProfitStatement = financeSheetManager.findProfitStatement(projectInfo, counterparty, c2.get(Calendar.YEAR),
                     c2.get(Calendar.MONTH) + 1);
-            Iterator<ProfitStatement> psIt = report.getProfitStatements().iterator();
-            while (psIt != null && psIt.hasNext()) {
+            
+            Set<ProfitStatement> profitStatements = report.getProfitStatements();
+            Iterator<ProfitStatement> psIt = profitStatements.iterator();
+            while (psIt.hasNext()) {
                 ProfitStatement ps = psIt.next();
                 if (ps.getCounterparty().equals(counterparty)) {
                     psIt.remove();
@@ -733,11 +743,11 @@ public class RiskControlReportController extends BaseSheetController {
             }
 
             if (prevProfitStatement != null) {
-                report.getProfitStatements().add(prevProfitStatement);
+                profitStatements.add(prevProfitStatement);
             }
 
             if (currProfitStatement != null) {
-                report.getProfitStatements().add(currProfitStatement);
+                profitStatements.add(currProfitStatement);
             }
             
         } else if (counterparty.getCounterpartyType().equals(CounterpartyType.INSTITUTION.toString())) {
@@ -746,8 +756,15 @@ public class RiskControlReportController extends BaseSheetController {
             InstituteBalanceSheet currIBS = financeSheetManager.findInstituteBalanceSheet(projectInfo, counterparty, c2.get(Calendar.YEAR),
                     c2.get(Calendar.MONTH) + 1);
 
-            Iterator<InstituteBalanceSheet> stIt = report.getGuarantorInstBalanceSheet().iterator();
-            while (stIt != null && stIt.hasNext()) {
+            Set<InstituteBalanceSheet> instBalanceSheets = null;
+            if(isGuarantor) {
+                instBalanceSheets = report.getGuarantorInstBalanceSheet();
+            } else {
+                instBalanceSheets = report.getInstituteBalanceSheet();
+            }
+            
+            Iterator<InstituteBalanceSheet> stIt = instBalanceSheets.iterator();
+            while (stIt.hasNext()) {
                 InstituteBalanceSheet ps = stIt.next();
                 if (ps.getCounterparty().equals(counterparty)) {
                     stIt.remove();
@@ -755,11 +772,11 @@ public class RiskControlReportController extends BaseSheetController {
             }
 
             if (prevIBS != null) {
-                report.getGuarantorInstBalanceSheet().add(prevIBS);
+                instBalanceSheets.add(prevIBS);
             }
 
             if (currIBS != null) {
-                report.getGuarantorInstBalanceSheet().add(currIBS);
+                instBalanceSheets.add(currIBS);
             }
         }
 
@@ -797,7 +814,7 @@ public class RiskControlReportController extends BaseSheetController {
             RiskControlReport report = getRiskControlReport(request);
             ProjectInfo projectInfo = projectInfoManager.get(Long.valueOf(projectInfoId));
             Counterparty guarantor = findGuarantor(projectInfo, Long.valueOf(guarantorId));
-            report = updateFinanceCheck(projectInfo, report, prevTerm, currTerm, guarantor);
+            report = updateFinanceCheck(projectInfo, report, prevTerm, currTerm, guarantor, true);
             CreditInformation creditInformation = getCreditInformationTab6(request);
             if (creditInformation != null) {
                 report.getCreditInformations().add(creditInformation);
@@ -1072,7 +1089,7 @@ public class RiskControlReportController extends BaseSheetController {
             RiskControlReport report = getRiskControlReport(request);
             ProjectInfo projectInfo = projectInfoManager.get(Long.valueOf(projectInfoId));
             Counterparty counterparty = findCounterparty(projectInfo, Long.valueOf(counterpartyId));
-            report = updateFinanceCheck(projectInfo, report, prevTerm, currTerm, counterparty);
+            report = updateFinanceCheck(projectInfo, report, prevTerm, currTerm, counterparty, false);
             CreditInformation creditInformation = getCreditInformation(request);
             if (creditInformation != null) {
                 report.getCreditInformations().add(creditInformation);

@@ -180,7 +180,7 @@ public class InstituteBalanceSheet extends BaseObject {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE).append(
-				this.reportName).toString();
+				this.counterparty).append(this.reportYear).append(this.reportMonth).toString();
 	}
 
 	@Override

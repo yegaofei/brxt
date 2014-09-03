@@ -188,8 +188,16 @@ public class ReportManagerImpl extends
                     continue;
                 }
                 
-                FinanceCheck financeCheck = new FinanceCheck();
-                financeCheck.setCounterparty(cbs.getCounterparty());
+                FinanceCheck financeCheck = financeCheckTab6Map.get(cbs.getCounterparty()); 
+                if(financeCheck == null){
+                    financeCheck = new FinanceCheck();
+                    financeCheck.setCounterparty(cbs.getCounterparty());
+                }
+                
+                if(financeCheck.getPrevCorpBalanceSheet() != null && financeCheck.getCurrCorpBalanceSheet() != null) {
+                    continue;
+                }
+                
                 Iterator<CorporateBalanceSheet> itCbs = report.getGuarantorCorpBalanceSheets().iterator();
                 while(itCbs.hasNext())
                 {
@@ -215,13 +223,18 @@ public class ReportManagerImpl extends
                             financeCheck.setCurrCorpBalanceSheet(cbs);
                             financeCheck.setPrevCorpBalanceSheet(cbs2);
                         }
-                        
-                        CorporateBalanceSheet corpBalanceSheetChanges = calculate(financeCheck.getPrevCorpBalanceSheet(), financeCheck.getCurrCorpBalanceSheet());
-                        financeCheck.setCorpBalanceSheetChanges(corpBalanceSheetChanges);
-                        financeCheckTab6Map.put(cbs.getCounterparty(), financeCheck);
                         break;
                     }
                 }
+                
+                if(financeCheck.getPrevCorpBalanceSheet() == null && financeCheck.getCurrCorpBalanceSheet() == null) {
+                    //financeCheck.setCurrCorpBalanceSheet(cbs);
+                    financeCheck.setPrevCorpBalanceSheet(cbs);
+                }
+                
+                CorporateBalanceSheet corpBalanceSheetChanges = calculate(financeCheck.getPrevCorpBalanceSheet(), financeCheck.getCurrCorpBalanceSheet());
+                financeCheck.setCorpBalanceSheetChanges(corpBalanceSheetChanges);
+                financeCheckTab6Map.put(cbs.getCounterparty(), financeCheck);
             }
         }
         
@@ -268,6 +281,12 @@ public class ReportManagerImpl extends
                         break;
                     }
                 }
+                
+                if(financeCheck.getCurrInstituteBalanceSheet() == null && financeCheck.getPrevInstituteBalanceSheet() == null) {
+                    financeCheck.setPrevInstituteBalanceSheet(ibs);
+                    //financeCheck.setCurrInstituteBalanceSheet(ibs);
+                }
+                
                 financeCheckTab6Map.put(ibs.getCounterparty(), financeCheck);
             }
         }
@@ -321,12 +340,18 @@ public class ReportManagerImpl extends
                         calculateFinanceRatio(financeCheck.getPrevCorpBalanceSheet(), financeCheck.getCurrCorpBalanceSheet(), 
                                 financeCheck.getPrevProfitStatement(), financeCheck.getCurrProfitStatement(), financeCheck);
                         
-                        ProfitStatement profitStatementChanges = calculate(financeCheck.getPrevProfitStatement(), financeCheck.getCurrProfitStatement());
-                        financeCheck.setProfitStatementChanges(profitStatementChanges);
-                        financeCheckTab6Map.put(ibs.getCounterparty(), financeCheck);
                         break;
                     }
                 }
+                
+                if(financeCheck.getCurrProfitStatement() == null && financeCheck.getPrevProfitStatement() == null)
+                {
+                    //financeCheck.setCurrProfitStatement(ibs);
+                    financeCheck.setPrevProfitStatement(ibs);
+                }
+                ProfitStatement profitStatementChanges = calculate(financeCheck.getPrevProfitStatement(), financeCheck.getCurrProfitStatement());
+                financeCheck.setProfitStatementChanges(profitStatementChanges);
+                financeCheckTab6Map.put(ibs.getCounterparty(), financeCheck);
             }
         }
         

@@ -19,7 +19,6 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.appfuse.model.BaseObject;
 
 import com.brxt.model.Counterparty;
-import com.brxt.model.ProjectInfo;
 import com.brxt.model.enums.BeginEnd;
 import com.brxt.model.enums.StatementType;
 
@@ -289,7 +288,7 @@ public class CorporateBalanceSheet extends BaseObject {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE).append(
-				this.reportName).toString();
+				this.counterparty).append(this.reportYear).append(this.reportMonth).toString();
 	}
 
 	@Override
