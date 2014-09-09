@@ -80,7 +80,7 @@
     <div class="col-sm-5 form-group${(not empty status.errorMessage) ? ' has-error' : ''}">
     </spring:bind>
         <appfuse:label styleClass="control-label" key="repaymentProject.salePercentRate"/>
-        <form:input path="salePercentRate" id="salePercentRate"  cssClass="form-control"/>
+        <div class="input-group"><form:input path="salePercentRate" id="salePercentRate"  cssClass="form-control"/><span class="input-group-addon input-sm">%</span></div>
         <form:errors path="salePercentRate" cssClass="help-inline"/>
     </div>
     </div>

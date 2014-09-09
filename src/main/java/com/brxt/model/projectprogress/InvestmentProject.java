@@ -111,6 +111,7 @@ public class InvestmentProject extends BaseObject  {
 		this.totalAmount = totalAmount;
 	}
 
+	@Column(columnDefinition = "longtext")
 	public String getDescription() {
 		return description;
 	}

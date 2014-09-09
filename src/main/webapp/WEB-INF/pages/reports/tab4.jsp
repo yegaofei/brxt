@@ -120,7 +120,7 @@
 						<tr>
 							<td><fmt:message key="repaymentProject.salePercentRate"/></td>
 							<td>
-								<c:out value="${repaymentProject.salePercentRate}" />
+								<c:out value="${repaymentProject.salePercentRate}" />%
 							</td>
 						</tr>
 						<tr>
