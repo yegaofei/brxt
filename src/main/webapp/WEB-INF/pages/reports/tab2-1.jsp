@@ -321,7 +321,7 @@
         				<fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.prevInstituteBalanceSheet.debtGroupTotal}" /></fmt:formatNumber>
         			</td>
         			<td>
-        				<fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.prevInstituteBalanceSheet.debtGroupTotal}" /></fmt:formatNumber>
+        				<fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.currInstituteBalanceSheet.debtGroupTotal}" /></fmt:formatNumber>
         			</td>
         		</tr>
         		<tr>
@@ -330,7 +330,7 @@
         				<fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.prevInstituteBalanceSheet.debtTotal}" /></fmt:formatNumber>
 					</td>
         			<td>
-        				<fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.prevInstituteBalanceSheet.debtTotal}" /></fmt:formatNumber>
+        				<fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.currInstituteBalanceSheet.debtTotal}" /></fmt:formatNumber>
         			</td>
         		</tr>
         		<tr>
@@ -339,7 +339,7 @@
         				<fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.prevInstituteBalanceSheet.netAssetTotal}" /></fmt:formatNumber>
         			</td>
         			<td>
-        				<fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.prevInstituteBalanceSheet.netAssetTotal}" /></fmt:formatNumber>
+        				<fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.currInstituteBalanceSheet.netAssetTotal}" /></fmt:formatNumber>
         			</td>
         		</tr>
         		<tr>
@@ -348,7 +348,7 @@
         				<fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.prevInstituteBalanceSheet.incomeTotal}" /></fmt:formatNumber>
         			</td>
         			<td>
-        				<fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.prevInstituteBalanceSheet.incomeTotal}" /></fmt:formatNumber>
+        				<fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.currInstituteBalanceSheet.incomeTotal}" /></fmt:formatNumber>
         			</td>
         		</tr>
 			</tbody>
@@ -709,7 +709,7 @@
         				<fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.prevInstituteBalanceSheet.debtGroupTotal}" /></fmt:formatNumber>
         			</td>
         			<td>
-        				<fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.prevInstituteBalanceSheet.debtGroupTotal}" /></fmt:formatNumber>
+        				<fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.currInstituteBalanceSheet.debtGroupTotal}" /></fmt:formatNumber>
         			</td>
         		</tr>
         		<tr>
@@ -718,7 +718,7 @@
         				<fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.prevInstituteBalanceSheet.debtTotal}" /></fmt:formatNumber>
 					</td>
         			<td>
-        				<fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.prevInstituteBalanceSheet.debtTotal}" /></fmt:formatNumber>
+        				<fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.currInstituteBalanceSheet.debtTotal}" /></fmt:formatNumber>
         			</td>
         		</tr>
         		<tr>
@@ -727,7 +727,7 @@
         				<fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.prevInstituteBalanceSheet.netAssetTotal}" /></fmt:formatNumber>
         			</td>
         			<td>
-        				<fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.prevInstituteBalanceSheet.netAssetTotal}" /></fmt:formatNumber>
+        				<fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.currInstituteBalanceSheet.netAssetTotal}" /></fmt:formatNumber>
         			</td>
         		</tr>
         		<tr>
@@ -736,7 +736,7 @@
         				<fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.prevInstituteBalanceSheet.incomeTotal}" /></fmt:formatNumber>
         			</td>
         			<td>
-        				<fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.prevInstituteBalanceSheet.incomeTotal}" /></fmt:formatNumber>
+        				<fmt:formatNumber type="${numberFormatType}"><c:out value="${financeCheck.currInstituteBalanceSheet.incomeTotal}" /></fmt:formatNumber>
         			</td>
         		</tr>
 			</tbody>

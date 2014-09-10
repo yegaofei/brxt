@@ -63,12 +63,12 @@ public class ReportManagerImpl extends
             prevFinanceRatio.setLiquidityRatio(calculateRatio(prevTermCbs.getLiquidAsset(), prevTermCbs.getLiquidDebt()));
             if(prevTermCbs.getLiquidAsset() != null)
             {
-                prevFinanceRatio.setQuickRatio(calculateRatio(prevTermCbs.getLiquidAsset().subtract(prevTermCbs.getInventory()),
+                prevFinanceRatio.setQuickRatio(calculateRatio(prevTermCbs.getLiquidAsset().subtract(prevTermCbs.getInventory() == null ? BigDecimal.ZERO : prevTermCbs.getInventory()),
                         prevTermCbs.getLiquidDebt()));
             }
             if (currProfitStatement != null && prevProfitStatement != null) {
                 prevFinanceRatio.setSalesIncrementRatio(calculateRatio(
-                        currProfitStatement.getOperatingIncome().subtract(prevProfitStatement.getOperatingIncome()),
+                        currProfitStatement.getOperatingIncome().subtract(prevProfitStatement.getOperatingIncome() == null ? BigDecimal.ZERO : prevProfitStatement.getOperatingIncome()),
                         prevProfitStatement.getOperatingIncome()));
             }
             financeCheck.setPrevFinanceRatio(prevFinanceRatio);
@@ -83,7 +83,7 @@ public class ReportManagerImpl extends
             }
             currFinanceRatio.setLiquidityRatio(calculateRatio(currTermCbs.getLiquidAsset(), currTermCbs.getLiquidDebt()));
             if(currTermCbs.getLiquidAsset() != null){
-            currFinanceRatio.setQuickRatio(calculateRatio(currTermCbs.getLiquidAsset().subtract(currTermCbs.getInventory()),
+            currFinanceRatio.setQuickRatio(calculateRatio(currTermCbs.getLiquidAsset().subtract(currTermCbs.getInventory() == null ? BigDecimal.ZERO : currTermCbs.getInventory()),
                     currTermCbs.getLiquidDebt()));
             }
             financeCheck.setCurrFinanceRatio(currFinanceRatio);
@@ -97,22 +97,22 @@ public class ReportManagerImpl extends
             
             if(currFinanceRatio.getAssetLiabilityRatio() != null && prevFinanceRatio != null)
             {
-                financeRatioChanges.setAssetLiabilityRatio(currFinanceRatio.getAssetLiabilityRatio().subtract(prevFinanceRatio.getAssetLiabilityRatio()));
+                financeRatioChanges.setAssetLiabilityRatio(currFinanceRatio.getAssetLiabilityRatio().subtract(prevFinanceRatio.getAssetLiabilityRatio() == null ? BigDecimal.ZERO : prevFinanceRatio.getAssetLiabilityRatio()));
             }
             
             if(currFinanceRatio.getLiquidityRatio() != null && prevFinanceRatio != null)
             {
-                financeRatioChanges.setLiquidityRatio(currFinanceRatio.getLiquidityRatio().subtract(prevFinanceRatio.getLiquidityRatio()));                         
+                financeRatioChanges.setLiquidityRatio(currFinanceRatio.getLiquidityRatio().subtract(prevFinanceRatio.getLiquidityRatio() == null ? BigDecimal.ZERO : prevFinanceRatio.getLiquidityRatio()));                         
             }
             
             if(currFinanceRatio.getQuickRatio() != null && prevFinanceRatio != null)
             {
-                financeRatioChanges.setQuickRatio(currFinanceRatio.getQuickRatio().subtract(prevFinanceRatio.getQuickRatio()));
+                financeRatioChanges.setQuickRatio(currFinanceRatio.getQuickRatio().subtract(prevFinanceRatio.getQuickRatio() == null ? BigDecimal.ZERO : prevFinanceRatio.getQuickRatio()));
             }
             
             if(currFinanceRatio.getAssetRoR() != null && prevFinanceRatio != null)
             {
-                financeRatioChanges.setAssetRoR(currFinanceRatio.getAssetRoR().subtract(prevFinanceRatio.getAssetRoR()));
+                financeRatioChanges.setAssetRoR(currFinanceRatio.getAssetRoR().subtract(prevFinanceRatio.getAssetRoR() == null ? BigDecimal.ZERO : prevFinanceRatio.getAssetRoR()));
             }
             financeCheck.setFinanceRatioChanges(financeRatioChanges);
         }

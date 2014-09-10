@@ -48,7 +48,12 @@
     
     <div class="col-sm-5">
         <appfuse:label styleClass="control-label" key="corpBalanceSheet.reportYear"/>:        
-        <form:input path="reportTime" id="reportTime" maxlength="20"  class="form-control input-sm"/>
+        <c:if test="${empty param.id}">
+        	<form:input path="reportTime" id="reportTime" maxlength="20"  class="form-control input-sm"/>
+        </c:if>
+        <c:if test="${not empty param.id}">
+        	<form:input path="reportTime" readonly="true" id="nonReportTime" maxlength="20"  class="form-control input-sm"/>
+        </c:if>
     </div>	
     </div>
     
