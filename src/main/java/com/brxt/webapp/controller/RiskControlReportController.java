@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.appfuse.model.Role;
+import org.appfuse.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -1051,6 +1053,23 @@ public class RiskControlReportController extends BaseSheetController {
                 break;
             default :
         }
+        
+        Set<Role> currentUserRoles = super.getCurrentUser().getRoles();
+        boolean isRiskDirector = false;
+        for(Role role : currentUserRoles) {
+        	if(role.getName().equalsIgnoreCase("ROLE_RISK_DIRECTOR")) {
+        		isRiskDirector = true;
+        	}
+        }
+        if(isRiskDirector) {
+        	String comments_report = request.getParameter("comments_report");
+        	if(StringUtils.isNotBlank(comments_report)) {
+        		report.setComments_report(comments_report);
+        	}
+        } else {
+        	report.setComments_report(report.getComments());
+        }
+        
         reportManager.save(report);
         saveMessage(request, getText("report.update.success", request.getLocale()));
         mav.addObject("riskControlReport", report);
@@ -1301,11 +1320,15 @@ public class RiskControlReportController extends BaseSheetController {
         RiskControlReport report = getRiskControlReport(request);
         return reportManager.getFinanceCheckList(report);
     }
+    
+    @ModelAttribute("user")
+    protected User loadUser(final HttpServletRequest request) {
+        return getCurrentUser();
+    }
 
     @RequestMapping(value = "/reports/previewReport*", method = RequestMethod.GET)
     public ModelAndView previewReport(final HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("/reports/previewReport");
-        mav.addObject("user", getCurrentUser());
         List<String> tabList = new ArrayList<String>();
         for(int i = 1; i <= 8; i++)
         {

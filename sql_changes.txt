@@ -1,11 +1,16 @@
-Alter table riskmanagement.risk_control_report  modify  financeCheckComment longtext;
-Alter table riskmanagement.risk_control_report  modify  investmentEvaluation longtext;
-Alter table riskmanagement.risk_control_report  modify  policyChanges longtext;
-Alter table riskmanagement.risk_control_report  modify  priceChanges longtext;
-Alter table riskmanagement.risk_control_report  modify  repaymentEvaluation longtext;
-Alter table riskmanagement.risk_control_report  modify  collateralSummary longtext;
-Alter table riskmanagement.risk_control_report  modify  guarantorCheckComment longtext;
-Alter table riskmanagement.risk_control_report  modify  guarantorSummary longtext;
-Alter table riskmanagement.risk_control_report  modify  statusBeforeMaturity longtext;
-Alter table riskmanagement.risk_control_report  modify  comments longtext;
-Alter table riskmanagement.project_info  modify  fundUsage longtext;
+alter table risk_control_report add column financeCheckComment_report longtext;
+alter table risk_control_report add column investmentEvaluation_report longtext;
+alter table risk_control_report add column repaymentEvaluation_report longtext;
+alter table risk_control_report add column collateralSummary_report longtext;
+alter table risk_control_report add column guarantorCheckComment_report longtext;
+alter table risk_control_report add column statusBeforeMaturity_report longtext;
+alter table risk_control_report add column comments_report longtext;
+
+update risk_control_report s, risk_control_report d set d.comments_report = s.comments where s.id = d.id;
+update risk_control_report s, risk_control_report d set d.financeCheckComment_report = s.financeCheckComment where s.id = d.id;
+update risk_control_report s, risk_control_report d set d.investmentEvaluation_report = s.investmentEvaluation where s.id = d.id;
+update risk_control_report s, risk_control_report d set d.repaymentEvaluation_report = s.repaymentEvaluation where s.id = d.id;
+update risk_control_report s, risk_control_report d set d.collateralSummary_report = s.collateralSummary where s.id = d.id;
+update risk_control_report s, risk_control_report d set d.guarantorCheckComment_report = s.guarantorCheckComment where s.id = d.id;
+update risk_control_report s, risk_control_report d set d.statusBeforeMaturity_report = s.statusBeforeMaturity where s.id = d.id;
+commit;

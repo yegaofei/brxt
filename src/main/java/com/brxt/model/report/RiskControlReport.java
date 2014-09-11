@@ -69,15 +69,22 @@ public class RiskControlReport extends BaseObject{
 	private Set<SupplyLiquidProject> supplyLiquidProjects = new HashSet<SupplyLiquidProject>();
 	
 	private String financeCheckComment;//财务状况排查结论	
+	private String financeCheckComment_report;//财务状况排查结论	
 	private String investmentEvaluation; //资金投向综合评价
+	private String investmentEvaluation_report; //资金投向综合评价
 	private String policyChanges; //房地产市场调控政策有无变化
 	private String priceChanges; //项目所在区域商品房价格走势情况；如难以取得上述数据，可结合周边楼盘定价及销售情况	
 	private String repaymentEvaluation; //还款来源综合评价
+	private String repaymentEvaluation_report; //还款来源综合评价
 	private String collateralSummary; //担保物的状况
+	private String collateralSummary_report; //担保物的状况
 	private String guarantorCheckComment; //保证人担保能力综合评价
+	private String guarantorCheckComment_report; //保证人担保能力综合评价
 	private String guarantorSummary; //项目管理人员认为需要说明的其他事项可补充填列
 	private String statusBeforeMaturity; //到期前情况说明
+	private String statusBeforeMaturity_report; //到期前情况说明
 	private String comments; //结论和建议
+	private String comments_report; //结论和建议
 	
 	private String tab8Option;
 	
@@ -406,6 +413,62 @@ public class RiskControlReport extends BaseObject{
 	public void setSupplyLiquidProjects(
 			Set<SupplyLiquidProject> supplyLiquidProjects) {
 		this.supplyLiquidProjects = supplyLiquidProjects;
+	}
+	
+	@Column(columnDefinition = "longtext")
+	public String getFinanceCheckComment_report() {
+		return financeCheckComment_report;
+	}
+	public void setFinanceCheckComment_report(String financeCheckComment_report) {
+		this.financeCheckComment_report = financeCheckComment_report;
+	}
+	
+	@Column(columnDefinition = "longtext")
+	public String getInvestmentEvaluation_report() {
+		return investmentEvaluation_report;
+	}
+	public void setInvestmentEvaluation_report(String investmentEvaluation_report) {
+		this.investmentEvaluation_report = investmentEvaluation_report;
+	}
+	
+	@Column(columnDefinition = "longtext")
+	public String getRepaymentEvaluation_report() {
+		return repaymentEvaluation_report;
+	}
+	public void setRepaymentEvaluation_report(String repaymentEvaluation_report) {
+		this.repaymentEvaluation_report = repaymentEvaluation_report;
+	}
+	
+	@Column(columnDefinition = "longtext")
+	public String getCollateralSummary_report() {
+		return collateralSummary_report;
+	}
+	public void setCollateralSummary_report(String collateralSummary_report) {
+		this.collateralSummary_report = collateralSummary_report;
+	}
+	
+	@Column(columnDefinition = "longtext")
+	public String getGuarantorCheckComment_report() {
+		return guarantorCheckComment_report;
+	}
+	public void setGuarantorCheckComment_report(String guarantorCheckComment_report) {
+		this.guarantorCheckComment_report = guarantorCheckComment_report;
+	}
+	
+	@Column(columnDefinition = "longtext")
+	public String getStatusBeforeMaturity_report() {
+		return statusBeforeMaturity_report;
+	}
+	public void setStatusBeforeMaturity_report(String statusBeforeMaturity_report) {
+		this.statusBeforeMaturity_report = statusBeforeMaturity_report;
+	}
+	
+	@Column(columnDefinition = "longtext")
+	public String getComments_report() {
+		return comments_report;
+	}
+	public void setComments_report(String comments_report) {
+		this.comments_report = comments_report;
 	}
 	@Override
 	public String toString() {
