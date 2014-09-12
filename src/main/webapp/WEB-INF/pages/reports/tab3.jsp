@@ -44,7 +44,7 @@
 				
 				<c:if test="${empty investmentStatus}"> 
 				    <div class="alert alert-dismissable alert-danger">
-                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        <button type="button" class="close" data-dismiss="alert">ï¿½</button>
                         <span class="text-danger"><fmt:message key="report.investmentProjects.empty"/></span>
                         <a href="${ctx}/projectInfoForm?id=${param.id}" class="alert-link"><fmt:message key="report.nav.back.projectInfoForm"/></a>
                     </div>
@@ -92,6 +92,16 @@
 						</c:if>
 					</div>
 				</div>
+				
+				<c:if test="${fn:contains(user.roles, 'ROLE_RISK_DIRECTOR')}">
+					<div class="form-group">
+						<label for="investmentEvaluation_report" class="col-lg-2 control-label"><fmt:message key="investmentProject.evaluation" />(<fmt:message key="report.comments.modified" />)</label>
+						<div class="col-lg-10">
+							<textarea class="form-control" rows="4" id="investmentEvaluation_report" name="investmentEvaluation_report"><c:out value="${riskControlReport.investmentEvaluation_report}" /></textarea>
+						</div>
+					</div>
+				</c:if>
+				
 				<div class="form-group">
 					<div class="col-lg-2 col-lg-offset-10">
 						<button type="submit" class="btn btn-primary" name="method"

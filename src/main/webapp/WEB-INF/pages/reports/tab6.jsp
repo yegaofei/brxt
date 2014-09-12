@@ -39,6 +39,15 @@
 				</div>
 			</div>
 			
+			<c:if test="${fn:contains(user.roles, 'ROLE_RISK_DIRECTOR')}">
+				<div class="form-group">
+					<label for="guarantorCheckComment_report" class="col-lg-2 control-label"><fmt:message key="creditInformation.guarantor.evaluation" />(<fmt:message key="report.comments.modified" />)</label>
+					<div class="col-lg-10">
+						<textarea class="form-control" rows="4" id="guarantorCheckComment_report" name="guarantorCheckComment_report"><c:out value="${riskControlReport.guarantorCheckComment_report}" /></textarea>
+					</div>
+				</div>
+			</c:if>
+			
 			</div>
 			
 			<div class="form-group">

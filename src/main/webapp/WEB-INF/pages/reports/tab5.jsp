@@ -9,6 +9,15 @@
 		</div>
 	</div>
 	
+	<c:if test="${fn:contains(user.roles, 'ROLE_RISK_DIRECTOR')}">
+	<div class="form-group">
+		<label for="collateralSummary_report" class="col-lg-2 control-label"><fmt:message key="report.riskcontrol.tab5" />(<fmt:message key="report.comments.modified" />)</label>
+		<div class="col-lg-10">
+			<textarea class="form-control" rows="4" id="collateralSummary_report" name="collateralSummary_report"><c:out value="${riskControlReport.collateralSummary_report}" /></textarea>
+		</div>
+	</div>
+	</c:if>
+	
 	<div class="form-group">
 		<div class="col-lg-1 col-lg-offset-11">
 			<button type="submit" class="btn btn-primary" name="method" value="SaveTab5" onclick="$('#activeTab').val('tab5')">
