@@ -41,9 +41,9 @@
 			
 			<c:if test="${fn:contains(user.roles, 'ROLE_RISK_DIRECTOR')}">
 				<div class="form-group">
-					<label for="financeStatementSummary_report" class="col-lg-2 control-label"><fmt:message key="report.financeCheck.financeStatementSummary" />(<fmt:message key="report.comments.modified" />)</label>
-					<div class="col-lg-10">
-					<textarea class="form-control" rows="4" id="financeStatementSummary_report" name="financeStatementSummary_report"><c:out value="${riskControlReport.financeStatementSummary_report}" /></textarea>
+					<label for="financeStatementSummary_report" class="col-lg-3 control-label"><fmt:message key="report.financeCheck.financeStatementSummary" />(<fmt:message key="report.comments.modified" />)</label>
+					<div class="col-lg-9">
+					<textarea class="form-control input-sm" rows="4" id="financeStatementSummary_report" name="financeStatementSummary_report"><c:out value="${riskControlReport.financeCheckComment_report}" /></textarea>
 					</div>
 				</div>
 			</c:if>

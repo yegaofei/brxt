@@ -33,7 +33,7 @@
 	<div class="form-group">
 		<label for="comments_report" class="col-lg-2 control-label"><fmt:message key="report.riskcontrol.tab8" />(<fmt:message key="report.comments.modified" />)</label>
 		<div class="col-lg-10">
-			<textarea class="form-control" rows="4" id="comments_report" name="comments_report" placeholder="<fmt:message key="report.riskcontrol.tab8" />"><c:out value="${riskControlReport.comments_report}" /></textarea>
+			<textarea class="form-control" rows="4" id="comments_report" name="comments_report"><c:out value="${riskControlReport.comments_report}" /></textarea>
 		</div>
 	</div>
 	</c:if>

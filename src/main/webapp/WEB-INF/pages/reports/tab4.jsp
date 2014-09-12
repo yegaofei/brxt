@@ -52,6 +52,15 @@
 		</div>
 	</div>
 	
+	<c:if test="${fn:contains(user.roles, 'ROLE_RISK_DIRECTOR')}">
+        <div class="form-group">
+            <label for="repaymentEvaluation_report" class="col-lg-3 control-label"><fmt:message key="repaymentProject.evaluation" />(<fmt:message key="report.comments.modified" />)</label>
+            <div class="col-lg-9">
+                <textarea class="form-control" rows="4" id="repaymentEvaluation_report" name="repaymentEvaluation_report"><c:out value="${riskControlReport.repaymentEvaluation_report}" /></textarea>
+            </div>
+        </div>
+    </c:if>
+	
 	<div class="form-group">
 		<div class="col-lg-2 col-lg-offset-10">
 			<button type="submit" class="btn btn-primary" name="method" value="ProjectProgressTab4" onclick="$('#activeTab').val('tab4')">

@@ -55,6 +55,7 @@ import com.brxt.service.ReportManager;
 import com.brxt.service.SubjectCapacityManager;
 import com.brxt.webapp.spring.RiskControlReportPDF;
 
+
 @Controller
 public class RiskControlReportController extends BaseSheetController {
 
@@ -796,6 +797,16 @@ public class RiskControlReportController extends BaseSheetController {
             // Save comments only
             RiskControlReport report = getRiskControlReport(request);
             report.setGuarantorCheckComment(comments);
+            
+            if(isRiskDirector()) {
+                String guarantorCheckComment_report = request.getParameter("guarantorCheckComment_report");
+                if(StringUtils.isNotBlank(guarantorCheckComment_report)) {
+                    report.setGuarantorCheckComment_report(guarantorCheckComment_report);
+                }
+            } else {
+                report.setGuarantorCheckComment_report(report.getGuarantorCheckComment());
+            }
+            
             reportManager.save(report);
             saveMessage(request, getText("report.update.success", request.getLocale()));
             mav.addObject("riskControlReport", report);
@@ -823,6 +834,7 @@ public class RiskControlReportController extends BaseSheetController {
             }
 
             report.setGuarantorCheckComment(comments);
+            report.setGuarantorCheckComment_report(report.getGuarantorCheckComment());
             reportManager.save(report);
             List<FinanceCheck> financeCheckListTab6 = reportManager.getFinanceCheckListTab6(report);
             mav.addObject("financeCheckListTab6", financeCheckListTab6);
@@ -848,6 +860,16 @@ public class RiskControlReportController extends BaseSheetController {
             //Save investment evaluation only.
             RiskControlReport report = getRiskControlReport(request);
             report.setInvestmentEvaluation(investmentEvaluation);
+            
+            if(isRiskDirector()) {
+                String investmentEvaluation_report = request.getParameter("investmentEvaluation_report");
+                if(StringUtils.isNotBlank(investmentEvaluation_report)) {
+                    report.setInvestmentEvaluation_report(investmentEvaluation_report);
+                }
+            } else {
+                report.setInvestmentEvaluation_report(report.getInvestmentEvaluation());
+            }
+            
             reportManager.save(report);
             saveMessage(request, getText("report.update.success", request.getLocale()));
             mav.addObject("riskControlReport", report);
@@ -916,7 +938,7 @@ public class RiskControlReportController extends BaseSheetController {
             saveError(request, "Date format is incorrect ");
             return mav;
         }
-
+        report.setInvestmentEvaluation_report(report.getInvestmentEvaluation());
         reportManager.save(report);
         saveMessage(request, getText("report.update.success", request.getLocale()));
         mav.addObject("riskControlReport", report);
@@ -958,6 +980,16 @@ public class RiskControlReportController extends BaseSheetController {
         } else if ((StringUtils.isBlank(projectEndTime) || StringUtils.isBlank(invesetmentStatusId)) && StringUtils.isNotBlank(repaymentEvaluation)) {
             RiskControlReport report = getRiskControlReport(request);
             report.setRepaymentEvaluation(repaymentEvaluation);
+            
+            if(isRiskDirector()) {
+                String repaymentEvaluation_report = request.getParameter("repaymentEvaluation_report");
+                if(StringUtils.isNotBlank(repaymentEvaluation_report)) {
+                    report.setRepaymentEvaluation_report(repaymentEvaluation_report);
+                }
+            } else {
+                report.setRepaymentEvaluation_report(report.getRepaymentEvaluation());
+            }
+            
             reportManager.save(report);
             saveMessage(request, getText("report.update.success", request.getLocale()));
             mav.addObject("riskControlReport", report);
@@ -1010,6 +1042,7 @@ public class RiskControlReportController extends BaseSheetController {
             saveError(request, "Date format is incorrect ");
             return mav;
         }
+        report.setRepaymentEvaluation_report(report.getRepaymentEvaluation());
         reportManager.save(report);
         saveMessage(request, getText("report.update.success", request.getLocale()));
         mav.addObject("riskControlReport", report);
@@ -1020,6 +1053,16 @@ public class RiskControlReportController extends BaseSheetController {
         RiskControlReport report = getRiskControlReport(request);
         String collateralSummary = request.getParameter("collateralSummary");
         report.setCollateralSummary(collateralSummary);
+        
+        if(isRiskDirector()) {
+            String collateralSummary_report = request.getParameter("collateralSummary_report");
+            if(StringUtils.isNotBlank(collateralSummary_report)) {
+                report.setCollateralSummary_report(collateralSummary_report);
+            }
+        } else {
+            report.setCollateralSummary_report(report.getCollateralSummary());
+        }
+        
         reportManager.save(report);
         saveMessage(request, getText("report.update.success", request.getLocale()));
         mav.addObject("riskControlReport", report);
@@ -1030,6 +1073,16 @@ public class RiskControlReportController extends BaseSheetController {
         RiskControlReport report = getRiskControlReport(request);
         String statusBeforeMaturity = request.getParameter("statusBeforeMaturity");
         report.setStatusBeforeMaturity(statusBeforeMaturity);
+        
+        if(isRiskDirector()) {
+            String statusBeforeMaturity_report = request.getParameter("statusBeforeMaturity_report");
+            if(StringUtils.isNotBlank(statusBeforeMaturity_report)) {
+                report.setStatusBeforeMaturity_report(statusBeforeMaturity_report);
+            }
+        } else {
+            report.setStatusBeforeMaturity_report(report.getStatusBeforeMaturity());
+        }
+        
         reportManager.save(report);
         saveMessage(request, getText("report.update.success", request.getLocale()));
         mav.addObject("riskControlReport", report);
@@ -1054,14 +1107,7 @@ public class RiskControlReportController extends BaseSheetController {
             default :
         }
         
-        Set<Role> currentUserRoles = super.getCurrentUser().getRoles();
-        boolean isRiskDirector = false;
-        for(Role role : currentUserRoles) {
-        	if(role.getName().equalsIgnoreCase("ROLE_RISK_DIRECTOR")) {
-        		isRiskDirector = true;
-        	}
-        }
-        if(isRiskDirector) {
+        if(isRiskDirector()) {
         	String comments_report = request.getParameter("comments_report");
         	if(StringUtils.isNotBlank(comments_report)) {
         		report.setComments_report(comments_report);
@@ -1075,6 +1121,17 @@ public class RiskControlReportController extends BaseSheetController {
         mav.addObject("riskControlReport", report);
         return mav;
     }
+    
+    private boolean isRiskDirector() {
+        Set<Role> currentUserRoles = super.getCurrentUser().getRoles();
+        boolean isRiskDirector = false;
+        for(Role role : currentUserRoles) {
+            if(role.getName().equalsIgnoreCase("ROLE_RISK_DIRECTOR")) {
+                isRiskDirector = true;
+            }
+        }
+        return isRiskDirector;
+    }
 
     private ModelAndView saveFinanceCheck(final HttpServletRequest request, ModelAndView mav) {
         String counterpartyId = request.getParameter("counterpartyIdTab21");
@@ -1087,6 +1144,16 @@ public class RiskControlReportController extends BaseSheetController {
             // Save comments only
             RiskControlReport report = getRiskControlReport(request);
             report.setFinanceCheckComment(comments);
+            
+            if(isRiskDirector()) {
+                String financeStatementSummary_report = request.getParameter("financeStatementSummary_report");
+                if(StringUtils.isNotBlank(financeStatementSummary_report)) {
+                    report.setFinanceCheckComment_report(financeStatementSummary_report);
+                }
+            } else {
+                report.setFinanceCheckComment_report(report.getFinanceCheckComment());
+            }
+            
             reportManager.save(report);
             saveMessage(request, getText("report.update.success", request.getLocale()));
             mav.addObject("riskControlReport", report);
@@ -1115,6 +1182,7 @@ public class RiskControlReportController extends BaseSheetController {
             }
 
             report.setFinanceCheckComment(comments);
+            report.setFinanceCheckComment_report(report.getFinanceCheckComment());
             reportManager.save(report);
             saveMessage(request, getText("report.update.success", request.getLocale()));
             mav.addObject("riskControlReport", report);
