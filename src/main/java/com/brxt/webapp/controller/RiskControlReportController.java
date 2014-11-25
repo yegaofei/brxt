@@ -830,6 +830,15 @@ public class RiskControlReportController extends BaseSheetController {
             report = updateFinanceCheck(projectInfo, report, prevTerm, currTerm, guarantor, true);
             CreditInformation creditInformation = getCreditInformationTab6(request);
             if (creditInformation != null) {
+                mav.addObject("creditInformationTab6", creditInformation);
+                Set<CreditInformation> ciSet = report.getCreditInformations();
+                Iterator<CreditInformation> ciIt = ciSet.iterator();
+                while (ciIt.hasNext()) {
+                    CreditInformation creditInfo = ciIt.next();
+                    if (creditInfo.getCounterparty().getId().equals(creditInformation.getCounterparty().getId())) {
+                        ciIt.remove();
+                    }
+                }
                 report.getCreditInformations().add(creditInformation);
             }
 
@@ -1178,6 +1187,15 @@ public class RiskControlReportController extends BaseSheetController {
             report = updateFinanceCheck(projectInfo, report, prevTerm, currTerm, counterparty, false);
             CreditInformation creditInformation = getCreditInformation(request);
             if (creditInformation != null) {
+                mav.addObject("creditInformation", creditInformation);
+                Set<CreditInformation> ciSet = report.getCreditInformations();
+                Iterator<CreditInformation> ciIt = ciSet.iterator();
+                while (ciIt.hasNext()) {
+                    CreditInformation creditInfo = ciIt.next();
+                    if (creditInfo.getCounterparty().getId().equals(creditInformation.getCounterparty().getId())) {
+                        ciIt.remove();
+                    }
+                }
                 report.getCreditInformations().add(creditInformation);
             }
 
