@@ -374,7 +374,11 @@ public class ReportManagerImpl extends
                 {
                     if(financeCheck.getCurrCorpBalanceSheet().getLongLoan() != null)
                     {
-                            ci.setDebtBalance(financeCheck.getCurrCorpBalanceSheet().getLongLoan().add(financeCheck.getCurrCorpBalanceSheet().getShortLoan()));                 
+                    	if (financeCheck.getCurrCorpBalanceSheet().getShortLoan() != null) {
+                    		ci.setDebtBalance(financeCheck.getCurrCorpBalanceSheet().getLongLoan().add(financeCheck.getCurrCorpBalanceSheet().getShortLoan()));                                     		
+                    	} else {
+                    		ci.setDebtBalance(financeCheck.getCurrCorpBalanceSheet().getLongLoan());
+                    	}
                     }
                     else
                     {
@@ -639,7 +643,11 @@ public class ReportManagerImpl extends
                     {
                         if(financeCheck.getCurrCorpBalanceSheet().getLongLoan() != null)
                         {
-                            ci.setDebtBalance(financeCheck.getCurrCorpBalanceSheet().getLongLoan().add(financeCheck.getCurrCorpBalanceSheet().getShortLoan()));                 
+                        	if (financeCheck.getCurrCorpBalanceSheet().getShortLoan() != null) {
+                        		ci.setDebtBalance(financeCheck.getCurrCorpBalanceSheet().getLongLoan().add(financeCheck.getCurrCorpBalanceSheet().getShortLoan()));                                         		
+                        	} else {
+                        		ci.setDebtBalance(financeCheck.getCurrCorpBalanceSheet().getLongLoan());
+                        	}
                         }
                         else
                         {
