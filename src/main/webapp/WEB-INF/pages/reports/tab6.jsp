@@ -316,22 +316,22 @@
 						<tbody>
 						<tr>
 							<td><fmt:message key="creditInformation.debtBalance"/><fmt:message key="currency.unit.wan"/></td>
-							<td><fmt:formatNumber type="number" value="${creditInformationTab6.debtBalance / 10000}" /></td>
+							<td><fmt:formatNumber type="number"><c:out value="${creditInformationTab6.debtBalance / 10000}" /></fmt:formatNumber></td>
 						</tr>
 						<tr>
 							<td><fmt:message key="creditInformation.debt"/><fmt:message key="currency.unit.wan"/></td>
-							<td><fmt:formatNumber type="number" value="${creditInformationTab6.debt}" /></td>
+							<td><fmt:formatNumber type="number" ><c:out value="${creditInformationTab6.debt}" /></fmt:formatNumber></td>
 						</tr>
 						<tr>
 							<td><fmt:message key="creditInformation.outstanding"/><fmt:message key="currency.unit.wan"/></td>
 							<td>
-								<fmt:formatNumber type="number" value="${creditInformationTab6.outstanding}" />
+								<fmt:formatNumber type="number" ><c:out value="${creditInformationTab6.outstanding}" /></fmt:formatNumber>
 							 </td>
 						</tr>
 						<tr>
 							<td><fmt:message key="creditInformation.balance"/><fmt:message key="currency.unit.wan"/></td>
 							<td>
-								<fmt:formatNumber type="number" value="${creditInformationTab6.balance}" />
+								<fmt:formatNumber type="number" ><c:out value="${creditInformationTab6.balance}" /></fmt:formatNumber>
 							</td>
 						</tr>
 						<tr>
