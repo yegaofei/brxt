@@ -526,6 +526,14 @@
                                     }
                                     fields[i++] = oFloat[x][1];
                                     bValid = false;
+                                } else {
+                                    if (iValue.toString().length != value.length && iValue.toFixed(2).toString().length != value.length) {
+                                        if (i == 0) {
+                                            focusField = field;
+                                        }
+                                        fields[i++] = oFloat[x][1];
+                                        bValid = false;
+                                    }
                                 }
                             }
                         }

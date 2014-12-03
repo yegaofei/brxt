@@ -103,8 +103,8 @@
     </form:form>
 </div>
 
-<v:javascript formName="creditInformation" cdata="false" dynamicJavascript="true" staticJavascript="false"/>
 <script type="text/javascript" src="<c:url value='/scripts/validator.jsp'/>"></script>
+<v:javascript formName="creditInformation" cdata="false" dynamicJavascript="true" staticJavascript="false"/>
 <script>
   $(function() {
     $('#queryTime').datepicker({

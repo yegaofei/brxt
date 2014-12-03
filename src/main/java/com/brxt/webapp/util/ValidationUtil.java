@@ -1,5 +1,7 @@
 package com.brxt.webapp.util;
 
+import java.math.BigDecimal;
+
 import org.apache.commons.validator.Field;
 import org.apache.commons.validator.GenericValidator;
 import org.apache.commons.validator.ValidatorAction;
@@ -45,6 +47,27 @@ public class ValidationUtil {
                 FieldChecks.rejectValue(errors, field, va);
                 return false;
             }
+        }
+
+        return true;
+    }
+    
+    public static boolean validateAmount(Object bean, ValidatorAction va, Field field, Errors errors) {
+        String value = ValidatorUtils.getValueAsString(bean, field.getProperty());
+        if (GenericValidator.isBlankOrNull(value)) {
+            return true;
+        }
+
+        int commaPos = value.indexOf(",");
+        if (commaPos > -1) {
+            // Get rid of all commas in the value
+            value = value.replaceAll(",", "");
+        }
+        try {
+            new BigDecimal(value);
+        } catch (NumberFormatException nfe) {
+            FieldChecks.rejectValue(errors, field, va);
+            return false;
         }
 
         return true;

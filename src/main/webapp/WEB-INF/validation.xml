@@ -64,6 +64,15 @@
         	<field property="queryTime" depends="required">
         		<arg key="creditInformation.queryTime" />
         	</field>
+        	<field property="outstanding" depends="float">
+                <arg key="creditInformation.outstanding"/>
+            </field>
+            <field property="debt" depends="float">
+                <arg key="creditInformation.debt"/>
+            </field>
+            <field property="balance" depends="float">
+                <arg key="creditInformation.balance"/>
+            </field>
         </form>
         <form name="repayment">
         	<field property="repaymentTime" depends="required">
@@ -74,6 +83,12 @@
         	<field property="projectEndTime" depends="required">
         		<arg key="investmentProject.projectEndTime" />
         	</field>
+        	<field property="investmentAmount" depends="float">
+                <arg key="investmentProject.investmentAmount"/>
+            </field>
+            <field property="totalAmount" depends="float">
+                <arg key="investmentProject.totalAmount"/>
+            </field>
         </form>
         <form name="repaymentProject">        
         	<field property="projectEndTime" depends="required">
